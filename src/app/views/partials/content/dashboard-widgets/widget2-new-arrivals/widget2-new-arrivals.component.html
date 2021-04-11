@@ -1,0 +1,22 @@
+<div class="card card-custom" [ngClass]="cssClasses">
+    <!-- Header -->
+    
+    <!-- Body -->
+    <div class="card-body pt-3 pb-0">
+        <div id="chart">
+            <apx-chart
+              [series]="chartOptions.series"
+              [chart]="chartOptions.chart"
+              [dataLabels]="chartOptions.dataLabels"
+              [plotOptions]="chartOptions.plotOptions"
+              [xaxis]="chartOptions.xaxis"
+              [stroke]="chartOptions.stroke"
+              [fill]="chartOptions.fill"
+              [yaxis]="chartOptions.yaxis"
+              [title]="chartOptions.title"
+              [tooltip]="chartOptions.tooltip"
+              [legend]="chartOptions.legend"
+            ></apx-chart>
+        </div>
+    </div>
+</div>

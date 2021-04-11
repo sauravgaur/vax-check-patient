@@ -1,0 +1,54 @@
+@import "../../../../../assets/sass/pages/wizard/wizard-2";
+.cls-requiered{
+    color: red;
+    margin-left: 5px;
+}
+
+#video {
+    background-color: #000000;
+}
+#canvas {
+    display: none;
+}
+li {
+    display: inline;
+    padding: 5px;
+}
+.cls-actionBtn{
+    background: #fff;
+    border: 1px solid #969696;
+    padding: 6px 20px;
+    color: #2f2f2f;
+    margin-top: 10px;
+}
+.inputfile {
+	width: 0.1px;
+	height: 0.1px;
+	opacity: 0;
+	overflow: hidden;
+	position: absolute;
+	z-index: -1;
+}
+.inputfile + label {
+  font-size: 14px;
+    font-weight: 600;
+    color: #777;
+    background-color: transparent;
+    display: inline-block;
+    padding: 10px 26px;
+    border: 1px solid #777;
+    cursor: pointer;
+}
+
+.inputfile:focus + label,
+.inputfile + label:hover {
+  color: #3699FF;
+  border: 1px solid #3699FF;
+  box-shadow: 0px 1px 4px #3699FF
+}
+.cls-form-upload{
+    border: 1px dashed #ccc;
+      padding: 19px 10px;
+      margin-bottom: 36px;
+      text-align: center;
+  }

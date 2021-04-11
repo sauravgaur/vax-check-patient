@@ -1,0 +1,282 @@
+<kt-portlet>
+	<kt-portlet-body>
+
+		<!--begin: Wizard -->
+		<div #wizard class="wizard wizard-2" id="kt_wizard_v2" data-wizard-state="step-first">
+			<div class="wizard-nav border-right py-8 px-8 py-lg-20 px-lg-10">
+				<!--begin: Form Wizard Nav -->
+				<div class="wizard-steps">
+					<a class="wizard-step" href="javascript:;" data-wizard-type="step" data-wizard-state="current">
+						<div class="wizard-wrapper">
+							<div class="wizard-icon">
+								<span class="svg-icon svg-icon-3x" [inlineSVG]="'assets/media/svg/icons/General/User.svg'"></span>
+							</div>
+							<div class="wizard-label">
+								<div class="wizard-title">
+									Traveler Basic Info
+								</div>
+								<div class="wizard-desc">
+									Enter Traveler Basic Information
+								</div>
+							</div>
+						</div>
+					</a>
+					<a class="wizard-step" href="javascript:;" data-wizard-type="step">
+						<div class="wizard-wrapper">
+							<div class="wizard-icon">
+								<span class="svg-icon svg-icon-3x" [inlineSVG]="'assets/media/svg/icons/Map/Compass.svg'"></span>
+							</div>
+							<div class="wizard-label">
+								<div class="wizard-title">
+									Vaccination Center
+								</div>
+								<div class="wizard-desc">
+									Where was your vaccination done
+								</div>
+							</div>
+						</div>
+					</a>
+					<a class="wizard-step" href="javascript:;" data-wizard-type="step">
+						<div class="wizard-wrapper">
+							<div class="wizard-icon">
+								<span class="svg-icon svg-icon-3x" [inlineSVG]="'assets/media/svg/icons/General/Thunder-move.svg'"></span>
+							</div>
+							<div class="wizard-label">
+								<div class="wizard-title">
+									Vax-Card & Signature
+								</div>
+								<div class="wizard-desc">
+									Upload Vax-card and put e-signature
+								</div>
+							</div>
+						</div>
+					</a>
+				</div>
+				<!--end: Form Wizard Nav -->
+
+			</div>
+			<div class="wizard-body py-8 px-8 py-lg-20 px-lg-10">
+				<!--begin: Wizard Form-->
+				<div class="">
+					<div class="offset-xxl-12">
+						<!--begin: Form Wizard Form-->
+						<form class="form" id="kt_form">
+							<!--begin: Form Wizard Step 1-->
+							<div class="pb-5" data-wizard-type="step-content" data-wizard-state="current">
+								<h4 class="mb-10 font-weight-bold text-dark">Enter Traveler Basic Info</h4>
+								<div class="kt-form__section kt-form__section--first">
+									<div class="p-fluid p-formgrid p-grid">
+										<div class="p-field p-col-12 p-md-4">
+											<label for="firstname6">First name<span class="cls-requiered">*</span> </label>
+											<input id="firstname6" type="text" pInputText  class="p-inputtext-sm"> 
+										</div>
+										<div class="p-field p-col-12 p-md-4">
+											<label for="lastname6">Middle name</label>
+											<input id="lastname6" type="text" pInputText class="p-inputtext-sm"> 
+										</div>
+										<div class="p-field p-col-12 p-md-4">
+											<label for="lastname6">Last name<span class="cls-requiered">*</span></label>
+											<input id="lastname6" type="text" pInputText class="p-inputtext-sm"> 
+										</div>
+
+										<div class="p-field p-col-12 p-md-4">
+											<label for="firstname6">Date of birth<span class="cls-requiered">*</span></label>
+											<p-calendar [showIcon]="true" inputId="icon" dateFormat="yy-mm-dd" class="p-inputtext-sm"></p-calendar>
+										</div>
+										<div class="p-field p-col-12 p-md-4">
+											<label for="user_email">Email</label>
+											<input id="user_email" type="email" pInputText class="p-inputtext-sm"> 
+										</div>
+										<div class="p-field p-col-12 p-md-4">
+											<label for="lastname6">Gender<span class="cls-requiered">*</span></label>
+											<p-selectButton [options]="sex_item" [(ngModel)]="selectedSex" class="p-inputtext-sm" [ngModelOptions]="{standalone: true}"></p-selectButton>
+										</div>
+										
+										<div class="p-field p-col-12 p-md-4">
+											<label for="firstname6">Address street 1<span class="cls-requiered">*</span></label>
+											<input id="firstname6" type="text" pInputText class="p-inputtext-sm"> 
+										</div>
+										<div class="p-field p-col-12 p-md-4">
+											<label for="lastname6">Address street 2</label>
+											<input id="lastname6" type="text" pInputText class="p-inputtext-sm"> 
+										</div>
+										<div class="p-field p-col-12 p-md-4">
+											<label for="user_city">City<span class="cls-requiered">*</span></label>
+											<input id="user_city" type="text" pInputText class="p-inputtext-sm"> 
+										</div>
+
+
+										<div class="p-field p-col-12 p-md-4">
+											<label for="lastname6">Zip code<span class="cls-requiered">*</span></label>
+											<p-inputMask mask="99999?99999" maxlength="10" pattern class="p-inputtext-sm"></p-inputMask>
+										</div>
+										<div class="p-field p-col-12 p-md-4">
+											<label for="user_state">State<span class="cls-requiered">*</span></label>
+											<!-- <input id="user_state" type="text" pInputText class="p-inputtext-sm">  -->
+											<p-dropdown inputId="state" [options]="stateList" [(ngModel)]="selectedStateUser" [ngModelOptions]="{standalone: true}" class="p-inputtext-sm" placeholder="Select State"></p-dropdown>
+											
+										</div>
+										<div class="p-field p-col-12 p-md-4" style="padding: 0px 14px !important;" ></div>
+										<div class="p-field p-col-12 p-md-4" style="padding: 0px 14px !important;" *ngIf="selectedStateUser && selectedStateUser==='HI';else notHawaii">
+											<label for="user_state">Are you a permanent Hawaii “Kama’aina” Resident<span class="cls-requiered">*</span></label>
+											<!-- <input id="user_state" type="text" pInputText class="p-inputtext-sm">  -->
+											<p-selectButton [options]="resedence_item" [(ngModel)]="selectedresedenceOption" class="p-inputtext-sm" [ngModelOptions]="{standalone: true}"></p-selectButton>
+											
+										</div>
+										<ng-template #notHawaii>
+											<div class="p-field p-col-12 p-md-4" style="padding: 0px 14px !important;" ></div>
+										</ng-template>
+										<div class="p-field p-col-12 p-md-8" style="padding: 0px 14px !important;" ></div>
+										<div class="p-field p-col-12 p-md-4">
+											<label for="user_contact">Contact Number <span class="cls-requiered">*</span></label>
+											<input id="user_contact" type="phone" pInputText class="p-inputtext-sm"> 
+										</div>
+										<div class="p-field p-col-12 p-md-4">
+											<label for="lastname6">Is this a cell phone number<span class="cls-requiered">*</span></label>
+											<p-selectButton [options]="contact_item" [(ngModel)]="selectedConatctOption" class="p-inputtext-sm" [ngModelOptions]="{standalone: true}"></p-selectButton>
+										</div>
+										
+									</div>
+								</div>
+							</div>
+							<!--end: Form Wizard Step 1-->
+
+							<!--begin: Form Wizard Step 2-->
+							<div class="pb-5" data-wizard-type="step-content">
+								<h4 class="mb-10 font-weight-bold text-dark">Vaccination Center Details</h4>
+								<div class="p-fluid p-formgrid p-grid">
+									<div class="p-field p-col-12 p-md-4">
+										<label for="org_name">Organization Name</label>
+										<input id="org_name" type="text" pInputText class="p-inputtext-sm"> 
+									</div>
+									<div class="p-field p-col-12 p-md-4">
+										<label for="firstname6">Address street 1<span class="cls-requiered">*</span></label>
+										<input id="firstname6" type="text" pInputText class="p-inputtext-sm"> 
+									</div>
+									<div class="p-field p-col-12 p-md-4">
+										<label for="lastname6">Address street 2</label>
+										<input id="lastname6" type="text" pInputText class="p-inputtext-sm"> 
+									</div>
+									<div class="p-field p-col-12 p-md-4">
+										<label for="org_city">City<span class="cls-requiered">*</span></label>
+										<input id="org_city" type="text" pInputText class="p-inputtext-sm"> 
+									</div>
+
+
+									<div class="p-field p-col-12 p-md-4">
+										<label for="lastname6">Zip code<span class="cls-requiered">*</span></label>
+										<p-inputMask mask="99999?99999" maxlength="10" pattern class="p-inputtext-sm"></p-inputMask>
+									</div>
+									<div class="p-field p-col-12 p-md-4">
+										<label for="org_state">State<span class="cls-requiered">*</span></label>
+										<input id="org_state" type="text" pInputText class="p-inputtext-sm"> 
+									</div>
+
+									<div class="p-field p-col-12 p-md-4">
+										<label for="user_contact">Contact Number <span class="cls-requiered">*</span></label>
+										<input id="user_contact" type="phone" pInputText class="p-inputtext-sm"> 
+									</div>
+									<div class="p-field p-col-12 p-md-4">
+										<label for="user_email">Email</label>
+										<input id="user_email" type="email" pInputText class="p-inputtext-sm"> 
+									</div>
+								</div>
+							</div>
+							<!--end: Form Wizard Step 2-->
+
+							<!--begin: Form Wizard Step 3-->
+							<div class="pb-5" data-wizard-type="step-content">
+								<h4 class="mb-10 font-weight-bold text-dark">Upload Vax-Card</h4>
+								<!-- <div class="form-group">
+									<label>Delivery Type</label>
+									<select name="delivery" [(ngModel)]="model.delivery" class="form-control">
+										<option value="">Select a Service Type Option</option>
+										<option value="overnight" selected>Overnight Delivery (within 48 hours)</option>
+										<option value="express">Express Delivery (within 5 working days)</option>
+										<option value="basic">Basic Delivery (within 5 - 10 working days)</option>
+									</select>
+								</div>
+								<div class="form-group">
+									<label>Packaging Type</label>
+									<select name="packaging" [(ngModel)]="model.packaging" class="form-control">
+										<option value="">Select a Packaging Type Option</option>
+										<option value="regular" selected>Regular Packaging</option>
+										<option value="oversized">Oversized Packaging</option>
+										<option value="fragile">Fragile Packaging</option>
+										<option value="frozen">Frozen Packaging</option>
+									</select>
+								</div>
+								<div class="form-group">
+									<label>Preferred Delivery Window</label>
+									<select name="preferreddelivery" [(ngModel)]="model.preferreddelivery" class="form-control">
+										<option value="">Select a Preferred Delivery Option</option>
+										<option value="morning" selected>Morning Delivery (8:00AM - 11:00AM)</option>
+										<option value="afternoon">Afternoon Delivery (11:00AM - 3:00PM)</option>
+										<option value="evening">Evening Delivery (3:00PM - 7:00PM)</option>
+									</select>
+								</div> -->
+								<div class="p-fluid p-formgrid p-grid">
+									<mat-tab-group style="width: 100%;" (selectedTabChange)="onTabChanged($event);">
+										<mat-tab label="Take Snapshot">
+											<div class="p-field p-col-12 p-md-12" style="padding: 0;border: 1px dashed #cccccc;
+									margin-top: 30px;">
+										<h4>Take snapshot from below</h4>
+										<webcam *ngIf="tabIndex==0" (imageCapture)="handleImage($event)" [trigger]="triggerObservable"></webcam>
+										<div>
+											<button class="cls-actionBtn" (click)="triggerSnapshot();">Take A Snapshot</button>
+										</div>
+										<div class="snapshot" style="display: block;width: 100%;" *ngIf="webcamImage">
+											<h2>Nice one!</h2>
+											<button mat-stroked-button (click)="uploadSnapshot(false)">Upload</button>
+											<img style="display: block;width: 120px" [src]="webcamImage.imageAsDataUrl"/>
+										  </div>
+									</div>
+										</mat-tab>
+										<mat-tab label="Upload File">
+											<div class="p-field p-col-12 p-md-12 cls-form-upload" style="padding: 0;">
+												<input type="file" name="file" id="file"  multiple class="inputfile" (change)="onFileSelect($event)"/>
+												<label for="file">Choose files from here</label>
+												<div style="width: 100%;
+												text-align: left;
+												padding: 0 13px;
+												margin-top: 10px;
+												color: blue;">
+													<!-- <img [src]="imageSrc"> -->
+													<img id="img_preview" height="120px" width="120px"> 
+													<button mat-stroked-button (click)="uploadSnapshot()">Upload</button>
+												</div>
+												
+											</div>
+										</mat-tab>
+									</mat-tab-group>
+									
+									
+								</div>
+							</div>
+							<!--begin: Form Actions -->
+							<div class="d-flex justify-content-between border-top pt-10">
+								<div class="mr-2">
+									<div class="btn btn-light-primary font-weight-bold text-uppercase px-9 py-4" data-wizard-type="action-prev">
+										Previous
+									</div>
+								</div>
+								<div>
+									<div (click)="onSubmit()" class="btn btn-success font-weight-bold text-uppercase px-9 py-4" data-wizard-type="action-submit">
+										Submit
+									</div>
+									<div class="btn btn-primary font-weight-bold text-uppercase px-9 py-4" data-wizard-type="action-next">
+										Next Step
+									</div>
+								</div>
+							</div>
+							<!--end: Form Actions -->
+						</form>
+						<!--end: Form Wizard Form-->
+					</div>
+				</div>
+			</div>
+		</div>
+		<!--end: Wizard -->
+
+	</kt-portlet-body>
+</kt-portlet>

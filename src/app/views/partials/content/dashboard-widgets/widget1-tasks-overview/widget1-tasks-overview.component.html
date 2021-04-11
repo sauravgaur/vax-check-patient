@@ -1,0 +1,172 @@
+<div class="card card-custom" [ngClass]="cssClasses">
+    <!-- Header -->
+    <div class="card-header border-0 mt-4">
+        <h3 class="card-title align-items-start flex-column">
+            <span class="card-label font-weight-bolder text-dark">Data Sources Health</span>
+            <span class="text-muted mt-3 font-weight-bold font-size-sm">5 available</span>
+        </h3>
+        <div class="card-toolbar">
+            <div ngbDropdown [placement]="'bottom-right'" class="dropdown dropdown-inline" title="Quick actions">
+                <a ngbDropdownToggle class="btn btn-clean btn-hover-light-primary btn-sm btn-icon"
+                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <i class="ki ki-bold-more-ver"></i>
+                </a>
+                <div ngbDropdownMenu class="dropdown-menu dropdown-menu-md dropdown-menu-right">
+                    <kt-dropdown4></kt-dropdown4>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Body -->
+    <div class="card-body pt-8">
+        <!--begin::Item-->
+        <div class="d-flex align-items-center mb-10">
+            <!--begin::Symbol-->
+            <div class="symbol symbol-40 symbol-light-primary mr-5">
+                <span class="symbol-label">
+                    <span [inlineSVG]="'./assets/media/svg/icons/Home/Library.svg'"
+                        class="svg-icon svg-icon-lg svg-icon-primary"></span>
+                </span>
+            </div>
+            <!--end::Symbol-->
+
+            <!--begin::Text-->
+            <div class="d-flex flex-column font-weight-bold">
+                <a href="#" class="text-dark text-hover-primary mb-1 font-size-lg">HIPAA Data Vault</a>
+                <span class="text-muted">Vault Datasource</span>
+            </div>
+            <!--end::Text-->
+
+            <span id="chart1" style="position: absolute; right: -94px;">
+                <apx-chart
+                [series]="chartOptions1.series"
+                [chart]="chartOptions1.chart"
+                [plotOptions]="chartOptions1.plotOptions"
+                [labels]="chartOptions1.labels"
+                [fill]="chartOptions1.fill"
+                ></apx-chart>
+          </span>
+        </div>
+        <!--end::Item-->
+
+        <!--begin::Item-->
+        <div class="d-flex align-items-center mb-10">
+            <!--begin::Symbol-->
+            <div class="symbol symbol-40 symbol-light-warning mr-5">
+                <span class="symbol-label">
+                    <span [inlineSVG]="'./assets/media/svg/icons/Communication/Write.svg'"
+                        class="svg-icon svg-icon-lg svg-icon-warning"></span>
+                </span>
+            </div>
+            <!--end::Symbol-->
+
+            <!--begin::Text-->
+            <div class="d-flex flex-column font-weight-bold">
+                <a href="#" class="text-dark-75 text-hover-primary mb-1 font-size-lg">Dept. of Health</a>
+                <span class="text-muted">Health and safety</span>
+            </div>
+            <!--end::Text-->
+
+            <span id="chart2" style="position: absolute; right: -94px;">
+                <apx-chart
+                [series]="chartOptions2.series"
+                [chart]="chartOptions2.chart"
+                [plotOptions]="chartOptions2.plotOptions"
+                [labels]="chartOptions2.labels"
+                [fill]="chartOptions2.fill"
+                ></apx-chart>
+          </span>
+        </div>
+        <!--end::Item-->
+
+        <!--begin::Item-->
+        <div class="d-flex align-items-center mb-10">
+            <!--begin::Symbol-->
+            <div class="symbol symbol-40 symbol-light-success mr-5">
+                <span class="symbol-label">
+                    <span [inlineSVG]="'./assets/media/svg/icons/Communication/Group-chat.svg'"
+                        class="svg-icon svg-icon-lg svg-icon-success"></span>
+                </span>
+            </div>
+            <!--end::Symbol-->
+
+            <!--begin::Text-->
+            <div class="d-flex flex-column font-weight-bold">
+                <a href="#" class="text-dark text-hover-primary mb-1 font-size-lg">Safe Travels</a>
+                <span class="text-muted">Travel dept.</span>
+            </div>
+            <!--end::Text-->
+
+            <span id="chart3" style="position: absolute; right: -94px;">
+                <apx-chart
+                [series]="chartOptions3.series"
+                [chart]="chartOptions3.chart"
+                [plotOptions]="chartOptions3.plotOptions"
+                [labels]="chartOptions3.labels"
+                [fill]="chartOptions3.fill"
+                ></apx-chart>
+          </span>
+        </div>
+        <!--end::Item-->
+
+        <!--begin::Item-->
+        <div class="d-flex align-items-center mb-10">
+            <!--begin::Symbol-->
+            <div class="symbol symbol-40 symbol-light-danger mr-5">
+                <span class="symbol-label">
+                    <span [inlineSVG]="'./assets/media/svg/icons/General/Attachment2.svg'"
+                        class="svg-icon svg-icon-lg svg-icon-danger"></span>
+                </span>
+            </div>
+            <!--end::Symbol-->
+
+            <!--begin::Text-->
+            <div class="d-flex flex-column font-weight-bold">
+                <a href="#" class="text-dark text-hover-primary mb-1 font-size-lg">Test Data Source</a>
+                <span class="text-muted">Testing data</span>
+            </div>
+            <!--end::Text-->
+
+            <span id="chart4" style="position: absolute; right: -94px;">
+                <apx-chart
+                [series]="chartOptions4.series"
+                [chart]="chartOptions4.chart"
+                [plotOptions]="chartOptions4.plotOptions"
+                [labels]="chartOptions4.labels"
+                [fill]="chartOptions4.fill"
+                ></apx-chart>
+          </span>
+        </div>
+        <!--end::Item-->
+
+        <!--begin::Item-->
+        <div class="d-flex align-items-center mb-2">
+            <!--begin::Symbol-->
+            <div class="symbol symbol-40 symbol-light-info mr-5">
+                <span class="symbol-label">
+                    <span [inlineSVG]="'./assets/media/svg/icons/Communication/Shield-user.svg'"
+                        class="svg-icon svg-icon-lg svg-icon-info"></span>
+                </span>
+            </div>
+            <!--end::Symbol-->
+
+            <!--begin::Text-->
+            <div class="d-flex flex-column font-weight-bold">
+                <a href="#" class="text-dark text-hover-primary mb-1 font-size-lg">Live Data Source</a>
+                <span class="text-muted">Production data</span>
+            </div>
+
+            <!--end::Text-->
+            <span id="chart5" style="position: absolute; right: -94px;">
+                <apx-chart
+                [series]="chartOptions5.series"
+                [chart]="chartOptions5.chart"
+                [plotOptions]="chartOptions5.plotOptions"
+                [labels]="chartOptions5.labels"
+                [fill]="chartOptions5.fill"
+                ></apx-chart>
+          </span>
+        </div>
+        <!--end::Item-->
+    </div>
+</div>
