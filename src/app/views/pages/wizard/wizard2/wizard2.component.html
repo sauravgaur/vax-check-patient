@@ -53,7 +53,7 @@
 							</div>
 						</div>
 					</a>
-					<a class="wizard-step" href="javascript:;" data-wizard-type="step">
+					<a class="wizard-step" href="javascript:;" data-wizard-type="step" style="display: none;">
 						<div class="wizard-wrapper">
 							<div class="wizard-icon">
 								<span class="svg-icon svg-icon-3x"
@@ -61,10 +61,10 @@
 							</div>
 							<div class="wizard-label">
 								<div class="wizard-title">
-									Vaccination Record Card
+									Vaccination Status
 								</div>
 								<div class="wizard-desc">
-									System generated vaccination card
+									Patient status
 								</div>
 							</div>
 						</div>
@@ -113,6 +113,7 @@
 											<label for="firstname6">Date of birth<span
 													class="cls-requiered">*</span></label>
 											<p-calendar [showIcon]="true" inputId="icon" formControlName="dob" required
+											[monthNavigator]="true" [yearNavigator]="true" [yearRange]="yearRange"
 												dateFormat="yy-mm-dd" class="p-inputtext-sm"></p-calendar>
 											<mat-error *ngIf="isControlHasError('dob', 'required')">
 												<strong>Required field</strong>
@@ -387,7 +388,7 @@
 
 									</mat-tab-group>
 									<p-card [style]="{'width': '45rem', 'background': 'rgb(243 246 249)', 'margin-top': '2rem'}"
-										styleClass="vaxCard">
+										styleClass="vaxCard" *ngIf="lastInputText && firstInputText">
 										<ng-template pTemplate="header">
 											<div class="p-grid" style="
 											font-size: 1.5em;
@@ -402,13 +403,13 @@
 
 										</ng-template>
 										<div class="p-grid">
-											<div class="p-col-10">
-												<pre style="overflow: hidden;">
-	Please keep this record card, which includes medical information
-	about the vaccines you have received.
-	
-	Por favor, guarde esta tarjeta de resistro, que incluye informacion
-	medica sobre las vacunas que ha recibido.
+											<div class="p-col-12">
+												<pre style="white-space: pre-wrap;">
+Please keep this record card, which includes medical information
+about the vaccines you have received.
+
+Por favor, guarde esta tarjeta de resistro, que incluye informacion
+medica sobre las vacunas que ha recibido.
 												</pre>
 											</div>
 										</div>
@@ -475,37 +476,16 @@
 											<tr>
 												<td style="background: lightgray;">1st Dose Covid - 19</td>
 												<td>
-													<editable data-testid="sample-select" class="editable" style=""
-														(save)="updateSingleField('productInputText', 'productNameControl')"
-														(cancel)="cancelSingleField('productInputText', 'productNameControl')">
-														<ng-template viewMode>
-															<div style="padding-left: .5em; padding-right: .5em;">
-																{{ productInputText }} <i
-																	class="kt-nav__link-icon flaticon2-pen text-primary"
-																	style="    float: right;"></i>
-															</div>
-														</ng-template>
-														<ng-template editMode>
-															<div class="form-group" style="">
-																<select class="form-control"
-																	data-testid="sample-select-edit"
-																	name="sample-select"
-																	[formControl]="productNameControl">
-																	<option *ngFor="let option of productOptions"
-																		[value]="option">{{ option }}</option>
-																</select>
-															</div>
-														</ng-template>
-													</editable>
+													{{ imageToTextResponse.firstDose }}
 												</td>
-												<td>12 / 29/ 20</td>
+												<td>{{ imageToTextResponse.firstDoseDate }}</td>
 												<td>
 													<editable data-testid="sample-input-click" class="editable"
-														(save)="updateSingleField('clinicInputText', 'clinicNameInputControl')"
-														(cancel)="cancelSingleField('clinicInputText', 'clinicNameInputControl')">
+														(save)="updateSingleField('firstClinicName', 'firstClinicNameInputControl')"
+														(cancel)="cancelSingleField('firstClinicName', 'firstClinicNameInputControl')">
 														<ng-template viewMode>
 															<div style="padding-left: .5em; padding-right: .5em;">
-																{{ clinicInputText }} <i
+																{{ firstClinicName }} <i
 																	class="kt-nav__link-icon flaticon2-pen text-primary"
 																	style="    float: right;"></i>
 															</div>
@@ -515,7 +495,7 @@
 																<input class="form-control"
 																	data-testid="sample-input-click-edit"
 																	placeholder="Clinic Name" type="text"
-																	[formControl]="clinicNameInputControl" />
+																	[formControl]="firstClinicNameInputControl" />
 															</div>
 														</ng-template>
 													</editable>
@@ -524,26 +504,32 @@
 											<tr>
 												<td style="background: lightgray;">2nd Dose Covid - 19</td>
 												<td>
-													<editable data-testid="sample-select" *ngIf="selectText"
-														(save)="updateSingleField('selectText', 'selectControl')"
-														(cancel)="cancelSingleField('selectText', 'selectControl')">
+													{{ imageToTextResponse.secondDose }}
+												</td>
+												<td>
+													{{ imageToTextResponse.secondDoseDate }}
+												</td>
+												<td>
+													<editable *ngIf="secondClinicName" data-testid="sample-input-click" class="editable"
+														(save)="updateSingleField('secondClinicName', 'secondClinicNameInputControl')"
+														(cancel)="cancelSingleField('secondClinicName', 'secondClinicNameInputControl')">
 														<ng-template viewMode>
-															{{ selectText }}
+															<div style="padding-left: .5em; padding-right: .5em;">
+																{{ secondClinicName }} <i
+																	class="kt-nav__link-icon flaticon2-pen text-primary"
+																	style="    float: right;"></i>
+															</div>
 														</ng-template>
 														<ng-template editMode>
 															<div class="form-group">
-																<select class="form-control"
-																	data-testid="sample-select-edit"
-																	name="sample-select" [formControl]="selectControl">
-																	<option *ngFor="let option of selectOptions"
-																		[value]="option">{{ option }}</option>
-																</select>
+																<input class="form-control"
+																	data-testid="sample-input-click-edit"
+																	placeholder="Clinic Name" type="text"
+																	[formControl]="secondClinicNameInputControl" />
 															</div>
 														</ng-template>
 													</editable>
 												</td>
-												<td></td>
-												<td></td>
 											</tr>
 											<tr>
 												<td style="background: lightgray;">Other</td>
@@ -567,6 +553,40 @@
 							<div class="pb-5" data-wizard-type="step-content">
 								<h4 class="mb-10 font-weight-bold text-dark">Vax Record Card</h4>
 
+								<div class="card">
+									<div class="p-fluid" style="padding-left: .5rem;">
+										<div class="p-field p-grid">
+											<label for="firstname4" class="p-col-12 p-mb-2 p-md-2 p-mb-md-0" style="color: gray;">Vaccine admin:</label>
+											<div class="p-col-12 p-md-10">
+												<b>QUEENS</b>
+											</div>
+										</div>
+										<div class="p-field p-grid">
+											<label for="lastname4" class="p-col-12 p-mb-2 p-md-2 p-mb-md-0" style="color: gray;">Doses received:</label>
+											<div class="p-col-12 p-md-10">
+												<b>2</b>
+											</div>
+										</div>
+										<div class="p-field p-grid">
+											<label for="firstname4" class="p-col-12 p-mb-2 p-md-2 p-mb-md-0" style="color: gray;">Series complete:</label>
+											<div class="p-col-12 p-md-10">
+												<b>YES</b>
+											</div>
+										</div>
+										<div class="p-field p-grid">
+											<label for="lastname4" class="p-col-12 p-mb-2 p-md-2 p-mb-md-0" style="color: gray;">Effactive date:</label>
+											<div class="p-col-12 p-md-10">
+												<b>Apr 15, 2021</b>
+											</div>
+										</div>
+										<div class="p-field p-grid">
+											<label for="firstname4" class="p-col-12 p-mb-2 p-md-2 p-mb-md-0" style="color: gray;">Expiration date:</label>
+											<div class="p-col-12 p-md-10">
+												<b>July 15, 2021</b>
+											</div>
+										</div>
+									</div>
+								</div>
 							</div>
 
 							<!--begin: Form Actions -->

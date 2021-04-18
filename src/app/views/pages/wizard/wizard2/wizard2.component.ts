@@ -368,28 +368,27 @@ export class Wizard2Component implements OnInit, AfterViewInit {
         city: 'London',
         country: 'England',
     };
-    public lastInputText = 'smith';
-    public lastNameInputControl: FormControl = new FormControl(this.lastInputText);
+    public firstInputText: any;
+    public lastNameInputControl: FormControl = new FormControl();
 
-    public firstInputText = 'John';
-    public firstNameInputControl: FormControl = new FormControl(this.firstInputText);
+    public lastInputText: any;
+    public firstNameInputControl: FormControl = new FormControl();
+    // public productInputText = 'Estragen';
+    // public productNameControl: FormControl = new FormControl(this.productInputText);
+    // public productOptions = ['Estragen', 'Johnson & Johnson', 'Neptura'];
 
-    public productInputText = 'Estragen';
-    public productNameControl: FormControl = new FormControl(this.productInputText);
-    public productOptions = ['Estragen', 'Johnson & Johnson', 'Neptura'];
+    public firstClinicNameInputControl: FormControl = new FormControl();
+    public firstClinicName: any;
+    public secondClinicNameInputControl: FormControl = new FormControl();
+    public secondClinicName: any;
 
-    public healthInputText = 'Neerh';
-    public healthCareNameInputControl: FormControl = new FormControl(this.healthInputText);
-
-    public clinicInputText = 'NEERH';
-    public clinicNameInputControl: FormControl = new FormControl(this.clinicInputText);
-
-    public selectText = '';
-    public selectControl: FormControl = new FormControl(this.selectText);
-    public selectOptions = ['Belgium', 'Italy', 'Canada'];
-    public openBindingEvent = 'dblclick';
-    boxes: Array<number> = new Array(24);
-
+    imageToTextResponse: any = {
+        "firstName": "Coulombe", "middleName": "", "lastName": "Annette",
+        "mi": "", "dob": "", "patientNumber": "", "firstDose": "Moderna oll L 20A",
+        "firstDoseDate": "112 29,20 ", "firstClinicName": "NEERH", "secondDose": "Moderna oll L 20A",
+        "secondDoseDate": '04 20 21', "secondClinicName": "NEERH"
+    };
+    yearRange: any;
     constructor(
         private cd: ChangeDetectorRef,
         private http: HttpClient,
@@ -403,7 +402,7 @@ export class Wizard2Component implements OnInit, AfterViewInit {
     // }
 
     ngOnInit() {
-
+        this.yearRange = `1930:${new Date().getFullYear()}`
         this.patientForm = this._fb.group({
             id: new FormControl(''),
             firstName: new FormControl(''),
@@ -519,7 +518,7 @@ export class Wizard2Component implements OnInit, AfterViewInit {
         this.orgs = [{ name: 'Adventist Health Castle', value: 'Adventist Health Castle' },
         { name: 'Costco', value: 'Costco ' },
         { name: 'CVS/Long Drugs', value: 'CVS/Long Drugs' },
-        
+
         { name: 'Hamakua Kohala Health', value: 'Hamakua Kohala Health' },
         { name: 'Hana Health Clinic', value: 'Hana Health Clinic' },
         { name: 'Hawai\'i - Bay Clinic, Inc.', value: 'Hawai\'i - Bay Clinic, Inc.' },
@@ -872,6 +871,18 @@ export class Wizard2Component implements OnInit, AfterViewInit {
             }, (error) => {
                 console.log("err-->", error);
             })
+
+        this.lastInputText = this.imageToTextResponse.lastName;
+        this.lastNameInputControl.setValue(this.lastInputText);
+
+        this.firstInputText = this.imageToTextResponse.firstName;
+        this.firstNameInputControl.setValue(this.firstInputText)
+
+        this.firstClinicName = this.imageToTextResponse.firstClinicName;
+        this.firstClinicNameInputControl.setValue(this.firstClinicName)
+
+        this.secondClinicName = this.imageToTextResponse.secondClinicName;
+        this.secondClinicNameInputControl.setValue(this.secondClinicName)
     }
     onTabChanged(event) {
         console.log(event);
