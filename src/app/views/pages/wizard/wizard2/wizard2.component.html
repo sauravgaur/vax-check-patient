@@ -1,6 +1,5 @@
 <kt-portlet>
 	<kt-portlet-body>
-
 		<!--begin: Wizard -->
 		<div #wizard class="wizard wizard-2" id="kt_wizard_v2" data-wizard-state="step-first">
 			<div class="wizard-nav border-right py-8 px-8 py-lg-20 px-lg-10">
@@ -9,7 +8,8 @@
 					<a class="wizard-step" href="javascript:;" data-wizard-type="step" data-wizard-state="current">
 						<div class="wizard-wrapper">
 							<div class="wizard-icon">
-								<span class="svg-icon svg-icon-3x" [inlineSVG]="'assets/media/svg/icons/General/User.svg'"></span>
+								<span class="svg-icon svg-icon-3x"
+									[inlineSVG]="'assets/media/svg/icons/General/User.svg'"></span>
 							</div>
 							<div class="wizard-label">
 								<div class="wizard-title">
@@ -24,7 +24,8 @@
 					<a class="wizard-step" href="javascript:;" data-wizard-type="step">
 						<div class="wizard-wrapper">
 							<div class="wizard-icon">
-								<span class="svg-icon svg-icon-3x" [inlineSVG]="'assets/media/svg/icons/Map/Compass.svg'"></span>
+								<span class="svg-icon svg-icon-3x"
+									[inlineSVG]="'assets/media/svg/icons/Map/Compass.svg'"></span>
 							</div>
 							<div class="wizard-label">
 								<div class="wizard-title">
@@ -39,7 +40,8 @@
 					<a class="wizard-step" href="javascript:;" data-wizard-type="step">
 						<div class="wizard-wrapper">
 							<div class="wizard-icon">
-								<span class="svg-icon svg-icon-3x" [inlineSVG]="'assets/media/svg/icons/General/Thunder-move.svg'"></span>
+								<span class="svg-icon svg-icon-3x"
+									[inlineSVG]="'assets/media/svg/icons/General/Thunder-move.svg'"></span>
 							</div>
 							<div class="wizard-label">
 								<div class="wizard-title">
@@ -47,6 +49,22 @@
 								</div>
 								<div class="wizard-desc">
 									Upload copy of your Vaccination Card
+								</div>
+							</div>
+						</div>
+					</a>
+					<a class="wizard-step" href="javascript:;" data-wizard-type="step">
+						<div class="wizard-wrapper">
+							<div class="wizard-icon">
+								<span class="svg-icon svg-icon-3x"
+									[inlineSVG]="'assets/media/svg/icons/General/Thunder-move.svg'"></span>
+							</div>
+							<div class="wizard-label">
+								<div class="wizard-title">
+									Vaccination Record Card
+								</div>
+								<div class="wizard-desc">
+									System generated vaccination card
 								</div>
 							</div>
 						</div>
@@ -60,82 +78,166 @@
 				<div class="">
 					<div class="offset-xxl-12">
 						<!--begin: Form Wizard Form-->
-						<form class="form" id="kt_form">
+						<form class="form" id="kt_form" novalidate="novalidate" [formGroup]="patientForm">
 							<!--begin: Form Wizard Step 1-->
 							<div class="pb-5" data-wizard-type="step-content" data-wizard-state="current">
 								<h4 class="mb-10 font-weight-bold text-dark">Enter Traveler Basic Info</h4>
 								<div class="kt-form__section kt-form__section--first">
 									<div class="p-fluid p-formgrid p-grid">
 										<div class="p-field p-col-12 p-md-4">
-											<label for="firstname6">First name<span class="cls-requiered">*</span> </label>
-											<input id="firstname6" type="text" pInputText  class="p-inputtext-sm"> 
+											<label for="firstname6">First name<span class="cls-requiered">*</span>
+											</label>
+											<input id="firstname6" type="text" pInputText formControlName="firstName"
+												required class="p-inputtext-sm">
+											<!-- <span *ngIf="hasFormError(patientForm, isFormSubmitted, 'firstName','required')"
+                                style="color: red">This field is required</span> -->
+											<mat-error *ngIf="isControlHasError('firstName', 'required')">
+												<strong>Required field</strong>
+											</mat-error>
 										</div>
 										<div class="p-field p-col-12 p-md-4">
 											<label for="lastname6">Middle name</label>
-											<input id="lastname6" type="text" pInputText class="p-inputtext-sm"> 
+											<input id="lastname6" type="text" pInputText formControlName="middleName"
+												class="p-inputtext-sm">
 										</div>
 										<div class="p-field p-col-12 p-md-4">
 											<label for="lastname6">Last name<span class="cls-requiered">*</span></label>
-											<input id="lastname6" type="text" pInputText class="p-inputtext-sm"> 
+											<input id="lastname6" type="text" pInputText formControlName="lastName"
+												required class="p-inputtext-sm">
+											<mat-error *ngIf="isControlHasError('lastName', 'required')">
+												<strong>Required field</strong>
+											</mat-error>
 										</div>
 
 										<div class="p-field p-col-12 p-md-4">
-											<label for="firstname6">Date of birth<span class="cls-requiered">*</span></label>
-											<p-calendar [showIcon]="true" inputId="icon" dateFormat="yy-mm-dd" class="p-inputtext-sm"></p-calendar>
+											<label for="firstname6">Date of birth<span
+													class="cls-requiered">*</span></label>
+											<p-calendar [showIcon]="true" inputId="icon" formControlName="dob" required
+												dateFormat="yy-mm-dd" class="p-inputtext-sm"></p-calendar>
+											<mat-error *ngIf="isControlHasError('dob', 'required')">
+												<strong>Required field</strong>
+											</mat-error>
 										</div>
 										<div class="p-field p-col-12 p-md-4">
 											<label for="user_email">Email</label>
-											<input id="user_email" type="email" pInputText class="p-inputtext-sm"> 
+											<input id="user_email" type="email" formControlName="email" pInputText
+												class="p-inputtext-sm">
+											<!-- <mat-error *ngIf="isControlHasError('email', 'required')">
+												<strong>Required field</strong>
+											  </mat-error> -->
+											<mat-error *ngIf="isControlHasError('email', 'email')">
+												<strong>Field is not valid</strong>
+											</mat-error>
 										</div>
 										<div class="p-field p-col-12 p-md-4">
 											<label for="lastname6">Gender<span class="cls-requiered">*</span></label>
-											<p-selectButton [options]="sex_item" [(ngModel)]="selectedSex" class="p-inputtext-sm" [ngModelOptions]="{standalone: true}"></p-selectButton>
+											<p-selectButton [options]="sex_item" formControlName="gender" required
+												class="p-inputtext-sm"></p-selectButton>
+											<mat-error *ngIf="isControlHasError('gender', 'required')">
+												<strong>Required field</strong>
+											</mat-error>
 										</div>
-										
+
 										<div class="p-field p-col-12 p-md-4">
-											<label for="firstname6">Address street 1<span class="cls-requiered">*</span></label>
-											<input id="firstname6" type="text" pInputText class="p-inputtext-sm"> 
+											<label for="firstname6">Address street 1<span
+													class="cls-requiered">*</span></label>
+											<input id="firstname6" type="text" formControlName="address1" required
+												pInputText class="p-inputtext-sm">
+											<mat-error *ngIf="isControlHasError('address1', 'required')">
+												<strong>Required field</strong>
+											</mat-error>
 										</div>
 										<div class="p-field p-col-12 p-md-4">
 											<label for="lastname6">Address street 2</label>
-											<input id="lastname6" type="text" pInputText class="p-inputtext-sm"> 
+											<input id="lastname6" type="text" formControlName="address2" pInputText
+												class="p-inputtext-sm">
 										</div>
 										<div class="p-field p-col-12 p-md-4">
 											<label for="user_city">City<span class="cls-requiered">*</span></label>
-											<input id="user_city" type="text" pInputText class="p-inputtext-sm"> 
+											<input id="user_city" type="text" formControlName="city" required pInputText
+												class="p-inputtext-sm">
+											<mat-error *ngIf="isControlHasError('city', 'required')">
+												<strong>Required field</strong>
+											</mat-error>
 										</div>
 
 
 										<div class="p-field p-col-12 p-md-4">
 											<label for="lastname6">Zip code<span class="cls-requiered">*</span></label>
-											<p-inputMask mask="99999?99999" maxlength="10" pattern class="p-inputtext-sm"></p-inputMask>
+											<p-inputMask mask="99999?-9999" maxlength="10" formControlName="zipcode"
+												required pattern class="p-inputtext-sm"></p-inputMask>
+											<mat-error *ngIf="isControlHasError('zipcode', 'required')">
+												<strong>Required field</strong>
+											</mat-error>
+											<mat-error *ngIf="isControlHasError('zipcode', 'pattern')">
+												<strong>Field is not valid</strong>
+											</mat-error>
+										</div>
+										<div class="p-field p-col-12 p-md-4">
+											<label for="user_contact">Contact Number <span
+													class="cls-requiered">*</span></label>
+											<p-inputMask mask="9999999999" minLength="10" maxLength="10"
+												formControlName="contactNumber" required pattern class="p-inputtext-sm">
+											</p-inputMask>
+											<mat-error *ngIf="isControlHasError('contactNumber', 'required')">
+												<strong>Required field</strong>
+											</mat-error>
+											<mat-error *ngIf="isControlHasError('contactNumber', 'minLength')">
+												<strong>Required field</strong>
+											</mat-error>
+											<mat-error *ngIf="isControlHasError('contactNumber', 'maxLength')">
+												<strong>Required field</strong>
+											</mat-error>
+										</div>
+										<div class="p-field p-col-12 p-md-4">
+											<label for="lastname6">Is this a cell phone number<span
+													class="cls-requiered">*</span></label>
+											<p-selectButton [options]="contact_item" formControlName="contactOption"
+												required class="p-inputtext-sm"></p-selectButton>
+											<mat-error *ngIf="isControlHasError('contactOption', 'required')">
+												<strong>Required field</strong>
+											</mat-error>
 										</div>
 										<div class="p-field p-col-12 p-md-4">
 											<label for="user_state">State<span class="cls-requiered">*</span></label>
 											<!-- <input id="user_state" type="text" pInputText class="p-inputtext-sm">  -->
-											<p-dropdown inputId="state" [options]="stateList" [(ngModel)]="selectedStateUser" [ngModelOptions]="{standalone: true}" class="p-inputtext-sm" placeholder="Select State"></p-dropdown>
-											
+											<p-dropdown inputId="state" [options]="stateList" formControlName="state"
+												[filter]="true" filterBy="label" filterMatchMode="contains"
+												[showClear]="true" [resetFilterOnHide]="true" required
+												class="p-inputtext-sm" placeholder="Select State"></p-dropdown>
+											<mat-error *ngIf="isControlHasError('state', 'required')">
+												<strong>Required field</strong>
+											</mat-error>
+
 										</div>
-										<div class="p-field p-col-12 p-md-4" style="padding: 0px 14px !important;" ></div>
-										<div class="p-field p-col-12 p-md-4" style="padding: 0px 14px !important;" *ngIf="selectedStateUser && selectedStateUser==='HI';else notHawaii">
-											<label for="user_state">Are you a permanent Hawaii “Kama’aina” Resident<span class="cls-requiered">*</span></label>
+										<!-- <div class="p-field p-col-12 p-md-4" style="padding: 0px 14px !important;" ></div> -->
+										<div class="p-field p-col-12 p-md-4"
+											*ngIf="patientForm.value.state && patientForm.value.state==='HI'">
+											<label for="user_state">Are you a permanent Hawaii “Kama’aina” Resident<span
+													class="cls-requiered">*</span></label>
 											<!-- <input id="user_state" type="text" pInputText class="p-inputtext-sm">  -->
-											<p-selectButton [options]="resedence_item" [(ngModel)]="selectedresedenceOption" class="p-inputtext-sm" [ngModelOptions]="{standalone: true}"></p-selectButton>
-											
+											<p-selectButton [options]="resedence_item" formControlName="resedenceItem"
+												required class="p-inputtext-sm"></p-selectButton>
+											<mat-error *ngIf="isControlHasError('resedenceItem', 'required')">
+												<strong>Required field</strong>
+											</mat-error>
 										</div>
-										<ng-template #notHawaii>
-											<div class="p-field p-col-12 p-md-4" style="padding: 0px 14px !important;" ></div>
-										</ng-template>
-										<div class="p-field p-col-12 p-md-8" style="padding: 0px 14px !important;" ></div>
-										<div class="p-field p-col-12 p-md-4">
-											<label for="user_contact">Contact Number <span class="cls-requiered">*</span></label>
-											<input id="user_contact" type="phone" pInputText class="p-inputtext-sm"> 
+
+										<div class="p-field p-col-12 p-md-4"
+											*ngIf="patientForm.value.state && patientForm.value.state==='HI'">
+											<label for="user_state">Island<span class="cls-requiered">*</span></label>
+											<!-- <input id="user_state" type="text" pInputText class="p-inputtext-sm">  -->
+											<p-dropdown inputId="state" [options]="island_item"
+												formControlName="islandItem" [filter]="true" filterBy="value"
+												filterMatchMode="contains" [showClear]="true" [resetFilterOnHide]="true"
+												required class="p-inputtext-sm" placeholder="Select Island">
+											</p-dropdown>
+											<mat-error *ngIf="isControlHasError('islandItem', 'required')">
+												<strong>Required field</strong>
+											</mat-error>
 										</div>
-										<div class="p-field p-col-12 p-md-4">
-											<label for="lastname6">Is this a cell phone number<span class="cls-requiered">*</span></label>
-											<p-selectButton [options]="contact_item" [(ngModel)]="selectedConatctOption" class="p-inputtext-sm" [ngModelOptions]="{standalone: true}"></p-selectButton>
-										</div>
-										
+
+
 									</div>
 								</div>
 							</div>
@@ -146,39 +248,91 @@
 								<h4 class="mb-10 font-weight-bold text-dark">Vaccination Center Details</h4>
 								<div class="p-fluid p-formgrid p-grid">
 									<div class="p-field p-col-12 p-md-4">
-										<label for="org_name">Organization Name</label>
-										<input id="org_name" type="text" pInputText class="p-inputtext-sm"> 
+										<label for="org_name">Organization Name<span class="cls-requiered"
+												*ngIf="patientForm.value.resedenceItem && patientForm.value.resedenceItem==='YES'">*</span></label>
+										<p-autoComplete formControlName="orgName" [suggestions]="filteredOrgs"
+											(completeMethod)="filterOrg($event)" [forceSelection]="true" field="name"
+											[minLength]="1" class="p-inputtext-sm"></p-autoComplete>
+										<!-- <input id="org_name" type="text" formControlName="orgName" pInputText class="p-inputtext-sm"> -->
+										<mat-error *ngIf="stepTwo && isControlHasError('orgName', 'required')">
+											<strong>Required field</strong>
+										</mat-error>
 									</div>
 									<div class="p-field p-col-12 p-md-4">
-										<label for="firstname6">Address street 1<span class="cls-requiered">*</span></label>
-										<input id="firstname6" type="text" pInputText class="p-inputtext-sm"> 
+										<label for="firstname6">Address street 1<span
+												class="cls-requiered">*</span></label>
+										<input id="firstname6" type="text" formControlName="orgAddress1" required
+											pInputText class="p-inputtext-sm">
+										<mat-error *ngIf="stepTwo && isControlHasError('orgAddress1', 'required')">
+											<strong>Required field</strong>
+										</mat-error>
 									</div>
 									<div class="p-field p-col-12 p-md-4">
 										<label for="lastname6">Address street 2</label>
-										<input id="lastname6" type="text" pInputText class="p-inputtext-sm"> 
+										<input id="lastname6" type="text" formControlName="orgAddress2" pInputText
+											class="p-inputtext-sm">
 									</div>
 									<div class="p-field p-col-12 p-md-4">
 										<label for="org_city">City<span class="cls-requiered">*</span></label>
-										<input id="org_city" type="text" pInputText class="p-inputtext-sm"> 
+										<input id="org_city" type="text" formControlName="orgCity" required pInputText
+											class="p-inputtext-sm">
+										<mat-error *ngIf="stepTwo && isControlHasError('orgCity', 'required')">
+											<strong>Required field</strong>
+										</mat-error>
 									</div>
 
 
 									<div class="p-field p-col-12 p-md-4">
 										<label for="lastname6">Zip code<span class="cls-requiered">*</span></label>
-										<p-inputMask mask="99999?99999" maxlength="10" pattern class="p-inputtext-sm"></p-inputMask>
+										<p-inputMask mask="99999?-9999" maxlength="10" formControlName="orgZipcode"
+											required pattern class="p-inputtext-sm"></p-inputMask>
+										<mat-error *ngIf="stepTwo && isControlHasError('orgZipcode', 'required')">
+											<strong>Required field</strong>
+										</mat-error>
+										<mat-error *ngIf="isControlHasError('orgZipcode', 'pattern')">
+											<strong>Field is not valid</strong>
+										</mat-error>
 									</div>
 									<div class="p-field p-col-12 p-md-4">
 										<label for="org_state">State<span class="cls-requiered">*</span></label>
-										<input id="org_state" type="text" pInputText class="p-inputtext-sm"> 
+										<p-dropdown inputId="org_state" [options]="stateList" formControlName="orgState"
+											[filter]="true" filterBy="label" filterMatchMode="contains"
+											[showClear]="true" [resetFilterOnHide]="true" required
+											class="p-inputtext-sm" placeholder="Select State"></p-dropdown>
+										<!-- <input id="org_state" type="text" formControlName="orgState" required pInputText class="p-inputtext-sm">  -->
+										<mat-error *ngIf="stepTwo && isControlHasError('orgState', 'required')">
+											<strong>Required field</strong>
+										</mat-error>
 									</div>
 
 									<div class="p-field p-col-12 p-md-4">
-										<label for="user_contact">Contact Number <span class="cls-requiered">*</span></label>
-										<input id="user_contact" type="phone" pInputText class="p-inputtext-sm"> 
+										<label for="user_contact">Contact Number <span
+												class="cls-requiered">*</span></label>
+										<p-inputMask mask="9999999999" minLength="10" maxLength="10"
+											formControlName="orgContactNumber" required pattern class="p-inputtext-sm">
+										</p-inputMask>
+										<mat-error *ngIf="stepTwo && isControlHasError('orgContactNumber', 'required')">
+											<strong>Required field</strong>
+										</mat-error>
+										<mat-error
+											*ngIf="stepTwo && isControlHasError('orgContactNumber', 'minLength')">
+											<strong>Required field</strong>
+										</mat-error>
+										<mat-error
+											*ngIf="stepTwo && isControlHasError('orgContactNumber', 'maxLength')">
+											<strong>Required field</strong>
+										</mat-error>
 									</div>
 									<div class="p-field p-col-12 p-md-4">
 										<label for="user_email">Email</label>
-										<input id="user_email" type="email" pInputText class="p-inputtext-sm"> 
+										<input id="user_email" type="email" formControlName="orgEmail" pInputText
+											class="p-inputtext-sm">
+										<!-- <mat-error *ngIf="stepTwo && isControlHasError('orgEmail', 'required')">
+											<strong>Required field</strong>
+										  </mat-error> -->
+										<mat-error *ngIf="stepTwo && isControlHasError('orgEmail', 'email')">
+											<strong>Field is not valid</strong>
+										</mat-error>
 									</div>
 								</div>
 							</div>
@@ -187,54 +341,32 @@
 							<!--begin: Form Wizard Step 3-->
 							<div class="pb-5" data-wizard-type="step-content">
 								<h4 class="mb-10 font-weight-bold text-dark">Upload Vax-Card</h4>
-								<!-- <div class="form-group">
-									<label>Delivery Type</label>
-									<select name="delivery" [(ngModel)]="model.delivery" class="form-control">
-										<option value="">Select a Service Type Option</option>
-										<option value="overnight" selected>Overnight Delivery (within 48 hours)</option>
-										<option value="express">Express Delivery (within 5 working days)</option>
-										<option value="basic">Basic Delivery (within 5 - 10 working days)</option>
-									</select>
-								</div>
-								<div class="form-group">
-									<label>Packaging Type</label>
-									<select name="packaging" [(ngModel)]="model.packaging" class="form-control">
-										<option value="">Select a Packaging Type Option</option>
-										<option value="regular" selected>Regular Packaging</option>
-										<option value="oversized">Oversized Packaging</option>
-										<option value="fragile">Fragile Packaging</option>
-										<option value="frozen">Frozen Packaging</option>
-									</select>
-								</div>
-								<div class="form-group">
-									<label>Preferred Delivery Window</label>
-									<select name="preferreddelivery" [(ngModel)]="model.preferreddelivery" class="form-control">
-										<option value="">Select a Preferred Delivery Option</option>
-										<option value="morning" selected>Morning Delivery (8:00AM - 11:00AM)</option>
-										<option value="afternoon">Afternoon Delivery (11:00AM - 3:00PM)</option>
-										<option value="evening">Evening Delivery (3:00PM - 7:00PM)</option>
-									</select>
-								</div> -->
 								<div class="p-fluid p-formgrid p-grid">
 									<mat-tab-group style="width: 100%;" (selectedTabChange)="onTabChanged($event);">
 										<mat-tab label="Take Snapshot">
 											<div class="p-field p-col-12 p-md-12" style="padding: 0;border: 1px dashed #cccccc;
 									margin-top: 30px;">
-										<h4>Take snapshot from below</h4>
-										<webcam *ngIf="tabIndex==0" (imageCapture)="handleImage($event)" [trigger]="triggerObservable"></webcam>
-										<div>
-											<button class="cls-actionBtn" (click)="triggerSnapshot();">Take A Snapshot</button>
-										</div>
-										<div class="snapshot" style="display: block;width: 100%;" *ngIf="webcamImage">
-											<h2>Nice one!</h2>
-											<button mat-stroked-button (click)="uploadSnapshot(false)">Upload</button>
-											<img style="display: block;width: 120px" [src]="webcamImage.imageAsDataUrl"/>
-										  </div>
-									</div>
+												<h4>Take snapshot from below</h4>
+												<webcam *ngIf="tabIndex==0" (imageCapture)="handleImage($event)"
+													[trigger]="triggerObservable"></webcam>
+												<div>
+													<button class="cls-actionBtn" (click)="triggerSnapshot();">Take A
+														Snapshot</button>
+												</div>
+												<div class="snapshot" style="display: block;width: 100%;"
+													*ngIf="webcamImage">
+													<h2>Nice one!</h2>
+													<button mat-stroked-button
+														(click)="uploadSnapshot(false)">Upload</button>
+													<img style="display: block;width: 120px"
+														[src]="webcamImage.imageAsDataUrl" />
+												</div>
+											</div>
 										</mat-tab>
 										<mat-tab label="Upload File">
 											<div class="p-field p-col-12 p-md-12 cls-form-upload" style="padding: 0;">
-												<input type="file" name="file" id="file"  multiple class="inputfile" (change)="onFileSelect($event)"/>
+												<input type="file" name="file" id="file" multiple class="inputfile"
+													(change)="onFileSelect($event)" />
 												<label for="file">Choose files from here</label>
 												<div style="width: 100%;
 												text-align: left;
@@ -242,29 +374,217 @@
 												margin-top: 10px;
 												color: blue;">
 													<!-- <img [src]="imageSrc"> -->
-													<img id="img_preview" height="120px" width="120px"> 
-													<button mat-stroked-button (click)="uploadSnapshot()">Upload</button>
+													<img id="img_preview" height="120px" width="120px">
+													<button mat-stroked-button
+														(click)="uploadSnapshot()">Upload</button>
 												</div>
-												
+
 											</div>
 										</mat-tab>
+
+
+
+
 									</mat-tab-group>
-									
-									
+									<p-card [style]="{'width': '45rem', 'background': 'rgb(243 246 249)', 'margin-top': '2rem'}"
+										styleClass="vaxCard">
+										<ng-template pTemplate="header">
+											<div class="p-grid" style="
+											font-size: 1.5em;
+											font-weight: bold;
+											padding-top: 1rem;
+											padding-left: 1rem;">
+												<div class="p-col-8">
+													Covid - 19 Vaccination Record Card
+												</div>
+												<div class="p-col-4"></div>
+											</div>
+
+										</ng-template>
+										<div class="p-grid">
+											<div class="p-col-10">
+												<pre style="overflow: hidden;">
+	Please keep this record card, which includes medical information
+	about the vaccines you have received.
+	
+	Por favor, guarde esta tarjeta de resistro, que incluye informacion
+	medica sobre las vacunas que ha recibido.
+												</pre>
+											</div>
+										</div>
+										<div class="p-grid" style="margin-bottom: 1em;">
+											<div class="p-col">
+												<div
+													style="font-style: italic;padding-bottom: .5em;font-weight: bold; padding-left: .2em;">
+													Last
+													Name</div>
+												<div class="box p-shadow-3">
+													<editable data-testid="sample-input-click" class="editable"
+														(save)="updateSingleField('lastInputText', 'lastNameInputControl')"
+														(cancel)="cancelSingleField('lastInputText', 'lastNameInputControl')">
+														<ng-template viewMode>
+															{{ lastInputText }} <i
+																class="kt-nav__link-icon flaticon2-pen text-primary"
+																style="float: right;"></i>
+														</ng-template>
+														<ng-template editMode>
+															<div class="form-group" style="padding: unset !important">
+																<input class="form-control"
+																	data-testid="sample-input-click-edit"
+																	placeholder="Last Name" type="text"
+																	[formControl]="lastNameInputControl" />
+															</div>
+														</ng-template>
+													</editable>
+												</div>
+											</div>
+
+											<div class="p-col">
+												<div
+													style="font-style: italic;padding-bottom: .5em;font-weight: bold; padding-left: .2em;">
+													First Name</div>
+												<div class="box p-shadow-3">
+													<editable data-testid="sample-input-click" class="editable"
+														(save)="updateSingleField('firstInputText', 'firstNameInputControl')"
+														(cancel)="cancelSingleField('firstInputText', 'firstNameInputControl')">
+														<ng-template viewMode>
+															{{ firstInputText }} <i
+																class="kt-nav__link-icon flaticon2-pen text-primary"
+																style="float: right;"></i>
+														</ng-template>
+														<ng-template editMode>
+															<div class="form-group" style="padding: unset !important">
+																<input class="form-control"
+																	data-testid="sample-input-click-edit"
+																	placeholder="First Name" type="text"
+																	[formControl]="firstNameInputControl" />
+															</div>
+														</ng-template>
+													</editable>
+												</div>
+											</div>
+
+										</div>
+										<table class="doseTable">
+											<tr style="background: lightgray; text-align: center;">
+												<th style="width: 25%;">Vaccine</th>
+												<th style="width: auto;">Product Name / Manufacturer<br>Lot Number</th>
+												<th style="width: 14%;">Date</th>
+												<th style="width: 30%;">Healthcare Professional or Clinic Site</th>
+											</tr>
+											<tr>
+												<td style="background: lightgray;">1st Dose Covid - 19</td>
+												<td>
+													<editable data-testid="sample-select" class="editable" style=""
+														(save)="updateSingleField('productInputText', 'productNameControl')"
+														(cancel)="cancelSingleField('productInputText', 'productNameControl')">
+														<ng-template viewMode>
+															<div style="padding-left: .5em; padding-right: .5em;">
+																{{ productInputText }} <i
+																	class="kt-nav__link-icon flaticon2-pen text-primary"
+																	style="    float: right;"></i>
+															</div>
+														</ng-template>
+														<ng-template editMode>
+															<div class="form-group" style="">
+																<select class="form-control"
+																	data-testid="sample-select-edit"
+																	name="sample-select"
+																	[formControl]="productNameControl">
+																	<option *ngFor="let option of productOptions"
+																		[value]="option">{{ option }}</option>
+																</select>
+															</div>
+														</ng-template>
+													</editable>
+												</td>
+												<td>12 / 29/ 20</td>
+												<td>
+													<editable data-testid="sample-input-click" class="editable"
+														(save)="updateSingleField('clinicInputText', 'clinicNameInputControl')"
+														(cancel)="cancelSingleField('clinicInputText', 'clinicNameInputControl')">
+														<ng-template viewMode>
+															<div style="padding-left: .5em; padding-right: .5em;">
+																{{ clinicInputText }} <i
+																	class="kt-nav__link-icon flaticon2-pen text-primary"
+																	style="    float: right;"></i>
+															</div>
+														</ng-template>
+														<ng-template editMode>
+															<div class="form-group">
+																<input class="form-control"
+																	data-testid="sample-input-click-edit"
+																	placeholder="Clinic Name" type="text"
+																	[formControl]="clinicNameInputControl" />
+															</div>
+														</ng-template>
+													</editable>
+												</td>
+											</tr>
+											<tr>
+												<td style="background: lightgray;">2nd Dose Covid - 19</td>
+												<td>
+													<editable data-testid="sample-select" *ngIf="selectText"
+														(save)="updateSingleField('selectText', 'selectControl')"
+														(cancel)="cancelSingleField('selectText', 'selectControl')">
+														<ng-template viewMode>
+															{{ selectText }}
+														</ng-template>
+														<ng-template editMode>
+															<div class="form-group">
+																<select class="form-control"
+																	data-testid="sample-select-edit"
+																	name="sample-select" [formControl]="selectControl">
+																	<option *ngFor="let option of selectOptions"
+																		[value]="option">{{ option }}</option>
+																</select>
+															</div>
+														</ng-template>
+													</editable>
+												</td>
+												<td></td>
+												<td></td>
+											</tr>
+											<tr>
+												<td style="background: lightgray;">Other</td>
+												<td></td>
+												<td></td>
+												<td></td>
+											</tr>
+											<tr>
+												<td style="background: lightgray;">Other</td>
+												<td></td>
+												<td></td>
+												<td></td>
+											</tr>
+										</table>
+									</p-card>
+
 								</div>
 							</div>
+
+							<!--begin: Form Wizard Step 4-->
+							<div class="pb-5" data-wizard-type="step-content">
+								<h4 class="mb-10 font-weight-bold text-dark">Vax Record Card</h4>
+
+							</div>
+
 							<!--begin: Form Actions -->
 							<div class="d-flex justify-content-between border-top pt-10">
 								<div class="mr-2">
-									<div class="btn btn-light-primary font-weight-bold text-uppercase px-9 py-4" data-wizard-type="action-prev">
+									<div class="btn btn-light-primary font-weight-bold text-uppercase px-9 py-4"
+										data-wizard-type="action-prev">
 										Previous
 									</div>
 								</div>
 								<div>
-									<div (click)="onSubmit()" class="btn btn-success font-weight-bold text-uppercase px-9 py-4" data-wizard-type="action-submit">
+									<div (click)="onSubmit()"
+										class="btn btn-success font-weight-bold text-uppercase px-9 py-4"
+										data-wizard-type="action-submit">
 										Submit
 									</div>
-									<div class="btn btn-primary font-weight-bold text-uppercase px-9 py-4" data-wizard-type="action-next">
+									<div class="btn btn-primary font-weight-bold text-uppercase px-9 py-4"
+										data-wizard-type="action-next">
 										Next Step
 									</div>
 								</div>

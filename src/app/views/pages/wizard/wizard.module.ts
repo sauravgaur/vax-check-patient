@@ -1,7 +1,7 @@
 // Angular
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 // Metronic
 import { PartialsModule } from '../../partials/partials.module';
@@ -25,7 +25,8 @@ import {MultiSelectModule} from 'primeng/multiselect';
 import {ChipsModule} from 'primeng/chips';
 import {WebcamModule} from 'ngx-webcam';
 import { MatTabsModule } from '@angular/material/tabs';
-
+import {AutoCompleteModule} from 'primeng/autocomplete';
+import { EditableModule } from '@ngneat/edit-in-place';
 @NgModule({
 	declarations: [
 		WizardComponent,
@@ -35,6 +36,7 @@ import { MatTabsModule } from '@angular/material/tabs';
 		CommonModule,
 		WebcamModule,
 		FormsModule,
+		ReactiveFormsModule,
 		PartialsModule,
 		CoreModule,
 		RouterModule.forChild([
@@ -62,7 +64,9 @@ import { MatTabsModule } from '@angular/material/tabs';
 		SelectButtonModule,
 		MultiSelectModule,
 		ChipsModule,
-		MatTabsModule
+		MatTabsModule,
+		AutoCompleteModule,
+		EditableModule
 	],
 })
 export class WizardModule {

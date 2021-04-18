@@ -52,3 +52,39 @@ li {
       margin-bottom: 36px;
       text-align: center;
   }
+
+  table, th, td {
+    border: 1px solid black;
+  }
+
+  .doseTable table, td {
+    height: 3em;
+  }
+
+//   .editable > .form .form-group{
+//       padding: unset !important;
+//   }
+
+.box {
+  min-height: 50px;
+  min-width: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: left;
+  border-radius: 4px;
+  padding-left: 1em;
+  padding-right: 1em;
+}
+
+// .box .p-shadow-3 > div {
+//   width: 100%;
+// }
+
+.editable{
+  width: 100%
+}
+
+.p-card{
+  background: #e6e6e6 !important;
+  width: 45rem !important;
+}
