@@ -387,8 +387,10 @@
 
 
 									</mat-tab-group>
-									<p-card [style]="{'width': '45rem', 'background': 'rgb(243 246 249)', 'margin-top': '2rem'}"
-										styleClass="vaxCard" *ngIf="lastInputText && firstInputText">
+									<!-- <p-card [style]="{'width': '45rem', 'background': 'rgb(243 246 249)', 'margin-top': '2rem'}"
+										styleClass="vaxCard" *ngIf="lastInputText && firstInputText"> -->
+										<p-card [style]="{'width': '45rem', 'background': 'rgb(243 246 249)', 'margin-top': '2rem'}"
+										styleClass="vaxCard" *ngIf="imageToTextResponse">
 										<ng-template pTemplate="header">
 											<div class="p-grid" style="
 											font-size: 1.5em;
@@ -478,7 +480,7 @@ medica sobre las vacunas que ha recibido.
 												<td>
 													{{ imageToTextResponse.firstDose }}
 												</td>
-												<td>{{ imageToTextResponse.firstDoseDate }}</td>
+												<td>{{ imageToTextResponse.firstDoseDate | date:'MMM dd, yyyy' }}</td>
 												<td>
 													<editable data-testid="sample-input-click" class="editable"
 														(save)="updateSingleField('firstClinicName', 'firstClinicNameInputControl')"

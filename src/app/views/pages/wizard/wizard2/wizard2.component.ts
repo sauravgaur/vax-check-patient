@@ -7,6 +7,26 @@ import { Observable, Subject } from 'rxjs';
 
 //label: 'Hispanic or Latino', value: '2186-5'
 
+interface IImageToText{
+    firstName?: string,
+    middleName?: string,
+    lastName?: string,
+    mi?:string,
+    patientNumber?:string,
+    firstDose?: string,
+    firstDoseDate?: Date,
+    firstClinicName?: string,
+    secondDose?: string,
+    secondDoseDate?: Date,
+    secondClinicName?: string
+    // {
+    //     "firstName": "Coulombe", "middleName": "", "lastName": "Annette",
+    //     "mi": "", "dob": "", "patientNumber": "", "firstDose": "Moderna oll L 20A",
+    //     "firstDoseDate": "112 29,20 ", "firstClinicName": "NEERH", "secondDose": "Moderna oll L 20A",
+    //     "secondDoseDate": '04 20 21', "secondClinicName": "NEERH"
+    // }
+}
+
 const BASE_URL = 'http://localhost:3000/api'
 const STATES: SelectItem[] = [
     {
@@ -382,12 +402,7 @@ export class Wizard2Component implements OnInit, AfterViewInit {
     public secondClinicNameInputControl: FormControl = new FormControl();
     public secondClinicName: any;
 
-    imageToTextResponse: any = {
-        "firstName": "Coulombe", "middleName": "", "lastName": "Annette",
-        "mi": "", "dob": "", "patientNumber": "", "firstDose": "Moderna oll L 20A",
-        "firstDoseDate": "112 29,20 ", "firstClinicName": "NEERH", "secondDose": "Moderna oll L 20A",
-        "secondDoseDate": '04 20 21', "secondClinicName": "NEERH"
-    };
+    imageToTextResponse: IImageToText;
     yearRange: any;
     constructor(
         private cd: ChangeDetectorRef,
@@ -402,6 +417,7 @@ export class Wizard2Component implements OnInit, AfterViewInit {
     // }
 
     ngOnInit() {
+        this.imageToTextResponse=null;
         this.yearRange = `1930:${new Date().getFullYear()}`
         this.patientForm = this._fb.group({
             id: new FormControl(''),
@@ -866,23 +882,25 @@ export class Wizard2Component implements OnInit, AfterViewInit {
         formData.append('snapshot', file)
         let url = `${BASE_URL}/snapshot/upload`
         this.http.post(url, formData)
-            .subscribe((success) => {
+            .subscribe((success:any) => {
                 console.log(success)
+                this.imageToTextResponse=success.text.responseObj as IImageToText;
+                this.lastInputText = this.imageToTextResponse.lastName;
+                this.lastNameInputControl.setValue(this.lastInputText);
+
+                this.firstInputText = this.imageToTextResponse.firstName;
+                this.firstNameInputControl.setValue(this.firstInputText)
+
+                this.firstClinicName = this.imageToTextResponse.firstClinicName;
+                this.firstClinicNameInputControl.setValue(this.firstClinicName)
+
+                this.secondClinicName = this.imageToTextResponse.secondClinicName;
+                this.secondClinicNameInputControl.setValue(this.secondClinicName)
             }, (error) => {
                 console.log("err-->", error);
             })
 
-        this.lastInputText = this.imageToTextResponse.lastName;
-        this.lastNameInputControl.setValue(this.lastInputText);
-
-        this.firstInputText = this.imageToTextResponse.firstName;
-        this.firstNameInputControl.setValue(this.firstInputText)
-
-        this.firstClinicName = this.imageToTextResponse.firstClinicName;
-        this.firstClinicNameInputControl.setValue(this.firstClinicName)
-
-        this.secondClinicName = this.imageToTextResponse.secondClinicName;
-        this.secondClinicNameInputControl.setValue(this.secondClinicName)
+        
     }
     onTabChanged(event) {
         console.log(event);
