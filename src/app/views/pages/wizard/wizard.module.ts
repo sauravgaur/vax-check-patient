@@ -27,6 +27,7 @@ import {WebcamModule} from 'ngx-webcam';
 import { MatTabsModule } from '@angular/material/tabs';
 import {AutoCompleteModule} from 'primeng/autocomplete';
 import { EditableModule } from '@ngneat/edit-in-place';
+import { TooltipModule } from 'ng2-tooltip-directive';
 @NgModule({
 	declarations: [
 		WizardComponent,
@@ -66,7 +67,8 @@ import { EditableModule } from '@ngneat/edit-in-place';
 		ChipsModule,
 		MatTabsModule,
 		AutoCompleteModule,
-		EditableModule
+		EditableModule,
+		TooltipModule
 	],
 })
 export class WizardModule {

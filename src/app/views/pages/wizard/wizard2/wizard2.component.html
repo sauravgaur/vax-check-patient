@@ -5,7 +5,7 @@
 			<div class="wizard-nav border-right py-8 px-8 py-lg-20 px-lg-10">
 				<!--begin: Form Wizard Nav -->
 				<div class="wizard-steps">
-					<a class="wizard-step" href="javascript:;" data-wizard-type="step" data-wizard-state="current">
+					<a class="wizard-step first-element" href="javascript:;" data-wizard-type="step" data-wizard-state="current">
 						<div class="wizard-wrapper">
 							<div class="wizard-icon">
 								<span class="svg-icon svg-icon-3x"
@@ -21,7 +21,7 @@
 							</div>
 						</div>
 					</a>
-					<a class="wizard-step" href="javascript:;" data-wizard-type="step">
+					<a class="wizard-step install-element" href="javascript:;" data-wizard-type="step">
 						<div class="wizard-wrapper">
 							<div class="wizard-icon">
 								<span class="svg-icon svg-icon-3x"
@@ -37,7 +37,7 @@
 							</div>
 						</div>
 					</a>
-					<a class="wizard-step" href="javascript:;" data-wizard-type="step">
+					<a class="wizard-step usage-element" href="javascript:;" data-wizard-type="step">
 						<div class="wizard-wrapper">
 							<div class="wizard-icon">
 								<span class="svg-icon svg-icon-3x"
@@ -88,7 +88,7 @@
 											<label for="firstname6">First name<span class="cls-requiered">*</span>
 											</label>
 											<input id="firstname6" type="text" pInputText formControlName="firstName"
-												required class="p-inputtext-sm">
+												required class="p-inputtext-sm" >
 											<!-- <span *ngIf="hasFormError(patientForm, isFormSubmitted, 'firstName','required')"
                                 style="color: red">This field is required</span> -->
 											<mat-error *ngIf="isControlHasError('firstName', 'required')">
@@ -113,7 +113,7 @@
 											<label for="firstname6">Date of birth<span
 													class="cls-requiered">*</span></label>
 											<p-calendar [showIcon]="true" inputId="icon" formControlName="dob" required
-											[monthNavigator]="true" [yearNavigator]="true" [yearRange]="yearRange"
+												[monthNavigator]="true" [yearNavigator]="true" [yearRange]="yearRange"
 												dateFormat="yy-mm-dd" class="p-inputtext-sm"></p-calendar>
 											<mat-error *ngIf="isControlHasError('dob', 'required')">
 												<strong>Required field</strong>
@@ -178,6 +178,8 @@
 											<label for="user_contact">Contact Number <span
 													class="cls-requiered">*</span></label>
 											<p-inputMask mask="9999999999" minLength="10" maxLength="10"
+											[tooltip]="tooltipJson.contactNumber"
+											[trigger]="'click'" [hideDelayTouchscreen]="3000" [hide-delay]="3000" [animation-duration]="500"
 												formControlName="contactNumber" required pattern class="p-inputtext-sm">
 											</p-inputMask>
 											<mat-error *ngIf="isControlHasError('contactNumber', 'required')">
@@ -213,8 +215,10 @@
 										</div>
 										<!-- <div class="p-field p-col-12 p-md-4" style="padding: 0px 14px !important;" ></div> -->
 										<div class="p-field p-col-12 p-md-4"
+										[tooltip]="tooltipJson.resedenceItem"
+										[trigger]="'click'" [hideDelayTouchscreen]="3000" [hide-delay]="3000" [animation-duration]="500"
 											*ngIf="patientForm.value.state && patientForm.value.state==='HI'">
-											<label for="user_state">Are you a permanent Hawaii “Kama’aina” Resident<span
+											<label for="user_state">Are you a Hawaii “Kama’aina” Resident<span
 													class="cls-requiered">*</span></label>
 											<!-- <input id="user_state" type="text" pInputText class="p-inputtext-sm">  -->
 											<p-selectButton [options]="resedence_item" formControlName="resedenceItem"
@@ -252,8 +256,11 @@
 										<label for="org_name">Organization Name<span class="cls-requiered"
 												*ngIf="patientForm.value.resedenceItem && patientForm.value.resedenceItem==='YES'">*</span></label>
 										<p-autoComplete formControlName="orgName" [suggestions]="filteredOrgs"
+										[tooltip]="tooltipJson.orgName"
+										[trigger]="'click'" [hideDelayTouchscreen]="3000" [hide-delay]="3000" [animation-duration]="500"
 											(completeMethod)="filterOrg($event)" [forceSelection]="true" field="name"
-											[minLength]="1" class="p-inputtext-sm"></p-autoComplete>
+											placeholder="Type 'a' for hint"
+											[minLength]="1" class="p-inputtext-sm" [autoHighlight]="true"></p-autoComplete>
 										<!-- <input id="org_name" type="text" formControlName="orgName" pInputText class="p-inputtext-sm"> -->
 										<mat-error *ngIf="stepTwo && isControlHasError('orgName', 'required')">
 											<strong>Required field</strong>
@@ -263,6 +270,8 @@
 										<label for="firstname6">Address street 1<span
 												class="cls-requiered">*</span></label>
 										<input id="firstname6" type="text" formControlName="orgAddress1" required
+										[tooltip]="tooltipJson.orgAddress1"
+										[trigger]="'click'" [hideDelayTouchscreen]="3000" [hide-delay]="3000" [animation-duration]="500"
 											pInputText class="p-inputtext-sm">
 										<mat-error *ngIf="stepTwo && isControlHasError('orgAddress1', 'required')">
 											<strong>Required field</strong>
@@ -352,7 +361,9 @@
 													[trigger]="triggerObservable"></webcam>
 												<div>
 													<button class="cls-actionBtn" (click)="triggerSnapshot();">Take A
-														Snapshot</button>
+														Snapshot</button> <i class="pi pi-info-circle"  style="font-size: 1.5rem; margin-left: 1rem; color: blue"
+														[tooltip]="tooltipJson.takeSnapShot"
+										[trigger]="'click'" [hideDelayTouchscreen]="3000" [hide-delay]="3000" [animation-duration]="500"></i>
 												</div>
 												<div class="snapshot" style="display: block;width: 100%;"
 													*ngIf="webcamImage">
@@ -387,10 +398,10 @@
 
 
 									</mat-tab-group>
-									<!-- <p-card [style]="{'width': '45rem', 'background': 'rgb(243 246 249)', 'margin-top': '2rem'}"
-										styleClass="vaxCard" *ngIf="lastInputText && firstInputText"> -->
-										<p-card [style]="{'width': '45rem', 'background': 'rgb(243 246 249)', 'margin-top': '2rem'}"
-										styleClass="vaxCard" *ngIf="imageToTextResponse">
+									<p-card [style]="{'width': '45rem', 'background': 'rgb(243 246 249)', 'margin-top': '2rem'}"
+										styleClass="vaxCard" *ngIf="lastInputText && firstInputText">
+										<!-- <p-card [style]="{'width': '45rem', 'background': 'rgb(243 246 249)', 'margin-top': '2rem'}"
+										styleClass="vaxCard" *ngIf="imageToTextResponse"> -->
 										<ng-template pTemplate="header">
 											<div class="p-grid" style="
 											font-size: 1.5em;
@@ -512,7 +523,8 @@ medica sobre las vacunas que ha recibido.
 													{{ imageToTextResponse.secondDoseDate }}
 												</td>
 												<td>
-													<editable *ngIf="secondClinicName" data-testid="sample-input-click" class="editable"
+													<editable *ngIf="secondClinicName" data-testid="sample-input-click"
+														class="editable"
 														(save)="updateSingleField('secondClinicName', 'secondClinicNameInputControl')"
 														(cancel)="cancelSingleField('secondClinicName', 'secondClinicNameInputControl')">
 														<ng-template viewMode>
@@ -558,33 +570,49 @@ medica sobre las vacunas que ha recibido.
 								<div class="card">
 									<div class="p-fluid" style="padding-left: .5rem;">
 										<div class="p-field p-grid">
-											<label for="firstname4" class="p-col-12 p-mb-2 p-md-2 p-mb-md-0" style="color: gray;">Vaccine admin:</label>
+											<label for="firstname4" class="p-col-12 p-mb-2 p-md-2 p-mb-md-0"
+												style="color: gray;">Vaccine admin:</label>
 											<div class="p-col-12 p-md-10">
 												<b>QUEENS</b>
 											</div>
 										</div>
 										<div class="p-field p-grid">
-											<label for="lastname4" class="p-col-12 p-mb-2 p-md-2 p-mb-md-0" style="color: gray;">Doses received:</label>
+											<label for="lastname4" class="p-col-12 p-mb-2 p-md-2 p-mb-md-0"
+												style="color: gray;">Doses received:</label>
 											<div class="p-col-12 p-md-10">
-												<b>2</b>
+												<b *ngIf="imageToTextResponse">{{imageToTextResponse.doseRecieved}}</b>
 											</div>
 										</div>
 										<div class="p-field p-grid">
-											<label for="firstname4" class="p-col-12 p-mb-2 p-md-2 p-mb-md-0" style="color: gray;">Series complete:</label>
+											<label for="firstname4" class="p-col-12 p-mb-2 p-md-2 p-mb-md-0"
+												style="color: gray;">Series complete:</label>
 											<div class="p-col-12 p-md-10">
-												<b>YES</b>
+												<b>{{imageToTextResponse && imageToTextResponse.isVaXCompleted? 'YES':'NO'}}</b>
+											</div>
+										</div>
+										<div *ngIf="imageToTextResponse && !imageToTextResponse.isVaXCompleted" class="p-field p-grid">
+											<label for="firstname4" class="p-col-12 p-mb-2 p-md-2 p-mb-md-0"
+												style="color: gray;">Message:</label>
+											<div class="p-col-12 p-md-10">
+												<b>{{imageToTextResponse.vaxMsg}}</b>
 											</div>
 										</div>
 										<div class="p-field p-grid">
-											<label for="lastname4" class="p-col-12 p-mb-2 p-md-2 p-mb-md-0" style="color: gray;">Effactive date:</label>
+											<label for="lastname4" class="p-col-12 p-mb-2 p-md-2 p-mb-md-0"
+												style="color: gray;">Effactive date:</label>
 											<div class="p-col-12 p-md-10">
-												<b>Apr 15, 2021</b>
+												<b *ngIf="imageToTextResponse && imageToTextResponse.isVaXCompleted && imageToTextResponse.secondDoseEffectiveDate">{{imageToTextResponse.secondDoseEffectiveDate}}</b>
+												<b *ngIf="imageToTextResponse && imageToTextResponse.isVaXCompleted && !imageToTextResponse.secondDoseEffectiveDate && imageToTextResponse.firstDoseEffectiveDate">{{imageToTextResponse.firstDoseEffectiveDate}}</b>
+												<b *ngIf="imageToTextResponse && !imageToTextResponse.isVaXCompleted">N/A</b>
 											</div>
 										</div>
 										<div class="p-field p-grid">
-											<label for="firstname4" class="p-col-12 p-mb-2 p-md-2 p-mb-md-0" style="color: gray;">Expiration date:</label>
+											<label for="firstname4" class="p-col-12 p-mb-2 p-md-2 p-mb-md-0"
+												style="color: gray;">Expiration date:</label>
 											<div class="p-col-12 p-md-10">
-												<b>July 15, 2021</b>
+												<b *ngIf="imageToTextResponse && imageToTextResponse.isVaXCompleted && imageToTextResponse.secondDoseExpireDate">{{imageToTextResponse.secondDoseExpireDate}}</b>
+												<b *ngIf="imageToTextResponse && imageToTextResponse.isVaXCompleted && !imageToTextResponse.secondDoseExpireDate && imageToTextResponse.firstDoseExpireDate">{{imageToTextResponse.firstDoseExpireDate}}</b>
+												<b *ngIf="imageToTextResponse && !imageToTextResponse.isVaXCompleted">N/A</b>
 											</div>
 										</div>
 									</div>

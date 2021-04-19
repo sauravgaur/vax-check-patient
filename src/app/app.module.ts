@@ -36,6 +36,7 @@ import { ThemeModule } from './views/theme/theme.module';
 // Partials
 import { PartialsModule } from './views/partials/partials.module';
 // Layout Services
+import { ShepherdService } from 'angular-shepherd';
 import {
   DataTableService,
   FakeApiService,
@@ -164,7 +165,8 @@ export function getHighlightLanguages() {
     MenuAsideService,
     HttpUtilsService,
     TypesUtilsService,
-    LayoutUtilsService
+    LayoutUtilsService,
+    ShepherdService
   ],
   bootstrap: [AppComponent]
 })

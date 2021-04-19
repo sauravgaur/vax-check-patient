@@ -4,7 +4,8 @@ import { FormBuilder, FormControl, FormGroup, Validators, ValidationErrors, Abst
 import { WebcamImage } from 'ngx-webcam';
 import { MenuItem, SelectItem } from 'primeng/api';
 import { Observable, Subject } from 'rxjs';
-
+import { ShepherdService } from 'angular-shepherd';
+import { steps as defaultSteps, defaultStepOptions } from './tour';
 //label: 'Hispanic or Latino', value: '2186-5'
 
 interface IImageToText{
@@ -18,7 +19,11 @@ interface IImageToText{
     firstClinicName?: string,
     secondDose?: string,
     secondDoseDate?: Date,
-    secondClinicName?: string
+    secondClinicName?: string,
+    doseRecieved?: number,
+    isVaXCompleted?:boolean,
+    secondDoseEffectiveDate?: Date,
+    firstDoseEffectiveDate?: Date
     // {
     //     "firstName": "Coulombe", "middleName": "", "lastName": "Annette",
     //     "mi": "", "dob": "", "patientNumber": "", "firstDose": "Moderna oll L 20A",
@@ -282,6 +287,13 @@ export class Wizard2Component implements OnInit, AfterViewInit {
     imageSrc: any;
     public webcamImage: WebcamImage = null;
     private trigger: Subject<void> = new Subject<void>();
+    tooltipJson: any = {
+        contactNumber: 'Prefered mobile phone number',
+        resedenceItem: 'Are you a permanent Hawwaii resident?',
+        orgName: `Who organized the vaccination?<br> This is autocomplete text.<br> Type at-least 1 alphabet.`,
+        orgAddress1: 'Address of the Organization',
+        takeSnapShot: 'Take a picture of you vaccination card'
+    }
     model: any = {
         fname: 'John',
         lname: 'Wick',
@@ -407,7 +419,8 @@ export class Wizard2Component implements OnInit, AfterViewInit {
     constructor(
         private cd: ChangeDetectorRef,
         private http: HttpClient,
-        private _fb: FormBuilder
+        private _fb: FormBuilder,
+        private shepherdService: ShepherdService
     ) {
     }
 
@@ -663,7 +676,11 @@ export class Wizard2Component implements OnInit, AfterViewInit {
         this.webcamImage = webcamImage;
     }
     ngAfterViewInit(): void {
-
+        this.shepherdService.defaultStepOptions = defaultStepOptions;
+        this.shepherdService.modal = true;
+        this.shepherdService.confirmCancel = false;
+        this.shepherdService.addSteps(defaultSteps);
+        this.shepherdService.start();
         // Initialize form wizard
         const wizard = new KTWizard(this.el.nativeElement, {
             startStep: 1
