@@ -30,7 +30,7 @@ export const builtInButtons = {
     {
       attachTo: {
         element: '.first-element',
-        on: 'bottom'
+        on: 'right'
       },
       buttons: [
         builtInButtons.cancel,
@@ -48,7 +48,7 @@ export const builtInButtons = {
     {
       attachTo: {
         element: '.install-element',
-        on: 'bottom'
+        on: 'right'
       },
       buttons: [
         builtInButtons.cancel,
@@ -63,7 +63,7 @@ export const builtInButtons = {
     {
       attachTo: {
         element: '.usage-element',
-        on: 'bottom'
+        on: 'right'
       },
       buttons: [
         builtInButtons.cancel,

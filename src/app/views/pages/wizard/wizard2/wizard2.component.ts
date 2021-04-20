@@ -616,7 +616,10 @@ export class Wizard2Component implements OnInit, AfterViewInit {
         ]
         this.subscribeValueChanges();
         this.initGroupedForm();
+    }
 
+    changeGuidMe(){
+        this.shepherdService.start();
     }
 
     updateSingleField(prop: any, control: any): void {
@@ -682,6 +685,7 @@ export class Wizard2Component implements OnInit, AfterViewInit {
         this.shepherdService.confirmCancel = false;
         this.shepherdService.addSteps(defaultSteps);
         this.shepherdService.start();
+
         // Initialize form wizard
         const wizard = new KTWizard(this.el.nativeElement, {
             startStep: 1
