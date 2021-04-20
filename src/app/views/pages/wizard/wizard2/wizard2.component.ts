@@ -755,6 +755,8 @@ export class Wizard2Component implements OnInit, AfterViewInit {
                 this.patientForm.get('orgContactNumber').updateValueAndValidity()
                 this.patientForm.get('orgZipcode').setValidators([Validators.required, Validators.pattern('^\\d{5}(?:\\-\\d{4})?$')]);
                 this.patientForm.get('orgZipcode').updateValueAndValidity()
+            }  else if (wizardObj.currentStep === 3) {
+                this.showWebcam = false;
             }
             this.patientForm.updateValueAndValidity();
             console.log('patient form:', this.patientForm.value)
