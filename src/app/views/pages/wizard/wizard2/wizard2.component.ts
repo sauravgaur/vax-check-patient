@@ -282,6 +282,7 @@ export class Wizard2Component implements OnInit, AfterViewInit {
 
     isHawaiiState: boolean = false
     tabIndex = 0;
+    showWebcam = false;
     selectedFiles: any;
     stateList: SelectItem[] = STATES
     imageSrc: any;
@@ -922,5 +923,9 @@ export class Wizard2Component implements OnInit, AfterViewInit {
     onTabChanged(event) {
         console.log(event);
         this.tabIndex = event.index;
+    }
+
+    toggleWebCam(){
+        this.showWebcam = !this.showWebcam
     }
 }

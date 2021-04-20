@@ -356,10 +356,13 @@
 										<mat-tab label="Take Snapshot">
 											<div class="p-field p-col-12 p-md-12" style="padding: 0;border: 1px dashed #cccccc;
 									margin-top: 30px;">
-												<h4>Take snapshot from below</h4>
-												<webcam *ngIf="tabIndex==0" (imageCapture)="handleImage($event)"
+												<h4>Take snapshot from below
+													<button class="cls-actionBtn" (click)="toggleWebCam()">{{showWebcam ? 'Stop' : 'Start'}}</button>
+												</h4>
+												<webcam (imageCapture)="handleImage($event)"
+												*ngIf="showWebcam"
 													[trigger]="triggerObservable"></webcam>
-												<div>
+												<div *ngIf="showWebcam">
 													<button class="cls-actionBtn" (click)="triggerSnapshot();">Take A
 														Snapshot</button> <i class="pi pi-info-circle"  style="font-size: 1.5rem; margin-left: 1rem; color: blue"
 														[tooltip]="tooltipJson.takeSnapShot"
