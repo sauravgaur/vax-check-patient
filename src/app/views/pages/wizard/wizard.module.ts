@@ -28,6 +28,13 @@ import { MatTabsModule } from '@angular/material/tabs';
 import {AutoCompleteModule} from 'primeng/autocomplete';
 import { EditableModule } from '@ngneat/edit-in-place';
 import { TooltipModule } from 'ng2-tooltip-directive';
+import {FieldsetModule} from 'primeng/fieldset';
+import {DividerModule} from 'primeng/divider';
+import { MatFileUploadModule } from 'angular-material-fileupload';
+import { MatButtonModule } from '@angular/material/button';
+import {CheckboxModule} from 'primeng/checkbox';
+import {MatCheckboxModule} from '@angular/material/checkbox';
+
 @NgModule({
 	declarations: [
 		WizardComponent,
@@ -68,7 +75,13 @@ import { TooltipModule } from 'ng2-tooltip-directive';
 		MatTabsModule,
 		AutoCompleteModule,
 		EditableModule,
-		TooltipModule
+		TooltipModule,
+		FieldsetModule,
+		DividerModule,
+		MatFileUploadModule,
+		MatButtonModule,
+		CheckboxModule,
+		MatCheckboxModule
 	],
 })
 export class WizardModule {

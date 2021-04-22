@@ -1,11 +1,13 @@
 import { HttpClient } from '@angular/common/http';
-import { AfterViewInit, ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators, ValidationErrors, AbstractControl } from '@angular/forms';
 import { WebcamImage } from 'ngx-webcam';
 import { MenuItem, SelectItem } from 'primeng/api';
 import { Observable, Subject } from 'rxjs';
 import { ShepherdService } from 'angular-shepherd';
 import { steps as defaultSteps, defaultStepOptions } from './tour';
+import moment from 'moment';
+import { CdkRow } from '@angular/cdk/table';
 //label: 'Hispanic or Latino', value: '2186-5'
 
 interface IImageToText{
@@ -23,7 +25,10 @@ interface IImageToText{
     doseRecieved?: number,
     isVaXCompleted?:boolean,
     secondDoseEffectiveDate?: Date,
-    firstDoseEffectiveDate?: Date
+    firstDoseEffectiveDate?: Date,
+    firstDoseExpireDate?: Date,
+    secondDoseExpireDate?: Date
+
     // {
     //     "firstName": "Coulombe", "middleName": "", "lastName": "Annette",
     //     "mi": "", "dob": "", "patientNumber": "", "firstDose": "Moderna oll L 20A",
@@ -33,6 +38,20 @@ interface IImageToText{
 }
 
 const BASE_URL = 'http://localhost:3000/api'
+const MANUFACTURER: SelectItem[] = [
+    {
+        "label": "Moderna",
+        "value": "Moderna"
+    },
+    {
+        "label": "Pfizer",
+        "value": "Pfizer"
+    },
+    {
+        "label": "Johnson \& Johnson",
+        "value": "Johnson \& Johnson"
+    }
+];
 const STATES: SelectItem[] = [
     {
         "label": "Alabama",
@@ -274,7 +293,7 @@ const STATES: SelectItem[] = [
 @Component({
     selector: 'kt-wizard2',
     templateUrl: './wizard2.component.html',
-    styleUrls: ['./wizard2.component.scss']
+    styleUrls: ['./wizard2.component.scss'],
 })
 export class Wizard2Component implements OnInit, AfterViewInit {
 
@@ -285,6 +304,7 @@ export class Wizard2Component implements OnInit, AfterViewInit {
     showWebcam = false;
     selectedFiles: any;
     stateList: SelectItem[] = STATES
+    manufacturerList: SelectItem[] = MANUFACTURER;
     imageSrc: any;
     public webcamImage: WebcamImage = null;
     private trigger: Subject<void> = new Subject<void>();
@@ -417,6 +437,8 @@ export class Wizard2Component implements OnInit, AfterViewInit {
 
     imageToTextResponse: IImageToText;
     yearRange: any;
+    consent = false;
+    consentNotChecked = false;
     constructor(
         private cd: ChangeDetectorRef,
         private http: HttpClient,
@@ -431,7 +453,7 @@ export class Wizard2Component implements OnInit, AfterViewInit {
     // }
 
     ngOnInit() {
-        this.imageToTextResponse=null;
+        // this.imageToTextResponse=null;
         this.yearRange = `1930:${new Date().getFullYear()}`
         this.patientForm = this._fb.group({
             id: new FormControl(''),
@@ -457,7 +479,10 @@ export class Wizard2Component implements OnInit, AfterViewInit {
             orgZipcode: new FormControl(''),
             orgState: new FormControl(''),
             orgContactNumber: new FormControl(''),
-            orgEmail: new FormControl('')
+            orgEmail: new FormControl(''),
+            orgManufacturer: new FormControl(''),
+            orgDose1: new FormControl(''),
+            orgDose2: new FormControl('')
         });
         // this.captures = [];
 
@@ -738,6 +763,14 @@ export class Wizard2Component implements OnInit, AfterViewInit {
                 this.patientForm.get('orgZipcode').setValidators(null);
                 this.patientForm.get('orgZipcode').setErrors(null);
 
+                this.patientForm.get('orgManufacturer').clearValidators();
+                this.patientForm.get('orgManufacturer').setValidators(null);
+                this.patientForm.get('orgManufacturer').setErrors(null);
+
+                this.patientForm.get('orgDose1').clearValidators();
+                this.patientForm.get('orgDose1').setValidators(null);
+                this.patientForm.get('orgDose1').setErrors(null);
+
             } else if (wizardObj.currentStep === 2) {
                 this.stepOne = false;
                 this.stepTwo = true;
@@ -755,9 +788,22 @@ export class Wizard2Component implements OnInit, AfterViewInit {
                 this.patientForm.get('orgContactNumber').updateValueAndValidity()
                 this.patientForm.get('orgZipcode').setValidators([Validators.required, Validators.pattern('^\\d{5}(?:\\-\\d{4})?$')]);
                 this.patientForm.get('orgZipcode').updateValueAndValidity()
+
+                this.patientForm.get('orgManufacturer').setValidators(Validators.required);
+                this.patientForm.get('orgManufacturer').updateValueAndValidity()
+
+                this.patientForm.get('orgDose1').setValidators(Validators.required);
+                this.patientForm.get('orgDose1').updateValueAndValidity()
             }  else if (wizardObj.currentStep === 3) {
                 this.showWebcam = false;
+                if(this.consent === false) {
+                    this.consentNotChecked = true;
+                    wizardObj.stop();
+                    this.cd.markForCheck();
+                    return;
+                }
             }
+            this.consentNotChecked = false;
             this.patientForm.updateValueAndValidity();
             console.log('patient form:', this.patientForm.value)
             const controls = this.patientForm.controls;
@@ -805,6 +851,26 @@ export class Wizard2Component implements OnInit, AfterViewInit {
                 // }
                 // }
             }, 500);
+            if(wizardObj.currentStep === 3) {
+                this.imageToTextResponse = {} as IImageToText;
+                this.lastInputText = this.patientForm.get('lastName').value;
+                this.lastNameInputControl.setValue(this.lastInputText);
+
+                this.firstInputText = this.patientForm.get('firstName').value;
+                this.firstNameInputControl.setValue(this.firstInputText)
+
+                this.firstClinicName = this.patientForm.get('orgDose1').value ? this.patientForm.get('orgName').value : '';
+                this.imageToTextResponse.firstDoseDate = this.patientForm.get('orgDose1').value ? moment(this.patientForm.get('orgDose1').value, 'YYYY-MM-DD').toDate() : null;
+                this.firstClinicNameInputControl.setValue(this.firstClinicName)
+                
+                this.imageToTextResponse.secondDoseDate = this.patientForm.get('orgDose2').value ? moment(this.patientForm.get('orgDose2').value, 'YYYY-MM-DD').toDate() : null;
+                this.secondClinicName = this.patientForm.get('orgDose2').value ? this.patientForm.get('orgName').value : '';
+                this.secondClinicNameInputControl.setValue(this.secondClinicName)
+
+                this.imageToTextResponse.firstDose = this.patientForm.get('orgManufacturer').value;
+                this.imageToTextResponse.secondDose = this.patientForm.get('orgManufacturer').value;
+
+            }
         });
     }
 
@@ -840,6 +906,13 @@ export class Wizard2Component implements OnInit, AfterViewInit {
                 this.patientForm.get('orgName').updateValueAndValidity();
             }
             this.patientForm.updateValueAndValidity();
+        })
+
+        this.patientForm.get("orgManufacturer").valueChanges.subscribe(selectedValue => {
+            if(selectedValue == 'Johnson \& Johnson' || !selectedValue){
+                this.patientForm.controls.orgDose2.setValue(null);
+                this.patientForm.controls.orgDose2.updateValueAndValidity();
+            }
         })
 
     }

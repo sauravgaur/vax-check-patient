@@ -253,157 +253,141 @@
 							<!--begin: Form Wizard Step 2-->
 							<div class="pb-5" data-wizard-type="step-content">
 								<h4 class="mb-10 font-weight-bold text-dark">Vaccination Center Details</h4>
-								<div class="p-fluid p-formgrid p-grid">
-									<div class="p-field p-col-12 p-md-4">
-										<label for="org_name">Organization Name<span class="cls-requiered"
-												*ngIf="patientForm.value.resedenceItem && patientForm.value.resedenceItem==='YES'">*</span></label>
-										<p-autoComplete formControlName="orgName" [suggestions]="filteredOrgs"
-										[tooltip]="tooltipJson.orgName"
-										[trigger]="'click'" [hideDelayTouchscreen]="3000" [hide-delay]="3000" [animation-duration]="500"
-											(completeMethod)="filterOrg($event)" [forceSelection]="true" field="name"
-											placeholder="Type 'a' for hint"
-											[minLength]="1" class="p-inputtext-sm" [autoHighlight]="true"></p-autoComplete>
-										<!-- <input id="org_name" type="text" formControlName="orgName" pInputText class="p-inputtext-sm"> -->
-										<mat-error *ngIf="stepTwo && isControlHasError('orgName', 'required')">
-											<strong>Required field</strong>
-										</mat-error>
+								<p-fieldset legend="Organization details">
+									<div class="p-fluid p-formgrid p-grid">
+										<div class="p-field p-col-12 p-md-4">
+											<label for="org_name">Organization Name<span class="cls-requiered"
+													*ngIf="patientForm.value.resedenceItem && patientForm.value.resedenceItem==='YES'">*</span></label>
+											<p-autoComplete formControlName="orgName" [suggestions]="filteredOrgs"
+											[tooltip]="tooltipJson.orgName"
+											[trigger]="'click'" [hideDelayTouchscreen]="3000" [hide-delay]="3000" [animation-duration]="500"
+												(completeMethod)="filterOrg($event)" [forceSelection]="true" field="name"
+												placeholder="Type 'a' for hint"
+												[minLength]="1" class="p-inputtext-sm" [autoHighlight]="true"></p-autoComplete>
+											<!-- <input id="org_name" type="text" formControlName="orgName" pInputText class="p-inputtext-sm"> -->
+											<mat-error *ngIf="stepTwo && isControlHasError('orgName', 'required')">
+												<strong>Required field</strong>
+											</mat-error>
+										</div>
+										<div class="p-field p-col-12 p-md-4">
+											<label for="firstname6">Address street 1<span
+													class="cls-requiered">*</span></label>
+											<input id="firstname6" type="text" formControlName="orgAddress1" required
+											[tooltip]="tooltipJson.orgAddress1"
+											[trigger]="'click'" [hideDelayTouchscreen]="3000" [hide-delay]="3000" [animation-duration]="500"
+												pInputText class="p-inputtext-sm">
+											<mat-error *ngIf="stepTwo && isControlHasError('orgAddress1', 'required')">
+												<strong>Required field</strong>
+											</mat-error>
+										</div>
+										<div class="p-field p-col-12 p-md-4">
+											<label for="lastname6">Address street 2</label>
+											<input id="lastname6" type="text" formControlName="orgAddress2" pInputText
+												class="p-inputtext-sm">
+										</div>
+										<div class="p-field p-col-12 p-md-4">
+											<label for="org_city">City<span class="cls-requiered">*</span></label>
+											<input id="org_city" type="text" formControlName="orgCity" required pInputText
+												class="p-inputtext-sm">
+											<mat-error *ngIf="stepTwo && isControlHasError('orgCity', 'required')">
+												<strong>Required field</strong>
+											</mat-error>
+										</div>
+	
+	
+										<div class="p-field p-col-12 p-md-4">
+											<label for="lastname6">Zip code<span class="cls-requiered">*</span></label>
+											<p-inputMask mask="99999?-9999" maxlength="10" formControlName="orgZipcode"
+												required pattern class="p-inputtext-sm"></p-inputMask>
+											<mat-error *ngIf="stepTwo && isControlHasError('orgZipcode', 'required')">
+												<strong>Required field</strong>
+											</mat-error>
+											<mat-error *ngIf="isControlHasError('orgZipcode', 'pattern')">
+												<strong>Field is not valid</strong>
+											</mat-error>
+										</div>
+										<div class="p-field p-col-12 p-md-4">
+											<label for="org_state">State<span class="cls-requiered">*</span></label>
+											<p-dropdown inputId="org_state" [options]="stateList" formControlName="orgState"
+												[filter]="true" filterBy="label" filterMatchMode="contains"
+												[showClear]="true" [resetFilterOnHide]="true" required
+												class="p-inputtext-sm" placeholder="Select State"></p-dropdown>
+											<!-- <input id="org_state" type="text" formControlName="orgState" required pInputText class="p-inputtext-sm">  -->
+											<mat-error *ngIf="stepTwo && isControlHasError('orgState', 'required')">
+												<strong>Required field</strong>
+											</mat-error>
+										</div>
+	
+										<div class="p-field p-col-12 p-md-4">
+											<label for="user_contact">Contact Number <span
+													class="cls-requiered">*</span></label>
+											<p-inputMask mask="9999999999" minLength="10" maxLength="10"
+												formControlName="orgContactNumber" required pattern class="p-inputtext-sm">
+											</p-inputMask>
+											<mat-error *ngIf="stepTwo && isControlHasError('orgContactNumber', 'required')">
+												<strong>Required field</strong>
+											</mat-error>
+											<mat-error
+												*ngIf="stepTwo && isControlHasError('orgContactNumber', 'minLength')">
+												<strong>Required field</strong>
+											</mat-error>
+											<mat-error
+												*ngIf="stepTwo && isControlHasError('orgContactNumber', 'maxLength')">
+												<strong>Required field</strong>
+											</mat-error>
+										</div>
+										<div class="p-field p-col-12 p-md-4">
+											<label for="user_email">Email</label>
+											<input id="user_email" type="email" formControlName="orgEmail" pInputText
+												class="p-inputtext-sm">
+											<!-- <mat-error *ngIf="stepTwo && isControlHasError('orgEmail', 'required')">
+												<strong>Required field</strong>
+											  </mat-error> -->
+											<mat-error *ngIf="stepTwo && isControlHasError('orgEmail', 'email')">
+												<strong>Field is not valid</strong>
+											</mat-error>
+										</div>
 									</div>
-									<div class="p-field p-col-12 p-md-4">
-										<label for="firstname6">Address street 1<span
-												class="cls-requiered">*</span></label>
-										<input id="firstname6" type="text" formControlName="orgAddress1" required
-										[tooltip]="tooltipJson.orgAddress1"
-										[trigger]="'click'" [hideDelayTouchscreen]="3000" [hide-delay]="3000" [animation-duration]="500"
-											pInputText class="p-inputtext-sm">
-										<mat-error *ngIf="stepTwo && isControlHasError('orgAddress1', 'required')">
-											<strong>Required field</strong>
-										</mat-error>
+								</p-fieldset>
+								<p-fieldset legend="Dosage questions" [style.margin-top]="'20px'">
+									<div class="p-fluid p-formgrid p-grid">
+										<div class="p-field p-col-12 p-md-4">
+											<label for="manufacturer_name">Product/Manufacturer<span class="cls-requiered">*</span></label>
+											<p-dropdown inputId="manufacturer" [options]="manufacturerList" formControlName="orgManufacturer"
+												[filter]="true" filterBy="label" filterMatchMode="contains"
+												[showClear]="true" [resetFilterOnHide]="true" required
+												class="p-inputtext-sm" placeholder="Select Manufacturer"></p-dropdown>
+											<mat-error *ngIf="stepTwo && isControlHasError('orgManufacturer', 'required')">
+												<strong>Required field</strong>
+											</mat-error>
+										</div>
+										<div class="p-field p-col-12 p-md-4">
+											<label for="dose1">Date of Dose {{(patientForm.value.orgManufacturer && patientForm.value.orgManufacturer != 'Johnson \& Johnson') ? '1' : ''}}<span
+													class="cls-requiered">*</span></label>
+													<p-calendar [showIcon]="true" inputId="icon" formControlName="orgDose1" required
+													[monthNavigator]="true" [yearNavigator]="true" [yearRange]="yearRange"
+													dateFormat="yy-mm-dd" class="p-inputtext-sm"></p-calendar>
+											<mat-error *ngIf="stepTwo && isControlHasError('orgDose1', 'required')">
+												<strong>Required field</strong>
+											</mat-error>
+										</div>
+										<div class="p-field p-col-12 p-md-4" *ngIf="(patientForm.value.orgManufacturer && patientForm.value.orgManufacturer != 'Johnson \& Johnson')">
+											<label for="dose2">Date of Dose 2</label>
+											<p-calendar [showIcon]="true" inputId="icon" formControlName="orgDose2"
+												[monthNavigator]="true" [yearNavigator]="true" [yearRange]="yearRange"
+												dateFormat="yy-mm-dd" class="p-inputtext-sm"></p-calendar>
+										</div>
 									</div>
-									<div class="p-field p-col-12 p-md-4">
-										<label for="lastname6">Address street 2</label>
-										<input id="lastname6" type="text" formControlName="orgAddress2" pInputText
-											class="p-inputtext-sm">
-									</div>
-									<div class="p-field p-col-12 p-md-4">
-										<label for="org_city">City<span class="cls-requiered">*</span></label>
-										<input id="org_city" type="text" formControlName="orgCity" required pInputText
-											class="p-inputtext-sm">
-										<mat-error *ngIf="stepTwo && isControlHasError('orgCity', 'required')">
-											<strong>Required field</strong>
-										</mat-error>
-									</div>
-
-
-									<div class="p-field p-col-12 p-md-4">
-										<label for="lastname6">Zip code<span class="cls-requiered">*</span></label>
-										<p-inputMask mask="99999?-9999" maxlength="10" formControlName="orgZipcode"
-											required pattern class="p-inputtext-sm"></p-inputMask>
-										<mat-error *ngIf="stepTwo && isControlHasError('orgZipcode', 'required')">
-											<strong>Required field</strong>
-										</mat-error>
-										<mat-error *ngIf="isControlHasError('orgZipcode', 'pattern')">
-											<strong>Field is not valid</strong>
-										</mat-error>
-									</div>
-									<div class="p-field p-col-12 p-md-4">
-										<label for="org_state">State<span class="cls-requiered">*</span></label>
-										<p-dropdown inputId="org_state" [options]="stateList" formControlName="orgState"
-											[filter]="true" filterBy="label" filterMatchMode="contains"
-											[showClear]="true" [resetFilterOnHide]="true" required
-											class="p-inputtext-sm" placeholder="Select State"></p-dropdown>
-										<!-- <input id="org_state" type="text" formControlName="orgState" required pInputText class="p-inputtext-sm">  -->
-										<mat-error *ngIf="stepTwo && isControlHasError('orgState', 'required')">
-											<strong>Required field</strong>
-										</mat-error>
-									</div>
-
-									<div class="p-field p-col-12 p-md-4">
-										<label for="user_contact">Contact Number <span
-												class="cls-requiered">*</span></label>
-										<p-inputMask mask="9999999999" minLength="10" maxLength="10"
-											formControlName="orgContactNumber" required pattern class="p-inputtext-sm">
-										</p-inputMask>
-										<mat-error *ngIf="stepTwo && isControlHasError('orgContactNumber', 'required')">
-											<strong>Required field</strong>
-										</mat-error>
-										<mat-error
-											*ngIf="stepTwo && isControlHasError('orgContactNumber', 'minLength')">
-											<strong>Required field</strong>
-										</mat-error>
-										<mat-error
-											*ngIf="stepTwo && isControlHasError('orgContactNumber', 'maxLength')">
-											<strong>Required field</strong>
-										</mat-error>
-									</div>
-									<div class="p-field p-col-12 p-md-4">
-										<label for="user_email">Email</label>
-										<input id="user_email" type="email" formControlName="orgEmail" pInputText
-											class="p-inputtext-sm">
-										<!-- <mat-error *ngIf="stepTwo && isControlHasError('orgEmail', 'required')">
-											<strong>Required field</strong>
-										  </mat-error> -->
-										<mat-error *ngIf="stepTwo && isControlHasError('orgEmail', 'email')">
-											<strong>Field is not valid</strong>
-										</mat-error>
-									</div>
-								</div>
+								</p-fieldset>
+								
 							</div>
 							<!--end: Form Wizard Step 2-->
 
 							<!--begin: Form Wizard Step 3-->
 							<div class="pb-5" data-wizard-type="step-content">
 								<h4 class="mb-10 font-weight-bold text-dark">Upload Vax-Card</h4>
-								<div class="p-fluid p-formgrid p-grid">
-									<mat-tab-group style="width: 100%;" (selectedTabChange)="onTabChanged($event);">
-										<mat-tab label="Take Snapshot">
-											<div class="p-field p-col-12 p-md-12" style="padding: 0;border: 1px dashed #cccccc;
-									margin-top: 30px;">
-												<h4>Take snapshot from below
-													<button class="cls-actionBtn" (click)="toggleWebCam()">{{showWebcam ? 'Stop' : 'Start'}}</button>
-												</h4>
-												<webcam (imageCapture)="handleImage($event)"
-												*ngIf="showWebcam"
-													[trigger]="triggerObservable"></webcam>
-												<div *ngIf="showWebcam">
-													<button class="cls-actionBtn" (click)="triggerSnapshot();">Take A
-														Snapshot</button> <i class="pi pi-info-circle"  style="font-size: 1.5rem; margin-left: 1rem; color: blue"
-														[tooltip]="tooltipJson.takeSnapShot"
-										[trigger]="'click'" [hideDelayTouchscreen]="3000" [hide-delay]="3000" [animation-duration]="500"></i>
-												</div>
-												<div class="snapshot" style="display: block;width: 100%;"
-													*ngIf="webcamImage">
-													<h2>Nice one!</h2>
-													<button mat-stroked-button
-														(click)="uploadSnapshot(false)">Upload</button>
-													<img style="display: block;width: 120px"
-														[src]="webcamImage.imageAsDataUrl" />
-												</div>
-											</div>
-										</mat-tab>
-										<mat-tab label="Upload File">
-											<div class="p-field p-col-12 p-md-12 cls-form-upload" style="padding: 0;">
-												<input type="file" name="file" id="file" multiple class="inputfile"
-													(change)="onFileSelect($event)" />
-												<label for="file">Choose files from here</label>
-												<div style="width: 100%;
-												text-align: left;
-												padding: 0 13px;
-												margin-top: 10px;
-												color: blue;">
-													<!-- <img [src]="imageSrc"> -->
-													<img id="img_preview" height="120px" width="120px">
-													<button mat-stroked-button
-														(click)="uploadSnapshot()">Upload</button>
-												</div>
-
-											</div>
-										</mat-tab>
-
-
-
-
-									</mat-tab-group>
-									<p-card [style]="{'width': '45rem', 'background': 'rgb(243 246 249)', 'margin-top': '2rem'}"
+								<div>
+								<p-card [style]="{'width': '45rem', 'background': 'rgb(243 246 249)', 'margin-top': '2rem'}"
 										styleClass="vaxCard" *ngIf="lastInputText && firstInputText">
 										<!-- <p-card [style]="{'width': '45rem', 'background': 'rgb(243 246 249)', 'margin-top': '2rem'}"
 										styleClass="vaxCard" *ngIf="imageToTextResponse"> -->
@@ -564,12 +548,118 @@ medica sobre las vacunas que ha recibido.
 											</tr>
 										</table>
 									</p-card>
+									</div>
+									<p-divider></p-divider>
+								<div class="p-fluid p-formgrid p-grid">
+									<mat-tab-group style="width: 100%;" (selectedTabChange)="onTabChanged($event);">
+										<mat-tab label="Take Snapshot">
+											<div class="p-field p-col-12 p-md-12" style="padding: 0;border: 1px dashed #cccccc;
+									margin-top: 30px;">
+												<h4>Take snapshot from below
+													<button class="cls-actionBtn" (click)="toggleWebCam()">{{showWebcam ? 'Stop' : 'Start'}}</button>
+												</h4>
+												<webcam (imageCapture)="handleImage($event)"
+												*ngIf="showWebcam"
+													[trigger]="triggerObservable"></webcam>
+												<div *ngIf="showWebcam">
+													<button class="cls-actionBtn" (click)="triggerSnapshot();">Take A
+														Snapshot</button> <i class="pi pi-info-circle"  style="font-size: 1.5rem; margin-left: 1rem; color: blue"
+														[tooltip]="tooltipJson.takeSnapShot"
+										[trigger]="'click'" [hideDelayTouchscreen]="3000" [hide-delay]="3000" [animation-duration]="500"></i>
+												</div>
+												<div class="snapshot" style="display: block;width: 100%;"
+													*ngIf="webcamImage">
+													<h2>Nice one!</h2>
+													<button mat-stroked-button
+														(click)="uploadSnapshot(false)">Upload</button>
+													<img style="display: block;width: 120px"
+														[src]="webcamImage.imageAsDataUrl" />
+												</div>
+											</div>
+										</mat-tab>
+										<mat-tab label="Upload File">
+											<div class="p-field p-col-12 p-md-12 cls-form-upload" style="padding: 0;">
+												<input type="file" name="file" id="file" multiple class="inputfile"
+													(change)="onFileSelect($event)" />
+												<label for="file">Choose files from here</label>
+												<div style="width: 100%;
+												text-align: left;
+												padding: 0 13px;
+												margin-top: 10px;
+												color: blue;">
+													<!-- <img [src]="imageSrc"> -->
+													<img id="img_preview" height="120px" width="120px">
+													<button mat-stroked-button
+														(click)="uploadSnapshot()">Upload</button>
+												</div>
 
+											</div>
+										</mat-tab>
+									</mat-tab-group>
 								</div>
+								<p-divider></p-divider>
+								<mat-checkbox class="example-margin" [(ngModel)]="consent" [ngModelOptions]="{standalone: true}">I hereby provide my consent to release my medical records in a secure manner to this service which provides quick and secure access to my health information as a verifiable document.
+									<br>
+									I understand and agree that access to VaxCheck is subject to Terms & conditions.</mat-checkbox>
+								<!-- <div class="p-field-checkbox">
+									<p-checkbox [(ngModel)]="consent"  [ngModelOptions]="{standalone: true}" binary="true" inputId="binary"></p-checkbox>
+									<label for="ny">I hereby provide my consent to release my medical records in a secure manner to this service which provides quick and secure access to my health information as a verifiable document.
+										<br>
+										I understand and agree that access to VaxCheck is subject to Terms & conditions.</label>
+								</div> -->
+								<div *ngIf="consentNotChecked == true && !consent" style="color: red;">Please agree the consent.</div>
 							</div>
 
 							<!--begin: Form Wizard Step 4-->
 							<div class="pb-5" data-wizard-type="step-content">
+								<div class="p-d-flex p-ai-start">
+									<div class="p-mr-2">
+										<!-- <input id="singleFile" type="file" style="display: none;" multiple="multiple" [fileUploadInputFor]="fileUploadQueue" /> -->
+										<div [fileUploadInputFor]="fileUploadQueue" class="upload-drop-zone">
+											<i class="pi pi-upload" style="font-size: 2rem"></i><br>
+											Drag files to upload
+										  </div>
+										  <input style="margin-top: 1rem;" type="file" id="file" multiple class="inputfile"
+										  [fileUploadInputFor]="fileUploadQueue"  />
+												<label for="file" style="margin-top: 1rem;">Choose files from here</label>
+										  <!-- <input style="margin-top: 1rem;" id="singleFile" type="file" multiple="multiple" [fileUploadInputFor]="fileUploadQueue" /> -->
+										  <!-- <label for="file">choose a file</label> -->
+									</div>
+									<div style="width: 500px;" class="uploadedFiles">
+										<mat-file-upload-queue
+										#fileUploadQueue
+										[fileAlias]="'file'"
+										[httpUrl]="'http://localhost:8080/jax-rs-jersey-application-sample'"
+										multiple
+									  >
+										<mat-file-upload
+										  [file]="file"
+										  [id]="i"
+										  *ngFor="let file of fileUploadQueue.files; let i = index"
+										></mat-file-upload>
+									  </mat-file-upload-queue></div>
+								</div>
+
+								<!-- <div>
+									<input id="singleFile" type="file" multiple="multiple" [fileUploadInputFor]="fileUploadQueue" />
+									<div [fileUploadInputFor]="fileUploadQueue" class="upload-drop-zone">
+										Just drag and drop files here
+									  </div>
+									<div style="width: 500px;">
+										<mat-file-upload-queue
+										  #fileUploadQueue
+										  [fileAlias]="'file'"
+										  [httpUrl]="'http://localhost:8080/jax-rs-jersey-application-sample'"
+										  multiple
+										>
+										  <mat-file-upload
+											[file]="file"
+											[id]="i"
+											*ngFor="let file of fileUploadQueue.files; let i = index"
+										  ></mat-file-upload>
+										</mat-file-upload-queue>
+									  </div>
+								</div> -->
 								<h4 class="mb-10 font-weight-bold text-dark">Vax Record Card</h4>
 
 								<div class="card">

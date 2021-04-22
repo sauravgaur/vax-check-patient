@@ -1,65 +1,68 @@
 @import "../../../../../assets/sass/pages/wizard/wizard-2";
-.cls-requiered{
-    color: red;
-    margin-left: 5px;
+.cls-requiered {
+  color: red;
+  margin-left: 5px;
 }
 
 #video {
-    background-color: #000000;
+  background-color: #000000;
 }
 #canvas {
-    display: none;
+  display: none;
 }
 li {
-    display: inline;
-    padding: 5px;
+  display: inline;
+  padding: 5px;
 }
-.cls-actionBtn{
-    background: #fff;
-    border: 1px solid #969696;
-    padding: 6px 20px;
-    color: #2f2f2f;
-    margin-top: 10px;
+.cls-actionBtn {
+  background: #fff;
+  border: 1px solid #969696;
+  padding: 6px 20px;
+  color: #2f2f2f;
+  margin-top: 10px;
 }
 .inputfile {
-	width: 0.1px;
-	height: 0.1px;
-	opacity: 0;
-	overflow: hidden;
-	position: absolute;
-	z-index: -1;
+  width: 0.1px;
+  height: 0.1px;
+  opacity: 0;
+  overflow: hidden;
+  position: absolute;
+  z-index: -1;
 }
 .inputfile + label {
   font-size: 14px;
-    font-weight: 600;
-    color: #777;
-    background-color: transparent;
-    display: inline-block;
-    padding: 10px 26px;
-    border: 1px solid #777;
-    cursor: pointer;
+  font-weight: 600;
+  color: #777;
+  background-color: transparent;
+  display: inline-block;
+  padding: 10px 26px;
+  border: 1px solid #777;
+  cursor: pointer;
 }
 
 .inputfile:focus + label,
 .inputfile + label:hover {
-  color: #3699FF;
-  border: 1px solid #3699FF;
-  box-shadow: 0px 1px 4px #3699FF
+  color: #3699ff;
+  border: 1px solid #3699ff;
+  box-shadow: 0px 1px 4px #3699ff;
 }
-.cls-form-upload{
-    border: 1px dashed #ccc;
-      padding: 19px 10px;
-      margin-bottom: 36px;
-      text-align: center;
-  }
+.cls-form-upload {
+  border: 1px dashed #ccc;
+  padding: 19px 10px;
+  margin-bottom: 36px;
+  text-align: center;
+}
 
-  table, th, td {
-    border: 1px solid black;
-  }
+table,
+th,
+td {
+  border: 1px solid black;
+}
 
-  .doseTable table, td {
-    height: 3em;
-  }
+.doseTable table,
+td {
+  height: 3em;
+}
 
 //   .editable > .form .form-group{
 //       padding: unset !important;
@@ -80,11 +83,11 @@ li {
 //   width: 100%;
 // }
 
-.editable{
-  width: 100%
+.editable {
+  width: 100%;
 }
 
-.p-card{
+.p-card {
   background: #e6e6e6 !important;
   width: 45rem !important;
 }
@@ -92,3 +95,60 @@ li {
 .p-md-10 {
   padding: 0.5rem !important;
 }
+
+.upload-drop-zone {
+  border: 2px dotted green;
+  width: 100%;
+  height: 10rem;
+  padding-top: 4rem;
+  text-align: center;
+  color: gray;
+}
+
+:host ::ng-deep div.uploadedFiles > mat-file-upload-queue button {
+  margin-right: 2rem !important;
+}
+
+:host ::ng-deep .p-fieldset{
+  margin-top: 1rem !important;
+}
+:host ::ng-deep .p-fieldset-legend{
+  margin-left: 1rem !important;
+}
+
+:host ::ng-deep .p-fieldset-legend-text {
+  line-height: .5 !important;
+}
+
+:host ::ng-deep legend{
+  width: inherit !important
+}
+
+// [type="file"] {
+//   border: 0;
+//   clip: rect(0, 0, 0, 0);
+//   height: 1px;
+//   overflow: hidden;
+//   padding: 0;
+//   position: absolute !important;
+//   white-space: nowrap;
+//   width: 1px;
+// }
+
+// [type="file"] + label {
+//   background-color: #000;
+//   border-radius: 4rem;
+//   color: #fff;
+//   cursor: pointer;
+//   display: inline-block;
+//   padding-left: 2rem 4rem;
+// }
+
+// [type="file"]:focus + label,
+// [type="file"] + label:hover {
+//     background-color: #f15d22;
+// }
+
+// [type="file"]:focus + label {
+//   outline: 1px dotted #000;
+// }
