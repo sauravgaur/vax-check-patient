@@ -612,34 +612,35 @@ medica sobre las vacunas que ha recibido.
 
 							<!--begin: Form Wizard Step 4-->
 							<div class="pb-5" data-wizard-type="step-content">
-								<div class="p-d-flex p-ai-start">
-									<div class="p-mr-2">
-										<!-- <input id="singleFile" type="file" style="display: none;" multiple="multiple" [fileUploadInputFor]="fileUploadQueue" /> -->
-										<div [fileUploadInputFor]="fileUploadQueue" class="upload-drop-zone">
-											<i class="pi pi-upload" style="font-size: 2rem"></i><br>
-											Drag files to upload
-										  </div>
-										  <input style="margin-top: 1rem;" type="file" id="file" multiple class="inputfile"
-										  [fileUploadInputFor]="fileUploadQueue"  />
-												<label for="file" style="margin-top: 1rem;">Choose files from here</label>
-										  <!-- <input style="margin-top: 1rem;" id="singleFile" type="file" multiple="multiple" [fileUploadInputFor]="fileUploadQueue" /> -->
-										  <!-- <label for="file">choose a file</label> -->
+								<p-fieldset legend="Supplemental documents">
+									<div class="p-d-flex p-ai-start">
+										<div class="p-mr-2">
+											<!-- <input id="singleFile" type="file" style="display: none;" multiple="multiple" [fileUploadInputFor]="fileUploadQueue" /> -->
+											<div [fileUploadInputFor]="fileUploadQueue" class="upload-drop-zone">
+												<i class="pi pi-upload" style="font-size: 2rem"></i><br>
+												Drag files to upload
+											</div>
+											<input style="margin-top: 1rem;" type="file" id="file" multiple class="inputfile"
+											[fileUploadInputFor]="fileUploadQueue"  />
+													<label for="file" style="margin-top: 1rem;">Choose files from here</label>
+											<!-- <input style="margin-top: 1rem;" id="singleFile" type="file" multiple="multiple" [fileUploadInputFor]="fileUploadQueue" /> -->
+											<!-- <label for="file">choose a file</label> -->
+										</div>
+										<div style="width: 500px;" class="uploadedFiles">
+											<mat-file-upload-queue
+											#fileUploadQueue
+											[fileAlias]="'file'"
+											[httpUrl]="'http://localhost:8080/jax-rs-jersey-application-sample'"
+											multiple
+										>
+											<mat-file-upload
+											[file]="file"
+											[id]="i"
+											*ngFor="let file of fileUploadQueue.files; let i = index"
+											></mat-file-upload>
+										</mat-file-upload-queue></div>
 									</div>
-									<div style="width: 500px;" class="uploadedFiles">
-										<mat-file-upload-queue
-										#fileUploadQueue
-										[fileAlias]="'file'"
-										[httpUrl]="'http://localhost:8080/jax-rs-jersey-application-sample'"
-										multiple
-									  >
-										<mat-file-upload
-										  [file]="file"
-										  [id]="i"
-										  *ngFor="let file of fileUploadQueue.files; let i = index"
-										></mat-file-upload>
-									  </mat-file-upload-queue></div>
-								</div>
-
+								</p-fieldset>
 								<!-- <div>
 									<input id="singleFile" type="file" multiple="multiple" [fileUploadInputFor]="fileUploadQueue" />
 									<div [fileUploadInputFor]="fileUploadQueue" class="upload-drop-zone">
@@ -660,8 +661,7 @@ medica sobre las vacunas que ha recibido.
 										</mat-file-upload-queue>
 									  </div>
 								</div> -->
-								<h4 class="mb-10 font-weight-bold text-dark">Vax Record Card</h4>
-
+								<p-fieldset legend="Vax Record Card">
 								<div class="card">
 									<div class="p-fluid" style="padding-left: .5rem;">
 										<div class="p-field p-grid">
@@ -712,6 +712,7 @@ medica sobre las vacunas que ha recibido.
 										</div>
 									</div>
 								</div>
+								</p-fieldset>
 							</div>
 
 							<!--begin: Form Actions -->
