@@ -8,26 +8,26 @@ import { ShepherdService } from 'angular-shepherd';
 import { steps as defaultSteps, defaultStepOptions } from './tour';
 import moment from 'moment';
 import { CdkRow } from '@angular/cdk/table';
-//label: 'Hispanic or Latino', value: '2186-5'
+// label: 'Hispanic or Latino', value: '2186-5'
 
 interface IImageToText{
-    firstName?: string,
-    middleName?: string,
-    lastName?: string,
-    mi?:string,
-    patientNumber?:string,
-    firstDose?: string,
-    firstDoseDate?: Date,
-    firstClinicName?: string,
-    secondDose?: string,
-    secondDoseDate?: Date,
-    secondClinicName?: string,
-    doseRecieved?: number,
-    isVaXCompleted?:boolean,
-    secondDoseEffectiveDate?: Date,
-    firstDoseEffectiveDate?: Date,
-    firstDoseExpireDate?: Date,
-    secondDoseExpireDate?: Date
+    firstName?: string;
+    middleName?: string;
+    lastName?: string;
+    mi?: string;
+    patientNumber?: string;
+    firstDose?: string;
+    firstDoseDate?: Date;
+    firstClinicName?: string;
+    secondDose?: string;
+    secondDoseDate?: Date;
+    secondClinicName?: string;
+    doseRecieved?: number;
+    isVaXCompleted?: boolean;
+    secondDoseEffectiveDate?: Date;
+    firstDoseEffectiveDate?: Date;
+    firstDoseExpireDate?: Date;
+    secondDoseExpireDate?: Date;
 
     // {
     //     "firstName": "Coulombe", "middleName": "", "lastName": "Annette",
@@ -37,259 +37,259 @@ interface IImageToText{
     // }
 }
 
-const BASE_URL = 'http://localhost:3000/api'
+const BASE_URL = 'http://localhost:3000/api';
 const MANUFACTURER: SelectItem[] = [
     {
-        "label": "Moderna",
-        "value": "Moderna"
+        label: 'Moderna',
+        value: 'Moderna'
     },
     {
-        "label": "Pfizer",
-        "value": "Pfizer"
+        label: 'Pfizer',
+        value: 'Pfizer'
     },
     {
-        "label": "Johnson \& Johnson",
-        "value": "Johnson \& Johnson"
+        label: 'Johnson \& Johnson',
+        value: 'Johnson \& Johnson'
     }
 ];
 const STATES: SelectItem[] = [
     {
-        "label": "Alabama",
-        "value": "AL"
+        label: 'Alabama',
+        value: 'AL'
     },
     {
-        "label": "Alaska",
-        "value": "AK"
+        label: 'Alaska',
+        value: 'AK'
     },
     {
-        "label": "American Samoa",
-        "value": "AS"
+        label: 'American Samoa',
+        value: 'AS'
     },
     {
-        "label": "Arizona",
-        "value": "AZ"
+        label: 'Arizona',
+        value: 'AZ'
     },
     {
-        "label": "Arkansas",
-        "value": "AR"
+        label: 'Arkansas',
+        value: 'AR'
     },
     {
-        "label": "California",
-        "value": "CA"
+        label: 'California',
+        value: 'CA'
     },
     {
-        "label": "Colorado",
-        "value": "CO"
+        label: 'Colorado',
+        value: 'CO'
     },
     {
-        "label": "Connecticut",
-        "value": "CT"
+        label: 'Connecticut',
+        value: 'CT'
     },
     {
-        "label": "Delaware",
-        "value": "DE"
+        label: 'Delaware',
+        value: 'DE'
     },
     {
-        "label": "District Of Columbia",
-        "value": "DC"
+        label: 'District Of Columbia',
+        value: 'DC'
     },
     {
-        "label": "Federated States Of Micronesia",
-        "value": "FM"
+        label: 'Federated States Of Micronesia',
+        value: 'FM'
     },
     {
-        "label": "Florida",
-        "value": "FL"
+        label: 'Florida',
+        value: 'FL'
     },
     {
-        "label": "Georgia",
-        "value": "GA"
+        label: 'Georgia',
+        value: 'GA'
     },
     {
-        "label": "Guam",
-        "value": "GU"
+        label: 'Guam',
+        value: 'GU'
     },
     {
-        "label": "Hawaii",
-        "value": "HI"
+        label: 'Hawaii',
+        value: 'HI'
     },
     {
-        "label": "Idaho",
-        "value": "ID"
+        label: 'Idaho',
+        value: 'ID'
     },
     {
-        "label": "Illinois",
-        "value": "IL"
+        label: 'Illinois',
+        value: 'IL'
     },
     {
-        "label": "Indiana",
-        "value": "IN"
+        label: 'Indiana',
+        value: 'IN'
     },
     {
-        "label": "Iowa",
-        "value": "IA"
+        label: 'Iowa',
+        value: 'IA'
     },
     {
-        "label": "Kansas",
-        "value": "KS"
+        label: 'Kansas',
+        value: 'KS'
     },
     {
-        "label": "Kentucky",
-        "value": "KY"
+        label: 'Kentucky',
+        value: 'KY'
     },
     {
-        "label": "Louisiana",
-        "value": "LA"
+        label: 'Louisiana',
+        value: 'LA'
     },
     {
-        "label": "Maine",
-        "value": "ME"
+        label: 'Maine',
+        value: 'ME'
     },
     {
-        "label": "Marshall Islands",
-        "value": "MH"
+        label: 'Marshall Islands',
+        value: 'MH'
     },
     {
-        "label": "Maryland",
-        "value": "MD"
+        label: 'Maryland',
+        value: 'MD'
     },
     {
-        "label": "Massachusetts",
-        "value": "MA"
+        label: 'Massachusetts',
+        value: 'MA'
     },
     {
-        "label": "Michigan",
-        "value": "MI"
+        label: 'Michigan',
+        value: 'MI'
     },
     {
-        "label": "Minnesota",
-        "value": "MN"
+        label: 'Minnesota',
+        value: 'MN'
     },
     {
-        "label": "Mississippi",
-        "value": "MS"
+        label: 'Mississippi',
+        value: 'MS'
     },
     {
-        "label": "Missouri",
-        "value": "MO"
+        label: 'Missouri',
+        value: 'MO'
     },
     {
-        "label": "Montana",
-        "value": "MT"
+        label: 'Montana',
+        value: 'MT'
     },
     {
-        "label": "Nebraska",
-        "value": "NE"
+        label: 'Nebraska',
+        value: 'NE'
     },
     {
-        "label": "Nevada",
-        "value": "NV"
+        label: 'Nevada',
+        value: 'NV'
     },
     {
-        "label": "New Hampshire",
-        "value": "NH"
+        label: 'New Hampshire',
+        value: 'NH'
     },
     {
-        "label": "New Jersey",
-        "value": "NJ"
+        label: 'New Jersey',
+        value: 'NJ'
     },
     {
-        "label": "New Mexico",
-        "value": "NM"
+        label: 'New Mexico',
+        value: 'NM'
     },
     {
-        "label": "New York",
-        "value": "NY"
+        label: 'New York',
+        value: 'NY'
     },
     {
-        "label": "North Carolina",
-        "value": "NC"
+        label: 'North Carolina',
+        value: 'NC'
     },
     {
-        "label": "North Dakota",
-        "value": "ND"
+        label: 'North Dakota',
+        value: 'ND'
     },
     {
-        "label": "Northern Mariana Islands",
-        "value": "MP"
+        label: 'Northern Mariana Islands',
+        value: 'MP'
     },
     {
-        "label": "Ohio",
-        "value": "OH"
+        label: 'Ohio',
+        value: 'OH'
     },
     {
-        "label": "Oklahoma",
-        "value": "OK"
+        label: 'Oklahoma',
+        value: 'OK'
     },
     {
-        "label": "Oregon",
-        "value": "OR"
+        label: 'Oregon',
+        value: 'OR'
     },
     {
-        "label": "Palau",
-        "value": "PW"
+        label: 'Palau',
+        value: 'PW'
     },
     {
-        "label": "Pennsylvania",
-        "value": "PA"
+        label: 'Pennsylvania',
+        value: 'PA'
     },
     {
-        "label": "Puerto Rico",
-        "value": "PR"
+        label: 'Puerto Rico',
+        value: 'PR'
     },
     {
-        "label": "Rhode Island",
-        "value": "RI"
+        label: 'Rhode Island',
+        value: 'RI'
     },
     {
-        "label": "South Carolina",
-        "value": "SC"
+        label: 'South Carolina',
+        value: 'SC'
     },
     {
-        "label": "South Dakota",
-        "value": "SD"
+        label: 'South Dakota',
+        value: 'SD'
     },
     {
-        "label": "Tennessee",
-        "value": "TN"
+        label: 'Tennessee',
+        value: 'TN'
     },
     {
-        "label": "Texas",
-        "value": "TX"
+        label: 'Texas',
+        value: 'TX'
     },
     {
-        "label": "Utah",
-        "value": "UT"
+        label: 'Utah',
+        value: 'UT'
     },
     {
-        "label": "Vermont",
-        "value": "VT"
+        label: 'Vermont',
+        value: 'VT'
     },
     {
-        "label": "Virgin Islands",
-        "value": "VI"
+        label: 'Virgin Islands',
+        value: 'VI'
     },
     {
-        "label": "Virginia",
-        "value": "VA"
+        label: 'Virginia',
+        value: 'VA'
     },
     {
-        "label": "Washington",
-        "value": "WA"
+        label: 'Washington',
+        value: 'WA'
     },
     {
-        "label": "West Virginia",
-        "value": "WV"
+        label: 'West Virginia',
+        value: 'WV'
     },
     {
-        "label": "Wisconsin",
-        "value": "WI"
+        label: 'Wisconsin',
+        value: 'WI'
     },
     {
-        "label": "Wyoming",
-        "value": "WY"
+        label: 'Wyoming',
+        value: 'WY'
     }
-]
+];
 @Component({
     selector: 'kt-wizard2',
     templateUrl: './wizard2.component.html',
@@ -299,11 +299,11 @@ export class Wizard2Component implements OnInit, AfterViewInit {
 
     @ViewChild('wizard', { static: true }) el: ElementRef;
 
-    isHawaiiState: boolean = false
+    isHawaiiState = false;
     tabIndex = 0;
     showWebcam = false;
     selectedFiles: any;
-    stateList: SelectItem[] = STATES
+    stateList: SelectItem[] = STATES;
     manufacturerList: SelectItem[] = MANUFACTURER;
     imageSrc: any;
     public webcamImage: WebcamImage = null;
@@ -314,7 +314,7 @@ export class Wizard2Component implements OnInit, AfterViewInit {
         orgName: `Who organized the vaccination?<br> This is autocomplete text.<br> Type at-least 1 alphabet.`,
         orgAddress1: 'Address of the Organization',
         takeSnapShot: 'Take a picture of you vaccination card'
-    }
+    };
     model: any = {
         fname: 'John',
         lname: 'Wick',
@@ -346,13 +346,13 @@ export class Wizard2Component implements OnInit, AfterViewInit {
     cvx_item: SelectItem[];
     selectedCVX: any;
 
-    contact_item: SelectItem[]
+    contact_item: SelectItem[];
     selectedConatctOption: any;
 
-    resedence_item: SelectItem[]
+    resedence_item: SelectItem[];
     selectedresedenceOption: any;
 
-    island_item: SelectItem[]
+    island_item: SelectItem[];
 
     ndc_item: SelectItem[];
     selectedNDC: any;
@@ -360,7 +360,7 @@ export class Wizard2Component implements OnInit, AfterViewInit {
     site_item: SelectItem[];
     selectedSite: any;
 
-    states: any[] = []
+    states: any[] = [];
     // selectedState: any;
     items: MenuItem[];
 
@@ -454,7 +454,7 @@ export class Wizard2Component implements OnInit, AfterViewInit {
 
     ngOnInit() {
         // this.imageToTextResponse=null;
-        this.yearRange = `1930:${new Date().getFullYear()}`
+        this.yearRange = `1930:${new Date().getFullYear()}`;
         this.patientForm = this._fb.group({
             id: new FormControl(''),
             firstName: new FormControl(''),
@@ -577,12 +577,10 @@ export class Wizard2Component implements OnInit, AfterViewInit {
         { name: 'Hamakua Kohala Health', value: 'Hamakua Kohala Health' },
         { name: 'Hana Health Clinic', value: 'Hana Health Clinic' },
         { name: 'Hawai\'i - Bay Clinic, Inc.', value: 'Hawai\'i - Bay Clinic, Inc.' },
-        { name: 'Hawaii Pacific Health', value: 'Hawaii Pacific Health' },
-        { name: 'Hawaii Pacific Health', value: 'Hawaii Pacific Health' },
+        { name: 'Hawaii Pacific Health (HPH)', value: 'Hawaii Pacific Health (HPH)' },
         { name: 'Hilo - Prince Kuhio Plaza  - CVS/ Longs Drugs ', value: 'Hilo - Prince Kuhio Plaza  - CVS/ Longs Drugs ' },
         { name: 'Hilo - Safeway', value: 'Hilo - Safeway' },
         { name: 'Hilo - Target - CVS/Longs Drugs', value: 'Hilo - Target - CVS/Longs Drugs' },
-        { name: 'Hilo Kilauea Av- CVS/Longs Drugs', value: 'Hilo Kilauea Av- CVS/Longs Drugs' },
         { name: 'Hilo Kilauea Av- CVS/Longs Drugs', value: 'Hilo Kilauea Av- CVS/Longs Drugs' },
         { name: 'Hilo Medical Center', value: 'Hilo Medical Center' },
         { name: 'Hui No Ke Ola Pono - J. Walter Cameron Center', value: 'Hui No Ke Ola Pono - J. Walter Cameron Center' },
@@ -591,7 +589,6 @@ export class Wizard2Component implements OnInit, AfterViewInit {
         { name: 'Kahului - Safeway Pharmacy ', value: 'Other' },
         { name: 'Kahului - Walmart Inc', value: 'Kahului - Walmart Inc' },
         { name: 'Kailua-Kona  CVS/Long Drugs - Keauhou Shopping ', value: 'Kailua-Kona  CVS/Long Drugs - Keauhou Shopping ' },
-        { name: 'Kailua-Kona  CVS/Long Drugs - Kuakini', value: 'Kailua-Kona  CVS/Long Drugs - Kuakini' },
         { name: 'Kailua-Kona  CVS/Long Drugs - Kuakini', value: 'Kailua-Kona  CVS/Long Drugs - Kuakini' },
         { name: 'Kailua-Kona  CVS/Long Drugs - Target', value: 'Kailua-Kona  CVS/Long Drugs - Target' },
         { name: 'Kailua-Kona Safeway', value: 'Kailua-Kona Safeway' },
@@ -638,7 +635,7 @@ export class Wizard2Component implements OnInit, AfterViewInit {
         { name: 'Walgreens', value: 'Walgreens' },
         { name: 'Walmart', value: 'Walmart' },
         { name: 'Windward POD at Windward Community College', value: 'Windward POD at Windward Community College' },
-        ]
+        ];
         this.subscribeValueChanges();
         this.initGroupedForm();
     }
@@ -677,10 +674,10 @@ export class Wizard2Component implements OnInit, AfterViewInit {
     }
 
     filterOrg(event) {
-        let filtered: any[] = [];
-        let query = event.query.toLowerCase();
+        const filtered: any[] = [];
+        const query = event.query.toLowerCase();
         for (let i = 0; i < this.orgs.length; i++) {
-            let org = this.orgs[i];
+            const org = this.orgs[i];
             if (org.name.toLowerCase().indexOf(query) > -1) {
                 filtered.push(org);
             }
@@ -719,7 +716,7 @@ export class Wizard2Component implements OnInit, AfterViewInit {
         // Validation before going to next page
         wizard.on('beforeNext', (wizardObj) => {
             this.isFormSubmitted = true;
-            console.log('wizard obj in before next:', wizardObj, wizardObj.getStep())
+            console.log('wizard obj in before next:', wizardObj, wizardObj.getStep());
             if (wizardObj.currentStep === 1) {
                 this.stepOne = true;
                 this.stepTwo = false;
@@ -777,26 +774,26 @@ export class Wizard2Component implements OnInit, AfterViewInit {
                 this.patientForm.get('orgName').setValidators(this.patientForm.get('resedenceItem').value === 'YES' ? Validators.required : null);
                 this.patientForm.get('orgName').updateValueAndValidity();
                 this.patientForm.get('orgAddress1').setValidators(Validators.required);
-                this.patientForm.get('orgAddress1').updateValueAndValidity()
+                this.patientForm.get('orgAddress1').updateValueAndValidity();
                 this.patientForm.get('orgCity').setValidators(Validators.required);
-                this.patientForm.get('orgCity').updateValueAndValidity()
+                this.patientForm.get('orgCity').updateValueAndValidity();
                 this.patientForm.get('orgEmail').setValidators(Validators.email);
-                this.patientForm.get('orgEmail').updateValueAndValidity()
+                this.patientForm.get('orgEmail').updateValueAndValidity();
                 this.patientForm.get('orgState').setValidators(Validators.required);
-                this.patientForm.get('orgState').updateValueAndValidity()
+                this.patientForm.get('orgState').updateValueAndValidity();
                 this.patientForm.get('orgContactNumber').setValidators(Validators.required);
-                this.patientForm.get('orgContactNumber').updateValueAndValidity()
+                this.patientForm.get('orgContactNumber').updateValueAndValidity();
                 this.patientForm.get('orgZipcode').setValidators([Validators.required, Validators.pattern('^\\d{5}(?:\\-\\d{4})?$')]);
-                this.patientForm.get('orgZipcode').updateValueAndValidity()
+                this.patientForm.get('orgZipcode').updateValueAndValidity();
 
                 this.patientForm.get('orgManufacturer').setValidators(Validators.required);
-                this.patientForm.get('orgManufacturer').updateValueAndValidity()
+                this.patientForm.get('orgManufacturer').updateValueAndValidity();
 
                 this.patientForm.get('orgDose1').setValidators(Validators.required);
-                this.patientForm.get('orgDose1').updateValueAndValidity()
+                this.patientForm.get('orgDose1').updateValueAndValidity();
             }  else if (wizardObj.currentStep === 3) {
                 this.showWebcam = false;
-                if(this.consent === false) {
+                if (this.consent === false) {
                     this.consentNotChecked = true;
                     wizardObj.stop();
                     this.cd.markForCheck();
@@ -805,7 +802,7 @@ export class Wizard2Component implements OnInit, AfterViewInit {
             }
             this.consentNotChecked = false;
             this.patientForm.updateValueAndValidity();
-            console.log('patient form:', this.patientForm.value)
+            console.log('patient form:', this.patientForm.value);
             const controls = this.patientForm.controls;
             // if (this.patientForm.invalid) {
             Object.keys(controls).forEach(controlName => {
@@ -827,7 +824,7 @@ export class Wizard2Component implements OnInit, AfterViewInit {
             // }
             if (this.patientForm.valid) {
                 wizardObj.goNext();
-            } else wizardObj.stop();
+            } else { wizardObj.stop(); }
             // https://angular.io/guide/forms
             // https://angular.io/guide/form-validation
 
@@ -851,21 +848,21 @@ export class Wizard2Component implements OnInit, AfterViewInit {
                 // }
                 // }
             }, 500);
-            if(wizardObj.currentStep === 3) {
+            if (wizardObj.currentStep === 3) {
                 this.imageToTextResponse = {} as IImageToText;
                 this.lastInputText = this.patientForm.get('lastName').value;
                 this.lastNameInputControl.setValue(this.lastInputText);
 
                 this.firstInputText = this.patientForm.get('firstName').value;
-                this.firstNameInputControl.setValue(this.firstInputText)
+                this.firstNameInputControl.setValue(this.firstInputText);
 
                 this.firstClinicName = this.patientForm.get('orgDose1').value ? this.patientForm.get('orgName').value : '';
                 this.imageToTextResponse.firstDoseDate = this.patientForm.get('orgDose1').value ? moment(this.patientForm.get('orgDose1').value, 'YYYY-MM-DD').toDate() : null;
-                this.firstClinicNameInputControl.setValue(this.firstClinicName)
-                
+                this.firstClinicNameInputControl.setValue(this.firstClinicName);
+
                 this.imageToTextResponse.secondDoseDate = this.patientForm.get('orgDose2').value ? moment(this.patientForm.get('orgDose2').value, 'YYYY-MM-DD').toDate() : null;
                 this.secondClinicName = this.patientForm.get('orgDose2').value ? this.patientForm.get('orgName').value : '';
-                this.secondClinicNameInputControl.setValue(this.secondClinicName)
+                this.secondClinicNameInputControl.setValue(this.secondClinicName);
 
                 this.imageToTextResponse.firstDose = this.patientForm.get('orgManufacturer').value;
                 this.imageToTextResponse.secondDose = this.patientForm.get('orgManufacturer').value;
@@ -875,21 +872,21 @@ export class Wizard2Component implements OnInit, AfterViewInit {
     }
 
     subscribeValueChanges() {
-        this.patientForm.get("state").valueChanges.subscribe(selectedValue => {
-            console.log('firstname value changed')
-            console.log(selectedValue)                              //latest value of firstname
+        this.patientForm.get('state').valueChanges.subscribe(selectedValue => {
+            console.log('firstname value changed');
+            console.log(selectedValue);                              // latest value of firstname
             if (selectedValue !== 'HI') {
                 this.patientForm.get('resedenceItem').setValue('');
                 this.patientForm.get('resedenceItem').clearValidators();
                 this.patientForm.get('resedenceItem').setValidators(null);
                 this.patientForm.get('resedenceItem').setErrors(null);
-                this.patientForm.get('resedenceItem').updateValueAndValidity()
+                this.patientForm.get('resedenceItem').updateValueAndValidity();
 
                 this.patientForm.get('islandItem').setValue('');
                 this.patientForm.get('islandItem').clearValidators();
                 this.patientForm.get('islandItem').setValidators(null);
                 this.patientForm.get('islandItem').setErrors(null);
-                this.patientForm.get('islandItem').updateValueAndValidity()
+                this.patientForm.get('islandItem').updateValueAndValidity();
 
                 this.patientForm.get('orgName').clearValidators();
                 this.patientForm.get('orgName').setValidators(null);
@@ -897,34 +894,34 @@ export class Wizard2Component implements OnInit, AfterViewInit {
                 this.patientForm.get('orgName').updateValueAndValidity();
             } else {
                 this.patientForm.get('resedenceItem').setValidators(Validators.required);
-                this.patientForm.get('resedenceItem').updateValueAndValidity()
+                this.patientForm.get('resedenceItem').updateValueAndValidity();
 
                 this.patientForm.get('islandItem').setValidators(Validators.required);
-                this.patientForm.get('islandItem').updateValueAndValidity()
+                this.patientForm.get('islandItem').updateValueAndValidity();
 
                 this.patientForm.get('orgName').setValidators(Validators.required);
                 this.patientForm.get('orgName').updateValueAndValidity();
             }
             this.patientForm.updateValueAndValidity();
-        })
+        });
 
-        this.patientForm.get("orgManufacturer").valueChanges.subscribe(selectedValue => {
-            if(selectedValue == 'Johnson \& Johnson' || !selectedValue){
+        this.patientForm.get('orgManufacturer').valueChanges.subscribe(selectedValue => {
+            if (selectedValue == 'Johnson \& Johnson' || !selectedValue){
                 this.patientForm.controls.orgDose2.setValue(null);
                 this.patientForm.controls.orgDose2.updateValueAndValidity();
             }
-        })
+        });
 
     }
 
     hasFormError(formGroup, isFormSubmitted, fieldName, errorType) {
-        var formControl = formGroup.get(fieldName);
-        var controlChanged = (formControl.touched || isFormSubmitted);
+        const formControl = formGroup.get(fieldName);
+        const controlChanged = (formControl.touched || isFormSubmitted);
         if (controlChanged && errorType instanceof Array) {
-            var orCondition = false;
+            let orCondition = false;
             errorType.forEach(element => {
-                orCondition = orCondition || formControl.hasError(element)
-                if (orCondition) return;
+                orCondition = orCondition || formControl.hasError(element);
+                if (orCondition) { return; }
             });
             return controlChanged && orCondition;
         }
@@ -940,7 +937,12 @@ export class Wizard2Component implements OnInit, AfterViewInit {
         const result = control.hasError(validationType) && (control.dirty || control.touched);
         return result;
     }
-
+    isFutureDate(controlName: string): boolean {
+        return this.patientForm.controls[controlName].value > new Date();
+    }
+    isgreatedThan(controlName: string, compareCtrlName: string): boolean {
+        return this.patientForm.controls[controlName].value < this.patientForm.controls[compareCtrlName].value;
+    }
     onFileSelect(event) {
         console.log(event.target.files);
         this.selectedFiles = event.target.files;
@@ -961,7 +963,7 @@ export class Wizard2Component implements OnInit, AfterViewInit {
     }
     dataURLtoFile(dataurl, filename) {
 
-        var arr = dataurl.split(','),
+        let arr = dataurl.split(','),
             mime = arr[0].match(/:(.*?);/)[1],
             bstr = atob(arr[1]),
             n = bstr.length,
@@ -974,30 +976,30 @@ export class Wizard2Component implements OnInit, AfterViewInit {
         return new File([u8arr], filename, { type: mime });
     }
     uploadSnapshot(isFromFile = true) {
-        let formData = new FormData();
-        let file = isFromFile ? this.selectedFiles[0] : this.dataURLtoFile(this.webcamImage.imageAsDataUrl, "temp.jpeg")
-        formData.append('snapshot', file)
-        let url = `${BASE_URL}/snapshot/upload`
+        const formData = new FormData();
+        const file = isFromFile ? this.selectedFiles[0] : this.dataURLtoFile(this.webcamImage.imageAsDataUrl, 'temp.jpeg');
+        formData.append('snapshot', file);
+        const url = `${BASE_URL}/snapshot/upload`;
         this.http.post(url, formData)
-            .subscribe((success:any) => {
-                console.log(success)
-                this.imageToTextResponse=success.text.responseObj as IImageToText;
+            .subscribe((success: any) => {
+                console.log(success);
+                this.imageToTextResponse = success.text.responseObj as IImageToText;
                 this.lastInputText = this.imageToTextResponse.lastName;
                 this.lastNameInputControl.setValue(this.lastInputText);
 
                 this.firstInputText = this.imageToTextResponse.firstName;
-                this.firstNameInputControl.setValue(this.firstInputText)
+                this.firstNameInputControl.setValue(this.firstInputText);
 
                 this.firstClinicName = this.imageToTextResponse.firstClinicName;
-                this.firstClinicNameInputControl.setValue(this.firstClinicName)
+                this.firstClinicNameInputControl.setValue(this.firstClinicName);
 
                 this.secondClinicName = this.imageToTextResponse.secondClinicName;
-                this.secondClinicNameInputControl.setValue(this.secondClinicName)
+                this.secondClinicNameInputControl.setValue(this.secondClinicName);
             }, (error) => {
-                console.log("err-->", error);
-            })
+                console.log('err-->', error);
+            });
 
-        
+
     }
     onTabChanged(event) {
         console.log(event);
@@ -1005,6 +1007,6 @@ export class Wizard2Component implements OnInit, AfterViewInit {
     }
 
     toggleWebCam(){
-        this.showWebcam = !this.showWebcam
+        this.showWebcam = !this.showWebcam;
     }
 }

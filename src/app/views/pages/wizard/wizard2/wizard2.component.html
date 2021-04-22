@@ -370,12 +370,21 @@
 											<mat-error *ngIf="stepTwo && isControlHasError('orgDose1', 'required')">
 												<strong>Required field</strong>
 											</mat-error>
+											<mat-error *ngIf="isFutureDate('orgDose1')">
+												<strong>Date should be less than todays date</strong>
+											</mat-error>
 										</div>
 										<div class="p-field p-col-12 p-md-4" *ngIf="(patientForm.value.orgManufacturer && patientForm.value.orgManufacturer != 'Johnson \& Johnson')">
 											<label for="dose2">Date of Dose 2</label>
 											<p-calendar [showIcon]="true" inputId="icon" formControlName="orgDose2"
 												[monthNavigator]="true" [yearNavigator]="true" [yearRange]="yearRange"
 												dateFormat="yy-mm-dd" class="p-inputtext-sm"></p-calendar>
+											<mat-error *ngIf="isFutureDate('orgDose2')">
+												<strong>Date should be less than todays date</strong>
+											</mat-error>
+											<mat-error *ngIf="isgreatedThan('orgDose2','orgDose1')">
+												<strong>Date should be greater than dose 1 date</strong>
+											</mat-error>
 										</div>
 									</div>
 								</p-fieldset>
@@ -489,7 +498,7 @@ medica sobre las vacunas que ha recibido.
 														(cancel)="cancelSingleField('firstClinicName', 'firstClinicNameInputControl')">
 														<ng-template viewMode>
 															<div style="padding-left: .5em; padding-right: .5em;">
-																{{ firstClinicName }} <i
+																{{ firstClinicName.name}} <i
 																	class="kt-nav__link-icon flaticon2-pen text-primary"
 																	style="    float: right;"></i>
 															</div>
@@ -505,7 +514,7 @@ medica sobre las vacunas que ha recibido.
 													</editable>
 												</td>
 											</tr>
-											<tr>
+											<tr *ngIf="imageToTextResponse && imageToTextResponse.secondDose!=='Johnson & Johnson'">
 												<td style="background: lightgray;">2nd Dose Covid - 19</td>
 												<td>
 													{{ imageToTextResponse.secondDose }}
@@ -520,7 +529,7 @@ medica sobre las vacunas que ha recibido.
 														(cancel)="cancelSingleField('secondClinicName', 'secondClinicNameInputControl')">
 														<ng-template viewMode>
 															<div style="padding-left: .5em; padding-right: .5em;">
-																{{ secondClinicName }} <i
+																{{ secondClinicName.name }} <i
 																	class="kt-nav__link-icon flaticon2-pen text-primary"
 																	style="    float: right;"></i>
 															</div>
@@ -535,18 +544,6 @@ medica sobre las vacunas que ha recibido.
 														</ng-template>
 													</editable>
 												</td>
-											</tr>
-											<tr>
-												<td style="background: lightgray;">Other</td>
-												<td></td>
-												<td></td>
-												<td></td>
-											</tr>
-											<tr>
-												<td style="background: lightgray;">Other</td>
-												<td></td>
-												<td></td>
-												<td></td>
 											</tr>
 										</table>
 									</p-card>
@@ -615,6 +612,14 @@ medica sobre las vacunas que ha recibido.
 							<!--begin: Form Wizard Step 4-->
 							<div class="pb-5" data-wizard-type="step-content">
 								<p-fieldset legend="Supplemental documents">
+									<div class="">
+										<label for ="txt_appointment">Text of Appointment email/s can be copied here </label>
+										<textarea id="txt_appointment" style="width: 100%;border: 1px solid #ced4da;"></textarea>
+									</div>
+									<div class="p-d-flex p-ai-start">
+										<span style="margin: 25px 10px;">---------------------- OR ---------------------- </span>
+									</div>
+									<h4>Upload suppliement Documents</h4>
 									<div class="p-d-flex p-ai-start">
 										<div class="p-mr-2">
 											<!-- <input id="singleFile" type="file" style="display: none;" multiple="multiple" [fileUploadInputFor]="fileUploadQueue" /> -->
@@ -663,7 +668,7 @@ medica sobre las vacunas que ha recibido.
 										</mat-file-upload-queue>
 									  </div>
 								</div> -->
-								<p-fieldset legend="Vax Record Card">
+								<p-fieldset legend="Vaccination Details">
 								<div class="card">
 									<div class="p-fluid" style="padding-left: .5rem;">
 										<div class="p-field p-grid">
