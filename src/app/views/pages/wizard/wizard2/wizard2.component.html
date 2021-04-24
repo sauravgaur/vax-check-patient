@@ -5,8 +5,8 @@
 			<div class="wizard-nav border-right py-8 px-8 py-lg-20 px-lg-10">
 				<!--begin: Form Wizard Nav -->
 
-				<button style="margin-bottom: 1rem;" pButton pRipple type="button" label="HELP"
-					(click)="changeGuidMe()" class="p-button-raised p-button-success p-button-rounded"></button>
+				<button style="margin-bottom: 1rem;" pButton pRipple type="button" label="HELP" (click)="changeGuidMe()"
+					class="p-button-raised p-button-success p-button-rounded"></button>
 				<div class="wizard-steps">
 					<a class="wizard-step first-element" href="javascript:;" data-wizard-type="step"
 						data-wizard-state="current">
@@ -395,11 +395,14 @@
 											<mat-error *ngIf="stepTwo && isControlHasError('orgDose2', 'required')">
 												<strong>Required field</strong>
 											</mat-error>
-											<mat-error *ngIf="patientForm.value.orgDose2 && isgreatedThan('orgDose2','orgDose1')">
+											<mat-error
+												*ngIf="patientForm.value.orgDose2 && isgreatedThan('orgDose2','orgDose1')">
 												<strong>Date of Dose 2 needs to be after that of dose 1</strong>
 											</mat-error>
-											<mat-error *ngIf="patientForm.value.orgDose2 && isMinimumGap('orgDose2','orgDose1')">
-												<strong>The interval between Dose 1 and Dose 2 should be minimum of {{gapDays}} days</strong>
+											<mat-error
+												*ngIf="patientForm.value.orgDose2 && isMinimumGap('orgDose2','orgDose1')">
+												<strong>The interval between Dose 1 and Dose 2 should be minimum of
+													{{gapDays}} days</strong>
 											</mat-error>
 										</div>
 									</div>
@@ -538,7 +541,9 @@ medica sobre las vacunas que ha recibido.
 													{{ imageToTextResponse.secondDose }}
 												</td>
 												<td>
-													{{ imageToTextResponse.secondDoseDate ? (imageToTextResponse.secondDoseDate | date:'MMM dd, yyyy') : imageToTextResponse.secondDoseDate  }}
+													{{ imageToTextResponse.secondDoseDate ?
+													(imageToTextResponse.secondDoseDate | date:'MMM dd, yyyy') :
+													imageToTextResponse.secondDoseDate }}
 												</td>
 												<td>
 													<editable *ngIf="secondClinicName" data-testid="sample-input-click"
@@ -616,11 +621,15 @@ medica sobre las vacunas que ha recibido.
 										</mat-tab>
 									</mat-tab-group>
 									<mat-checkbox class="example-margin" [(ngModel)]="consent"
-										[ngModelOptions]="{standalone: true}">I hereby provide my consent to release my
-										medical records in a secure manner to this service which provides quick and
-										secure access to my health information as a verifiable document.
-										<br>
-										I understand and agree that access to VaxCheck is subject to Terms & conditions.
+										[ngModelOptions]="{standalone: true}">I hereby consent to the release of my
+										medical records which includes COVID vaccination information to VAXCheck, a
+										service of FirstVitals Health and Wellness Inc, for verification and
+										certification purposes.
+										I understand that this consent will continue until revoked.
+										I may revoke this consent by written request at any time by contacting VAXCheck.
+										I understand that the revocation will not apply to the information that has
+										already been released. The information will only be used, disclosed, and shared
+										by VAXCheck as permitted in the VAXCheck’s Privacy Policy statement.
 									</mat-checkbox>
 
 									<div *ngIf="consentNotChecked == true && !consent" style="color: red;">Please agree
@@ -636,9 +645,10 @@ medica sobre las vacunas que ha recibido.
 
 							<!--begin: Form Wizard Step 4-->
 							<div class="pb-5" data-wizard-type="step-content">
-								<p-fieldset legend="Supplemental documents">
+								<p-fieldset legend="COVID Appointment Email Confirmation">
 									<div class="">
-										<label for="txt_appointment">Text of Appointment email/s can be copied here
+										<label for="txt_appointment">If you received an email confirmation for your
+											vaccination appointment, please copy and paste the email here.
 										</label>
 										<textarea id="txt_appointment"
 											style="width: 100%;border: 1px solid #ced4da;"></textarea>
@@ -647,8 +657,9 @@ medica sobre las vacunas que ha recibido.
 										<span style="margin: 25px 10px;">---------------------- OR
 											---------------------- </span>
 									</div>
-									<h4>Upload supplement Documents</h4>
-									<div class="p-d-flex p-ai-start">
+									<h4>Upload Supplemental Documents</h4>
+									Additional supporting vaccination documents can be uploaded here
+									<div class="p-d-flex p-ai-start" style="margin-top: 1rem;">
 										<div class="p-mr-2">
 											<!-- <input id="singleFile" type="file" style="display: none;" multiple="multiple" [fileUploadInputFor]="fileUploadQueue" /> -->
 											<div [fileUploadInputFor]="fileUploadQueue" class="upload-drop-zone">
@@ -728,7 +739,7 @@ medica sobre las vacunas que ha recibido.
 											</div>
 											<div class="p-field p-grid">
 												<label for="lastname4" class="p-col-12 p-mb-2 p-md-2 p-mb-md-0"
-													style="color: gray;">Travel Effective date:</label>
+													style="color: gray;">Effective date:</label>
 												<div class="p-col-12 p-md-10">
 													<b
 														*ngIf="imageToTextResponse && imageToTextResponse.isVaXCompleted && imageToTextResponse.secondDoseEffectiveDate">{{imageToTextResponse.secondDoseEffectiveDate}}</b>
@@ -740,7 +751,7 @@ medica sobre las vacunas que ha recibido.
 											</div>
 											<div class="p-field p-grid">
 												<label for="firstname4" class="p-col-12 p-mb-2 p-md-2 p-mb-md-0"
-													style="color: gray;">Travel Expiration Date :</label>
+													style="color: gray;">Expiration Date :</label>
 												<div class="p-col-12 p-md-10">
 													<b
 														*ngIf="imageToTextResponse && imageToTextResponse.isVaXCompleted && imageToTextResponse.secondDoseExpireDate">{{imageToTextResponse.secondDoseExpireDate}}</b>
