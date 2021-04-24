@@ -310,7 +310,7 @@ export class Wizard2Component implements OnInit, AfterViewInit {
     private trigger: Subject<void> = new Subject<void>();
     tooltipJson: any = {
         contactNumber: 'Prefered mobile phone number',
-        resedenceItem: 'Are you a permanent Hawwaii resident?',
+        resedenceItem: 'Are you a permanent Hawaii resident?',
         orgName: `Who organized the vaccination?<br> This is autocomplete text.<br> Type at-least 1 alphabet.`,
         orgAddress1: 'Address of the Organization',
         takeSnapShot: 'Take a picture of you vaccination card'
@@ -439,6 +439,8 @@ export class Wizard2Component implements OnInit, AfterViewInit {
     yearRange: any;
     consent = false;
     consentNotChecked = false;
+    maxDate = new Date();
+    gapDays = 0;
     constructor(
         private cd: ChangeDetectorRef,
         private http: HttpClient,
@@ -771,7 +773,8 @@ export class Wizard2Component implements OnInit, AfterViewInit {
             } else if (wizardObj.currentStep === 2) {
                 this.stepOne = false;
                 this.stepTwo = true;
-                this.patientForm.get('orgName').setValidators(this.patientForm.get('resedenceItem').value === 'YES' ? Validators.required : null);
+                // this.patientForm.get('orgName').setValidators(this.patientForm.get('resedenceItem').value === 'YES' ? Validators.required : null);
+                this.patientForm.get('orgName').setValidators(Validators.required);
                 this.patientForm.get('orgName').updateValueAndValidity();
                 this.patientForm.get('orgAddress1').setValidators(Validators.required);
                 this.patientForm.get('orgAddress1').updateValueAndValidity();
@@ -791,6 +794,9 @@ export class Wizard2Component implements OnInit, AfterViewInit {
 
                 this.patientForm.get('orgDose1').setValidators(Validators.required);
                 this.patientForm.get('orgDose1').updateValueAndValidity();
+
+                this.patientForm.get('orgDose2').setValidators((this.patientForm.get('orgManufacturer').value && this.patientForm.get('orgManufacturer').value != 'Johnson \& Johnson') ? Validators.required : null);
+                this.patientForm.get('orgDose2').updateValueAndValidity();
             }  else if (wizardObj.currentStep === 3) {
                 this.showWebcam = false;
                 if (this.consent === false) {
@@ -888,10 +894,10 @@ export class Wizard2Component implements OnInit, AfterViewInit {
                 this.patientForm.get('islandItem').setErrors(null);
                 this.patientForm.get('islandItem').updateValueAndValidity();
 
-                this.patientForm.get('orgName').clearValidators();
-                this.patientForm.get('orgName').setValidators(null);
-                this.patientForm.get('orgName').setErrors(null);
-                this.patientForm.get('orgName').updateValueAndValidity();
+                // this.patientForm.get('orgName').clearValidators();
+                // this.patientForm.get('orgName').setValidators(null);
+                // this.patientForm.get('orgName').setErrors(null);
+                // this.patientForm.get('orgName').updateValueAndValidity();
             } else {
                 this.patientForm.get('resedenceItem').setValidators(Validators.required);
                 this.patientForm.get('resedenceItem').updateValueAndValidity();
@@ -899,8 +905,8 @@ export class Wizard2Component implements OnInit, AfterViewInit {
                 this.patientForm.get('islandItem').setValidators(Validators.required);
                 this.patientForm.get('islandItem').updateValueAndValidity();
 
-                this.patientForm.get('orgName').setValidators(Validators.required);
-                this.patientForm.get('orgName').updateValueAndValidity();
+                // this.patientForm.get('orgName').setValidators(Validators.required);
+                // this.patientForm.get('orgName').updateValueAndValidity();
             }
             this.patientForm.updateValueAndValidity();
         });
@@ -908,7 +914,14 @@ export class Wizard2Component implements OnInit, AfterViewInit {
         this.patientForm.get('orgManufacturer').valueChanges.subscribe(selectedValue => {
             if (selectedValue == 'Johnson \& Johnson' || !selectedValue){
                 this.patientForm.controls.orgDose2.setValue(null);
+                this.patientForm.controls.orgDose2.setErrors(null);
+                this.patientForm.controls.orgDose2.setValidators(null);
                 this.patientForm.controls.orgDose2.updateValueAndValidity();
+            } else {
+                this.patientForm.get('orgDose2').setValidators(Validators.required);
+                this.patientForm.controls.orgDose2.markAsUntouched();
+                // this.patientForm.controls.orgDose2.markAsPristine
+                this.patientForm.get('orgDose2').updateValueAndValidity();
             }
         });
 
@@ -943,6 +956,23 @@ export class Wizard2Component implements OnInit, AfterViewInit {
     isgreatedThan(controlName: string, compareCtrlName: string): boolean {
         return this.patientForm.controls[controlName].value < this.patientForm.controls[compareCtrlName].value;
     }
+    isMinimumGap(controlName: string, compareCtrlName: string): boolean {
+        if(this.patientForm.get('orgManufacturer').value === 'Moderna'){
+            this.gapDays = 26;
+        } else if(this.patientForm.get('orgManufacturer').value === 'Pfizer'){
+            this.gapDays = 20;
+        }
+        // console.log('moment:', moment(this.patientForm.get('orgDose1').value, 'YYYY-MM-DD'))
+        // console.log('moment:', moment(this.patientForm.get('orgDose1').value).add(this.gapDays, 'day'))
+        console.log('moment add days:', this.addDays(moment(this.patientForm.get('orgDose1').value, 'YYYY-MM-DD').toDate(), this.gapDays))
+        return this.patientForm.controls[controlName].value < this.addDays(moment(this.patientForm.controls[compareCtrlName].value, 'YYYY-MM-DD').toDate(), this.gapDays);
+    }
+
+    addDays(date: Date, days: number): Date {
+        date.setDate(date.getDate() + days);
+        return date;
+    }
+
     onFileSelect(event) {
         console.log(event.target.files);
         this.selectedFiles = event.target.files;
