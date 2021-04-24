@@ -5,7 +5,7 @@
 			<div class="wizard-nav border-right py-8 px-8 py-lg-20 px-lg-10">
 				<!--begin: Form Wizard Nav -->
 
-				<button style="margin-bottom: 1rem;" pButton pRipple type="button" label="Guid Me again!"
+				<button style="margin-bottom: 1rem;" pButton pRipple type="button" label="HELP"
 					(click)="changeGuidMe()" class="p-button-raised p-button-success p-button-rounded"></button>
 				<div class="wizard-steps">
 					<a class="wizard-step first-element" href="javascript:;" data-wizard-type="step"
@@ -20,7 +20,7 @@
 									Traveler Information
 								</div>
 								<div class="wizard-desc">
-									Complete Registration Information
+									Complete Registration
 								</div>
 							</div>
 						</div>
@@ -36,7 +36,7 @@
 									Vaccination Site
 								</div>
 								<div class="wizard-desc">
-									Where was your vaccination Location
+									Where did you get vaccinated
 								</div>
 							</div>
 						</div>
@@ -85,7 +85,7 @@
 						<form class="form" id="kt_form" novalidate="novalidate" [formGroup]="patientForm">
 							<!--begin: Form Wizard Step 1-->
 							<div class="pb-5" data-wizard-type="step-content" data-wizard-state="current">
-								<h4 class="mb-10 font-weight-bold text-dark">Enter Traveler Basic Info</h4>
+								<h4 class="mb-10 font-weight-bold text-dark">Traveler Info</h4>
 								<div class="kt-form__section kt-form__section--first">
 									<div class="p-fluid p-formgrid p-grid">
 										<div class="p-field p-col-12 p-md-4">
@@ -180,7 +180,7 @@
 											</mat-error>
 										</div>
 										<div class="p-field p-col-12 p-md-4">
-											<label for="user_contact">Contact Number <span
+											<label for="user_contact">Phone Number <span
 													class="cls-requiered">*</span></label>
 											<p-inputMask mask="9999999999" minLength="10" maxLength="10"
 												[tooltip]="tooltipJson.contactNumber" [trigger]="'click'"
@@ -224,7 +224,7 @@
 											[trigger]="'click'" [hideDelayTouchscreen]="3000" [hide-delay]="3000"
 											[animation-duration]="500"
 											*ngIf="patientForm.value.state && patientForm.value.state==='HI'">
-											<label for="user_state">Are you a Hawaii “Kama’aina” Resident<span
+											<label for="user_state">Are you a Hawaii Resident<span
 													class="cls-requiered">*</span></label>
 											<!-- <input id="user_state" type="text" pInputText class="p-inputtext-sm">  -->
 											<p-selectButton [options]="resedence_item" formControlName="resedenceItem"
@@ -256,8 +256,8 @@
 
 							<!--begin: Form Wizard Step 2-->
 							<div class="pb-5" data-wizard-type="step-content">
-								<h4 class="mb-10 font-weight-bold text-dark">Vaccination Center Details</h4>
-								<p-fieldset legend="Organization details">
+								<h4 class="mb-10 font-weight-bold text-dark">Vaccination Details</h4>
+								<p-fieldset legend="Vaccinator">
 									<div class="p-fluid p-formgrid p-grid">
 										<div class="p-field p-col-12 p-md-4">
 											<!-- *ngIf="patientForm.value.resedenceItem && patientForm.value.resedenceItem==='YES'" -->
@@ -357,10 +357,10 @@
 										</div>
 									</div>
 								</p-fieldset>
-								<p-fieldset legend="Dosing questions" [style.margin-top]="'20px'">
+								<p-fieldset legend="Vaccine Info" [style.margin-top]="'20px'">
 									<div class="p-fluid p-formgrid p-grid">
 										<div class="p-field p-col-12 p-md-4">
-											<label for="manufacturer_name">Product/Manufacturer<span
+											<label for="manufacturer_name">Vaccine manufacturer<span
 													class="cls-requiered">*</span></label>
 											<p-dropdown inputId="manufacturer" [options]="manufacturerList"
 												formControlName="orgManufacturer" [filter]="true" filterBy="label"
@@ -426,7 +426,7 @@
 											padding-top: 1rem;
 											padding-left: 1rem;">
 												<div class="p-col-8">
-													Covid - 19 Vaccination Record Card
+													Covid-19 Vaccination Record Card
 												</div>
 												<div class="p-col-4"></div>
 											</div>
@@ -504,7 +504,7 @@ medica sobre las vacunas que ha recibido.
 												<th style="width: 30%;">Healthcare Professional or Clinic Site</th>
 											</tr>
 											<tr>
-												<td style="background: lightgray;">1st Dose Covid - 19</td>
+												<td style="background: lightgray;">1st Dose Covid-19</td>
 												<td>
 													{{ imageToTextResponse.firstDose }}
 												</td>
@@ -533,12 +533,12 @@ medica sobre las vacunas que ha recibido.
 											</tr>
 											<tr
 												*ngIf="imageToTextResponse && imageToTextResponse.secondDose!=='Johnson & Johnson'">
-												<td style="background: lightgray;">2nd Dose Covid - 19</td>
+												<td style="background: lightgray;">2nd Dose Covid-19</td>
 												<td>
 													{{ imageToTextResponse.secondDose }}
 												</td>
 												<td>
-													{{ imageToTextResponse.secondDoseDate }}
+													{{ imageToTextResponse.secondDoseDate ? (imageToTextResponse.secondDoseDate | date:'MMM dd, yyyy') : imageToTextResponse.secondDoseDate  }}
 												</td>
 												<td>
 													<editable *ngIf="secondClinicName" data-testid="sample-input-click"

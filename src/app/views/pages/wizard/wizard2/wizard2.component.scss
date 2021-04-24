@@ -124,6 +124,10 @@ td {
   width: inherit !important
 }
 
+:host ::ng-deep .mat-checkbox-layout .mat-checkbox-label {
+  white-space: initial !important;
+}
+
 // [type="file"] {
 //   border: 0;
 //   clip: rect(0, 0, 0, 0);

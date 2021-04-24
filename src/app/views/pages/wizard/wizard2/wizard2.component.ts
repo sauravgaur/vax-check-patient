@@ -311,7 +311,7 @@ export class Wizard2Component implements OnInit, AfterViewInit {
     tooltipJson: any = {
         contactNumber: 'Prefered mobile phone number',
         resedenceItem: 'Are you a permanent Hawaii resident?',
-        orgName: `Who organized the vaccination?<br> This is autocomplete text.<br> Type at-least 1 alphabet.`,
+        orgName: `Who organized the vaccination?<br> This is autocomplete text.<br> Type at least 1 alphabet.`,
         orgAddress1: 'Address of the Organization',
         takeSnapShot: 'Take a picture of you vaccination card'
     };
@@ -524,7 +524,7 @@ export class Wizard2Component implements OnInit, AfterViewInit {
 
         this.sex_item = [{ label: 'Male', value: 'M' },
         { label: 'Female', value: 'F' },
-        { label: 'Unknown', value: 'U' }];
+        { label: 'Non-Binary', value: 'U' }];
 
         this.series_item = [{ label: 'Yes', value: 'YES' },
         { label: 'No', value: 'NO' },
