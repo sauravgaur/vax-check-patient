@@ -862,12 +862,12 @@ export class Wizard2Component implements OnInit, AfterViewInit {
                 this.firstInputText = this.patientForm.get('firstName').value;
                 this.firstNameInputControl.setValue(this.firstInputText);
 
-                this.firstClinicName = this.patientForm.get('orgDose1').value ? this.patientForm.get('orgName').value : '';
+                this.firstClinicName = this.patientForm.get('orgDose1').value ? this.patientForm.get('orgName').value.name : '';
                 this.imageToTextResponse.firstDoseDate = this.patientForm.get('orgDose1').value ? moment(this.patientForm.get('orgDose1').value, 'YYYY-MM-DD').toDate() : null;
                 this.firstClinicNameInputControl.setValue(this.firstClinicName);
 
                 this.imageToTextResponse.secondDoseDate = this.patientForm.get('orgDose2').value ? moment(this.patientForm.get('orgDose2').value, 'YYYY-MM-DD').toDate() : null;
-                this.secondClinicName = this.patientForm.get('orgDose2').value ? this.patientForm.get('orgName').value : '';
+                this.secondClinicName = this.patientForm.get('orgDose2').value ? this.patientForm.get('orgName').value.name : '';
                 this.secondClinicNameInputControl.setValue(this.secondClinicName);
 
                 this.imageToTextResponse.firstDose = this.patientForm.get('orgManufacturer').value;

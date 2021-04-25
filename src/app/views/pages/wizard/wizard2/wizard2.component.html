@@ -373,7 +373,7 @@
 											</mat-error>
 										</div>
 										<div class="p-field p-col-12 p-md-4">
-											<label for="dose1">Date of Dose {{(patientForm.value.orgManufacturer &&
+											<label for="dose1">Date of Dose(s) {{(patientForm.value.orgManufacturer &&
 												patientForm.value.orgManufacturer != 'Johnson \& Johnson') ? '1' :
 												''}}<span class="cls-requiered">*</span></label>
 											<p-calendar [showIcon]="true" inputId="icon" formControlName="orgDose1"
@@ -386,7 +386,7 @@
 										</div>
 										<div class="p-field p-col-12 p-md-4"
 											*ngIf="(patientForm.value.orgManufacturer && patientForm.value.orgManufacturer != 'Johnson \& Johnson')">
-											<label for="dose2">Date of Dose 2<span
+											<label for="dose2">Date of Dose(s) 2<span
 													class="cls-requiered">*</span></label>
 											<p-calendar [showIcon]="true" inputId="icon" formControlName="orgDose2"
 												required [monthNavigator]="true" [yearNavigator]="true"
@@ -416,7 +416,7 @@
 								<h4 class="mb-10 font-weight-bold text-dark">Upload Vax-Card</h4>
 								<div>
 									<p-card
-										[style]="{'width': '45rem', 'background': 'rgb(243 246 249)', 'margin-top': '2rem'}"
+										[style]="{'width': '55rem', 'background': 'rgb(243 246 249)', 'margin-top': '2rem'}"
 										tooltip="Your vaccination card should look like this"
 										[hideDelayTouchscreen]="3000" [hide-delay]="3000" [animation-duration]="500"
 										styleClass="vaxCard" *ngIf="lastInputText && firstInputText">
@@ -497,14 +497,31 @@ medica sobre las vacunas que ha recibido.
 													</editable>
 												</div>
 											</div>
+											<div class="p-col">
+												<div
+													style="font-style: italic;padding-bottom: .5em;font-weight: bold; padding-left: .2em;">
+													Middle Name</div>
+												<div class="box p-shadow-3">
+													{{ patientForm.value.middleName }}
+												</div>
 
+											</div>
+											<div class="p-col">
+												<div
+													style="font-style: italic;padding-bottom: .5em;font-weight: bold; padding-left: .2em;">
+													DOB
+												</div>
+												<div class="box p-shadow-3">
+													{{ patientForm.value.dob | date:'MMM dd, yyyy' }}
+												</div>
+											</div>
 										</div>
 										<table class="doseTable">
 											<tr style="background: lightgray; text-align: center;">
 												<th style="width: 25%;">Vaccine</th>
-												<th style="width: auto;">Product Name / Manufacturer<br>Lot Number</th>
+												<th style="width: 30%;">Product Name / Manufacturer<br>Lot Number</th>
 												<th style="width: 14%;">Date</th>
-												<th style="width: 30%;">Healthcare Professional or Clinic Site</th>
+												<th style="width: auto;">Healthcare Professional or Clinic Site</th>
 											</tr>
 											<tr>
 												<td style="background: lightgray;">1st Dose Covid-19</td>
@@ -518,7 +535,7 @@ medica sobre las vacunas que ha recibido.
 														(cancel)="cancelSingleField('firstClinicName', 'firstClinicNameInputControl')">
 														<ng-template viewMode>
 															<div style="padding-left: .5em; padding-right: .5em;">
-																{{ firstClinicName.name}} <i
+																{{ firstClinicName}} <i
 																	class="kt-nav__link-icon flaticon2-pen text-primary"
 																	style="    float: right;"></i>
 															</div>
@@ -552,7 +569,7 @@ medica sobre las vacunas que ha recibido.
 														(cancel)="cancelSingleField('secondClinicName', 'secondClinicNameInputControl')">
 														<ng-template viewMode>
 															<div style="padding-left: .5em; padding-right: .5em;">
-																{{ secondClinicName.name }} <i
+																{{ secondClinicName }} <i
 																	class="kt-nav__link-icon flaticon2-pen text-primary"
 																	style="    float: right;"></i>
 															</div>
@@ -620,17 +637,21 @@ medica sobre las vacunas que ha recibido.
 											</div>
 										</mat-tab>
 									</mat-tab-group>
-									<mat-checkbox class="example-margin" [(ngModel)]="consent"
-										[ngModelOptions]="{standalone: true}">I hereby consent to the release of my
-										medical records which includes COVID vaccination information to VAXCheck, a
-										service of FirstVitals Health and Wellness Inc, for verification and
-										certification purposes.
-										I understand that this consent will continue until revoked.
-										I may revoke this consent by written request at any time by contacting VAXCheck.
-										I understand that the revocation will not apply to the information that has
-										already been released. The information will only be used, disclosed, and shared
-										by VAXCheck as permitted in the VAXCheck’s Privacy Policy statement.
-									</mat-checkbox>
+									<p-fieldset legend="Consent" [toggleable]="true">
+										<mat-checkbox class="example-margin" [(ngModel)]="consent"
+											[ngModelOptions]="{standalone: true}">I hereby consent to the release of my
+											medical records which includes COVID vaccination information to VAXCheck, a
+											service of FirstVitals Health and Wellness Inc, for verification and
+											certification purposes.
+											I understand that this consent will continue until revoked.
+											I may revoke this consent by written request at any time by contacting
+											VAXCheck.
+											I understand that the revocation will not apply to the information that has
+											already been released. The information will only be used, disclosed, and
+											shared
+											by VAXCheck as permitted in the VAXCheck’s Privacy Policy statement.
+										</mat-checkbox>
+									</p-fieldset>
 
 									<div *ngIf="consentNotChecked == true && !consent" style="color: red;">Please agree
 										the consent.</div>
@@ -650,8 +671,10 @@ medica sobre las vacunas que ha recibido.
 										<label for="txt_appointment">If you received an email confirmation for your
 											vaccination appointment, please copy and paste the email here.
 										</label>
-										<textarea id="txt_appointment"
-											style="width: 100%;border: 1px solid #ced4da;"></textarea>
+										<!-- <textarea id="txt_appointment"
+											style="width: 100%;border: 1px solid #ced4da;"></textarea> -->
+										<textarea [rows]="5" style="width: 100%; min-height: 8rem;" pInputTextarea
+											autoResize="autoResize"></textarea>
 									</div>
 									<div class="p-d-flex p-ai-start">
 										<span style="margin: 25px 10px;">---------------------- OR
