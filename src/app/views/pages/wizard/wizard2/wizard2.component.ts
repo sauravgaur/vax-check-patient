@@ -441,6 +441,7 @@ export class Wizard2Component implements OnInit, AfterViewInit {
     consentNotChecked = false;
     maxDate = new Date();
     gapDays = 0;
+    submitButton = 'Submit'
     constructor(
         private cd: ChangeDetectorRef,
         private http: HttpClient,
@@ -797,6 +798,13 @@ export class Wizard2Component implements OnInit, AfterViewInit {
 
                 this.patientForm.get('orgDose2').setValidators((this.patientForm.get('orgManufacturer').value && this.patientForm.get('orgManufacturer').value != 'Johnson \& Johnson') ? Validators.required : null);
                 this.patientForm.get('orgDose2').updateValueAndValidity();
+
+                // const orgName = this.patientForm.get('orgName').value;
+                // if (!orgName || orgName.toUpperCase().includes('QUEENS')){
+                //     this.submitButton = 'Submit'
+                // } else if(orgName.toUpperCase() === ('TIMES PHARMACY')) {
+                //     this.submitButton = 'Start Verification'
+                // } else this.submitButton = `Verify with ${orgName}`
             }  else if (wizardObj.currentStep === 3) {
                 this.showWebcam = false;
                 if (this.consent === false) {
@@ -925,7 +933,23 @@ export class Wizard2Component implements OnInit, AfterViewInit {
             }
         });
 
+        this.patientForm.get('orgName').valueChanges.subscribe((selectedValue: any) => {
+            if (!selectedValue || selectedValue.value.toUpperCase().includes('QUEEN')){
+                this.submitButton = 'Submit'
+            } else if(selectedValue.value.toUpperCase() === ('TIMES PHARMACY')) {
+                this.submitButton = 'Start Verification'
+            } else this.submitButton = `Verify with ${selectedValue.value}`
+        });
+
     }
+
+    // orgChange(selectedValue){
+    //     if (!selectedValue || selectedValue.toUpperCase().includes('QUEENS')){
+    //         this.submitButton = 'Submit'
+    //     } else if(selectedValue.toUpperCase() === ('TIMES PHARMACY')) {
+    //         this.submitButton = 'Start Verification'
+    //     } else this.submitButton = `Verify with ${selectedValue}`
+    // }
 
     hasFormError(formGroup, isFormSubmitted, fieldName, errorType) {
         const formControl = formGroup.get(fieldName);
