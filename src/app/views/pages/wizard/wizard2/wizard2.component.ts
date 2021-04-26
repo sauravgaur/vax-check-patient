@@ -442,6 +442,10 @@ export class Wizard2Component implements OnInit, AfterViewInit {
     maxDate = new Date();
     gapDays = 0;
     submitButton = 'Submit'
+    doseReceived: number;
+    seriesComplete = 'No';
+    effectiveDate: Date;
+    expirationDate: any;
     constructor(
         private cd: ChangeDetectorRef,
         private http: HttpClient,
@@ -863,6 +867,25 @@ export class Wizard2Component implements OnInit, AfterViewInit {
                 // }
             }, 500);
             if (wizardObj.currentStep === 3) {
+
+                this.doseReceived = this.patientForm.get('orgDose2').value ? 2 : 1
+                this.seriesComplete = (this.patientForm.get('orgManufacturer').value !== 'Johnson \& Johnson' && this.doseReceived === 2) ? 'YES' : 'NO';
+                const doseDate = this.patientForm.get('orgDose2').value ? this.patientForm.get('orgDose2').value : this.patientForm.get('orgDose1').value;
+                let effectiveAddDays = 0;
+                let expirationAddDays = 0;
+                if(this.patientForm.get('orgManufacturer').value === 'Johnson \& Johnson'){
+                    effectiveAddDays = 10;
+                    expirationAddDays = 30;
+                } else if(this.patientForm.get('orgManufacturer').value !== 'Johnson \& Johnson'){
+                    effectiveAddDays = 10;
+                    expirationAddDays = 40;
+                } else {
+                    effectiveAddDays = 10;
+                    expirationAddDays = 50;
+                }
+                this.effectiveDate = this.addDays(moment(doseDate, 'YYYY-MM-DD').toDate(), effectiveAddDays);
+                this.expirationDate = this.addDays(moment(doseDate, 'YYYY-MM-DD').toDate(), expirationAddDays);
+
                 this.imageToTextResponse = {} as IImageToText;
                 this.lastInputText = this.patientForm.get('lastName').value;
                 this.lastNameInputControl.setValue(this.lastInputText);

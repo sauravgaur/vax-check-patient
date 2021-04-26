@@ -651,10 +651,10 @@ medica sobre las vacunas que ha recibido.
 											shared
 											by VAXCheck as permitted in the VAXCheck’s Privacy Policy statement.
 										</mat-checkbox>
+										<div *ngIf="consentNotChecked == true && !consent" style="color: red;">Please agree
+											the consent.</div>
 									</p-fieldset>
 
-									<div *ngIf="consentNotChecked == true && !consent" style="color: red;">Please agree
-										the consent.</div>
 								</div>
 								<p-divider></p-divider>
 								<div class="p-grid">
@@ -733,7 +733,7 @@ medica sobre las vacunas que ha recibido.
 												<label for="firstname4" class="p-col-12 p-mb-2 p-md-2 p-mb-md-0"
 													style="color: gray;">Vaccine admin:</label>
 												<div class="p-col-12 p-md-10">
-													<b>QUEENS</b>
+													<b>{{firstClinicName}}</b>
 												</div>
 											</div>
 											<div class="p-field p-grid">
@@ -741,15 +741,14 @@ medica sobre las vacunas que ha recibido.
 													style="color: gray;">Doses received:</label>
 												<div class="p-col-12 p-md-10">
 													<b
-														*ngIf="imageToTextResponse">{{imageToTextResponse.doseRecieved}}</b>
+														*ngIf="imageToTextResponse">{{doseReceived}}</b>
 												</div>
 											</div>
 											<div class="p-field p-grid">
 												<label for="firstname4" class="p-col-12 p-mb-2 p-md-2 p-mb-md-0"
 													style="color: gray;">Series complete:</label>
 												<div class="p-col-12 p-md-10">
-													<b>{{imageToTextResponse && imageToTextResponse.isVaXCompleted?
-														'YES':'NO'}}</b>
+													<b>{{seriesComplete}}</b>
 												</div>
 											</div>
 											<div *ngIf="imageToTextResponse && !imageToTextResponse.isVaXCompleted"
@@ -757,31 +756,21 @@ medica sobre las vacunas que ha recibido.
 												<label for="firstname4" class="p-col-12 p-mb-2 p-md-2 p-mb-md-0"
 													style="color: gray;">Message:</label>
 												<div class="p-col-12 p-md-10">
-													<b>{{imageToTextResponse.vaxMsg}}</b>
+													<b>N/A</b>
 												</div>
 											</div>
 											<div class="p-field p-grid">
 												<label for="lastname4" class="p-col-12 p-mb-2 p-md-2 p-mb-md-0"
 													style="color: gray;">Effective date:</label>
 												<div class="p-col-12 p-md-10">
-													<b
-														*ngIf="imageToTextResponse && imageToTextResponse.isVaXCompleted && imageToTextResponse.secondDoseEffectiveDate">{{imageToTextResponse.secondDoseEffectiveDate}}</b>
-													<b
-														*ngIf="imageToTextResponse && imageToTextResponse.isVaXCompleted && !imageToTextResponse.secondDoseEffectiveDate && imageToTextResponse.firstDoseEffectiveDate">{{imageToTextResponse.firstDoseEffectiveDate}}</b>
-													<b
-														*ngIf="imageToTextResponse && !imageToTextResponse.isVaXCompleted">N/A</b>
+													<b>{{effectiveDate | date:'MMM dd, yyyy'}}</b>
 												</div>
 											</div>
 											<div class="p-field p-grid">
 												<label for="firstname4" class="p-col-12 p-mb-2 p-md-2 p-mb-md-0"
 													style="color: gray;">Expiration Date :</label>
 												<div class="p-col-12 p-md-10">
-													<b
-														*ngIf="imageToTextResponse && imageToTextResponse.isVaXCompleted && imageToTextResponse.secondDoseExpireDate">{{imageToTextResponse.secondDoseExpireDate}}</b>
-													<b
-														*ngIf="imageToTextResponse && imageToTextResponse.isVaXCompleted && !imageToTextResponse.secondDoseExpireDate && imageToTextResponse.firstDoseExpireDate">{{imageToTextResponse.firstDoseExpireDate}}</b>
-													<b
-														*ngIf="imageToTextResponse && !imageToTextResponse.isVaXCompleted">N/A</b>
+													<b>{{expirationDate | date:'MMM dd, yyyy'}}</b>
 												</div>
 											</div>
 										</div>
