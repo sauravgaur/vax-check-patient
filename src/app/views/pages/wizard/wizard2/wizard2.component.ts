@@ -10,7 +10,7 @@ import moment from 'moment';
 import { CdkRow } from '@angular/cdk/table';
 // label: 'Hispanic or Latino', value: '2186-5'
 
-interface IImageToText{
+interface IImageToText {
     firstName?: string;
     middleName?: string;
     lastName?: string;
@@ -447,6 +447,8 @@ export class Wizard2Component implements OnInit, AfterViewInit {
     effectiveDate: Date;
     expirationDate: any;
     orgOptions: any[];
+    previousClick = false;
+    changeStep: any;
     constructor(
         private cd: ChangeDetectorRef,
         private http: HttpClient,
@@ -650,7 +652,7 @@ export class Wizard2Component implements OnInit, AfterViewInit {
         this.initGroupedForm();
     }
 
-    changeGuidMe(){
+    changeGuidMe() {
         this.shepherdService.start();
     }
 
@@ -723,8 +725,23 @@ export class Wizard2Component implements OnInit, AfterViewInit {
             startStep: 1
         });
 
+        // var wizardEl = document.querySelector('#wizard');
+        var prevButton = document.querySelector('[data-wizard-type="action-prev"]');
+        prevButton.addEventListener('click', (wizardObj: any) => {
+            // Go back to the previouse step
+            if (this.changeStep === 2) {
+                this.patientForm.get('firstName').setValue(this.firstInputText ? this.firstInputText : this.patientForm.get('firstName').value);
+                this.patientForm.get('lastName').setValue(this.lastInputText ? this.lastInputText : this.patientForm.get('lastName').value);
+
+                this.patientForm.get('orgName').setValue(this.firstClinicName ? { name: this.firstClinicName, value: this.firstClinicName } : this.patientForm.get('orgName').value);
+            }
+
+            // wizard.goPrev();
+        });
         // Validation before going to next page
+
         wizard.on('beforeNext', (wizardObj) => {
+            console.log('before next', this.patientForm.value)
             this.isFormSubmitted = true;
             console.log('wizard obj in before next:', wizardObj, wizardObj.getStep());
             if (wizardObj.currentStep === 1) {
@@ -778,6 +795,20 @@ export class Wizard2Component implements OnInit, AfterViewInit {
                 this.patientForm.get('orgDose1').setValidators(null);
                 this.patientForm.get('orgDose1').setErrors(null);
 
+                // if (wizardObj.currentStep === 2) {
+                // if (!this.lastInputText && !this.firstInputText) {
+                this.lastInputText = this.patientForm.get('lastName').value;
+                this.lastNameInputControl.setValue(this.lastInputText);
+
+                this.firstInputText = this.patientForm.get('firstName').value;
+                this.firstNameInputControl.setValue(this.firstInputText);
+                // } else {
+                //     this.patientForm.get('firstName').setValue(this.firstInputText);
+                //     this.patientForm.get('lastName').setValue(this.lastInputText);
+                // }
+
+                // }
+
             } else if (wizardObj.currentStep === 2) {
                 this.stepOne = false;
                 this.stepTwo = true;
@@ -806,28 +837,31 @@ export class Wizard2Component implements OnInit, AfterViewInit {
                 this.patientForm.get('orgDose2').setValidators((this.patientForm.get('orgManufacturer').value && this.patientForm.get('orgManufacturer').value != 'Johnson \& Johnson') ? Validators.required : null);
                 this.patientForm.get('orgDose2').updateValueAndValidity();
 
+                this.firstClinicName = this.patientForm.get('orgDose1').value ? this.patientForm.get('orgName').value.name : '';
+                this.firstClinicNameInputControl.setValue(this.firstClinicName);
+                this.secondClinicName = this.patientForm.get('orgDose2').value ? this.patientForm.get('orgName').value.name : '';
+                this.secondClinicNameInputControl.setValue(this.secondClinicName);
                 // const orgName = this.patientForm.get('orgName').value;
                 // if (!orgName || orgName.toUpperCase().includes('QUEENS')){
                 //     this.submitButton = 'Submit'
                 // } else if(orgName.toUpperCase() === ('TIMES PHARMACY')) {
                 //     this.submitButton = 'Start Verification'
                 // } else this.submitButton = `Verify with ${orgName}`
-            }  else if (wizardObj.currentStep === 3) {
+            } else if (wizardObj.currentStep === 3) {
                 this.showWebcam = false;
-                if (this.consent === false) {
+                // this.consentNotChecked == true;
+                if (!this.firstInputText || !this.lastInputText || !this.firstClinicName || !this.consent) {
                     this.consentNotChecked = true;
                     wizardObj.stop();
                     this.cd.markForCheck();
                     return;
                 }
-            }
-            else if (wizardObj.currentStep === 4) {
-                this.consentNotChecked == true;
-                if (!this.firstInputText || !this.lastInputText || !this.firstClinicName || !this.consent) {
-                    wizardObj.stop();
-                    this.cd.markForCheck();
-                    return;
-                }
+                // if (this.consent === false) {
+                //     this.consentNotChecked = true;
+                //     wizardObj.stop();
+                //     this.cd.markForCheck();
+                //     return;
+                // }
             }
             this.consentNotChecked = false;
             this.patientForm.updateValueAndValidity();
@@ -863,6 +897,7 @@ export class Wizard2Component implements OnInit, AfterViewInit {
 
         // Change event
         wizard.on('change', (wizardObj) => {
+            console.log('Change', this.patientForm.value)
             console.log('wizardObj--> ', wizardObj);
 
             setTimeout(() => {
@@ -877,6 +912,7 @@ export class Wizard2Component implements OnInit, AfterViewInit {
                 // }
                 // }
             }, 500);
+            this.changeStep = wizardObj.currentStep;
             if (wizardObj.currentStep === 3) {
 
                 this.doseReceived = this.patientForm.get('orgDose2').value ? 2 : 1
@@ -884,10 +920,10 @@ export class Wizard2Component implements OnInit, AfterViewInit {
                 const doseDate = this.patientForm.get('orgDose2').value ? this.patientForm.get('orgDose2').value : this.patientForm.get('orgDose1').value;
                 let effectiveAddDays = 0;
                 let expirationAddDays = 0;
-                if(this.patientForm.get('orgManufacturer').value === 'Johnson \& Johnson'){
+                if (this.patientForm.get('orgManufacturer').value === 'Johnson \& Johnson') {
                     effectiveAddDays = 10;
                     expirationAddDays = 70;
-                } else if(this.patientForm.get('orgManufacturer').value !== 'Johnson \& Johnson'){
+                } else if (this.patientForm.get('orgManufacturer').value !== 'Johnson \& Johnson') {
                     effectiveAddDays = 10;
                     expirationAddDays = 70;
                 } else {
@@ -900,29 +936,19 @@ export class Wizard2Component implements OnInit, AfterViewInit {
                 this.expirationDate = this.addDays(moment(this.effectiveDate, 'YYYY-MM-DD').toDate(), expirationAddDays);
 
                 this.imageToTextResponse = {} as IImageToText;
-                this.lastInputText = this.patientForm.get('lastName').value;
-                this.lastNameInputControl.setValue(this.lastInputText);
 
-                this.firstInputText = this.patientForm.get('firstName').value;
-                this.firstNameInputControl.setValue(this.firstInputText);
-
-                this.firstClinicName = this.patientForm.get('orgDose1').value ? this.patientForm.get('orgName').value.name : '';
                 this.imageToTextResponse.firstDoseDate = this.patientForm.get('orgDose1').value ? moment(this.patientForm.get('orgDose1').value, 'YYYY-MM-DD').toDate() : null;
-                this.firstClinicNameInputControl.setValue(this.firstClinicName);
-
                 this.imageToTextResponse.secondDoseDate = this.patientForm.get('orgDose2').value ? moment(this.patientForm.get('orgDose2').value, 'YYYY-MM-DD').toDate() : null;
-                this.secondClinicName = this.patientForm.get('orgDose2').value ? this.patientForm.get('orgName').value.name : '';
-                this.secondClinicNameInputControl.setValue(this.secondClinicName);
 
                 this.imageToTextResponse.firstDose = this.patientForm.get('orgManufacturer').value;
                 this.imageToTextResponse.secondDose = this.patientForm.get('orgManufacturer').value;
-
             }
-            if (wizardObj.currentStep === 4 || wizardObj.currentStep === 2) {
+            if (wizardObj.currentStep === 4) {
                 this.patientForm.get('firstName').setValue(this.firstInputText ? this.firstInputText : this.patientForm.get('firstName').value);
                 this.patientForm.get('lastName').setValue(this.lastInputText ? this.lastInputText : this.patientForm.get('lastName').value);
-                this.patientForm.get('orgName').setValue(this.firstClinicName ? {name: this.firstClinicName, value: this.firstClinicName} : this.patientForm.get('orgName').value);
+                this.patientForm.get('orgName').setValue(this.firstClinicName ? { name: this.firstClinicName, value: this.firstClinicName } : this.patientForm.get('orgName').value);
             }
+            this.cd.markForCheck();
         });
     }
 
@@ -961,7 +987,7 @@ export class Wizard2Component implements OnInit, AfterViewInit {
         });
 
         this.patientForm.get('orgManufacturer').valueChanges.subscribe(selectedValue => {
-            if (selectedValue == 'Johnson \& Johnson' || !selectedValue){
+            if (selectedValue == 'Johnson \& Johnson' || !selectedValue) {
                 this.patientForm.controls.orgDose2.setValue(null);
                 this.patientForm.controls.orgDose2.setErrors(null);
                 this.patientForm.controls.orgDose2.setValidators(null);
@@ -975,9 +1001,9 @@ export class Wizard2Component implements OnInit, AfterViewInit {
         });
 
         this.patientForm.get('orgName').valueChanges.subscribe((selectedValue: any) => {
-            if (!selectedValue || selectedValue.value.toUpperCase().includes('QUEEN')){
+            if (!selectedValue || selectedValue.value.toUpperCase().includes('QUEEN')) {
                 this.submitButton = 'Submit'
-            } else if(selectedValue.value.toUpperCase() === ('TIMES PHARMACY')) {
+            } else if (selectedValue.value.toUpperCase() === ('TIMES PHARMACY')) {
                 this.submitButton = 'Start Verification'
             } else this.submitButton = `Verify with ${selectedValue.value}`
         });
@@ -1022,9 +1048,9 @@ export class Wizard2Component implements OnInit, AfterViewInit {
         return this.patientForm.controls[controlName].value < this.patientForm.controls[compareCtrlName].value;
     }
     isMinimumGap(controlName: string, compareCtrlName: string): boolean {
-        if(this.patientForm.get('orgManufacturer').value === 'Moderna'){
+        if (this.patientForm.get('orgManufacturer').value === 'Moderna') {
             this.gapDays = 26;
-        } else if(this.patientForm.get('orgManufacturer').value === 'Pfizer'){
+        } else if (this.patientForm.get('orgManufacturer').value === 'Pfizer') {
             this.gapDays = 20;
         }
         // console.log('moment:', moment(this.patientForm.get('orgDose1').value, 'YYYY-MM-DD'))
@@ -1101,8 +1127,8 @@ export class Wizard2Component implements OnInit, AfterViewInit {
         this.tabIndex = event.index;
     }
 
-    toggleWebCam(e){
-        if(e.keyCode === 13){
+    toggleWebCam(e) {
+        if (e.keyCode === 13) {
             e.preventDefault();
         }
         this.showWebcam = !this.showWebcam;
