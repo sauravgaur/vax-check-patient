@@ -446,6 +446,7 @@ export class Wizard2Component implements OnInit, AfterViewInit {
     seriesComplete = 'No';
     effectiveDate: Date;
     expirationDate: any;
+    orgOptions: any[];
     constructor(
         private cd: ChangeDetectorRef,
         private http: HttpClient,
@@ -643,6 +644,8 @@ export class Wizard2Component implements OnInit, AfterViewInit {
         { name: 'Walmart', value: 'Walmart' },
         { name: 'Windward POD at Windward Community College', value: 'Windward POD at Windward Community College' },
         ];
+        this.orgOptions = this.orgs.map((x) => x.name);
+        // console.log('this.org options:', this.orgOptions);
         this.subscribeValueChanges();
         this.initGroupedForm();
     }
@@ -818,6 +821,14 @@ export class Wizard2Component implements OnInit, AfterViewInit {
                     return;
                 }
             }
+            else if (wizardObj.currentStep === 4) {
+                this.consentNotChecked == true;
+                if (!this.firstInputText || !this.lastInputText || !this.firstClinicName || !this.consent) {
+                    wizardObj.stop();
+                    this.cd.markForCheck();
+                    return;
+                }
+            }
             this.consentNotChecked = false;
             this.patientForm.updateValueAndValidity();
             console.log('patient form:', this.patientForm.value);
@@ -875,16 +886,18 @@ export class Wizard2Component implements OnInit, AfterViewInit {
                 let expirationAddDays = 0;
                 if(this.patientForm.get('orgManufacturer').value === 'Johnson \& Johnson'){
                     effectiveAddDays = 10;
-                    expirationAddDays = 30;
+                    expirationAddDays = 70;
                 } else if(this.patientForm.get('orgManufacturer').value !== 'Johnson \& Johnson'){
                     effectiveAddDays = 10;
-                    expirationAddDays = 40;
+                    expirationAddDays = 70;
                 } else {
                     effectiveAddDays = 10;
-                    expirationAddDays = 50;
+                    expirationAddDays = 70;
                 }
+                console.log('10 days', moment(doseDate, 'YYYY-MM-DD').add(10, 'days'))
+                console.log('10 weeks', moment(doseDate, 'YYYY-MM-DD').add(10, 'weeks'))
                 this.effectiveDate = this.addDays(moment(doseDate, 'YYYY-MM-DD').toDate(), effectiveAddDays);
-                this.expirationDate = this.addDays(moment(doseDate, 'YYYY-MM-DD').toDate(), expirationAddDays);
+                this.expirationDate = this.addDays(moment(this.effectiveDate, 'YYYY-MM-DD').toDate(), expirationAddDays);
 
                 this.imageToTextResponse = {} as IImageToText;
                 this.lastInputText = this.patientForm.get('lastName').value;
@@ -904,6 +917,11 @@ export class Wizard2Component implements OnInit, AfterViewInit {
                 this.imageToTextResponse.firstDose = this.patientForm.get('orgManufacturer').value;
                 this.imageToTextResponse.secondDose = this.patientForm.get('orgManufacturer').value;
 
+            }
+            if (wizardObj.currentStep === 4 || wizardObj.currentStep === 2) {
+                this.patientForm.get('firstName').setValue(this.firstInputText ? this.firstInputText : this.patientForm.get('firstName').value);
+                this.patientForm.get('lastName').setValue(this.lastInputText ? this.lastInputText : this.patientForm.get('lastName').value);
+                this.patientForm.get('orgName').setValue(this.firstClinicName ? {name: this.firstClinicName, value: this.firstClinicName} : this.patientForm.get('orgName').value);
             }
         });
     }
@@ -1083,7 +1101,10 @@ export class Wizard2Component implements OnInit, AfterViewInit {
         this.tabIndex = event.index;
     }
 
-    toggleWebCam(){
+    toggleWebCam(e){
+        if(e.keyCode === 13){
+            e.preventDefault();
+        }
         this.showWebcam = !this.showWebcam;
     }
 }

@@ -419,7 +419,7 @@
 										[style]="{'width': '55rem', 'background': 'rgb(243 246 249)', 'margin-top': '2rem'}"
 										tooltip="Your vaccination card should look like this"
 										[hideDelayTouchscreen]="3000" [hide-delay]="3000" [animation-duration]="500"
-										styleClass="vaxCard" *ngIf="lastInputText && firstInputText">
+										styleClass="vaxCard">
 										<!-- <p-card [style]="{'width': '45rem', 'background': 'rgb(243 246 249)', 'margin-top': '2rem'}"
 										styleClass="vaxCard" *ngIf="imageToTextResponse"> -->
 										<ng-template pTemplate="header">
@@ -471,6 +471,7 @@ medica sobre las vacunas que ha recibido.
 														</ng-template>
 													</editable>
 												</div>
+												<span *ngIf="lastInputText?.length === 0" style="color: red; font-weight: bold;">Required field</span>
 											</div>
 
 											<div class="p-col">
@@ -496,13 +497,14 @@ medica sobre las vacunas que ha recibido.
 														</ng-template>
 													</editable>
 												</div>
+												<span *ngIf="firstInputText?.length === 0" style="color: red; font-weight: bold;">Required field</span>
 											</div>
 											<div class="p-col">
 												<div
 													style="font-style: italic;padding-bottom: .5em;font-weight: bold; padding-left: .2em;">
 													Middle Name</div>
 												<div class="box p-shadow-3">
-													{{ patientForm.value.middleName }}
+													{{ patientForm?.value?.middleName }}
 												</div>
 
 											</div>
@@ -512,7 +514,7 @@ medica sobre las vacunas que ha recibido.
 													DOB
 												</div>
 												<div class="box p-shadow-3">
-													{{ patientForm.value.dob | date:'MMM dd, yyyy' }}
+													{{ patientForm?.value?.dob ? (patientForm.value.dob | date:'MMM dd, yyyy') : '' }}
 												</div>
 											</div>
 										</div>
@@ -526,11 +528,33 @@ medica sobre las vacunas que ha recibido.
 											<tr>
 												<td style="background: lightgray;">1st Dose Covid-19</td>
 												<td>
-													{{ imageToTextResponse.firstDose }}
+													{{ imageToTextResponse?.firstDose }}
 												</td>
-												<td>{{ imageToTextResponse.firstDoseDate | date:'MMM dd, yyyy' }}</td>
+												<td>{{ imageToTextResponse?.firstDoseDate ? (imageToTextResponse.firstDoseDate | date:'MMM dd, yyyy') : '' }}</td>
 												<td>
-													<editable data-testid="sample-input-click" class="editable"
+													<editable data-testid="sample-select" class="editable"
+														(save)="updateSingleField('firstClinicName', 'firstClinicNameInputControl')"
+														(cancel)="cancelSingleField('firstClinicName', 'firstClinicNameInputControl')">
+														<ng-template viewMode>
+															<div style="padding-left: .5em; padding-right: .5em;">
+																{{ firstClinicName }} <i
+																	class="kt-nav__link-icon flaticon2-pen text-primary"
+																	style="    float: right;"></i>
+															</div>
+														</ng-template>
+														<ng-template editMode>
+															<div class="form-group" style="">
+																<select class="form-control"
+																	data-testid="sample-select-edit"
+																	name="sample-select"
+																	[formControl]="firstClinicNameInputControl">
+																	<option *ngFor="let option of orgOptions"
+																		[value]="option">{{ option }}</option>
+																</select>
+															</div>
+														</ng-template>
+													</editable>
+													<!-- <editable data-testid="sample-input-click" class="editable"
 														(save)="updateSingleField('firstClinicName', 'firstClinicNameInputControl')"
 														(cancel)="cancelSingleField('firstClinicName', 'firstClinicNameInputControl')">
 														<ng-template viewMode>
@@ -548,19 +572,20 @@ medica sobre las vacunas que ha recibido.
 																	[formControl]="firstClinicNameInputControl" />
 															</div>
 														</ng-template>
-													</editable>
+													</editable> -->
+													<span *ngIf="firstClinicName?.length === 0" style="color: red; font-weight: bold;">Required field</span>
 												</td>
 											</tr>
 											<tr
 												*ngIf="imageToTextResponse && imageToTextResponse.secondDose!=='Johnson & Johnson'">
 												<td style="background: lightgray;">2nd Dose Covid-19</td>
 												<td>
-													{{ imageToTextResponse.secondDose }}
+													{{ imageToTextResponse?.secondDose }}
 												</td>
 												<td>
-													{{ imageToTextResponse.secondDoseDate ?
-													(imageToTextResponse.secondDoseDate | date:'MMM dd, yyyy') :
-													imageToTextResponse.secondDoseDate }}
+													{{ imageToTextResponse?.secondDoseDate ?
+													(imageToTextResponse?.secondDoseDate | date:'MMM dd, yyyy') :
+													imageToTextResponse?.secondDoseDate }}
 												</td>
 												<td>
 													<editable *ngIf="secondClinicName" data-testid="sample-input-click"
@@ -595,8 +620,11 @@ medica sobre las vacunas que ha recibido.
 											<div class="p-field p-col-12 p-md-12" style="padding: 0;border: 1px dashed #cccccc;
 									margin-top: 30px;">
 												<h4>Take snapshot from below
-													<button class="cls-actionBtn" (click)="toggleWebCam()">{{showWebcam
-														? 'Stop' : 'Start'}}</button>
+													<button pButton class="p-button-info" type="button" label="{{showWebcam
+														? 'Stop' : 'Start'}}" (click)="toggleWebCam($event)" [style.width]="'auto'"></button>
+
+													<!-- <button class="cls-actionBtn" (click)="toggleWebCam(e)">{{showWebcam
+														? 'Stop' : 'Start'}}</button> -->
 												</h4>
 												<webcam (imageCapture)="handleImage($event)" *ngIf="showWebcam"
 													[trigger]="triggerObservable"></webcam>
@@ -651,7 +679,7 @@ medica sobre las vacunas que ha recibido.
 											shared
 											by VAXCheck as permitted in the VAXCheck’s Privacy Policy statement.
 										</mat-checkbox>
-										<div *ngIf="consentNotChecked == true && !consent" style="color: red;">Please agree
+										<div *ngIf="consentNotChecked == true && !consent" style="color: red; font-weight: bold;">Please agree
 											the consent.</div>
 									</p-fieldset>
 
@@ -763,14 +791,14 @@ medica sobre las vacunas que ha recibido.
 												<label for="lastname4" class="p-col-12 p-mb-2 p-md-2 p-mb-md-0"
 													style="color: gray;">Effective date:</label>
 												<div class="p-col-12 p-md-10">
-													<b>{{effectiveDate | date:'MMM dd, yyyy'}}</b>
+													<b>{{effectiveDate ? (effectiveDate | date:'MMM dd, yyyy') : 'N/A'}}</b>
 												</div>
 											</div>
 											<div class="p-field p-grid">
 												<label for="firstname4" class="p-col-12 p-mb-2 p-md-2 p-mb-md-0"
 													style="color: gray;">Expiration Date :</label>
 												<div class="p-col-12 p-md-10">
-													<b>{{expirationDate | date:'MMM dd, yyyy'}}</b>
+													<b>{{expirationDate ? (expirationDate | date:'MMM dd, yyyy') : 'N/A'}}</b>
 												</div>
 											</div>
 										</div>
