@@ -91,22 +91,28 @@
 										<div class="p-field p-col-12 p-md-4">
 											<label for="firstname6">First name<span class="cls-requiered">*</span>
 											</label>
-											<input id="firstname6" type="text" pInputText formControlName="firstName"
+											<!-- <p-inputMask formControlName="firstName" mask="a?" class="p-inputtext-sm" required></p-inputMask> -->
+											<input id="firstname6" type="text" pInputText formControlName="firstName" pattern="^[ A-Za-z-.,]*$" oninput="validity.valid||(value=(this.value.substring(0, this.value.length - 1)))"
 												required class="p-inputtext-sm">
 											<!-- <span *ngIf="hasFormError(patientForm, isFormSubmitted, 'firstName','required')"
                                 style="color: red">This field is required</span> -->
 											<mat-error *ngIf="isControlHasError('firstName', 'required')">
 												<strong>Required field</strong>
 											</mat-error>
+											<mat-error *ngIf="isControlHasError('firstName', 'pattern')">
+												<strong>Field is not valid</strong>
+											</mat-error>
 										</div>
 										<div class="p-field p-col-12 p-md-4">
 											<label for="lastname6">Middle name</label>
 											<input id="lastname6" type="text" pInputText formControlName="middleName"
+											pattern="^[ A-Za-z-.,]*$" oninput="validity.valid||(value=(this.value.substring(0, this.value.length - 1)))"
 												class="p-inputtext-sm">
 										</div>
 										<div class="p-field p-col-12 p-md-4">
 											<label for="lastname6">Last name<span class="cls-requiered">*</span></label>
 											<input id="lastname6" type="text" pInputText formControlName="lastName"
+											pattern="^[ A-Za-z-.,]*$" oninput="validity.valid||(value=(this.value.substring(0, this.value.length - 1)))"
 												required class="p-inputtext-sm">
 											<mat-error *ngIf="isControlHasError('lastName', 'required')">
 												<strong>Required field</strong>
@@ -464,6 +470,7 @@ medica sobre las vacunas que ha recibido.
 														<ng-template editMode>
 															<div class="form-group" style="padding: unset !important">
 																<input class="form-control"
+																pattern="^[ A-Za-z-.,]*$" oninput="validity.valid||(value=(this.value.substring(0, this.value.length - 1)))"
 																	data-testid="sample-input-click-edit"
 																	placeholder="Last Name" type="text"
 																	[formControl]="lastNameInputControl" />
@@ -490,6 +497,7 @@ medica sobre las vacunas que ha recibido.
 														<ng-template editMode>
 															<div class="form-group" style="padding: unset !important">
 																<input class="form-control"
+																pattern="^[ A-Za-z-.,]*$" oninput="validity.valid||(value=(this.value.substring(0, this.value.length - 1)))"
 																	data-testid="sample-input-click-edit"
 																	placeholder="First Name" type="text"
 																	[formControl]="firstNameInputControl" />

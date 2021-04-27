@@ -747,7 +747,7 @@ export class Wizard2Component implements OnInit, AfterViewInit {
             if (wizardObj.currentStep === 1) {
                 this.stepOne = true;
                 this.stepTwo = false;
-                this.patientForm.get('firstName').setValidators(Validators.required);
+                this.patientForm.get('firstName').setValidators([Validators.required, Validators.pattern('^[ A-Za-z-.,]*$')]);
                 this.patientForm.get('lastName').setValidators(Validators.required);
                 this.patientForm.get('dob').setValidators(Validators.required);
                 this.patientForm.get('email').setValidators(Validators.email);
