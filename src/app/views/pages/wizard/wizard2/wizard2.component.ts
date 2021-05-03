@@ -313,7 +313,8 @@ export class Wizard2Component implements OnInit, AfterViewInit {
         resedenceItem: 'Are you a permanent Hawaii resident?',
         orgName: `Who organized the vaccination?<br> This is autocomplete text.<br> Type at least 1 alphabet.`,
         orgAddress1: 'Address of the Organization',
-        takeSnapShot: 'Take a picture of you vaccination card'
+        takeSnapShot: 'Take a picture of you vaccination card',
+        travelDateToHawaii: 'Trip date in Safe Travels'
     };
     model: any = {
         fname: 'John',
@@ -449,6 +450,7 @@ export class Wizard2Component implements OnInit, AfterViewInit {
     orgOptions: any[];
     previousClick = false;
     changeStep: any;
+    tab3Required = false;
     constructor(
         private cd: ChangeDetectorRef,
         private http: HttpClient,
@@ -492,7 +494,8 @@ export class Wizard2Component implements OnInit, AfterViewInit {
             orgEmail: new FormControl(''),
             orgManufacturer: new FormControl(''),
             orgDose1: new FormControl(''),
-            orgDose2: new FormControl('')
+            orgDose2: new FormControl(''),
+            travelDateToHawaii: new FormControl('')
         });
         // this.captures = [];
 
@@ -733,7 +736,7 @@ export class Wizard2Component implements OnInit, AfterViewInit {
                 this.patientForm.get('firstName').setValue(this.firstInputText ? this.firstInputText : this.patientForm.get('firstName').value);
                 this.patientForm.get('lastName').setValue(this.lastInputText ? this.lastInputText : this.patientForm.get('lastName').value);
 
-                this.patientForm.get('orgName').setValue(this.firstClinicName ? { name: this.firstClinicName, value: this.firstClinicName } : this.patientForm.get('orgName').value);
+                // this.patientForm.get('orgName').setValue(this.firstClinicName ? { name: this.firstClinicName, value: this.firstClinicName } : this.patientForm.get('orgName').value);
             }
 
             // wizard.goPrev();
@@ -795,6 +798,10 @@ export class Wizard2Component implements OnInit, AfterViewInit {
                 this.patientForm.get('orgDose1').setValidators(null);
                 this.patientForm.get('orgDose1').setErrors(null);
 
+                this.patientForm.get('orgDose2').clearValidators();
+                this.patientForm.get('orgDose2').setValidators(null);
+                this.patientForm.get('orgDose2').setErrors(null);
+
                 // if (wizardObj.currentStep === 2) {
                 // if (!this.lastInputText && !this.firstInputText) {
                 this.lastInputText = this.patientForm.get('lastName').value;
@@ -802,6 +809,7 @@ export class Wizard2Component implements OnInit, AfterViewInit {
 
                 this.firstInputText = this.patientForm.get('firstName').value;
                 this.firstNameInputControl.setValue(this.firstInputText);
+
                 // } else {
                 //     this.patientForm.get('firstName').setValue(this.firstInputText);
                 //     this.patientForm.get('lastName').setValue(this.lastInputText);
@@ -837,9 +845,10 @@ export class Wizard2Component implements OnInit, AfterViewInit {
                 this.patientForm.get('orgDose2').setValidators((this.patientForm.get('orgManufacturer').value && this.patientForm.get('orgManufacturer').value != 'Johnson \& Johnson') ? Validators.required : null);
                 this.patientForm.get('orgDose2').updateValueAndValidity();
 
-                this.firstClinicName = this.patientForm.get('orgDose1').value ? this.patientForm.get('orgName').value.name : '';
+                this.firstClinicName = this.firstClinicName ? this.firstClinicName : (this.patientForm.get('orgDose1').value ? this.patientForm.get('orgName').value.name : '');
                 this.firstClinicNameInputControl.setValue(this.firstClinicName);
-                this.secondClinicName = this.patientForm.get('orgDose2').value ? this.patientForm.get('orgName').value.name : '';
+                
+                this.secondClinicName = this.secondClinicName ? this.secondClinicName : (this.patientForm.get('orgDose2').value ? this.patientForm.get('orgName').value.name : '');
                 this.secondClinicNameInputControl.setValue(this.secondClinicName);
                 // const orgName = this.patientForm.get('orgName').value;
                 // if (!orgName || orgName.toUpperCase().includes('QUEENS')){
@@ -850,7 +859,7 @@ export class Wizard2Component implements OnInit, AfterViewInit {
             } else if (wizardObj.currentStep === 3) {
                 this.showWebcam = false;
                 // this.consentNotChecked == true;
-                if (!this.firstInputText || !this.lastInputText || !this.firstClinicName || !this.consent) {
+                if (!this.firstInputText || !this.lastInputText || !this.firstClinicName || !this.consent || (this.patientForm.get('orgDose2').value && !this.secondClinicName)) {
                     this.consentNotChecked = true;
                     wizardObj.stop();
                     this.cd.markForCheck();
@@ -946,7 +955,7 @@ export class Wizard2Component implements OnInit, AfterViewInit {
             if (wizardObj.currentStep === 4) {
                 this.patientForm.get('firstName').setValue(this.firstInputText ? this.firstInputText : this.patientForm.get('firstName').value);
                 this.patientForm.get('lastName').setValue(this.lastInputText ? this.lastInputText : this.patientForm.get('lastName').value);
-                this.patientForm.get('orgName').setValue(this.firstClinicName ? { name: this.firstClinicName, value: this.firstClinicName } : this.patientForm.get('orgName').value);
+                // this.patientForm.get('orgName').setValue(this.firstClinicName ? { name: this.firstClinicName, value: this.firstClinicName } : this.patientForm.get('orgName').value);
             }
             this.cd.markForCheck();
         });
@@ -969,6 +978,12 @@ export class Wizard2Component implements OnInit, AfterViewInit {
                 this.patientForm.get('islandItem').setErrors(null);
                 this.patientForm.get('islandItem').updateValueAndValidity();
 
+                this.patientForm.get('travelDateToHawaii').setValue('');
+                this.patientForm.get('travelDateToHawaii').clearValidators();
+                this.patientForm.get('travelDateToHawaii').setValidators(null);
+                this.patientForm.get('travelDateToHawaii').setErrors(null);
+                this.patientForm.get('travelDateToHawaii').updateValueAndValidity();
+
                 // this.patientForm.get('orgName').clearValidators();
                 // this.patientForm.get('orgName').setValidators(null);
                 // this.patientForm.get('orgName').setErrors(null);
@@ -979,6 +994,9 @@ export class Wizard2Component implements OnInit, AfterViewInit {
 
                 this.patientForm.get('islandItem').setValidators(Validators.required);
                 this.patientForm.get('islandItem').updateValueAndValidity();
+
+                this.patientForm.get('travelDateToHawaii').setValidators(Validators.required);
+                this.patientForm.get('travelDateToHawaii').updateValueAndValidity();
 
                 // this.patientForm.get('orgName').setValidators(Validators.required);
                 // this.patientForm.get('orgName').updateValueAndValidity();
@@ -994,8 +1012,6 @@ export class Wizard2Component implements OnInit, AfterViewInit {
                 this.patientForm.controls.orgDose2.updateValueAndValidity();
             } else {
                 this.patientForm.get('orgDose2').setValidators(Validators.required);
-                this.patientForm.controls.orgDose2.markAsUntouched();
-                // this.patientForm.controls.orgDose2.markAsPristine
                 this.patientForm.get('orgDose2').updateValueAndValidity();
             }
         });
@@ -1105,17 +1121,17 @@ export class Wizard2Component implements OnInit, AfterViewInit {
             .subscribe((success: any) => {
                 console.log(success);
                 this.imageToTextResponse = success.text.responseObj as IImageToText;
-                this.lastInputText = this.imageToTextResponse.lastName;
-                this.lastNameInputControl.setValue(this.lastInputText);
+                // this.lastInputText = this.imageToTextResponse.lastName;
+                // this.lastNameInputControl.setValue(this.lastInputText);
 
-                this.firstInputText = this.imageToTextResponse.firstName;
-                this.firstNameInputControl.setValue(this.firstInputText);
+                // this.firstInputText = this.imageToTextResponse.firstName;
+                // this.firstNameInputControl.setValue(this.firstInputText);
 
-                this.firstClinicName = this.imageToTextResponse.firstClinicName;
-                this.firstClinicNameInputControl.setValue(this.firstClinicName);
+                // this.firstClinicName = this.imageToTextResponse.firstClinicName;
+                // this.firstClinicNameInputControl.setValue(this.firstClinicName);
 
-                this.secondClinicName = this.imageToTextResponse.secondClinicName;
-                this.secondClinicNameInputControl.setValue(this.secondClinicName);
+                // this.secondClinicName = this.imageToTextResponse.secondClinicName;
+                // this.secondClinicNameInputControl.setValue(this.secondClinicName);
             }, (error) => {
                 console.log('err-->', error);
             });
@@ -1129,7 +1145,7 @@ export class Wizard2Component implements OnInit, AfterViewInit {
 
     toggleWebCam(e) {
         if (e.keyCode === 13) {
-            e.preventDefault();
+            return;
         }
         this.showWebcam = !this.showWebcam;
     }

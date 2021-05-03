@@ -108,6 +108,9 @@
 											<input id="lastname6" type="text" pInputText formControlName="middleName"
 											pattern="^[ A-Za-z-.,]*$" oninput="validity.valid||(value=(this.value.substring(0, this.value.length - 1)))"
 												class="p-inputtext-sm">
+											<mat-error *ngIf="isControlHasError('middleName', 'pattern')">
+												<strong>Field is not valid</strong>
+											</mat-error>
 										</div>
 										<div class="p-field p-col-12 p-md-4">
 											<label for="lastname6">Last name<span class="cls-requiered">*</span></label>
@@ -116,6 +119,9 @@
 												required class="p-inputtext-sm">
 											<mat-error *ngIf="isControlHasError('lastName', 'required')">
 												<strong>Required field</strong>
+											</mat-error>
+											<mat-error *ngIf="isControlHasError('lastName', 'pattern')">
+												<strong>Field is not valid</strong>
 											</mat-error>
 										</div>
 
@@ -236,6 +242,21 @@
 											<p-selectButton [options]="resedence_item" formControlName="resedenceItem"
 												required class="p-inputtext-sm"></p-selectButton>
 											<mat-error *ngIf="isControlHasError('resedenceItem', 'required')">
+												<strong>Required field</strong>
+											</mat-error>
+										</div>
+
+										<div class="p-field p-col-12 p-md-4"
+											*ngIf="patientForm.value.state && patientForm.value.state==='HI'">
+											<label for="user_state">Travel date to Hawaii<span class="cls-requiered">*</span></label>
+											<p-calendar [showIcon]="true" inputId="icon" formControlName="travelDateToHawaii" required
+												[monthNavigator]="true" [yearNavigator]="true" [yearRange]="yearRange"
+												dateFormat="yy-mm-dd" class="p-inputtext-sm" [maxDate]="maxDate"
+												[tooltip]="tooltipJson.travelDateToHawaii"
+												[trigger]="'click'" [hideDelayTouchscreen]="3000" [hide-delay]="3000"
+												[animation-duration]="500">
+											</p-calendar>
+											<mat-error *ngIf="isControlHasError('travelDateToHawaii', 'required')">
 												<strong>Required field</strong>
 											</mat-error>
 										</div>
@@ -540,29 +561,7 @@ medica sobre las vacunas que ha recibido.
 												</td>
 												<td>{{ imageToTextResponse?.firstDoseDate ? (imageToTextResponse.firstDoseDate | date:'MMM dd, yyyy') : '' }}</td>
 												<td>
-													<editable data-testid="sample-select" class="editable"
-														(save)="updateSingleField('firstClinicName', 'firstClinicNameInputControl')"
-														(cancel)="cancelSingleField('firstClinicName', 'firstClinicNameInputControl')">
-														<ng-template viewMode>
-															<div style="padding-left: .5em; padding-right: .5em;">
-																{{ firstClinicName }} <i
-																	class="kt-nav__link-icon flaticon2-pen text-primary"
-																	style="    float: right;"></i>
-															</div>
-														</ng-template>
-														<ng-template editMode>
-															<div class="form-group" style="">
-																<select class="form-control"
-																	data-testid="sample-select-edit"
-																	name="sample-select"
-																	[formControl]="firstClinicNameInputControl">
-																	<option *ngFor="let option of orgOptions"
-																		[value]="option">{{ option }}</option>
-																</select>
-															</div>
-														</ng-template>
-													</editable>
-													<!-- <editable data-testid="sample-input-click" class="editable"
+													<editable data-testid="sample-input-click" class="editable"
 														(save)="updateSingleField('firstClinicName', 'firstClinicNameInputControl')"
 														(cancel)="cancelSingleField('firstClinicName', 'firstClinicNameInputControl')">
 														<ng-template viewMode>
@@ -580,7 +579,7 @@ medica sobre las vacunas que ha recibido.
 																	[formControl]="firstClinicNameInputControl" />
 															</div>
 														</ng-template>
-													</editable> -->
+													</editable>
 													<span *ngIf="firstClinicName?.length === 0" style="color: red; font-weight: bold;">Required field</span>
 												</td>
 											</tr>
@@ -596,7 +595,7 @@ medica sobre las vacunas que ha recibido.
 													imageToTextResponse?.secondDoseDate }}
 												</td>
 												<td>
-													<editable *ngIf="secondClinicName" data-testid="sample-input-click"
+													<editable *ngIf="patientForm?.value?.orgDose2" data-testid="sample-input-click"
 														class="editable"
 														(save)="updateSingleField('secondClinicName', 'secondClinicNameInputControl')"
 														(cancel)="cancelSingleField('secondClinicName', 'secondClinicNameInputControl')">
@@ -616,6 +615,7 @@ medica sobre las vacunas que ha recibido.
 															</div>
 														</ng-template>
 													</editable>
+													<span *ngIf="secondClinicName?.length === 0" style="color: red; font-weight: bold;">Required field</span>
 												</td>
 											</tr>
 										</table>
