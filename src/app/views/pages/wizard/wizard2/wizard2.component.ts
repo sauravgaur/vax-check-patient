@@ -12,6 +12,7 @@ import { ConfirmationService } from 'primeng/api';
 import { Message } from 'primeng//api';
 import { MessageService } from 'primeng/api';
 import { CdkRow } from '@angular/cdk/table';
+import { countBy } from 'lodash';
 // label: 'Hispanic or Latino', value: '2186-5'
 
 interface IImageToText {
@@ -1254,6 +1255,7 @@ export class Wizard2Component implements OnInit, AfterViewInit {
         this.stripeTest.controls.stripe_state.setValue(this.patientForm.controls.state.value)
         this.stripeTest.controls.stripe_zipcode.setValue(this.patientForm.controls.zipcode.value)
         console.log('stripe console:', this.stripeTest.value)
+        this.stripeTest.updateValueAndValidity();
     }
     dataURLtoFile(dataurl, filename) {
 
