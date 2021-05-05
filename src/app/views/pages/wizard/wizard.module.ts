@@ -34,6 +34,11 @@ import { MatFileUploadModule } from 'angular-material-fileupload';
 import { MatButtonModule } from '@angular/material/button';
 import {CheckboxModule} from 'primeng/checkbox';
 import {MatCheckboxModule} from '@angular/material/checkbox';
+import {DialogModule} from 'primeng/dialog';
+// import { NgxStripeModule } from 'ngx-stripe';
+import {ConfirmDialogModule} from 'primeng/confirmdialog';
+import {MessagesModule} from 'primeng/messages';
+import {MessageModule} from 'primeng/message';
 
 @NgModule({
 	declarations: [
@@ -81,7 +86,12 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
 		MatFileUploadModule,
 		MatButtonModule,
 		CheckboxModule,
-		MatCheckboxModule
+		MatCheckboxModule,
+		DialogModule,
+		ConfirmDialogModule,
+		MessagesModule,
+		MessageModule
+		// NgxStripeModule.forChild('pk_test_aeUUjYYcx4XNfKVW60pmHTtI')
 	],
 })
 export class WizardModule {

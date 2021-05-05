@@ -2,11 +2,15 @@ import { HttpClient } from '@angular/common/http';
 import { AfterViewInit, ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators, ValidationErrors, AbstractControl } from '@angular/forms';
 import { WebcamImage } from 'ngx-webcam';
-import { MenuItem, SelectItem } from 'primeng/api';
+import { ConfirmEventType, MenuItem, SelectItem } from 'primeng/api';
 import { Observable, Subject } from 'rxjs';
 import { ShepherdService } from 'angular-shepherd';
 import { steps as defaultSteps, defaultStepOptions } from './tour';
 import moment from 'moment';
+import { StripeService, Elements, StripeCardComponent, Element as StripeElement, ElementsOptions, ElementOptions } from "ngx-stripe";
+import { ConfirmationService } from 'primeng/api';
+import { Message } from 'primeng//api';
+import { MessageService } from 'primeng/api';
 import { CdkRow } from '@angular/cdk/table';
 // label: 'Hispanic or Latino', value: '2186-5'
 
@@ -294,9 +298,32 @@ const STATES: SelectItem[] = [
     selector: 'kt-wizard2',
     templateUrl: './wizard2.component.html',
     styleUrls: ['./wizard2.component.scss'],
+    providers: [ConfirmationService, MessageService]
 })
 export class Wizard2Component implements OnInit, AfterViewInit {
+    @ViewChild(StripeCardComponent) card: StripeCardComponent;
+    elements: Elements;
+    card1: StripeElement;
+    cardOptions: ElementOptions = {
+        style: {
+            base: {
+                iconColor: '#666EE8',
+                color: '#31325F',
+                lineHeight: '40px',
+                fontWeight: 300,
+                fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
+                fontSize: '18px',
+                '::placeholder': {
+                    color: '#CFD7E0'
+                }
+            }
+        }
+    };
+    elementsOptions: ElementsOptions = {
+        locale: 'auto'
+    };
 
+    stripeTest: FormGroup;
     @ViewChild('wizard', { static: true }) el: ElementRef;
 
     isHawaiiState = false;
@@ -442,7 +469,8 @@ export class Wizard2Component implements OnInit, AfterViewInit {
     consentNotChecked = false;
     maxDate = new Date();
     gapDays = 0;
-    submitButton = 'Submit'
+    submitButton = { id: 1, value: 'Submit' }
+    showHumanApiDialog = false;
     doseReceived: number;
     seriesComplete = 'No';
     effectiveDate: Date;
@@ -451,11 +479,18 @@ export class Wizard2Component implements OnInit, AfterViewInit {
     previousClick = false;
     changeStep: any;
     tab3Required = false;
+    display = false;
+    messageContent = '';
+    messageSeverity = '';
     constructor(
         private cd: ChangeDetectorRef,
         private http: HttpClient,
         private _fb: FormBuilder,
-        private shepherdService: ShepherdService
+        private shepherdService: ShepherdService,
+        private stripeService: StripeService,
+        private fb: FormBuilder,
+        private confirmationService: ConfirmationService,
+        private messageService: MessageService
     ) {
     }
 
@@ -652,9 +687,117 @@ export class Wizard2Component implements OnInit, AfterViewInit {
         this.orgOptions = this.orgs.map((x) => x.name);
         // console.log('this.org options:', this.orgOptions);
         this.subscribeValueChanges();
-        this.initGroupedForm();
+        // this.initGroupedForm();
+
+        this.stripeTest = this.fb.group({
+            stripe_firstName: ['', [Validators.required]],
+            stripe_lastName: ['', [Validators.required]],
+            stripe_amount: ['', [Validators.required]],
+            stripe_city: ['', [Validators.required]],
+            stripe_state: ['', [Validators.required]],
+            stripe_zipcode: ['', [Validators.required]],
+            stripe_address1: ['', [Validators.required]]
+        });
     }
 
+    confirm2() {
+        this.confirmationService.confirm({
+            message: `You have selected <b>${this.patientForm.get('orgName').value.name}</b> which is linked with "HumanAPI" portal.<br><br>
+			<b>Do you have an account for "HumanAPI" ?</b>`,
+            header: 'HumanAPI account confirmation',
+            icon: 'pi pi-info-circle',
+            accept: () => {
+                console.log("in accept")
+                this.messageSeverity = 'success'
+                this.messageContent = `Please keep the credentials handy. You will be asking for it shortly. Thank You.`;
+                // this.messageService.add({severity:'success', summary:'Please keep the credentials handy. You will be asking for it shortly.', detail:'Thank you !'});
+                // this.messageService.add({ severity: 'info', summary: 'Confirmed', detail: 'Record deleted' });
+            },
+            reject: (type) => {
+                switch (type) {
+                    case ConfirmEventType.REJECT:
+                        console.log("in reject")
+                        this.messageSeverity = 'error'
+                        this.messageContent = `Click <a href='www.google.com' target="_blank">here</a> to create an account for HumanAPI and keep the credentials handy. You will be asking for it shortly. Thank You.`;
+                        // this.messageService.add({ severity: 'error', summary: `Click <a href='www.google.com' target="_blank">here</a> to create an account for HumanAPI and keep the credentials handy. You will be asking for it shortly.`, detail: 'Thank you !' });
+                        // this.messageService.add({ severity: 'error', summary: 'Rejected', detail: 'You have rejected' });
+                        break;
+                    case ConfirmEventType.CANCEL:
+                        console.log("in cancel")
+                        this.messageSeverity = 'error'
+                        this.messageContent = `Click <a href='www.google.com' target="_blank">here</a> to create an account for HumanAPI and keep the credentials handy. You will be asking for it shortly. Thank You.`;
+                        // this.messageService.add({ severity: 'error', summary: `Click <a href='www.google.com' target="_blank">here</a> to create an account for HumanAPI and keep the credentials handy. You will be asking for it shortly.`, detail: `Click <a href='www.google.com' target="_blank">here</a> to create an account for HumanAPI and keep the credentials handy. You will be asking for it shortly.` });
+                        // this.messageService.add({ severity: 'warn', summary: 'Cancelled', detail: 'You have cancelled' });
+                        break;
+                }
+            }
+        });
+    }
+
+    showDialog() {
+        this.display = true;
+        setTimeout(() => {
+            this.initiateStripe();
+        }, 500);
+
+    }
+
+    initiateStripe() {
+        this.stripeService.elements(this.elementsOptions)
+            .subscribe(elements => {
+                this.elements = elements;
+                // Only mount the element the first time
+                if (!this.card) {
+                    this.card1 = this.elements.create('card', {
+                        iconStyle: 'solid',
+                        style: {
+                            base: {
+                                iconColor: '#666EE8',
+                                color: '#31325F',
+                                lineHeight: '40px',
+                                fontWeight: 300,
+                                fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
+                                fontSize: '18px',
+                                '::placeholder': {
+                                    color: '#CFD7E0'
+                                }
+                            }
+                        }
+                    });
+                    this.card1.mount('#card-element');
+                }
+            });
+    }
+
+    // buy(){
+    //     this.stripeData = this.stripeTest.value;
+    //     const name = this.stripeTest.get('name').value;
+    //     this.stripeService.createToken(this.card1, {name}).subscribe((result: any) =>{
+    //         if(result.token) {
+    //             this.stripeData['token'] = result.token;
+    //             this.dataService.stripePament(this.stripeData).subscribe((res) => {
+    //                 //if susscess
+    //                 //else error
+    //             })
+    //         }
+    //     })
+    // }
+
+    buy() {
+        const name = this.stripeTest.get('stripe_firstName').value + " " + this.stripeTest.get('stripe_lastName').value;
+        this.stripeService
+            .createToken(this.card1, { name })
+            .subscribe(result => {
+                if (result.token) {
+                    // Use the token to create a charge or a customer
+                    // https://stripe.com/docs/charges
+                    console.log(result.token.id);
+                } else if (result.error) {
+                    // Error creating the token
+                    console.log(result.error.message);
+                }
+            });
+    }
     changeGuidMe() {
         this.shepherdService.start();
     }
@@ -668,13 +811,13 @@ export class Wizard2Component implements OnInit, AfterViewInit {
         (this[control] as AbstractControl).setValue(this[prop]);
     }
 
-    initGroupedForm(): void {
-        this.groupedForm = new FormGroup({
-            name: new FormControl(this.identity.name),
-            city: new FormControl(this.identity.city),
-            country: new FormControl(this.identity.country),
-        });
-    }
+    // initGroupedForm(): void {
+    //     this.groupedForm = new FormGroup({
+    //         name: new FormControl(this.identity.name),
+    //         city: new FormControl(this.identity.city),
+    //         country: new FormControl(this.identity.country),
+    //     });
+    // }
 
     updateGroupedEdition(): void {
         this.identity = this.groupedForm.value;
@@ -822,7 +965,7 @@ export class Wizard2Component implements OnInit, AfterViewInit {
                 this.stepTwo = true;
                 // this.patientForm.get('orgName').setValidators(this.patientForm.get('resedenceItem').value === 'YES' ? Validators.required : null);
                 this.patientForm.get('orgName').setValidators(Validators.required);
-                this.patientForm.get('orgName').updateValueAndValidity();
+                this.patientForm.get('orgName').updateValueAndValidity({emitEvent: false});
                 this.patientForm.get('orgAddress1').setValidators(Validators.required);
                 this.patientForm.get('orgAddress1').updateValueAndValidity();
                 this.patientForm.get('orgCity').setValidators(Validators.required);
@@ -847,7 +990,7 @@ export class Wizard2Component implements OnInit, AfterViewInit {
 
                 this.firstClinicName = this.firstClinicName ? this.firstClinicName : (this.patientForm.get('orgDose1').value ? this.patientForm.get('orgName').value.name : '');
                 this.firstClinicNameInputControl.setValue(this.firstClinicName);
-                
+
                 this.secondClinicName = this.secondClinicName ? this.secondClinicName : (this.patientForm.get('orgDose2').value ? this.patientForm.get('orgName').value.name : '');
                 this.secondClinicNameInputControl.setValue(this.secondClinicName);
                 // const orgName = this.patientForm.get('orgName').value;
@@ -939,8 +1082,8 @@ export class Wizard2Component implements OnInit, AfterViewInit {
                     effectiveAddDays = 10;
                     expirationAddDays = 70;
                 }
-                console.log('10 days', moment(doseDate, 'YYYY-MM-DD').add(10, 'days'))
-                console.log('10 weeks', moment(doseDate, 'YYYY-MM-DD').add(10, 'weeks'))
+                // console.log('10 days', moment(doseDate, 'YYYY-MM-DD').add(10, 'days'))
+                // console.log('10 weeks', moment(doseDate, 'YYYY-MM-DD').add(10, 'weeks'))
                 this.effectiveDate = this.addDays(moment(doseDate, 'YYYY-MM-DD').toDate(), effectiveAddDays);
                 this.expirationDate = this.addDays(moment(this.effectiveDate, 'YYYY-MM-DD').toDate(), expirationAddDays);
 
@@ -1017,11 +1160,17 @@ export class Wizard2Component implements OnInit, AfterViewInit {
         });
 
         this.patientForm.get('orgName').valueChanges.subscribe((selectedValue: any) => {
-            if (!selectedValue || selectedValue.value.toUpperCase().includes('QUEEN')) {
-                this.submitButton = 'Submit'
+            this.messageSeverity = '';
+            this.messageContent = ''
+            if (!selectedValue || selectedValue.value.toUpperCase().includes('HPH')) {
+                this.submitButton = { id: 1, value: 'Submit' }
             } else if (selectedValue.value.toUpperCase() === ('TIMES PHARMACY')) {
-                this.submitButton = 'Start Verification'
-            } else this.submitButton = `Verify with ${selectedValue.value}`
+                this.submitButton = { id: 2, value: 'Start Verification' }
+            } else this.submitButton = { id: 3, value: `Verify with ${selectedValue.value}` }
+
+            if (this.submitButton.id === 2) {
+                this.confirm2();
+            }
         });
 
     }
@@ -1097,6 +1246,14 @@ export class Wizard2Component implements OnInit, AfterViewInit {
     // tslint:disable-next-line: indent
     onSubmit() {
         this.submitted = true;
+        this.showDialog();
+        this.stripeTest.controls.stripe_firstName.setValue(this.patientForm.controls.firstName.value)
+        this.stripeTest.controls.stripe_lastName.setValue(this.patientForm.controls.lastName.value)
+        this.stripeTest.controls.stripe_address1.setValue(this.patientForm.controls.address1.value)
+        this.stripeTest.controls.stripe_city.setValue(this.patientForm.controls.city.value)
+        this.stripeTest.controls.stripe_state.setValue(this.patientForm.controls.state.value)
+        this.stripeTest.controls.stripe_zipcode.setValue(this.patientForm.controls.zipcode.value)
+        console.log('stripe console:', this.stripeTest.value)
     }
     dataURLtoFile(dataurl, filename) {
 

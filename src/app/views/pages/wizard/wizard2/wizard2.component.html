@@ -1,5 +1,91 @@
+
+
 <kt-portlet>
 	<kt-portlet-body>
+
+		<!-- <p-dialog header="Title" [(visible)]="display" [breakpoints]="{'960px': '75vw', '640px': '100vw'}" [style]="{width: '50vw'}">
+			<form novalidate (ngSubmit)="buy()" [formGroup]="stripeTest">
+				<input type="text" formControlName="name" placeholder="Jane Doe">
+				<ngx-stripe-card [options]="cardOptions" [elementsOptions]="elementsOptions"></ngx-stripe-card>
+				<button type="submit">
+				  BUY
+				</button>
+			</form>
+		</p-dialog> -->
+		<p-dialog header="Secure Payment" [(visible)]="display" [breakpoints]="{'960px': '75vw', '640px': '100vw'}" [style]="{width: '50vw'}">
+			<!-- <h3 class="pb-5"> Please do the payment !! </h3> -->
+			<form class="mb-5" novalidate (ngSubmit)="buy()" [formGroup]="stripeTest">
+
+				<div class="form-row">
+					<div class="form-group col-md-6">
+					  <label for="inputEmail4">First Name</label>
+					  <input type="text" class="form-control" formControlName = "stripe_firstName" required id="firstName" placeholder="First Name">
+					</div>
+					<div class="form-group col-md-6">
+					  <label for="lastName">Last Name</label>
+					  <input type="text" class="form-control" formControlName="stripe_lastName" id="lastName" placeholder="Last Name">
+					</div>
+				  </div>
+				  <div class="form-group">
+					<label for="inputAddress">Address</label>
+					<input type="text" class="form-control" formControlName = "stripe_address1" id="inputAddress" placeholder="1234 Main St">
+				  </div>
+				  <div class="form-row">
+					<div class="form-group col-md-6">
+					  <label for="inputCity">City</label>
+					  <input type="text" class="form-control" formcontrolName="stripe_city" id="inputCity" placeholder="City">
+					</div>
+					<div class="form-group col-md-4">
+					  <label for="inputState">State</label>
+					  <p-dropdown inputId="state" [options]="stateList" formControlName="stripe_state"
+							[style]="{'width': '100%', 'border-radius': '5px', 'height': '38px'}"
+							[appendTo]="body"	[filter]="true" filterBy="label" filterMatchMode="contains"
+							[showClear]="true" [resetFilterOnHide]="true" required
+							placeholder="Select State"></p-dropdown>
+					</div>
+					<div class="form-group col-md-2">
+					  <label for="inputZip">Zip</label>
+					  <input type="text" class="form-control" formControlname="stripe_zipcode" placeholder="zipcode">
+					</div>
+				  </div>
+
+				<!-- <div class="form-group">
+					<input type="text" class="form-control" formControlName = "stripe_name" placeholder="Full Name *" required>
+				</div>
+				<div class="form-group">
+					<input type="number" class="form-control" formControlname="stripe_address1" placeholder="Amount#" required>
+				</div>
+				<div class="form-group">
+					<div class="row">
+						<div class="col">
+						<input type="text" class="form-control" formControlname="stripe_city" placeholder="First name">
+						</div>
+						<div class="col">
+							<p-dropdown inputId="state" [options]="stateList" formControlName="stripe_state"
+							[style]="{'width': '100%', 'border-radius': '5px', 'height': '38px'}"
+													[filter]="true" filterBy="label" filterMatchMode="contains"
+													[showClear]="true" [resetFilterOnHide]="true" required
+													placeholder="Select State"></p-dropdown>
+						</div>
+						<div class="col">
+							<input type="text" class="form-control" formControlname="zipcode" placeholder="Last name">
+						</div>
+					</div>
+				</div> -->
+				<div class="form-group">
+					<div id="card-element" class="field"></div>
+				</div>
+				<button pButton pRipple type="submit" label="PAY $34.99" style="width: 100%" class="p-button-outlined p-button-success p-button-raised p-button-rounded">
+					<!-- <ng-content>
+						PAY<span style="font-weight: bold; font-size: 15px;">$34.99</span> 
+					</ng-content> -->
+				</button>
+				<!-- <button class="btn btn-info btn-block border shadow" type="submit" data-toggle="modal" data-target="#exampleModalCenter">BUY <span style="font-size: 15px; font-weight: bold;">$34.99</span></button> -->
+			</form>
+			
+		</p-dialog>
+		<!-- <button type="button" (click)="showDialog()" icon="pi pi-info-circle" label="Show">Show</button> -->
+
 		<!--begin: Wizard -->
 		<div #wizard class="wizard wizard-2" id="kt_wizard_v2" data-wizard-state="step-first">
 			<div class="wizard-nav border-right py-8 px-8 py-lg-20 px-lg-10">
@@ -78,6 +164,16 @@
 
 			</div>
 			<div class="wizard-body py-8 px-8 py-lg-20 px-lg-10">
+				<p-messages *ngIf="messageContent" [severity]="messageSeverity" closable="true">
+					<ng-template pTemplate>
+						<i class="pi pi-info-circle"></i>
+						<div class="p-ml-3" [innerHtml]="messageContent" style="width: 100%;"></div>
+						<div class="p-mr-2">
+							<button pButton pRipple type="button" icon="pi pi-times" style="color: #2c1e30;" class="p-button-rounded p-button-danger p-button-text"
+							(click)="messageContent = ''"></button>
+						</div>
+					</ng-template>
+				</p-messages>
 				<!--begin: Wizard Form-->
 				<div class="">
 					<div class="offset-xxl-12">
@@ -826,7 +922,7 @@ medica sobre las vacunas que ha recibido.
 									<div (click)="onSubmit()"
 										class="btn btn-success font-weight-bold text-uppercase px-9 py-4"
 										data-wizard-type="action-submit">
-										{{submitButton}}
+										{{submitButton.value}}
 									</div>
 									<div class="btn btn-primary font-weight-bold text-uppercase px-9 py-4"
 										data-wizard-type="action-next">
@@ -842,6 +938,9 @@ medica sobre las vacunas que ha recibido.
 			</div>
 		</div>
 		<!--end: Wizard -->
-
+<p-confirmDialog [breakpoints]="{'960px': '75vw', '640px': '100vw'}" 
+[style]="{width: '50vw'}"
+rejectButtonStyleClass="p-button-outlined p-button-danger p-button-raised p-button-rounded"
+acceptButtonStyleClass="p-button-outlined p-button-success p-button-raised p-button-rounded"></p-confirmDialog>
 	</kt-portlet-body>
 </kt-portlet>

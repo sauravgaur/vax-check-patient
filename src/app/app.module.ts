@@ -68,6 +68,8 @@ import json from 'highlight.js/lib/languages/json';
 import scss from 'highlight.js/lib/languages/scss';
 import typescript from 'highlight.js/lib/languages/typescript';
 import { EditableModule } from '@ngneat/edit-in-place';
+import { NgxStripeModule } from 'ngx-stripe';
+
 // tslint:disable-next-line:class-name
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   wheelSpeed: 0.5,
@@ -126,7 +128,8 @@ export function getHighlightLanguages() {
     MatProgressSpinnerModule,
     InlineSVGModule.forRoot(),
     ThemeModule,
-    EditableModule
+    EditableModule,
+    NgxStripeModule.forRoot('pk_test_aeUUjYYcx4XNfKVW60pmHTtI')
   ],
   exports: [],
   providers: [
