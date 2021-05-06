@@ -134,6 +134,10 @@ td {
   padding-left: 5px;
 }
 
+:host ::ng-deep   .ElementsApp, .ElementsApp .InputElement{
+  color: red !important;
+}
+
 // [type="file"] {
 //   border: 0;
 //   clip: rect(0, 0, 0, 0);

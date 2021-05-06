@@ -303,25 +303,57 @@ const STATES: SelectItem[] = [
 })
 export class Wizard2Component implements OnInit, AfterViewInit {
     @ViewChild(StripeCardComponent) card: StripeCardComponent;
+    @ViewChild('cardInfo') cardInfo: ElementRef;
     elements: Elements;
     card1: StripeElement;
+
+    creditCard: StripeElement;
+    expiry: StripeElement;
+    cvv: StripeElement;
+
     cardOptions: ElementOptions = {
         style: {
+            // base: {
+            //     iconColor: '#666EE8',
+            //     color: '#31325F',
+            //     lineHeight: '40px',
+            //     fontWeight: 300,
+            //     fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
+            //     fontSize: '18px',
+            //     '::placeholder': {
+            //         color: '#CFD7E0'
+            //     }
+            // }
             base: {
-                iconColor: '#666EE8',
-                color: '#31325F',
-                lineHeight: '40px',
-                fontWeight: 300,
-                fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
-                fontSize: '18px',
+                color: '#32325D',
+                fontWeight: 500,
+                fontFamily: 'Source Code Pro, Consolas, Menlo, monospace',
+                fontSize: '16px',
+                fontSmoothing: 'antialiased',
+
                 '::placeholder': {
-                    color: '#CFD7E0'
-                }
+                    color: '#CFD7DF',
+                },
+                ':-webkit-autofill': {
+                    color: '#e39f48',
+                },
+            },
+            invalid: {
+                color: '#E25950',
+
+                '::placeholder': {
+                    color: '#FFCCA5',
+                },
             }
         }
     };
     elementsOptions: ElementsOptions = {
-        locale: 'auto'
+        locale: 'auto',
+        fonts: [
+            {
+                cssSrc: 'https://fonts.googleapis.com/css?family=Source+Code+Pro',
+            },
+        ]
     };
 
     stripeTest: FormGroup;
@@ -469,6 +501,7 @@ export class Wizard2Component implements OnInit, AfterViewInit {
     consent = false;
     consentNotChecked = false;
     maxDate = new Date();
+    minDate = this.addDays(new Date(), 1);
     gapDays = 0;
     submitButton = { id: 1, value: 'Submit' }
     showHumanApiDialog = false;
@@ -499,38 +532,54 @@ export class Wizard2Component implements OnInit, AfterViewInit {
     //     var context = this.canvas.nativeElement.getContext("2d").drawImage(this.video.nativeElement, 0, 0, 640, 480);
     //     this.captures.push(this.canvas.nativeElement.toDataURL("image/png"));
     // }
-
+    inputs: any;
     ngOnInit() {
+        this.inputs = document.querySelectorAll('.cell.example.example2 .input');
+        Array.prototype.forEach.call(this.inputs, function (input) {
+            input.addEventListener('focus', function () {
+                input.classList.add('focused');
+            });
+            input.addEventListener('blur', function () {
+                input.classList.remove('focused');
+            });
+            input.addEventListener('keyup', function () {
+                if (input.value.length === 0) {
+                    input.classList.add('empty');
+                } else {
+                    input.classList.remove('empty');
+                }
+            });
+        });
         // this.imageToTextResponse=null;
         this.yearRange = `1930:${new Date().getFullYear()}`;
         this.patientForm = this._fb.group({
             id: new FormControl(''),
-            firstName: new FormControl(''),
-            middleName: new FormControl(''),
-            lastName: new FormControl(''),
-            dob: new FormControl(''),
+            firstName: new FormControl('a'),
+            middleName: new FormControl('a'),
+            lastName: new FormControl('a'),
+            dob: new FormControl(new Date('2021-04-01')),
             email: new FormControl(''),
-            gender: new FormControl(''),
-            address1: new FormControl(''),
+            gender: new FormControl('M'),
+            address1: new FormControl('a'),
             address2: new FormControl(''),
-            city: new FormControl(''),
-            zipcode: new FormControl(''),
-            state: new FormControl(''),
+            city: new FormControl('a'),
+            zipcode: new FormControl('12312'),
+            state: new FormControl('AK'),
             resedenceItem: new FormControl(''),
             islandItem: new FormControl(''),
-            contactNumber: new FormControl(''),
+            contactNumber: new FormControl('2342342342'),
             contactOption: new FormControl(''),
             orgName: new FormControl(''),
-            orgAddress1: new FormControl(''),
+            orgAddress1: new FormControl('a'),
             orgAddress2: new FormControl(''),
-            orgCity: new FormControl(''),
-            orgZipcode: new FormControl(''),
-            orgState: new FormControl(''),
-            orgContactNumber: new FormControl(''),
+            orgCity: new FormControl('a'),
+            orgZipcode: new FormControl('23423'),
+            orgState: new FormControl('AK'),
+            orgContactNumber: new FormControl('223423423'),
             orgEmail: new FormControl(''),
-            orgManufacturer: new FormControl(''),
-            orgDose1: new FormControl(''),
-            orgDose2: new FormControl(''),
+            orgManufacturer: new FormControl('Moderna'),
+            orgDose1: new FormControl(new Date('2021-04-01')),
+            orgDose2: new FormControl(new Date('2021-05-05')),
             travelDateToHawaii: new FormControl('')
         });
         // this.captures = [];
@@ -710,7 +759,7 @@ export class Wizard2Component implements OnInit, AfterViewInit {
             accept: () => {
                 console.log("in accept")
                 this.messageSeverity = 'success'
-                this.messageContent = `Please keep the credentials handy. You will be asking for it shortly. Thank You.`;
+                this.messageContent = `Please keep the credentials handy. You will be prompted shortly to input the credentials shortly. Thank You.`;
                 // this.messageService.add({severity:'success', summary:'Please keep the credentials handy. You will be asking for it shortly.', detail:'Thank you !'});
                 // this.messageService.add({ severity: 'info', summary: 'Confirmed', detail: 'Record deleted' });
             },
@@ -719,14 +768,14 @@ export class Wizard2Component implements OnInit, AfterViewInit {
                     case ConfirmEventType.REJECT:
                         console.log("in reject")
                         this.messageSeverity = 'error'
-                        this.messageContent = `Click <a href='www.google.com' target="_blank">here</a> to create an account for HumanAPI and keep the credentials handy. You will be asking for it shortly. Thank You.`;
+                        this.messageContent = `Click <a href='https://www.timespharmacyhawaii.com/' target="_blank">here</a> to create an account for HumanAPI and keep the credentials handy. You will be prompted shortly to input the credentials shortly. Thank You.`;
                         // this.messageService.add({ severity: 'error', summary: `Click <a href='www.google.com' target="_blank">here</a> to create an account for HumanAPI and keep the credentials handy. You will be asking for it shortly.`, detail: 'Thank you !' });
                         // this.messageService.add({ severity: 'error', summary: 'Rejected', detail: 'You have rejected' });
                         break;
                     case ConfirmEventType.CANCEL:
                         console.log("in cancel")
                         this.messageSeverity = 'error'
-                        this.messageContent = `Click <a href='www.google.com' target="_blank">here</a> to create an account for HumanAPI and keep the credentials handy. You will be asking for it shortly. Thank You.`;
+                        this.messageContent = `Click <a href='www.google.com' target="_blank">here</a> to create an account for HumanAPI and keep the credentials handy. You will be prompted shortly to input the credentials shortly. Thank You.`;
                         // this.messageService.add({ severity: 'error', summary: `Click <a href='www.google.com' target="_blank">here</a> to create an account for HumanAPI and keep the credentials handy. You will be asking for it shortly.`, detail: `Click <a href='www.google.com' target="_blank">here</a> to create an account for HumanAPI and keep the credentials handy. You will be asking for it shortly.` });
                         // this.messageService.add({ severity: 'warn', summary: 'Cancelled', detail: 'You have cancelled' });
                         break;
@@ -745,27 +794,90 @@ export class Wizard2Component implements OnInit, AfterViewInit {
 
     initiateStripe() {
         this.stripeService.elements(this.elementsOptions)
-            .subscribe(elements => {
+            .subscribe((elements: any) => {
                 this.elements = elements;
                 // Only mount the element the first time
-                if (!this.card) {
-                    this.card1 = this.elements.create('card', {
-                        iconStyle: 'solid',
-                        style: {
-                            base: {
-                                iconColor: '#666EE8',
-                                color: '#31325F',
-                                lineHeight: '40px',
-                                fontWeight: 300,
-                                fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
-                                fontSize: '18px',
-                                '::placeholder': {
-                                    color: '#CFD7E0'
-                                }
-                            }
-                        }
+                if (!this.card1) {
+
+                    // this.card1 = this.elements.create('card', {
+                    //     iconStyle: 'solid',
+                    //     style: {
+                    //         base: {
+                    //             iconColor: '#666EE8',
+                    //             color: '#31325F',
+                    //             lineHeight: '40px',
+                    //             fontWeight: 300,
+                    //             fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
+                    //             fontSize: '18px',
+                    //             '::placeholder': {
+                    //                 color: '#CFD7E0'
+                    //             }
+                    //         }
+                    //     }
+                    // });
+                    // this.card1.mount('#card-element');
+
+                    var elementStyles = {
+                        base: {
+                            color: '#3F4254',
+                            fontWeight: 600,
+                            fontFamily: 'Quicksand, Open Sans, Segoe UI, sans-serif',
+                            fontSize: '16px',
+                            fontSmoothing: 'antialiased',
+
+                            ':focus': {
+                                color: '#424770',
+                            },
+
+                            '::placeholder': {
+                                color: '#9BACC8',
+                            },
+
+                            ':focus::placeholder': {
+                                color: '#CFD7DF',
+                            },
+                        },
+                        invalid: {
+                            //color: '#3F4254',
+                            ':focus': {
+                                color: '#FA755A',
+                            },
+                            '::placeholder': {
+                                color: '#FFCCA5',
+                            },
+                        },
+                    };
+
+                    var elementClasses = {
+                        focus: 'focused',
+                        empty: 'empty',
+                        invalid: 'invalid',
+                      };
+                      
+                    // this.card1 = elements.create('card');
+
+                    this.creditCard = elements.create('cardNumber', {
+                        style: elementStyles,
+                        classes: elementClasses,
                     });
-                    this.card1.mount('#card-element');
+                    this.creditCard.mount('#example2-card-number');
+
+                    this.expiry = elements.create('cardExpiry', {
+                        style: elementStyles,
+                        classes: elementClasses,
+                    });
+                    this.expiry.mount('#example2-card-expiry');
+
+                    this.cvv = elements.create('cardCvc', {
+                        style: elementStyles,
+                        classes: elementClasses,
+                        type: 'password'
+                    });
+                    this.cvv.mount('#example2-card-cvc');
+                    this.cd.markForCheck();
+
+                    // this.card1.mount(this.cardInfo.nativeElement);
+                    // registerElements([cardNumber, cardExpiry, cardCvc], 'example3');
                 }
             });
     }
@@ -786,8 +898,9 @@ export class Wizard2Component implements OnInit, AfterViewInit {
 
     buy() {
         const name = this.stripeTest.get('stripe_firstName').value + " " + this.stripeTest.get('stripe_lastName').value;
+        console.log('this.card1:', this.card1)
         this.stripeService
-            .createToken(this.card1, { name })
+            .createToken(this.creditCard, { name })
             .subscribe(result => {
                 if (result.token) {
                     // Use the token to create a charge or a customer
@@ -966,7 +1079,7 @@ export class Wizard2Component implements OnInit, AfterViewInit {
                 this.stepTwo = true;
                 // this.patientForm.get('orgName').setValidators(this.patientForm.get('resedenceItem').value === 'YES' ? Validators.required : null);
                 this.patientForm.get('orgName').setValidators(Validators.required);
-                this.patientForm.get('orgName').updateValueAndValidity({emitEvent: false});
+                this.patientForm.get('orgName').updateValueAndValidity({ emitEvent: false, onlySelf: true });
                 this.patientForm.get('orgAddress1').setValidators(Validators.required);
                 this.patientForm.get('orgAddress1').updateValueAndValidity();
                 this.patientForm.get('orgCity').setValidators(Validators.required);
@@ -1246,6 +1359,9 @@ export class Wizard2Component implements OnInit, AfterViewInit {
     }
     // tslint:disable-next-line: indent
     onSubmit() {
+        // var cardNumberEle : any = document.querySelector('[data-elements-stable-field-name="cardNumber"]');
+        // console.log('card number ele', cardNumberEle)
+        // console.log('card number:', cardNumberEle.defaultValue)
         this.submitted = true;
         this.showDialog();
         this.stripeTest.controls.stripe_firstName.setValue(this.patientForm.controls.firstName.value)
@@ -1308,4 +1424,25 @@ export class Wizard2Component implements OnInit, AfterViewInit {
         }
         this.showWebcam = !this.showWebcam;
     }
+
+    // registerElements(elements, exampleName) {
+    //     var formClass = '.' + exampleName;
+    //     var example = document.querySelector(formClass);
+      
+    //     var form = example.querySelector('form');
+    //     var resetButton = example.querySelector('a.reset');
+    //     var error = form.querySelector('.error');
+    //     var errorMessage = error.querySelector('.message');
+      
+    //     function enableInputs() {
+    //       Array.prototype.forEach.call(
+    //         form.querySelectorAll(
+    //           "input[type='text'], input[type='email'], input[type='tel']"
+    //         ),
+    //         function(input) {
+    //           input.removeAttribute('disabled');
+    //         }
+    //       );
+    //     }
+    // }
 }

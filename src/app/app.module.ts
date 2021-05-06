@@ -129,7 +129,7 @@ export function getHighlightLanguages() {
     InlineSVGModule.forRoot(),
     ThemeModule,
     EditableModule,
-    NgxStripeModule.forRoot('pk_test_aeUUjYYcx4XNfKVW60pmHTtI')
+    NgxStripeModule.forRoot('pk_test_51IllDFIoULcjF60KfMk1Jbb3COmYyAbZ1QLxLRMugIk3WU6p2k2nWp5YgCPTswBQqhbLjQspbDeONmOmh7z8r1hv00LOfVmm6o')
   ],
   exports: [],
   providers: [

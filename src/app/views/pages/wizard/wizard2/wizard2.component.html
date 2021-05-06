@@ -1,87 +1,9 @@
-
-
 <kt-portlet>
 	<kt-portlet-body>
 
-		<!-- <p-dialog header="Title" [(visible)]="display" [breakpoints]="{'960px': '75vw', '640px': '100vw'}" [style]="{width: '50vw'}">
-			<form novalidate (ngSubmit)="buy()" [formGroup]="stripeTest">
-				<input type="text" formControlName="name" placeholder="Jane Doe">
-				<ngx-stripe-card [options]="cardOptions" [elementsOptions]="elementsOptions"></ngx-stripe-card>
-				<button type="submit">
-				  BUY
-				</button>
-			</form>
-		</p-dialog> -->
-		<p-dialog header="Secure Payment" [(visible)]="display" [breakpoints]="{'960px': '75vw', '640px': '100vw'}" [style]="{width: '50vw'}">
+		<p-dialog header="Secure Payment" [(visible)]="display" [breakpoints]="{'960px': '75vw', '640px': '100vw'}"
+			[style]="{width: '50vw'}">
 			<!-- <h3 class="pb-5"> Please do the payment !! </h3> -->
-			<form class="mb-5" novalidate (ngSubmit)="buy()" [formGroup]="stripeTest">
-
-				<div class="form-row">
-					<div class="form-group col-md-6">
-					  <label for="inputEmail4">First Name</label>
-					  <input type="text" class="form-control" formControlName = "stripe_firstName" required id="firstName" placeholder="First Name">
-					</div>
-					<div class="form-group col-md-6">
-					  <label for="lastName">Last Name</label>
-					  <input type="text" class="form-control" formControlName="stripe_lastName" id="lastName" placeholder="Last Name">
-					</div>
-				  </div>
-				  <div class="form-group">
-					<label for="inputAddress">Address</label>
-					<input type="text" class="form-control" formControlName = "stripe_address1" id="inputAddress" placeholder="1234 Main St">
-				  </div>
-				  <div class="form-row">
-					<div class="form-group col-md-6">
-					  <label for="inputCity">City</label>
-					  <input type="text" class="form-control" formControlName="stripe_city" id="inputCity" placeholder="City">
-					</div>
-					<div class="form-group col-md-4">
-					  <label for="inputState">State</label>
-					  <p-dropdown inputId="state" [options]="stateList" formControlName="stripe_state"
-							[style]="{'width': '100%', 'border-radius': '5px', 'height': '38px'}"
-							[appendTo]="body"	[filter]="true" filterBy="label" filterMatchMode="contains"
-							[showClear]="true" [resetFilterOnHide]="true" required
-							placeholder="Select State"></p-dropdown>
-					</div>
-					<div class="form-group col-md-2">
-					  <label for="inputZip">Zip</label>
-					  <input type="text" class="form-control" formControlName="stripe_zipcode" placeholder="zipcode">
-					</div>
-				  </div>
-
-				<!-- <div class="form-group">
-					<input type="text" class="form-control" formControlName = "stripe_name" placeholder="Full Name *" required>
-				</div>
-				<div class="form-group">
-					<input type="number" class="form-control" formControlname="stripe_address1" placeholder="Amount#" required>
-				</div>
-				<div class="form-group">
-					<div class="row">
-						<div class="col">
-						<input type="text" class="form-control" formControlname="stripe_city" placeholder="First name">
-						</div>
-						<div class="col">
-							<p-dropdown inputId="state" [options]="stateList" formControlName="stripe_state"
-							[style]="{'width': '100%', 'border-radius': '5px', 'height': '38px'}"
-													[filter]="true" filterBy="label" filterMatchMode="contains"
-													[showClear]="true" [resetFilterOnHide]="true" required
-													placeholder="Select State"></p-dropdown>
-						</div>
-						<div class="col">
-							<input type="text" class="form-control" formControlname="zipcode" placeholder="Last name">
-						</div>
-					</div>
-				</div> -->
-				<div class="form-group">
-					<div id="card-element" class="field"></div>
-				</div>
-				<button pButton pRipple type="submit" label="PAY $34.99" style="width: 100%" class="p-button-outlined p-button-success p-button-raised p-button-rounded">
-					<!-- <ng-content>
-						PAY<span style="font-weight: bold; font-size: 15px;">$34.99</span> 
-					</ng-content> -->
-				</button>
-				<!-- <button class="btn btn-info btn-block border shadow" type="submit" data-toggle="modal" data-target="#exampleModalCenter">BUY <span style="font-size: 15px; font-weight: bold;">$34.99</span></button> -->
-			</form>
 			
 		</p-dialog>
 		<!-- <button type="button" (click)="showDialog()" icon="pi pi-info-circle" label="Show">Show</button> -->
@@ -164,13 +86,98 @@
 
 			</div>
 			<div class="wizard-body py-8 px-8 py-lg-20 px-lg-10">
+				<div class="cell example example2" id="example-2">
+					<form class="mb-5" novalidate (ngSubmit)="buy()" [formGroup]="stripeTest">
+						<div data-locale-reversible>
+							<div class="row" data-locale-reversible>
+								<div class="field half-width">
+									<input id="example2-firstname" data-tid="elements_examples.form.firstname_placeholder"
+									formControlName = "stripe_firstName" 
+										class="input" type="text" placeholder="John" required>
+									<label for="example2-firstname" data-tid="elements_examples.form.firstname_label">First name</label>
+									<div class="baseline"></div>
+								</div>
+								<div class="field half-width">
+									<input id="example2-lastname" data-tid="elements_examples.form.lastname_placeholder"
+									formControlName = "stripe_lastName" 
+										class="input" type="text" placeholder="Smith" required>
+									<label for="example2-lastname" data-tid="elements_examples.form.lastname_label">Last name</label>
+									<div class="baseline"></div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="field">
+									<input id="example2-address" data-tid="elements_examples.form.address_placeholder"
+									formControlName = "stripe_address1" 
+										class="input" type="text" placeholder="185 Berry St" required>
+									<label for="example2-address"
+										data-tid="elements_examples.form.address_label">Address</label>
+									<div class="baseline"></div>
+								</div>
+							</div>
+							<div class="row" data-locale-reversible>
+								<div class="field half-width">
+									<input id="example2-city" data-tid="elements_examples.form.city_placeholder"
+										class="input" type="text" placeholder="San Francisco" required
+										formControlName = "stripe_city">
+									<label for="example2-city" data-tid="elements_examples.form.city_label">City</label>
+									<div class="baseline"></div>
+								</div>
+								<div class="field quarter-width">
+									<input id="example2-state" data-tid="elements_examples.form.state_placeholder"
+									formControlName = "stripe_state" 
+										class="input" type="text" placeholder="CA" required>
+									<label for="example2-state" data-tid="elements_examples.form.state_label">State</label>
+									<div class="baseline"></div>
+								</div>
+								<div class="field quarter-width">
+									<input id="example2-zip" data-tid="elements_examples.form.postal_code_placeholder"
+									formControlName = "stripe_zipcode" 
+										class="input" type="text" placeholder="94107" required>
+									<label for="example2-zip"
+										data-tid="elements_examples.form.postal_code_label">ZIP</label>
+									<div class="baseline"></div>
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="field">
+								<div id="example2-card-number" class="input empty"></div>
+								<label for="example2-card-number" data-tid="elements_examples.form.card_number_label">Card
+									number</label>
+								<div class="baseline"></div>
+							</div>
+						</div>
+						<div class="row" id="card-info" #cardInfo>
+							<div class="field half-width">
+								<div id="example2-card-expiry" class="input empty"></div>
+								<label for="example2-card-expiry"
+									data-tid="elements_examples.form.card_expiry_label">Expiration</label>
+								<div class="baseline"></div>
+							</div>
+							<div class="field half-width">
+								<div id="example2-card-cvc" class="input empty"></div>
+								<label for="example2-card-cvc" data-tid="elements_examples.form.card_cvc_label">CVC</label>
+								<div class="baseline"></div>
+							</div>
+						</div>
+						<button pButton pRipple type="submit" label="PAY $34.99" style="width: 100%" class="p-button-outlined p-button-success p-button-raised p-button-rounded"></button>
+						<div class="error" role="alert">
+							<svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 17 17">
+								<path class="base" fill="#000" d="M8.5,17 C3.80557963,17 0,13.1944204 0,8.5 C0,3.80557963 3.80557963,0 8.5,0 C13.1944204,0 17,3.80557963 17,8.5 C17,13.1944204 13.1944204,17 8.5,17 Z"></path>
+								<path class="glyph" fill="#FFF" d="M8.5,7.29791847 L6.12604076,4.92395924 C5.79409512,4.59201359 5.25590488,4.59201359 4.92395924,4.92395924 C4.59201359,5.25590488 4.59201359,5.79409512 4.92395924,6.12604076 L7.29791847,8.5 L4.92395924,10.8739592 C4.59201359,11.2059049 4.59201359,11.7440951 4.92395924,12.0760408 C5.25590488,12.4079864 5.79409512,12.4079864 6.12604076,12.0760408 L8.5,9.70208153 L10.8739592,12.0760408 C11.2059049,12.4079864 11.7440951,12.4079864 12.0760408,12.0760408 C12.4079864,11.7440951 12.4079864,11.2059049 12.0760408,10.8739592 L9.70208153,8.5 L12.0760408,6.12604076 C12.4079864,5.79409512 12.4079864,5.25590488 12.0760408,4.92395924 C11.7440951,4.59201359 11.2059049,4.59201359 10.8739592,4.92395924 L8.5,7.29791847 L8.5,7.29791847 Z"></path>
+							  </svg>
+							<span class="message"></span></div>
+					</form>
+				</div>
 				<p-messages *ngIf="messageContent" [severity]="messageSeverity" closable="true">
 					<ng-template pTemplate>
 						<i class="pi pi-info-circle"></i>
 						<div class="p-ml-3" [innerHtml]="messageContent" style="width: 100%;"></div>
 						<div class="p-mr-2">
-							<button pButton pRipple type="button" icon="pi pi-times" style="color: #2c1e30;" class="p-button-rounded p-button-danger p-button-text"
-							(click)="messageContent = ''"></button>
+							<button pButton pRipple type="button" icon="pi pi-times" style="color: #2c1e30;"
+								class="p-button-rounded p-button-danger p-button-text"
+								(click)="messageContent = ''"></button>
 						</div>
 					</ng-template>
 				</p-messages>
@@ -188,7 +195,9 @@
 											<label for="firstname6">First name<span class="cls-requiered">*</span>
 											</label>
 											<!-- <p-inputMask formControlName="firstName" mask="a?" class="p-inputtext-sm" required></p-inputMask> -->
-											<input id="firstname6" type="text" pInputText formControlName="firstName" pattern="^[ A-Za-z-.,]*$" oninput="validity.valid||(value=(this.value.substring(0, this.value.length - 1)))"
+											<input id="firstname6" type="text" pInputText formControlName="firstName"
+												pattern="^[ A-Za-z-.,]*$"
+												oninput="validity.valid||(value=(this.value.substring(0, this.value.length - 1)))"
 												required class="p-inputtext-sm">
 											<!-- <span *ngIf="hasFormError(patientForm, isFormSubmitted, 'firstName','required')"
                                 style="color: red">This field is required</span> -->
@@ -202,7 +211,8 @@
 										<div class="p-field p-col-12 p-md-4">
 											<label for="lastname6">Middle name</label>
 											<input id="lastname6" type="text" pInputText formControlName="middleName"
-											pattern="^[ A-Za-z-.,]*$" oninput="validity.valid||(value=(this.value.substring(0, this.value.length - 1)))"
+												pattern="^[ A-Za-z-.,]*$"
+												oninput="validity.valid||(value=(this.value.substring(0, this.value.length - 1)))"
 												class="p-inputtext-sm">
 											<mat-error *ngIf="isControlHasError('middleName', 'pattern')">
 												<strong>Field is not valid</strong>
@@ -211,7 +221,8 @@
 										<div class="p-field p-col-12 p-md-4">
 											<label for="lastname6">Last name<span class="cls-requiered">*</span></label>
 											<input id="lastname6" type="text" pInputText formControlName="lastName"
-											pattern="^[ A-Za-z-.,]*$" oninput="validity.valid||(value=(this.value.substring(0, this.value.length - 1)))"
+												pattern="^[ A-Za-z-.,]*$"
+												oninput="validity.valid||(value=(this.value.substring(0, this.value.length - 1)))"
 												required class="p-inputtext-sm">
 											<mat-error *ngIf="isControlHasError('lastName', 'required')">
 												<strong>Required field</strong>
@@ -344,12 +355,14 @@
 
 										<div class="p-field p-col-12 p-md-4"
 											*ngIf="patientForm.value.state && patientForm.value.state==='HI'">
-											<label for="user_state">Travel date to Hawaii<span class="cls-requiered">*</span></label>
-											<p-calendar [showIcon]="true" inputId="icon" formControlName="travelDateToHawaii" required
-												[monthNavigator]="true" [yearNavigator]="true" [yearRange]="yearRange"
-												dateFormat="yy-mm-dd" class="p-inputtext-sm" [maxDate]="maxDate"
-												[tooltip]="tooltipJson.travelDateToHawaii"
-												[trigger]="'click'" [hideDelayTouchscreen]="3000" [hide-delay]="3000"
+											<label for="user_state">Travel date to Hawaii<span
+													class="cls-requiered">*</span></label>
+											<p-calendar [showIcon]="true" inputId="icon"
+												formControlName="travelDateToHawaii" required [monthNavigator]="true"
+												[yearNavigator]="true" [yearRange]="yearRange" dateFormat="yy-mm-dd"
+												class="p-inputtext-sm" [minDate]="minDate"
+												[tooltip]="tooltipJson.travelDateToHawaii" [trigger]="'click'"
+												[hideDelayTouchscreen]="3000" [hide-delay]="3000"
 												[animation-duration]="500">
 											</p-calendar>
 											<mat-error *ngIf="isControlHasError('travelDateToHawaii', 'required')">
@@ -586,8 +599,8 @@ medica sobre las vacunas que ha recibido.
 														</ng-template>
 														<ng-template editMode>
 															<div class="form-group" style="padding: unset !important">
-																<input class="form-control"
-																pattern="^[ A-Za-z-.,]*$" oninput="validity.valid||(value=(this.value.substring(0, this.value.length - 1)))"
+																<input class="form-control" pattern="^[ A-Za-z-.,]*$"
+																	oninput="validity.valid||(value=(this.value.substring(0, this.value.length - 1)))"
 																	data-testid="sample-input-click-edit"
 																	placeholder="Last Name" type="text"
 																	[formControl]="lastNameInputControl" />
@@ -595,7 +608,8 @@ medica sobre las vacunas que ha recibido.
 														</ng-template>
 													</editable>
 												</div>
-												<span *ngIf="lastInputText?.length === 0" style="color: red; font-weight: bold;">Required field</span>
+												<span *ngIf="lastInputText?.length === 0"
+													style="color: red; font-weight: bold;">Required field</span>
 											</div>
 
 											<div class="p-col">
@@ -613,8 +627,8 @@ medica sobre las vacunas que ha recibido.
 														</ng-template>
 														<ng-template editMode>
 															<div class="form-group" style="padding: unset !important">
-																<input class="form-control"
-																pattern="^[ A-Za-z-.,]*$" oninput="validity.valid||(value=(this.value.substring(0, this.value.length - 1)))"
+																<input class="form-control" pattern="^[ A-Za-z-.,]*$"
+																	oninput="validity.valid||(value=(this.value.substring(0, this.value.length - 1)))"
 																	data-testid="sample-input-click-edit"
 																	placeholder="First Name" type="text"
 																	[formControl]="firstNameInputControl" />
@@ -622,7 +636,8 @@ medica sobre las vacunas que ha recibido.
 														</ng-template>
 													</editable>
 												</div>
-												<span *ngIf="firstInputText?.length === 0" style="color: red; font-weight: bold;">Required field</span>
+												<span *ngIf="firstInputText?.length === 0"
+													style="color: red; font-weight: bold;">Required field</span>
 											</div>
 											<div class="p-col">
 												<div
@@ -639,7 +654,8 @@ medica sobre las vacunas que ha recibido.
 													DOB
 												</div>
 												<div class="box p-shadow-3">
-													{{ patientForm?.value?.dob ? (patientForm.value.dob | date:'MMM dd, yyyy') : '' }}
+													{{ patientForm?.value?.dob ? (patientForm.value.dob | date:'MMM dd,
+													yyyy') : '' }}
 												</div>
 											</div>
 										</div>
@@ -655,7 +671,9 @@ medica sobre las vacunas que ha recibido.
 												<td>
 													{{ imageToTextResponse?.firstDose }}
 												</td>
-												<td>{{ imageToTextResponse?.firstDoseDate ? (imageToTextResponse.firstDoseDate | date:'MMM dd, yyyy') : '' }}</td>
+												<td>{{ imageToTextResponse?.firstDoseDate ?
+													(imageToTextResponse.firstDoseDate | date:'MMM dd, yyyy') : '' }}
+												</td>
 												<td>
 													<editable data-testid="sample-input-click" class="editable"
 														(save)="updateSingleField('firstClinicName', 'firstClinicNameInputControl')"
@@ -676,7 +694,8 @@ medica sobre las vacunas que ha recibido.
 															</div>
 														</ng-template>
 													</editable>
-													<span *ngIf="firstClinicName?.length === 0" style="color: red; font-weight: bold;">Required field</span>
+													<span *ngIf="firstClinicName?.length === 0"
+														style="color: red; font-weight: bold;">Required field</span>
 												</td>
 											</tr>
 											<tr
@@ -691,8 +710,8 @@ medica sobre las vacunas que ha recibido.
 													imageToTextResponse?.secondDoseDate }}
 												</td>
 												<td>
-													<editable *ngIf="patientForm?.value?.orgDose2" data-testid="sample-input-click"
-														class="editable"
+													<editable *ngIf="patientForm?.value?.orgDose2"
+														data-testid="sample-input-click" class="editable"
 														(save)="updateSingleField('secondClinicName', 'secondClinicNameInputControl')"
 														(cancel)="cancelSingleField('secondClinicName', 'secondClinicNameInputControl')">
 														<ng-template viewMode>
@@ -711,7 +730,8 @@ medica sobre las vacunas que ha recibido.
 															</div>
 														</ng-template>
 													</editable>
-													<span *ngIf="secondClinicName?.length === 0" style="color: red; font-weight: bold;">Required field</span>
+													<span *ngIf="secondClinicName?.length === 0"
+														style="color: red; font-weight: bold;">Required field</span>
 												</td>
 											</tr>
 										</table>
@@ -783,7 +803,8 @@ medica sobre las vacunas que ha recibido.
 											shared
 											by VAXCheck as permitted in the VAXCheck’s Privacy Policy statement.
 										</mat-checkbox>
-										<div *ngIf="consentNotChecked == true && !consent" style="color: red; font-weight: bold;">Please agree
+										<div *ngIf="consentNotChecked == true && !consent"
+											style="color: red; font-weight: bold;">Please agree
 											the consent.</div>
 									</p-fieldset>
 
@@ -872,8 +893,7 @@ medica sobre las vacunas que ha recibido.
 												<label for="lastname4" class="p-col-12 p-mb-2 p-md-2 p-mb-md-0"
 													style="color: gray;">Doses received:</label>
 												<div class="p-col-12 p-md-10">
-													<b
-														*ngIf="imageToTextResponse">{{doseReceived}}</b>
+													<b *ngIf="imageToTextResponse">{{doseReceived}}</b>
 												</div>
 											</div>
 											<div class="p-field p-grid">
@@ -895,14 +915,16 @@ medica sobre las vacunas que ha recibido.
 												<label for="lastname4" class="p-col-12 p-mb-2 p-md-2 p-mb-md-0"
 													style="color: gray;">Effective date:</label>
 												<div class="p-col-12 p-md-10">
-													<b>{{effectiveDate ? (effectiveDate | date:'MMM dd, yyyy') : 'N/A'}}</b>
+													<b>{{effectiveDate ? (effectiveDate | date:'MMM dd, yyyy') :
+														'N/A'}}</b>
 												</div>
 											</div>
 											<div class="p-field p-grid">
 												<label for="firstname4" class="p-col-12 p-mb-2 p-md-2 p-mb-md-0"
 													style="color: gray;">Expiration Date :</label>
 												<div class="p-col-12 p-md-10">
-													<b>{{expirationDate ? (expirationDate | date:'MMM dd, yyyy') : 'N/A'}}</b>
+													<b>{{expirationDate ? (expirationDate | date:'MMM dd, yyyy') :
+														'N/A'}}</b>
 												</div>
 											</div>
 										</div>
@@ -938,9 +960,9 @@ medica sobre las vacunas que ha recibido.
 			</div>
 		</div>
 		<!--end: Wizard -->
-<p-confirmDialog [breakpoints]="{'960px': '75vw', '640px': '100vw'}" 
-[style]="{width: '50vw'}"
-rejectButtonStyleClass="p-button-outlined p-button-danger p-button-raised p-button-rounded"
-acceptButtonStyleClass="p-button-outlined p-button-success p-button-raised p-button-rounded"></p-confirmDialog>
+		<p-confirmDialog [breakpoints]="{'960px': '75vw', '640px': '100vw'}" [style]="{width: '50vw'}"
+			rejectButtonStyleClass="p-button-outlined p-button-danger p-button-raised p-button-rounded"
+			acceptButtonStyleClass="p-button-outlined p-button-success p-button-raised p-button-rounded">
+		</p-confirmDialog>
 	</kt-portlet-body>
 </kt-portlet>
