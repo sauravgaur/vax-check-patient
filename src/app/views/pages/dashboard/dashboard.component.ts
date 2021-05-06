@@ -177,12 +177,12 @@ export class DashboardComponent implements OnInit {
           });
           this.cvv.mount('#example2-card-cvc');
           this.stripeElement = [this.creditCard, this.expiry, this.cvv]
-          this.stripeTest.controls.stripe_firstName.setValue('test')
-          this.stripeTest.controls.stripe_lastName.setValue('test')
-          this.stripeTest.controls.stripe_address1.setValue('test')
-          this.stripeTest.controls.stripe_city.setValue('test')
-          this.stripeTest.controls.stripe_state.setValue('test')
-          this.stripeTest.controls.stripe_zipcode.setValue('test')
+          // this.stripeTest.controls.stripe_firstName.setValue('test')
+          // this.stripeTest.controls.stripe_lastName.setValue('test')
+          // this.stripeTest.controls.stripe_address1.setValue('test')
+          // this.stripeTest.controls.stripe_city.setValue('test')
+          // this.stripeTest.controls.stripe_state.setValue('test')
+          // this.stripeTest.controls.stripe_zipcode.setValue('test')
 
           // this.creditCard.on('change', function (event) {
           //   console.log('event:', event)
