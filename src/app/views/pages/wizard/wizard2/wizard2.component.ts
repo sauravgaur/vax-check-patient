@@ -1395,15 +1395,15 @@ export class Wizard2Component implements OnInit, AfterViewInit {
         // console.log('card number ele', cardNumberEle)
         // console.log('card number:', cardNumberEle.defaultValue)
         this.submitted = true;
-        this.showDialog();
-        this.stripeTest.controls.stripe_firstName.setValue(this.patientForm.controls.firstName.value)
-        this.stripeTest.controls.stripe_lastName.setValue(this.patientForm.controls.lastName.value)
-        this.stripeTest.controls.stripe_address1.setValue(this.patientForm.controls.address1.value)
-        this.stripeTest.controls.stripe_city.setValue(this.patientForm.controls.city.value)
-        this.stripeTest.controls.stripe_state.setValue(this.patientForm.controls.state.value)
-        this.stripeTest.controls.stripe_zipcode.setValue(this.patientForm.controls.zipcode.value)
-        console.log('stripe console:', this.stripeTest.value)
-        this.stripeTest.updateValueAndValidity();
+        // this.showDialog();
+        // this.stripeTest.controls.stripe_firstName.setValue(this.patientForm.controls.firstName.value)
+        // this.stripeTest.controls.stripe_lastName.setValue(this.patientForm.controls.lastName.value)
+        // this.stripeTest.controls.stripe_address1.setValue(this.patientForm.controls.address1.value)
+        // this.stripeTest.controls.stripe_city.setValue(this.patientForm.controls.city.value)
+        // this.stripeTest.controls.stripe_state.setValue(this.patientForm.controls.state.value)
+        // this.stripeTest.controls.stripe_zipcode.setValue(this.patientForm.controls.zipcode.value)
+        // console.log('stripe console:', this.stripeTest.value)
+        // this.stripeTest.updateValueAndValidity();
 
         this.router.navigateByUrl('/dashboard'); 
     }
