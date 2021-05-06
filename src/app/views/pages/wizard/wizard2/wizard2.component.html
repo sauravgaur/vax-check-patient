@@ -86,7 +86,7 @@
 
 			</div>
 			<div class="wizard-body py-8 px-8 py-lg-20 px-lg-10">
-				<div class="cell example example2" id="example-2">
+				<!-- <div class="cell example example2" id="example-2">
 					<form class="mb-5" novalidate (ngSubmit)="buy()" [formGroup]="stripeTest">
 						<div data-locale-reversible>
 							<div class="row" data-locale-reversible>
@@ -169,7 +169,7 @@
 							  </svg>
 							<span class="message"></span></div>
 					</form>
-				</div>
+				</div> -->
 				<p-messages *ngIf="messageContent" [severity]="messageSeverity" closable="true">
 					<ng-template pTemplate>
 						<i class="pi pi-info-circle"></i>
@@ -247,9 +247,9 @@
 											<label for="user_email">Email</label>
 											<input id="user_email" type="email" formControlName="email" pInputText
 												class="p-inputtext-sm">
-											<!-- <mat-error *ngIf="isControlHasError('email', 'required')">
+											<mat-error *ngIf="isControlHasError('email', 'required')">
 												<strong>Required field</strong>
-											  </mat-error> -->
+											  </mat-error>
 											<mat-error *ngIf="isControlHasError('email', 'email')">
 												<strong>Field is not valid</strong>
 											</mat-error>

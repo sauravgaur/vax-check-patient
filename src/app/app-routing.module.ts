@@ -17,6 +17,10 @@ const routes: Routes = [
     canActivate: [],
     children: [
       {
+        path: 'payment',
+        loadChildren: () => import('./views/pages/dashboard/dashboard.module').then(m => m.DashboardModule),
+      },
+      {
           path: 'patient',
           loadChildren: () => import('./views/pages/wizard/wizard.module').then(m => m.WizardModule),
         },
@@ -48,8 +52,8 @@ const routes: Routes = [
       //   path: 'builder',
       //   loadChildren: () => import('./views/theme/content/builder/builder.module').then(m => m.BuilderModule),
       // },
-      {path: '', redirectTo: 'dashboard', pathMatch: 'full'},
-      {path: '**', redirectTo: 'dashboard', pathMatch: 'full'},
+      {path: 'dashboard', redirectTo: 'dashboard', pathMatch: 'full'},
+      // {path: '**', redirectTo: 'dashboard', pathMatch: 'full'},
     ],
   },
   {path: '**', redirectTo: 'error/403', pathMatch: 'full'},

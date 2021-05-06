@@ -13,6 +13,7 @@ import { Message } from 'primeng//api';
 import { MessageService } from 'primeng/api';
 import { CdkRow } from '@angular/cdk/table';
 import { countBy } from 'lodash';
+import { Router } from '@angular/router';
 // label: 'Hispanic or Latino', value: '2186-5'
 
 interface IImageToText {
@@ -524,7 +525,8 @@ export class Wizard2Component implements OnInit, AfterViewInit {
         private stripeService: StripeService,
         private fb: FormBuilder,
         private confirmationService: ConfirmationService,
-        private messageService: MessageService
+        private messageService: MessageService,
+        private router: Router,
     ) {
     }
 
@@ -1010,7 +1012,7 @@ export class Wizard2Component implements OnInit, AfterViewInit {
                 this.patientForm.get('firstName').setValidators([Validators.required, Validators.pattern('^[ A-Za-z-.,]*$')]);
                 this.patientForm.get('lastName').setValidators(Validators.required);
                 this.patientForm.get('dob').setValidators(Validators.required);
-                this.patientForm.get('email').setValidators(Validators.email);
+                this.patientForm.get('email').setValidators([Validators.required, Validators.email]);
                 this.patientForm.get('gender').setValidators(Validators.required);
                 this.patientForm.get('address1').setValidators(Validators.required);
                 this.patientForm.get('city').setValidators(Validators.required);
@@ -1372,6 +1374,8 @@ export class Wizard2Component implements OnInit, AfterViewInit {
         this.stripeTest.controls.stripe_zipcode.setValue(this.patientForm.controls.zipcode.value)
         console.log('stripe console:', this.stripeTest.value)
         this.stripeTest.updateValueAndValidity();
+
+        this.router.navigateByUrl('/dashboard'); 
     }
     dataURLtoFile(dataurl, filename) {
 

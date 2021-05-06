@@ -69,7 +69,7 @@ export class AppComponent implements OnInit, OnDestroy {
         // to display back the body content
         setTimeout(() => {
           document.body.classList.add('page-loaded');
-          this.router.navigateByUrl('/patient/request-report'); // Main page
+          // this.router.navigateByUrl('/patient/request-report'); // Main page
         }, 500);
       }
     });
