@@ -2,7 +2,7 @@
 import { Component, ElementRef, OnInit, ViewChild, ChangeDetectorRef } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { StripeService, Elements, StripeCardComponent, Element as StripeElement, ElementsOptions, ElementOptions } from "ngx-stripe";
-
+import {ActivatedRoute} from "@angular/router";
 @Component({
   selector: 'kt-dashboard',
   templateUrl: './dashboard.component.html',
@@ -55,7 +55,27 @@ export class DashboardComponent implements OnInit {
 
   stripeTest: FormGroup;
   constructor(private stripeService: StripeService,
-    private fb: FormBuilder, private cd: ChangeDetectorRef,) { }
+    private fb: FormBuilder, private cd: ChangeDetectorRef,
+    private route: ActivatedRoute) {
+      this.stripeTest = this.fb.group({
+        stripe_firstName: ['', [Validators.required]],
+        stripe_lastName: ['', [Validators.required]],
+        stripe_amount: ['', [Validators.required]],
+        stripe_city: ['', [Validators.required]],
+        stripe_state: ['', [Validators.required]],
+        stripe_zipcode: ['', [Validators.required]],
+        stripe_address1: ['', [Validators.required]]
+      });
+
+      this.route.queryParams.subscribe(params => {
+        this.stripeTest.controls.stripe_firstName.setValue(params["firstName"])
+        this.stripeTest.controls.stripe_lastName.setValue(params["lastName"])
+        this.stripeTest.controls.stripe_address1.setValue(params["address1"])
+        this.stripeTest.controls.stripe_city.setValue(params["city"])
+        this.stripeTest.controls.stripe_state.setValue(params["state"])
+        this.stripeTest.controls.stripe_zipcode.setValue(params["zipcode"])
+    });
+     }
   inputs: any;
   error: any;
   errorMessage: any;
@@ -86,16 +106,6 @@ export class DashboardComponent implements OnInit {
           input.classList.remove('empty');
         }
       });
-    });
-
-    this.stripeTest = this.fb.group({
-      stripe_firstName: ['', [Validators.required]],
-      stripe_lastName: ['', [Validators.required]],
-      stripe_amount: ['', [Validators.required]],
-      stripe_city: ['', [Validators.required]],
-      stripe_state: ['', [Validators.required]],
-      stripe_zipcode: ['', [Validators.required]],
-      stripe_address1: ['', [Validators.required]]
     });
 
     this.initiateStripe();

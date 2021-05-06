@@ -13,9 +13,8 @@ import { Message } from 'primeng//api';
 import { MessageService } from 'primeng/api';
 import { CdkRow } from '@angular/cdk/table';
 import { countBy } from 'lodash';
-import { Router } from '@angular/router';
+import { Router, NavigationExtras } from '@angular/router';
 // label: 'Hispanic or Latino', value: '2186-5'
-
 interface IImageToText {
     firstName?: string;
     middleName?: string;
@@ -1405,7 +1404,12 @@ export class Wizard2Component implements OnInit, AfterViewInit {
         // console.log('stripe console:', this.stripeTest.value)
         // this.stripeTest.updateValueAndValidity();
 
-        this.router.navigateByUrl('/dashboard'); 
+        let navigationExtras: NavigationExtras = {
+            queryParams: this.patientForm.value
+        };
+        this.router.navigate(["payment"], navigationExtras);
+
+        // this.router.navigateByUrl('/dashboard'); 
     }
     dataURLtoFile(dataurl, filename) {
 
