@@ -244,9 +244,10 @@
 											</mat-error>
 										</div>
 										<div class="p-field p-col-12 p-md-4">
-											<label for="user_email">Email</label>
+											<label for="user_email">Email<span
+												class="cls-requiered">*</span></label>
 											<input id="user_email" type="email" formControlName="email" pInputText
-												class="p-inputtext-sm">
+												class="p-inputtext-sm" required>
 											<mat-error *ngIf="isControlHasError('email', 'required')">
 												<strong>Required field</strong>
 											  </mat-error>

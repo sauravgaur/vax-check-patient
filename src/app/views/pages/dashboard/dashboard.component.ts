@@ -238,6 +238,7 @@ export class DashboardComponent implements OnInit {
           // Use the token to create a charge or a customer
           // https://stripe.com/docs/charges
           console.log(result.token.id);
+          alert('Payment successfully done, Thank you!')
         } else if (result.error) {
           // Error creating the token
             this.error.classList.add('visible');
