@@ -23,6 +23,27 @@
 @import "./assets/sass/themes/layout/header/menu/light.scss";
 @import "./assets/sass/themes/layout/brand/dark.scss";
 @import "./assets/sass/themes/layout/aside/dark.scss";
+@import url('https://fonts.googleapis.com/css2?family=Questrial&display=swap');
+
+* {
+  font-family: 'Questrial', sans-serif;
+}
+
+h1 {
+  font-size: 50px;
+}
+
+h2 {
+  font-size: 42px;
+}
+
+h3 {
+  font-size: 36px;
+}
+
+p {
+  font-size: 18px;
+}
 
 // Header themes
 // .header-base-light {
