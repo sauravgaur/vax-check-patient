@@ -138,6 +138,12 @@ td {
   color: red !important;
 }
 
+:host ::ng-deep .link_class {
+  font-weight: bold;
+  font-size: 15px;
+  text-decoration: underline;
+}
+
 // [type="file"] {
 //   border: 0;
 //   clip: rect(0, 0, 0, 0);

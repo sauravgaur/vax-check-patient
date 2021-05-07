@@ -40,9 +40,7 @@ export const builtInButtons = {
       id: 'intro',
       title: 'Welcome to traveller information form.',
       text: `
-            <p>
             In this section, traveller has to fill their personal details like name, address and contact details.
-            </p>
           `
     },
     {

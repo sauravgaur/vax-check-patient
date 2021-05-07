@@ -1,13 +1,12 @@
 <kt-portlet>
 	<kt-portlet-body>
 
-		<p-dialog header="Secure Payment" [(visible)]="display" [breakpoints]="{'960px': '75vw', '640px': '100vw'}"
+		<!-- <p-dialog header="Secure Payment" [(visible)]="display" [breakpoints]="{'960px': '75vw', '640px': '100vw'}"
 			[style]="{width: '50vw'}">
-			<!-- <h3 class="pb-5"> Please do the payment !! </h3> -->
 			
-		</p-dialog>
+		</p-dialog> -->
 		<!-- <button type="button" (click)="showDialog()" icon="pi pi-info-circle" label="Show">Show</button> -->
-
+		<img src="./assets/media/logos/VAXChecks-logo.png" title="" alt="" style="float: right; width: 5%;">
 		<!--begin: Wizard -->
 		<div #wizard class="wizard wizard-2" id="kt_wizard_v2" data-wizard-state="step-first">
 			<div class="wizard-nav border-right py-8 px-8 py-lg-20 px-lg-10">
@@ -86,90 +85,6 @@
 
 			</div>
 			<div class="wizard-body py-8 px-8 py-lg-20 px-lg-10">
-				<!-- <div class="cell example example2" id="example-2">
-					<form class="mb-5" novalidate (ngSubmit)="buy()" [formGroup]="stripeTest">
-						<div data-locale-reversible>
-							<div class="row" data-locale-reversible>
-								<div class="field half-width">
-									<input id="example2-firstname" data-tid="elements_examples.form.firstname_placeholder"
-									formControlName = "stripe_firstName" 
-										class="input" type="text" placeholder="John" required>
-									<label for="example2-firstname" data-tid="elements_examples.form.firstname_label">First name</label>
-									<div class="baseline"></div>
-								</div>
-								<div class="field half-width">
-									<input id="example2-lastname" data-tid="elements_examples.form.lastname_placeholder"
-									formControlName = "stripe_lastName" 
-										class="input" type="text" placeholder="Smith" required>
-									<label for="example2-lastname" data-tid="elements_examples.form.lastname_label">Last name</label>
-									<div class="baseline"></div>
-								</div>
-							</div>
-							<div class="row">
-								<div class="field">
-									<input id="example2-address" data-tid="elements_examples.form.address_placeholder"
-									formControlName = "stripe_address1" 
-										class="input" type="text" placeholder="185 Berry St" required>
-									<label for="example2-address"
-										data-tid="elements_examples.form.address_label">Address</label>
-									<div class="baseline"></div>
-								</div>
-							</div>
-							<div class="row" data-locale-reversible>
-								<div class="field half-width">
-									<input id="example2-city" data-tid="elements_examples.form.city_placeholder"
-										class="input" type="text" placeholder="San Francisco" required
-										formControlName = "stripe_city">
-									<label for="example2-city" data-tid="elements_examples.form.city_label">City</label>
-									<div class="baseline"></div>
-								</div>
-								<div class="field quarter-width">
-									<input id="example2-state" data-tid="elements_examples.form.state_placeholder"
-									formControlName = "stripe_state" 
-										class="input" type="text" placeholder="CA" required>
-									<label for="example2-state" data-tid="elements_examples.form.state_label">State</label>
-									<div class="baseline"></div>
-								</div>
-								<div class="field quarter-width">
-									<input id="example2-zip" data-tid="elements_examples.form.postal_code_placeholder"
-									formControlName = "stripe_zipcode" 
-										class="input" type="text" placeholder="94107" required>
-									<label for="example2-zip"
-										data-tid="elements_examples.form.postal_code_label">ZIP</label>
-									<div class="baseline"></div>
-								</div>
-							</div>
-						</div>
-						<div class="row">
-							<div class="field">
-								<div id="example2-card-number" class="input empty"></div>
-								<label for="example2-card-number" data-tid="elements_examples.form.card_number_label">Card
-									number</label>
-								<div class="baseline"></div>
-							</div>
-						</div>
-						<div class="row" id="card-info" #cardInfo>
-							<div class="field half-width">
-								<div id="example2-card-expiry" class="input empty"></div>
-								<label for="example2-card-expiry"
-									data-tid="elements_examples.form.card_expiry_label">Expiration</label>
-								<div class="baseline"></div>
-							</div>
-							<div class="field half-width">
-								<div id="example2-card-cvc" class="input empty"></div>
-								<label for="example2-card-cvc" data-tid="elements_examples.form.card_cvc_label">CVC</label>
-								<div class="baseline"></div>
-							</div>
-						</div>
-						<button pButton pRipple type="submit" label="PAY $34.99" style="width: 100%" class="p-button-outlined p-button-success p-button-raised p-button-rounded"></button>
-						<div class="error" role="alert">
-							<svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 17 17">
-								<path class="base" fill="#000" d="M8.5,17 C3.80557963,17 0,13.1944204 0,8.5 C0,3.80557963 3.80557963,0 8.5,0 C13.1944204,0 17,3.80557963 17,8.5 C17,13.1944204 13.1944204,17 8.5,17 Z"></path>
-								<path class="glyph" fill="#FFF" d="M8.5,7.29791847 L6.12604076,4.92395924 C5.79409512,4.59201359 5.25590488,4.59201359 4.92395924,4.92395924 C4.59201359,5.25590488 4.59201359,5.79409512 4.92395924,6.12604076 L7.29791847,8.5 L4.92395924,10.8739592 C4.59201359,11.2059049 4.59201359,11.7440951 4.92395924,12.0760408 C5.25590488,12.4079864 5.79409512,12.4079864 6.12604076,12.0760408 L8.5,9.70208153 L10.8739592,12.0760408 C11.2059049,12.4079864 11.7440951,12.4079864 12.0760408,12.0760408 C12.4079864,11.7440951 12.4079864,11.2059049 12.0760408,10.8739592 L9.70208153,8.5 L12.0760408,6.12604076 C12.4079864,5.79409512 12.4079864,5.25590488 12.0760408,4.92395924 C11.7440951,4.59201359 11.2059049,4.59201359 10.8739592,4.92395924 L8.5,7.29791847 L8.5,7.29791847 Z"></path>
-							  </svg>
-							<span class="message"></span></div>
-					</form>
-				</div> -->
 				<p-messages *ngIf="messageContent" [severity]="messageSeverity" closable="true">
 					<ng-template pTemplate>
 						<i class="pi pi-info-circle"></i>
@@ -790,6 +705,7 @@ medica sobre las vacunas que ha recibido.
 											</div>
 										</mat-tab>
 									</mat-tab-group>
+									<div *ngIf="!webcamImage && !imageSrc && consentNotChecked" style="color: red; font-weight: bold;">Please provide vaccination proof.</div>
 									<p-fieldset legend="Consent" [toggleable]="true">
 										<mat-checkbox class="example-margin" [(ngModel)]="consent"
 											[ngModelOptions]="{standalone: true}">I hereby consent to the release of my
@@ -962,7 +878,7 @@ medica sobre las vacunas que ha recibido.
 		</div>
 		<!--end: Wizard -->
 		<p-confirmDialog [breakpoints]="{'960px': '75vw', '640px': '100vw'}" [style]="{width: '50vw'}"
-			rejectButtonStyleClass="p-button-outlined p-button-danger p-button-raised p-button-rounded"
+			rejectButtonStyleClass="p-button-outlined p-button-info p-button-raised p-button-rounded"
 			acceptButtonStyleClass="p-button-outlined p-button-success p-button-raised p-button-rounded">
 		</p-confirmDialog>
 	</kt-portlet-body>
