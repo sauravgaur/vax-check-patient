@@ -790,9 +790,9 @@ export class Wizard2Component implements OnInit, AfterViewInit {
 
     confirm2() {
         this.confirmationService.confirm({
-            message: `You have selected <b>${this.patientForm.get('orgName').value.name}</b> which is linked with "HumanAPI" portal.<br><br>
-			<b>Do you have an account for "HumanAPI" ?</b>`,
-            header: 'HumanAPI account confirmation',
+            message: `You have selected <b>${this.patientForm.get('orgName').value.name}.</b><br><br>
+			<b>Do you have an account for the same ?</b>`,
+            header: 'Account confirmation',
             icon: 'pi pi-info-circle',
             accept: () => {
                 console.log("in accept")
@@ -1119,7 +1119,17 @@ export class Wizard2Component implements OnInit, AfterViewInit {
 
                 // }
                 if (this.patientForm.valid) {
+                    // const checkTravelerExists: any = this.http.post(`${environment.api_rul}/batch/check-patient`, {
+                    //     firstName: this.patientForm.get('firstName').value,
+                    //     lastName: this.patientForm.get('lastName').value,
+                    //     middleName: this.patientForm.get('middleName').value,
+                    //     dateOfBirth: this.patientForm.get('dob').value
+                    // }).toPromise();
+                    // console.log('checkTravelerExists: ', checkTravelerExists)
+                    // if(checkTravelerExists.isUserExist){
+                    //     console.log('in user exists')
 
+                    // } else console.log('in user not exists')
                 }
 
             } else if (wizardObj.currentStep === 2) {
@@ -1328,7 +1338,7 @@ export class Wizard2Component implements OnInit, AfterViewInit {
             this.messageContent = ''
             if (!selectedValue || selectedValue.value.toUpperCase().includes('HPH')) {
                 this.submitButton = { id: 1, value: 'Submit' }
-            } else if (selectedValue.value.toUpperCase() === ('TIMES PHARMACY')) {
+            } else if (selectedValue.value.toUpperCase().includes('CVS')) {
                 this.submitButton = { id: 2, value: 'Start Verification' }
             } else this.submitButton = { id: 3, value: `Verify with ${selectedValue.value}` }
 

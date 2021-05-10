@@ -29,7 +29,7 @@ const routes: Routes = [
         loadChildren: () => import('./views/pages/failure/failure.module').then(m => m.FailureModule),
       },
       {
-          path: 'traveller',
+          path: 'traveler',
           loadChildren: () => import('./views/pages/wizard/wizard.module').then(m => m.WizardModule),
         },
       // {
@@ -61,7 +61,7 @@ const routes: Routes = [
       //   loadChildren: () => import('./views/theme/content/builder/builder.module').then(m => m.BuilderModule),
       // },
       {path: 'dashboard', redirectTo: 'dashboard', pathMatch: 'full'},
-      {path: '**', redirectTo: 'traveller/registration', pathMatch: 'full'},
+      {path: '**', redirectTo: 'traveler/registration', pathMatch: 'full'},
     ],
   },
   {path: '**', redirectTo: 'error/403', pathMatch: 'full'},
