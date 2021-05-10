@@ -58,7 +58,7 @@ import {MessageModule} from 'primeng/message';
 				component: WizardComponent,
 				children: [
 					{
-						path: 'request-report',
+						path: 'registration',
 						component: Wizard2Component,
 					}
 				],

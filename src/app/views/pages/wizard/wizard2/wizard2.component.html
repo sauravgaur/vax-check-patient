@@ -1,12 +1,49 @@
 <kt-portlet>
 	<kt-portlet-body>
 
-		<!-- <p-dialog header="Secure Payment" [(visible)]="display" [breakpoints]="{'960px': '75vw', '640px': '100vw'}"
+		<p-dialog header="Secure Payment" [(visible)]="display" [breakpoints]="{'960px': '75vw', '640px': '100vw'}"
 			[style]="{width: '50vw'}">
-			
-		</p-dialog> -->
+			<!-- <div class="card"> -->
+				<div class="p-d-flex">
+					<div class="photo">
+						<img src="./assets/media/logos/VAXChecks-logo.png" title="" alt="">
+					</div>
+					<p-divider layout="vertical"></p-divider>
+					<div class="p-grid">
+						<div class="p-col-12">
+							<h4>Verify and Certify COVID CDC Vaccination Cards
+								for Safe Travels Hawai’i
+							</h4>
+						</div>
+						<div class="p-col-12">
+							<h5>by VAXCheck, a service of FirstVitals Health and Wellness Inc</h5>
+						</div>
+						<div class="p-col-12">
+							<button pButton pRipple type="submit" label="PAY $36.65" style="width: 100%"
+							(click)="checkout()"
+								class="p-button-outlined p-button-success p-button-raised p-button-rounded"></button>
+						</div>
+					</div>
+					<!-- <button (click)="checkout()">Checkout</button> -->
+				</div>
+			<!-- </div> -->
+			<!-- <div class="container">
+				<div class="card">
+					<div class="photo">
+						<img src="./assets/media/logos/VAXChecks-logo.png" title="" alt="">
+					</div>
+					<div class="description">
+						<h4>Verify and Certify COVID CDC Vaccination Cards
+							for Safe Travels Hawai’i
+						</h4>
+						<p>by VAXCheck, a service of FirstVitals Health and Wellness Inc</p>
+						<button (click)="checkout()">Checkout</button>
+					</div>
+				</div>
+			</div> -->
+		</p-dialog>
 		<!-- <button type="button" (click)="showDialog()" icon="pi pi-info-circle" label="Show">Show</button> -->
-		<img src="./assets/media/logos/VAXChecks-logo.png" title="" alt="" style="float: right; width: 5%;">
+		<img src="./assets/media/logos/VAXChecks-logo.png" title="" alt="" style="right: 5%; width: 5.5%; position: absolute;">
 		<!--begin: Wizard -->
 		<div #wizard class="wizard wizard-2" id="kt_wizard_v2" data-wizard-state="step-first">
 			<div class="wizard-nav border-right py-8 px-8 py-lg-20 px-lg-10">
@@ -159,13 +196,12 @@
 											</mat-error>
 										</div>
 										<div class="p-field p-col-12 p-md-4">
-											<label for="user_email">Email<span
-												class="cls-requiered">*</span></label>
+											<label for="user_email">Email<span class="cls-requiered">*</span></label>
 											<input id="user_email" type="email" formControlName="email" pInputText
 												class="p-inputtext-sm" required>
 											<mat-error *ngIf="isControlHasError('email', 'required')">
 												<strong>Required field</strong>
-											  </mat-error>
+											</mat-error>
 											<mat-error *ngIf="isControlHasError('email', 'email')">
 												<strong>Field is not valid</strong>
 											</mat-error>
@@ -705,7 +741,8 @@ medica sobre las vacunas que ha recibido.
 											</div>
 										</mat-tab>
 									</mat-tab-group>
-									<div *ngIf="!webcamImage && !imageSrc && consentNotChecked" style="color: red; font-weight: bold;">Please provide vaccination proof.</div>
+									<div *ngIf="!webcamImage && !imageSrc && consentNotChecked"
+										style="color: red; font-weight: bold;">Please provide vaccination proof.</div>
 									<p-fieldset legend="Consent" [toggleable]="true">
 										<mat-checkbox class="example-margin" [(ngModel)]="consent"
 											[ngModelOptions]="{standalone: true}">I hereby consent to the release of my

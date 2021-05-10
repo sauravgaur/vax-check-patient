@@ -26,7 +26,7 @@
   }
   
   .example.example2 .field.quarter-width {
-    width: calc(25% - 30px);
+    width: calc(25% - 20px);
   }
   
   .example.example2 .baseline {
@@ -54,6 +54,7 @@
     transition-property: color, transform;
     transition-duration: 0.3s;
     transition-timing-function: cubic-bezier(0.165, 0.84, 0.44, 1);
+    text-align: left !important;
   }
   
   .example.example2 .input {

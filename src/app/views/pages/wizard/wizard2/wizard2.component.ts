@@ -7,7 +7,7 @@ import { Observable, Subject } from 'rxjs';
 import { ShepherdService } from 'angular-shepherd';
 import { steps as defaultSteps, defaultStepOptions } from './tour';
 import moment from 'moment';
-import { StripeService, Elements, StripeCardComponent, Element as StripeElement, ElementsOptions, ElementOptions } from "ngx-stripe";
+// import { StripeService, Elements, StripeCardComponent, Element as StripeElement, ElementsOptions, ElementOptions } from "ngx-stripe";
 import { ConfirmationService } from 'primeng/api';
 import { Message } from 'primeng//api';
 import { MessageService } from 'primeng/api';
@@ -15,6 +15,11 @@ import { CdkRow } from '@angular/cdk/table';
 import { countBy } from 'lodash';
 import { Router, NavigationExtras } from '@angular/router';
 // label: 'Hispanic or Latino', value: '2186-5'
+// import { Swal } from '@sweetalert2/ngx-sweetalert2';
+import Swal from 'sweetalert2'
+import { loadStripe } from '@stripe/stripe-js';
+import { environment } from '../../../../../environments/environment';
+
 interface IImageToText {
     firstName?: string;
     middleName?: string;
@@ -42,7 +47,7 @@ interface IImageToText {
     // }
 }
 
-const BASE_URL = 'http://localhost:3000/api';
+const BASE_URL = 'http://localhost:3100/api';
 const MANUFACTURER: SelectItem[] = [
     {
         label: 'Moderna',
@@ -302,59 +307,59 @@ const STATES: SelectItem[] = [
     providers: [ConfirmationService, MessageService]
 })
 export class Wizard2Component implements OnInit, AfterViewInit {
-    @ViewChild(StripeCardComponent) card: StripeCardComponent;
-    @ViewChild('cardInfo') cardInfo: ElementRef;
-    elements: Elements;
-    card1: StripeElement;
+    // @ViewChild(StripeCardComponent) card: StripeCardComponent;
+    // @ViewChild('cardInfo') cardInfo: ElementRef;
+    // elements: Elements;
+    // card1: StripeElement;
 
-    creditCard: StripeElement;
-    expiry: StripeElement;
-    cvv: StripeElement;
+    // creditCard: StripeElement;
+    // expiry: StripeElement;
+    // cvv: StripeElement;
 
-    cardOptions: ElementOptions = {
-        style: {
-            // base: {
-            //     iconColor: '#666EE8',
-            //     color: '#31325F',
-            //     lineHeight: '40px',
-            //     fontWeight: 300,
-            //     fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
-            //     fontSize: '18px',
-            //     '::placeholder': {
-            //         color: '#CFD7E0'
-            //     }
-            // }
-            base: {
-                color: '#32325D',
-                fontWeight: 500,
-                fontFamily: 'Source Code Pro, Consolas, Menlo, monospace',
-                fontSize: '16px',
-                fontSmoothing: 'antialiased',
+    // cardOptions: ElementOptions = {
+    //     style: {
+    //         // base: {
+    //         //     iconColor: '#666EE8',
+    //         //     color: '#31325F',
+    //         //     lineHeight: '40px',
+    //         //     fontWeight: 300,
+    //         //     fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
+    //         //     fontSize: '18px',
+    //         //     '::placeholder': {
+    //         //         color: '#CFD7E0'
+    //         //     }
+    //         // }
+    //         base: {
+    //             color: '#32325D',
+    //             fontWeight: 500,
+    //             fontFamily: 'Source Code Pro, Consolas, Menlo, monospace',
+    //             fontSize: '16px',
+    //             fontSmoothing: 'antialiased',
 
-                '::placeholder': {
-                    color: '#CFD7DF',
-                },
-                ':-webkit-autofill': {
-                    color: '#e39f48',
-                },
-            },
-            invalid: {
-                color: '#E25950',
+    //             '::placeholder': {
+    //                 color: '#CFD7DF',
+    //             },
+    //             ':-webkit-autofill': {
+    //                 color: '#e39f48',
+    //             },
+    //         },
+    //         invalid: {
+    //             color: '#E25950',
 
-                '::placeholder': {
-                    color: '#FFCCA5',
-                },
-            }
-        }
-    };
-    elementsOptions: ElementsOptions = {
-        locale: 'auto',
-        fonts: [
-            {
-                cssSrc: 'https://fonts.googleapis.com/css?family=Source+Code+Pro',
-            },
-        ]
-    };
+    //             '::placeholder': {
+    //                 color: '#FFCCA5',
+    //             },
+    //         }
+    //     }
+    // };
+    // elementsOptions: ElementsOptions = {
+    //     locale: 'auto',
+    //     fonts: [
+    //         {
+    //             cssSrc: 'https://fonts.googleapis.com/css?family=Source+Code+Pro',
+    //         },
+    //     ]
+    // };
 
     stripeTest: FormGroup;
     @ViewChild('wizard', { static: true }) el: ElementRef;
@@ -516,12 +521,13 @@ export class Wizard2Component implements OnInit, AfterViewInit {
     display = false;
     messageContent = '';
     messageSeverity = '';
+    stripePromise = loadStripe(environment.stripe_key);
     constructor(
         private cd: ChangeDetectorRef,
         private http: HttpClient,
         private _fb: FormBuilder,
         private shepherdService: ShepherdService,
-        private stripeService: StripeService,
+        // private stripeService: StripeService,
         private fb: FormBuilder,
         private confirmationService: ConfirmationService,
         private messageService: MessageService,
@@ -535,84 +541,85 @@ export class Wizard2Component implements OnInit, AfterViewInit {
     // }
     inputs: any;
     ngOnInit() {
-        this.inputs = document.querySelectorAll('.cell.example.example2 .input');
-        Array.prototype.forEach.call(this.inputs, function (input) {
-            input.addEventListener('focus', function () {
-                input.classList.add('focused');
-            });
-            input.addEventListener('blur', function () {
-                input.classList.remove('focused');
-            });
-            input.addEventListener('keyup', function () {
-                if (input.value.length === 0) {
-                    input.classList.add('empty');
-                } else {
-                    input.classList.remove('empty');
-                }
-            });
-        });
+        // this.showDialog()
+        // this.inputs = document.querySelectorAll('.cell.example.example2 .input');
+        // Array.prototype.forEach.call(this.inputs, function (input) {
+        //     input.addEventListener('focus', function () {
+        //         input.classList.add('focused');
+        //     });
+        //     input.addEventListener('blur', function () {
+        //         input.classList.remove('focused');
+        //     });
+        //     input.addEventListener('keyup', function () {
+        //         if (input.value.length === 0) {
+        //             input.classList.add('empty');
+        //         } else {
+        //             input.classList.remove('empty');
+        //         }
+        //     });
+        // });
         // this.imageToTextResponse=null;
         this.yearRange = `1930:${new Date().getFullYear()}`;
-        this.patientForm = this._fb.group({
-            id: new FormControl(''),
-            firstName: new FormControl('a'),
-            middleName: new FormControl('a'),
-            lastName: new FormControl('a'),
-            dob: new FormControl(new Date('2021-04-01')),
-            email: new FormControl(''),
-            gender: new FormControl('M'),
-            address1: new FormControl('a'),
-            address2: new FormControl(''),
-            city: new FormControl('a'),
-            zipcode: new FormControl('12312'),
-            state: new FormControl('AK'),
-            resedenceItem: new FormControl(''),
-            islandItem: new FormControl(''),
-            contactNumber: new FormControl('2342342342'),
-            contactOption: new FormControl(''),
-            orgName: new FormControl(''),
-            orgAddress1: new FormControl('a'),
-            orgAddress2: new FormControl(''),
-            orgCity: new FormControl('a'),
-            orgZipcode: new FormControl('23423'),
-            orgState: new FormControl('AK'),
-            orgContactNumber: new FormControl('223423423'),
-            orgEmail: new FormControl(''),
-            orgManufacturer: new FormControl('Moderna'),
-            orgDose1: new FormControl(new Date('2021-04-01')),
-            orgDose2: new FormControl(new Date('2021-05-05')),
-            travelDateToHawaii: new FormControl('')
-        });
         // this.patientForm = this._fb.group({
         //     id: new FormControl(''),
-        //     firstName: new FormControl(''),
-        //     middleName: new FormControl(''),
-        //     lastName: new FormControl(''),
-        //     dob: new FormControl(),
+        //     firstName: new FormControl('a'),
+        //     middleName: new FormControl('a'),
+        //     lastName: new FormControl('a'),
+        //     dob: new FormControl(new Date('2021-04-01')),
         //     email: new FormControl(''),
-        //     gender: new FormControl(''),
-        //     address1: new FormControl(''),
+        //     gender: new FormControl('M'),
+        //     address1: new FormControl('a'),
         //     address2: new FormControl(''),
-        //     city: new FormControl(''),
-        //     zipcode: new FormControl(''),
-        //     state: new FormControl(''),
+        //     city: new FormControl('a'),
+        //     zipcode: new FormControl('12312'),
+        //     state: new FormControl('AK'),
         //     resedenceItem: new FormControl(''),
         //     islandItem: new FormControl(''),
-        //     contactNumber: new FormControl(''),
+        //     contactNumber: new FormControl('2342342342'),
         //     contactOption: new FormControl(''),
         //     orgName: new FormControl(''),
-        //     orgAddress1: new FormControl(''),
+        //     orgAddress1: new FormControl('a'),
         //     orgAddress2: new FormControl(''),
-        //     orgCity: new FormControl(''),
-        //     orgZipcode: new FormControl(''),
-        //     orgState: new FormControl(''),
-        //     orgContactNumber: new FormControl(''),
+        //     orgCity: new FormControl('a'),
+        //     orgZipcode: new FormControl('23423'),
+        //     orgState: new FormControl('AK'),
+        //     orgContactNumber: new FormControl('223423423'),
         //     orgEmail: new FormControl(''),
-        //     orgManufacturer: new FormControl(''),
-        //     orgDose1: new FormControl(),
-        //     orgDose2: new FormControl(),
+        //     orgManufacturer: new FormControl('Moderna'),
+        //     orgDose1: new FormControl(new Date('2021-04-01')),
+        //     orgDose2: new FormControl(new Date('2021-05-05')),
         //     travelDateToHawaii: new FormControl('')
         // });
+        this.patientForm = this._fb.group({
+            id: new FormControl(''),
+            firstName: new FormControl(''),
+            middleName: new FormControl(''),
+            lastName: new FormControl(''),
+            dob: new FormControl(),
+            email: new FormControl(''),
+            gender: new FormControl(''),
+            address1: new FormControl(''),
+            address2: new FormControl(''),
+            city: new FormControl(''),
+            zipcode: new FormControl(''),
+            state: new FormControl(''),
+            resedenceItem: new FormControl(''),
+            islandItem: new FormControl(''),
+            contactNumber: new FormControl(''),
+            contactOption: new FormControl(''),
+            orgName: new FormControl(''),
+            orgAddress1: new FormControl(''),
+            orgAddress2: new FormControl(''),
+            orgCity: new FormControl(''),
+            orgZipcode: new FormControl(''),
+            orgState: new FormControl(''),
+            orgContactNumber: new FormControl(''),
+            orgEmail: new FormControl(''),
+            orgManufacturer: new FormControl(''),
+            orgDose1: new FormControl(),
+            orgDose2: new FormControl(),
+            travelDateToHawaii: new FormControl('')
+        });
         // this.captures = [];
 
         this.extract_item = [{ label: 'Deidentified', value: 'D' },
@@ -790,12 +797,12 @@ export class Wizard2Component implements OnInit, AfterViewInit {
             accept: () => {
                 console.log("in accept")
                 this.messageSeverity = 'success'
-                this.messageContent = `Please keep the credentials handy. You will be prompted to input the credentials shortly. Thank You.`;
+                this.messageContent = `Please have your <b>${this.patientForm.get('orgName').value.name}</b> credentials available. You will be prompted to input the credentials shortly.`;
                 // this.messageService.add({severity:'success', summary:'Please keep the credentials handy. You will be asking for it shortly.', detail:'Thank you !'});
                 // this.messageService.add({ severity: 'info', summary: 'Confirmed', detail: 'Record deleted' });
             },
             reject: (type) => {
-                let content = `Click &nbsp; <a href='https://www.timespharmacyhawaii.com/' target="_blank" class="link_class">here</a> &nbsp; to create an account for HumanAPI and keep the credentials handy. You will be prompted to input the credentials shortly. Thank You.`
+                let content = `An account of <b>${this.patientForm.get('orgName').value.name}</b> may be required shortly. Please visit their website to create an account. `
                 switch (type) {
                     case ConfirmEventType.REJECT:
                         console.log("in reject")
@@ -818,79 +825,106 @@ export class Wizard2Component implements OnInit, AfterViewInit {
 
     showDialog() {
         this.display = true;
-        setTimeout(() => {
-            this.initiateStripe();
-        }, 500);
+        // setTimeout(() => {
+        // this.initiateStripe();
+        // }, 500);
+    }
+
+    async checkout() {
+        // Call your backend to create the Checkout session.
+        const getSession: any = await this.http.post(`${environment.api_rul}/stripe/session/create`,
+            {
+                successUrl: `${environment.local_url}/success`,
+                cancelUrl: `${environment.local_url}/failure`,
+                orderAmount: 2000,
+                masterId: 1, travelerEmail: 'siddharthgpatel@yahoo.com'
+            }).toPromise();
+        console.log('session:', getSession)
+        // When the customer clicks on the button, redirect them to Checkout.
+        const stripe = await this.stripePromise;
+        const { error } = await stripe.redirectToCheckout({
+            sessionId: getSession.sessionId,
+            // mode: 'payment',
+            // lineItems: [{ price: this.priceId, quantity: this.quantity }],
+            // successUrl: `${window.location.href}/success`,
+            // cancelUrl: `${window.location.href}/failure`,
+        });
+        // If `redirectToCheckout` fails due to a browser or network
+        // error, display the localized error message to your customer
+        // using `error.message`.
+        if (error) {
+            console.log(error);
+        }
 
     }
 
-    initiateStripe() {
-        this.stripeService.elements(this.elementsOptions)
-            .subscribe((elements: any) => {
-                this.elements = elements;
-                // Only mount the element the first time
-                if (!this.card1) {
-                    var elementStyles = {
-                        base: {
-                            color: '#3F4254',
-                            fontWeight: 600,
-                            fontFamily: 'Quicksand, Open Sans, Segoe UI, sans-serif',
-                            fontSize: '16px',
-                            fontSmoothing: 'antialiased',
+    // initiateStripe() {
+    //     this.stripeService.elements(this.elementsOptions)
+    //         .subscribe((elements: any) => {
+    //             this.elements = elements;
+    //             // Only mount the element the first time
+    //             if (!this.card1) {
+    //                 var elementStyles = {
+    //                     base: {
+    //                         color: '#3F4254',
+    //                         fontWeight: 600,
+    //                         fontFamily: 'Quicksand, Open Sans, Segoe UI, sans-serif',
+    //                         fontSize: '16px',
+    //                         fontSmoothing: 'antialiased',
 
-                            ':focus': {
-                                color: '#424770',
-                            },
+    //                         ':focus': {
+    //                             color: '#424770',
+    //                         },
 
-                            '::placeholder': {
-                                color: '#9BACC8',
-                            },
+    //                         '::placeholder': {
+    //                             color: '#9BACC8',
+    //                         },
 
-                            ':focus::placeholder': {
-                                color: '#CFD7DF',
-                            },
-                        },
-                        invalid: {
-                            //color: '#3F4254',
-                            ':focus': {
-                                color: '#FA755A',
-                            },
-                            '::placeholder': {
-                                color: '#FFCCA5',
-                            },
-                        },
-                    };
+    //                         ':focus::placeholder': {
+    //                             color: '#CFD7DF',
+    //                         },
+    //                     },
+    //                     invalid: {
+    //                         //color: '#3F4254',
+    //                         ':focus': {
+    //                             color: '#FA755A',
+    //                         },
+    //                         '::placeholder': {
+    //                             color: '#FFCCA5',
+    //                         },
+    //                     },
+    //                 };
 
-                    var elementClasses = {
-                        focus: 'focused',
-                        empty: 'empty',
-                        invalid: 'invalid',
-                      };
-                      
-                    // this.card1 = elements.create('card');
+    //                 var elementClasses = {
+    //                     focus: 'focused',
+    //                     empty: 'empty',
+    //                     invalid: 'invalid',
+    //                   };
 
-                    this.creditCard = elements.create('cardNumber', {
-                        style: elementStyles,
-                        classes: elementClasses,
-                    });
-                    this.creditCard.mount('#example2-card-number');
+    //                 // this.card1 = elements.create('card');
 
-                    this.expiry = elements.create('cardExpiry', {
-                        style: elementStyles,
-                        classes: elementClasses,
-                    });
-                    this.expiry.mount('#example2-card-expiry');
+    //                 this.creditCard = elements.create('cardNumber', {
+    //                     style: elementStyles,
+    //                     classes: elementClasses,
+    //                 });
+    //                 this.creditCard.mount('#example2-card-number');
 
-                    this.cvv = elements.create('cardCvc', {
-                        style: elementStyles,
-                        classes: elementClasses,
-                        type: 'password'
-                    });
-                    this.cvv.mount('#example2-card-cvc');
-                    this.cd.markForCheck();
-                }
-            });
-    }
+    //                 this.expiry = elements.create('cardExpiry', {
+    //                     style: elementStyles,
+    //                     classes: elementClasses,
+    //                 });
+    //                 this.expiry.mount('#example2-card-expiry');
+
+    //                 this.cvv = elements.create('cardCvc', {
+    //                     style: elementStyles,
+    //                     classes: elementClasses,
+    //                     type: 'password'
+    //                 });
+    //                 this.cvv.mount('#example2-card-cvc');
+    //                 this.cd.markForCheck();
+    //             }
+    //         });
+    // }
 
     // buy(){
     //     this.stripeData = this.stripeTest.value;
@@ -906,22 +940,22 @@ export class Wizard2Component implements OnInit, AfterViewInit {
     //     })
     // }
 
-    buy() {
-        const name = this.stripeTest.get('stripe_firstName').value + " " + this.stripeTest.get('stripe_lastName').value;
-        console.log('this.card1:', this.card1)
-        this.stripeService
-            .createToken(this.creditCard, { name })
-            .subscribe(result => {
-                if (result.token) {
-                    // Use the token to create a charge or a customer
-                    // https://stripe.com/docs/charges
-                    console.log(result.token.id);
-                } else if (result.error) {
-                    // Error creating the token
-                    console.log(result.error.message);
-                }
-            });
-    }
+    // buy() {
+    //     const name = this.stripeTest.get('stripe_firstName').value + " " + this.stripeTest.get('stripe_lastName').value;
+    //     console.log('this.card1:', this.card1)
+    //     this.stripeService
+    //         .createToken(this.creditCard, { name })
+    //         .subscribe(result => {
+    //             if (result.token) {
+    //                 // Use the token to create a charge or a customer
+    //                 // https://stripe.com/docs/charges
+    //                 console.log(result.token.id);
+    //             } else if (result.error) {
+    //                 // Error creating the token
+    //                 console.log(result.error.message);
+    //             }
+    //         });
+    // }
     changeGuidMe() {
         this.shepherdService.start();
     }
@@ -989,7 +1023,7 @@ export class Wizard2Component implements OnInit, AfterViewInit {
         this.shepherdService.modal = true;
         this.shepherdService.confirmCancel = false;
         this.shepherdService.addSteps(defaultSteps);
-        this.shepherdService.start();
+        // this.shepherdService.start();
 
         // Initialize form wizard
         const wizard = new KTWizard(this.el.nativeElement, {
@@ -1084,6 +1118,9 @@ export class Wizard2Component implements OnInit, AfterViewInit {
                 // }
 
                 // }
+                if (this.patientForm.valid) {
+
+                }
 
             } else if (wizardObj.currentStep === 2) {
                 this.stepOne = false;
@@ -1127,9 +1164,9 @@ export class Wizard2Component implements OnInit, AfterViewInit {
             } else if (wizardObj.currentStep === 3) {
                 this.showWebcam = false;
                 // this.consentNotChecked == true;
-                if (!this.firstInputText || !this.lastInputText || !this.firstClinicName || !this.consent 
+                if (!this.firstInputText || !this.lastInputText || !this.firstClinicName || !this.consent
                     || (this.patientForm.get('orgDose2').value && !this.secondClinicName)
-                    || ((!this.webcamImage && !this.imageSrc ))) {
+                    || ((!this.webcamImage && !this.imageSrc))) {
                     this.consentNotChecked = true;
                     wizardObj.stop();
                     this.cd.markForCheck();
@@ -1200,14 +1237,14 @@ export class Wizard2Component implements OnInit, AfterViewInit {
                 let effectiveAddDays = 0;
                 let expirationAddDays = 0;
                 if (this.patientForm.get('orgManufacturer').value === 'Johnson \& Johnson') {
-                    effectiveAddDays = 10;
-                    expirationAddDays = 70;
+                    effectiveAddDays = 15;
+                    expirationAddDays = 85;
                 } else if (this.patientForm.get('orgManufacturer').value !== 'Johnson \& Johnson') {
-                    effectiveAddDays = 10;
-                    expirationAddDays = 70;
+                    effectiveAddDays = 15;
+                    expirationAddDays = 85;
                 } else {
-                    effectiveAddDays = 10;
-                    expirationAddDays = 70;
+                    effectiveAddDays = 15;
+                    expirationAddDays = 85;
                 }
                 // console.log('10 days', moment(doseDate, 'YYYY-MM-DD').add(10, 'days'))
                 // console.log('10 weeks', moment(doseDate, 'YYYY-MM-DD').add(10, 'weeks'))
@@ -1378,6 +1415,8 @@ export class Wizard2Component implements OnInit, AfterViewInit {
         // console.log('card number:', cardNumberEle.defaultValue)
         this.submitted = true;
         // this.showDialog();
+        this.checkout();
+
         // this.stripeTest.controls.stripe_firstName.setValue(this.patientForm.controls.firstName.value)
         // this.stripeTest.controls.stripe_lastName.setValue(this.patientForm.controls.lastName.value)
         // this.stripeTest.controls.stripe_address1.setValue(this.patientForm.controls.address1.value)
@@ -1387,10 +1426,10 @@ export class Wizard2Component implements OnInit, AfterViewInit {
         // console.log('stripe console:', this.stripeTest.value)
         // this.stripeTest.updateValueAndValidity();
 
-        let navigationExtras: NavigationExtras = {
-            queryParams: this.patientForm.value
-        };
-        this.router.navigate(["payment"], navigationExtras);
+        // let navigationExtras: NavigationExtras = {
+        //     queryParams: this.patientForm.value
+        // };
+        // this.router.navigate(["payment"], navigationExtras);
 
         // this.router.navigateByUrl('/dashboard'); 
     }
@@ -1449,12 +1488,12 @@ export class Wizard2Component implements OnInit, AfterViewInit {
     // registerElements(elements, exampleName) {
     //     var formClass = '.' + exampleName;
     //     var example = document.querySelector(formClass);
-      
+
     //     var form = example.querySelector('form');
     //     var resetButton = example.querySelector('a.reset');
     //     var error = form.querySelector('.error');
     //     var errorMessage = error.querySelector('.message');
-      
+
     //     function enableInputs() {
     //       Array.prototype.forEach.call(
     //         form.querySelectorAll(

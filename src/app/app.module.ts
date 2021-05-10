@@ -37,6 +37,7 @@ import { ThemeModule } from './views/theme/theme.module';
 import { PartialsModule } from './views/partials/partials.module';
 // Layout Services
 import { ShepherdService } from 'angular-shepherd';
+import {MatDialogModule } from '@angular/material/dialog';
 import {
   DataTableService,
   FakeApiService,
@@ -69,6 +70,7 @@ import scss from 'highlight.js/lib/languages/scss';
 import typescript from 'highlight.js/lib/languages/typescript';
 import { EditableModule } from '@ngneat/edit-in-place';
 import { NgxStripeModule } from 'ngx-stripe';
+import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
 
 // tslint:disable-next-line:class-name
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
@@ -129,7 +131,9 @@ export function getHighlightLanguages() {
     InlineSVGModule.forRoot(),
     ThemeModule,
     EditableModule,
-    NgxStripeModule.forRoot('pk_test_51IllDFIoULcjF60KfMk1Jbb3COmYyAbZ1QLxLRMugIk3WU6p2k2nWp5YgCPTswBQqhbLjQspbDeONmOmh7z8r1hv00LOfVmm6o')
+    NgxStripeModule.forRoot('pk_test_51IllDFIoULcjF60KfMk1Jbb3COmYyAbZ1QLxLRMugIk3WU6p2k2nWp5YgCPTswBQqhbLjQspbDeONmOmh7z8r1hv00LOfVmm6o'),
+    SweetAlert2Module.forRoot(),
+    
   ],
   exports: [],
   providers: [

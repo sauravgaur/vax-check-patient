@@ -1,0 +1,70 @@
+<!-- <div id="container">
+    <div id="success-box">
+        <div class="dot"></div>
+        <div class="dot two"></div>
+        <div class="face">
+            <div class="eye"></div>
+            <div class="eye right"></div>
+            <div class="mouth happy"></div>
+        </div>
+        <div class="shadow scale"></div>
+        <div class="message">
+            <h1 class="alert">Thank you!</h1>
+            <p>yay, your box of joyfulness is on your way.</p>
+        </div>
+        <button class="button-box" [routerLink]="['/patient/request-report']">
+            <h1 class="green">continue</h1>
+        </button>
+    </div>
+</div> -->
+<kt-portlet>
+    <kt-portlet-body>
+        <img src="./assets/media/logos/VAXChecks-logo.png" title="" alt="" style="right: 5%; width: 5.5%; position: absolute;;">
+        <div class="p-grid p-jc-center">
+            <div class="p-col-6">
+                <div class="box">
+                    <!-- <p-card> -->
+                    <div class="p-shadow-10" style="padding: 2rem; border-radius: 20px; background: #d4f5d4;">
+                        <h4 style="text-align: center; font-weight: bold;">Thank you!</h4>
+
+                        <h5 style="text-align: center;">Your order was completed successfully.</h5>
+                        <br>
+                        <div class="p-grid">
+                            <div class="p-col-1">
+                                <img src="./assets/media/logos/email_sent_icon.jpg" title="mail sent" alt="" width="100%">
+                            </div>
+                            <div class="p-col-11">An email receipt has been sent to the email address provided.<br>
+                                Please keep it for your records.</div>
+                        </div><br>
+                        <b>WE RECOMMEND:</b>
+                        <ul style="font-weight: bold;">
+                            <li>Watch the video below to learn more about Safe Travels - Hawai’i</li>
+                            <li>Check your verification status at app.firstvitals.skyflow.com (via any Internet browser)
+                            </li>
+                            <ul>
+                                <li>Enter the mobile phone number used at registration for your Verification Code</li>
+                                <li>Enter the Verification Code</li>
+                                <li>View your verification status;
+                                    <span style="color: green;"> Cleared,</span>
+                                    <span style="color: orange;"> Pending,</span>
+                                    <span style="color: red;"> Denied</span>
+                                </li>
+                                <ul>
+                                    <li>Depending on where you were vaccinated, it can take up to 48 hours to complete
+                                        the verification process</li>
+                                </ul>
+                            </ul>
+                        </ul>
+                        <!-- <iframe style="width: 100%;
+                        padding: 0 2rem; height: 22rem;
+                        border: none;" src="https://www.youtube.com/embed/pcTdDdkmCJM?feature=oembed">
+                        </iframe> -->
+                        <h5 style="text-align: center;"><button pButton pRipple label="OK" style="text-align: center;"
+                            class="p-button-outlined p-button-success p-button-raised p-button-rounded" [routerLink]="'/traveller/registration'"></button></h5>
+                    </div>
+                    <!-- </p-card> -->
+                </div>
+            </div>
+        </div>
+    </kt-portlet-body>
+</kt-portlet>

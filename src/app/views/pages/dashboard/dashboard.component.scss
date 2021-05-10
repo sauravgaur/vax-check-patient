@@ -6,5 +6,10 @@
 		.error {
 			visibility: hidden;
 		}
+
+		.mat-dialog-container{
+			height: min-content !important;
+			overflow: hidden !important;
+		}
 	}
 }
