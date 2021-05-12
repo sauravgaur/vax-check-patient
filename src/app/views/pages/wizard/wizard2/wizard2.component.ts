@@ -19,6 +19,7 @@ import { Router, NavigationExtras } from '@angular/router';
 import Swal from 'sweetalert2'
 import { loadStripe } from '@stripe/stripe-js';
 import { environment } from '../../../../../environments/environment';
+// import * as HumanConnect from "humanapi-connect-client";
 
 interface IImageToText {
     firstName?: string;
@@ -540,25 +541,10 @@ export class Wizard2Component implements OnInit, AfterViewInit {
     //     this.captures.push(this.canvas.nativeElement.toDataURL("image/png"));
     // }
     inputs: any;
+    token = '';
+    connectClosed = false;
     ngOnInit() {
-        // this.showDialog()
-        // this.inputs = document.querySelectorAll('.cell.example.example2 .input');
-        // Array.prototype.forEach.call(this.inputs, function (input) {
-        //     input.addEventListener('focus', function () {
-        //         input.classList.add('focused');
-        //     });
-        //     input.addEventListener('blur', function () {
-        //         input.classList.remove('focused');
-        //     });
-        //     input.addEventListener('keyup', function () {
-        //         if (input.value.length === 0) {
-        //             input.classList.add('empty');
-        //         } else {
-        //             input.classList.remove('empty');
-        //         }
-        //     });
-        // });
-        // this.imageToTextResponse=null;
+        localStorage.removeItem('travelerData')
         this.yearRange = `1930:${new Date().getFullYear()}`;
         // this.patientForm = this._fb.group({
         //     id: new FormControl(''),
@@ -786,7 +772,53 @@ export class Wizard2Component implements OnInit, AfterViewInit {
             stripe_zipcode: ['', [Validators.required]],
             stripe_address1: ['', [Validators.required]]
         });
+
+        // const  HumanConnect  = window;
+
+        if (!this.token) {
+            // this.fetchToken();
+        }
+
+        // if (HumanConnect) {
+        //     HumanConnect.on('connect', response => {
+        //         console.log('response connect:', response)
+        //     });
+        //     HumanConnect.on('disconnect', response => {
+        //         console.log('response disconnect:', response)
+        //     });
+        //     HumanConnect.on('close', response => {
+        //         this.connectClosed = true;
+        //         console.log('response close:', response)
+        //     });
+        // }
+
     }
+    fetchToken() {
+        // create an XHR object
+        const xhr = new XMLHttpRequest();
+
+        // listen for `onload` event
+        xhr.onload = () => {
+            let resp = JSON.parse(xhr.response);
+
+            // process response
+            if (xhr.status === 200) {
+                // parse JSON data
+                this.token = resp.session_token || resp;
+                this.cd.markForCheck();
+
+            } else {
+                console.error('Error!');
+            }
+        };
+
+        // create a `GET` request
+        xhr.open('POST', environment.api_url+'/create-humanapi-token');
+
+        // send request
+        xhr.send();
+    }
+
 
     confirm2() {
         this.confirmationService.confirm({
@@ -798,8 +830,6 @@ export class Wizard2Component implements OnInit, AfterViewInit {
                 console.log("in accept")
                 this.messageSeverity = 'success'
                 this.messageContent = `Please have your <b>${this.patientForm.get('orgName').value.name}</b> credentials available. You will be prompted to input the credentials shortly.`;
-                // this.messageService.add({severity:'success', summary:'Please keep the credentials handy. You will be asking for it shortly.', detail:'Thank you !'});
-                // this.messageService.add({ severity: 'info', summary: 'Confirmed', detail: 'Record deleted' });
             },
             reject: (type) => {
                 let content = `An account of <b>${this.patientForm.get('orgName').value.name}</b> may be required shortly. Please visit their website to create an account. `
@@ -808,15 +838,11 @@ export class Wizard2Component implements OnInit, AfterViewInit {
                         console.log("in reject")
                         this.messageSeverity = 'info'
                         this.messageContent = content;
-                        // this.messageService.add({ severity: 'error', summary: `Click <a href='www.google.com' target="_blank">here</a> to create an account for HumanAPI and keep the credentials handy. You will be asking for it shortly.`, detail: 'Thank you !' });
-                        // this.messageService.add({ severity: 'error', summary: 'Rejected', detail: 'You have rejected' });
                         break;
                     case ConfirmEventType.CANCEL:
                         console.log("in cancel")
                         this.messageSeverity = 'info'
                         this.messageContent = content;
-                        // this.messageService.add({ severity: 'error', summary: `Click <a href='www.google.com' target="_blank">here</a> to create an account for HumanAPI and keep the credentials handy. You will be asking for it shortly.`, detail: `Click <a href='www.google.com' target="_blank">here</a> to create an account for HumanAPI and keep the credentials handy. You will be asking for it shortly.` });
-                        // this.messageService.add({ severity: 'warn', summary: 'Cancelled', detail: 'You have cancelled' });
                         break;
                 }
             }
@@ -832,7 +858,7 @@ export class Wizard2Component implements OnInit, AfterViewInit {
 
     async checkout() {
         // Call your backend to create the Checkout session.
-        const getSession: any = await this.http.post(`${environment.api_rul}/stripe/session/create`,
+        const getSession: any = await this.http.post(`${environment.api_url}/stripe/session/create`,
             {
                 successUrl: `${environment.local_url}/success`,
                 cancelUrl: `${environment.local_url}/failure`,
@@ -858,104 +884,6 @@ export class Wizard2Component implements OnInit, AfterViewInit {
 
     }
 
-    // initiateStripe() {
-    //     this.stripeService.elements(this.elementsOptions)
-    //         .subscribe((elements: any) => {
-    //             this.elements = elements;
-    //             // Only mount the element the first time
-    //             if (!this.card1) {
-    //                 var elementStyles = {
-    //                     base: {
-    //                         color: '#3F4254',
-    //                         fontWeight: 600,
-    //                         fontFamily: 'Quicksand, Open Sans, Segoe UI, sans-serif',
-    //                         fontSize: '16px',
-    //                         fontSmoothing: 'antialiased',
-
-    //                         ':focus': {
-    //                             color: '#424770',
-    //                         },
-
-    //                         '::placeholder': {
-    //                             color: '#9BACC8',
-    //                         },
-
-    //                         ':focus::placeholder': {
-    //                             color: '#CFD7DF',
-    //                         },
-    //                     },
-    //                     invalid: {
-    //                         //color: '#3F4254',
-    //                         ':focus': {
-    //                             color: '#FA755A',
-    //                         },
-    //                         '::placeholder': {
-    //                             color: '#FFCCA5',
-    //                         },
-    //                     },
-    //                 };
-
-    //                 var elementClasses = {
-    //                     focus: 'focused',
-    //                     empty: 'empty',
-    //                     invalid: 'invalid',
-    //                   };
-
-    //                 // this.card1 = elements.create('card');
-
-    //                 this.creditCard = elements.create('cardNumber', {
-    //                     style: elementStyles,
-    //                     classes: elementClasses,
-    //                 });
-    //                 this.creditCard.mount('#example2-card-number');
-
-    //                 this.expiry = elements.create('cardExpiry', {
-    //                     style: elementStyles,
-    //                     classes: elementClasses,
-    //                 });
-    //                 this.expiry.mount('#example2-card-expiry');
-
-    //                 this.cvv = elements.create('cardCvc', {
-    //                     style: elementStyles,
-    //                     classes: elementClasses,
-    //                     type: 'password'
-    //                 });
-    //                 this.cvv.mount('#example2-card-cvc');
-    //                 this.cd.markForCheck();
-    //             }
-    //         });
-    // }
-
-    // buy(){
-    //     this.stripeData = this.stripeTest.value;
-    //     const name = this.stripeTest.get('name').value;
-    //     this.stripeService.createToken(this.card1, {name}).subscribe((result: any) =>{
-    //         if(result.token) {
-    //             this.stripeData['token'] = result.token;
-    //             this.dataService.stripePament(this.stripeData).subscribe((res) => {
-    //                 //if susscess
-    //                 //else error
-    //             })
-    //         }
-    //     })
-    // }
-
-    // buy() {
-    //     const name = this.stripeTest.get('stripe_firstName').value + " " + this.stripeTest.get('stripe_lastName').value;
-    //     console.log('this.card1:', this.card1)
-    //     this.stripeService
-    //         .createToken(this.creditCard, { name })
-    //         .subscribe(result => {
-    //             if (result.token) {
-    //                 // Use the token to create a charge or a customer
-    //                 // https://stripe.com/docs/charges
-    //                 console.log(result.token.id);
-    //             } else if (result.error) {
-    //                 // Error creating the token
-    //                 console.log(result.error.message);
-    //             }
-    //         });
-    // }
     changeGuidMe() {
         this.shepherdService.start();
     }
@@ -968,14 +896,6 @@ export class Wizard2Component implements OnInit, AfterViewInit {
     cancelSingleField(prop: string, control: any): void {
         (this[control] as AbstractControl).setValue(this[prop]);
     }
-
-    // initGroupedForm(): void {
-    //     this.groupedForm = new FormGroup({
-    //         name: new FormControl(this.identity.name),
-    //         city: new FormControl(this.identity.city),
-    //         country: new FormControl(this.identity.country),
-    //     });
-    // }
 
     updateGroupedEdition(): void {
         this.identity = this.groupedForm.value;
@@ -1045,7 +965,7 @@ export class Wizard2Component implements OnInit, AfterViewInit {
         });
         // Validation before going to next page
 
-        wizard.on('beforeNext', (wizardObj) => {
+        wizard.on('beforeNext', async (wizardObj) => {
             console.log('before next', this.patientForm.value)
             this.isFormSubmitted = true;
             console.log('wizard obj in before next:', wizardObj, wizardObj.getStep());
@@ -1119,15 +1039,18 @@ export class Wizard2Component implements OnInit, AfterViewInit {
 
                 // }
                 if (this.patientForm.valid) {
-                    // const checkTravelerExists: any = this.http.post(`${environment.api_rul}/batch/check-patient`, {
+                    // const checkTravelerExists: any = await this.http.post(`${environment.api_url}/batch/check-patient`, {
                     //     firstName: this.patientForm.get('firstName').value,
                     //     lastName: this.patientForm.get('lastName').value,
                     //     middleName: this.patientForm.get('middleName').value,
                     //     dateOfBirth: this.patientForm.get('dob').value
                     // }).toPromise();
                     // console.log('checkTravelerExists: ', checkTravelerExists)
-                    // if(checkTravelerExists.isUserExist){
+                    // if (checkTravelerExists.isUserExist) {
                     //     console.log('in user exists')
+                    //     wizardObj.stop();
+                    //     this.cd.markForCheck();
+                    //     return;
 
                     // } else console.log('in user not exists')
                 }
@@ -1425,6 +1348,7 @@ export class Wizard2Component implements OnInit, AfterViewInit {
         // console.log('card number:', cardNumberEle.defaultValue)
         this.submitted = true;
         // this.showDialog();
+        localStorage.setItem('travelerData', JSON.stringify(this.patientForm.value));
         this.checkout();
 
         // this.stripeTest.controls.stripe_firstName.setValue(this.patientForm.controls.firstName.value)
