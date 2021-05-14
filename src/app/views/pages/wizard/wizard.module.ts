@@ -55,13 +55,14 @@ import {MessageModule} from 'primeng/message';
 		RouterModule.forChild([
 			{
 				path: '',
-				component: WizardComponent,
-				children: [
-					{
-						path: 'registration',
-						component: Wizard2Component,
-					}
-				],
+				component: Wizard2Component
+				// component: WizardComponent,
+				// children: [
+				// 	{
+				// 		path: 'registration',
+				// 		component: Wizard2Component,
+				// 	}
+				// ],
 			},
 		]),
 		MatSelectModule,

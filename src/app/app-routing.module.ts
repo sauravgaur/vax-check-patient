@@ -29,7 +29,7 @@ const routes: Routes = [
         loadChildren: () => import('./views/pages/failure/failure.module').then(m => m.FailureModule),
       },
       {
-          path: 'traveler',
+          path: '',
           loadChildren: () => import('./views/pages/wizard/wizard.module').then(m => m.WizardModule),
         },
       // {
