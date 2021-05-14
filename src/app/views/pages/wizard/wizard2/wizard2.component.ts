@@ -1004,9 +1004,9 @@ export class Wizard2Component implements OnInit, AfterViewInit {
                 this.patientForm.get('orgState').setValidators(null);
                 this.patientForm.get('orgState').setErrors(null);
 
-                this.patientForm.get('orgContactNumber').clearValidators();
-                this.patientForm.get('orgContactNumber').setValidators(null);
-                this.patientForm.get('orgContactNumber').setErrors(null);
+                // this.patientForm.get('orgContactNumber').clearValidators();
+                // this.patientForm.get('orgContactNumber').setValidators(null);
+                // this.patientForm.get('orgContactNumber').setErrors(null);
 
                 this.patientForm.get('orgZipcode').clearValidators();
                 this.patientForm.get('orgZipcode').setValidators(null);
@@ -1069,8 +1069,8 @@ export class Wizard2Component implements OnInit, AfterViewInit {
                 this.patientForm.get('orgEmail').updateValueAndValidity();
                 this.patientForm.get('orgState').setValidators(Validators.required);
                 this.patientForm.get('orgState').updateValueAndValidity();
-                this.patientForm.get('orgContactNumber').setValidators(Validators.required);
-                this.patientForm.get('orgContactNumber').updateValueAndValidity();
+                // this.patientForm.get('orgContactNumber').setValidators(Validators.required);
+                // this.patientForm.get('orgContactNumber').updateValueAndValidity();
                 this.patientForm.get('orgZipcode').setValidators([Validators.required, Validators.pattern('^\\d{5}(?:\\-\\d{4})?$')]);
                 this.patientForm.get('orgZipcode').updateValueAndValidity();
 

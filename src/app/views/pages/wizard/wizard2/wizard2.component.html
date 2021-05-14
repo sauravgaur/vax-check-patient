@@ -1,6 +1,17 @@
+<!-- <div class="hapi__token-container">
+	<div *ngIf="!connectClosed; else elseBlock">
+		<button class="button is-link"
+		[attr.data-hapi-token]="token">Connect your Health Data
+		</button>
+	</div>
+	<ng-template #elseBlock>
+	  <h3 class="title is-3">
+		  Thank you for connecting your Health Data.
+	  </h3>
+	</ng-template>
+</div> -->
 <kt-portlet>
 	<kt-portlet-body>
-
 		<p-dialog header="Secure Payment" [(visible)]="display" [breakpoints]="{'960px': '75vw', '640px': '100vw'}"
 			[style]="{width: '50vw'}">
 			<!-- <div class="card"> -->
@@ -26,21 +37,6 @@
 					</div>
 					<!-- <button (click)="checkout()">Checkout</button> -->
 				</div>
-			<!-- </div> -->
-			<!-- <div class="container">
-				<div class="card">
-					<div class="photo">
-						<img src="./assets/media/logos/VAXChecks-logo.png" title="" alt="">
-					</div>
-					<div class="description">
-						<h4>Verify and Certify COVID CDC Vaccination Cards
-							for Safe Travels Hawai’i
-						</h4>
-						<p>by VAXCheck, a service of FirstVitals Health and Wellness Inc</p>
-						<button (click)="checkout()">Checkout</button>
-					</div>
-				</div>
-			</div> -->
 		</p-dialog>
 		<!-- <button type="button" (click)="showDialog()" icon="pi pi-info-circle" label="Show">Show</button> -->
 		<img src="./assets/media/logos/VAXChecks-logo.png" title="" alt="" style="right: 5%; width: 5.5%; position: absolute;">
@@ -416,7 +412,7 @@
 											<label for="user_contact">Contact Number <span
 													class="cls-requiered">*</span></label>
 											<p-inputMask mask="9999999999" minLength="10" maxLength="10"
-												formControlName="orgContactNumber" required pattern
+												formControlName="orgContactNumber" pattern
 												class="p-inputtext-sm">
 											</p-inputMask>
 											<mat-error
