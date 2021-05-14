@@ -5,12 +5,13 @@
   "scripts": {
     "ng": "ng",
     "start": "node --max_old_space_size=8192 node_modules/@angular/cli/bin/ng serve",
-    "build": "ng build --prod",
+    "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
     "bundle-report": "webpack-bundle-analyzer dist/stats.json",
-    "rtl": "webpack"
+    "rtl": "webpack",
+    "prod-build":"ng build --base-href=/traveler/ --prod"
   },
   "private": true,
   "dependencies": {
@@ -42,12 +43,15 @@
     "angular-shepherd": "^11.0.0",
     "angular2-signaturepad": "^3.0.4",
     "apexcharts": "3.19.0",
+    "body-parser": "^1.19.0",
     "bootstrap": "4.5.0",
     "chart.js": "2.9.3",
     "chartist": "0.11.4",
     "classlist.js": "1.1.20150312",
     "clipboard": "2.0.6",
     "core-js": "3.6.5",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
     "highlight.js": "^9.17.1",
     "humanapi-connect-client": "^2.3.1",
     "lodash": "4.17.15",
