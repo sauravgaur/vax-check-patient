@@ -813,7 +813,7 @@ export class Wizard2Component implements OnInit, AfterViewInit {
         };
 
         // create a `GET` request
-        xhr.open('POST', environment.api_url+'/create-humanapi-token');
+        xhr.open('POST', environment.api_url + '/create-humanapi-token');
 
         // send request
         xhr.send();
@@ -823,7 +823,7 @@ export class Wizard2Component implements OnInit, AfterViewInit {
     confirm2() {
         this.confirmationService.confirm({
             message: `You have selected <b>${this.patientForm.get('orgName').value.name}.</b><br><br>
-			<b>Do you have an account for the same ?</b>`,
+			<b>Do you have <b>${this.patientForm.get('orgName').value.name}.</b>'s online access account?</b>`,
             header: 'Account confirmation',
             icon: 'pi pi-info-circle',
             accept: () => {
@@ -832,7 +832,7 @@ export class Wizard2Component implements OnInit, AfterViewInit {
                 this.messageContent = `Please have your <b>${this.patientForm.get('orgName').value.name}</b> credentials available. You will be prompted to input the credentials shortly.`;
             },
             reject: (type) => {
-                let content = `An account of <b>${this.patientForm.get('orgName').value.name}</b> may be required shortly. Please visit their website to create an account. `
+                let content = `Online access to <b>${this.patientForm.get('orgName').value.name}</b> may be required. If you do not have access, please visit their website to create an account.`
                 switch (type) {
                     case ConfirmEventType.REJECT:
                         console.log("in reject")
@@ -980,7 +980,7 @@ export class Wizard2Component implements OnInit, AfterViewInit {
                 this.patientForm.get('address1').setValidators(Validators.required);
                 this.patientForm.get('city').setValidators(Validators.required);
                 this.patientForm.get('state').setValidators(Validators.required);
-                this.patientForm.get('zipcode').setValidators([Validators.required, Validators.pattern('^\\d{5}(?:\\-\\d{4})?$')]);
+                this.patientForm.get('zipcode').setValidators([Validators.required, Validators.pattern('^\\d{5}')]);
                 this.patientForm.get('contactNumber').setValidators([Validators.required, Validators.minLength(10), Validators.maxLength(10)]);
                 this.patientForm.get('contactOption').setValidators(Validators.required);
 
@@ -1008,9 +1008,9 @@ export class Wizard2Component implements OnInit, AfterViewInit {
                 // this.patientForm.get('orgContactNumber').setValidators(null);
                 // this.patientForm.get('orgContactNumber').setErrors(null);
 
-                this.patientForm.get('orgZipcode').clearValidators();
-                this.patientForm.get('orgZipcode').setValidators(null);
-                this.patientForm.get('orgZipcode').setErrors(null);
+                // this.patientForm.get('orgZipcode').clearValidators();
+                // this.patientForm.get('orgZipcode').setValidators(null);
+                // this.patientForm.get('orgZipcode').setErrors(null);
 
                 this.patientForm.get('orgManufacturer').clearValidators();
                 this.patientForm.get('orgManufacturer').setValidators(null);
@@ -1065,13 +1065,15 @@ export class Wizard2Component implements OnInit, AfterViewInit {
                 this.patientForm.get('orgAddress1').updateValueAndValidity();
                 this.patientForm.get('orgCity').setValidators(Validators.required);
                 this.patientForm.get('orgCity').updateValueAndValidity();
-                this.patientForm.get('orgEmail').setValidators(Validators.email);
-                this.patientForm.get('orgEmail').updateValueAndValidity();
+                
+                // this.patientForm.get('orgEmail').setValidators(Validators.email);
+                // this.patientForm.get('orgEmail').updateValueAndValidity();
+                
                 this.patientForm.get('orgState').setValidators(Validators.required);
                 this.patientForm.get('orgState').updateValueAndValidity();
                 // this.patientForm.get('orgContactNumber').setValidators(Validators.required);
                 // this.patientForm.get('orgContactNumber').updateValueAndValidity();
-                this.patientForm.get('orgZipcode').setValidators([Validators.required, Validators.pattern('^\\d{5}(?:\\-\\d{4})?$')]);
+                this.patientForm.get('orgZipcode').setValidators(Validators.pattern('^\\d{5}'));
                 this.patientForm.get('orgZipcode').updateValueAndValidity();
 
                 this.patientForm.get('orgManufacturer').setValidators(Validators.required);
@@ -1181,13 +1183,13 @@ export class Wizard2Component implements OnInit, AfterViewInit {
                 }
                 // console.log('10 days', moment(doseDate, 'YYYY-MM-DD').add(10, 'days'))
                 // console.log('10 weeks', moment(doseDate, 'YYYY-MM-DD').add(10, 'weeks'))
-                this.effectiveDate = this.addDays(moment(doseDate, 'YYYY-MM-DD').toDate(), effectiveAddDays);
-                this.expirationDate = this.addDays(moment(this.effectiveDate, 'YYYY-MM-DD').toDate(), expirationAddDays);
+                this.effectiveDate = this.addDays(moment(doseDate, 'MM-DD-YYYY').toDate(), effectiveAddDays);
+                this.expirationDate = this.addDays(moment(this.effectiveDate, 'MM-DD-YYYY').toDate(), expirationAddDays);
 
                 this.imageToTextResponse = {} as IImageToText;
 
-                this.imageToTextResponse.firstDoseDate = this.patientForm.get('orgDose1').value ? moment(this.patientForm.get('orgDose1').value, 'YYYY-MM-DD').toDate() : null;
-                this.imageToTextResponse.secondDoseDate = this.patientForm.get('orgDose2').value ? moment(this.patientForm.get('orgDose2').value, 'YYYY-MM-DD').toDate() : null;
+                this.imageToTextResponse.firstDoseDate = this.patientForm.get('orgDose1').value ? moment(this.patientForm.get('orgDose1').value, 'MM-DD-YYYY').toDate() : null;
+                this.imageToTextResponse.secondDoseDate = this.patientForm.get('orgDose2').value ? moment(this.patientForm.get('orgDose2').value, 'MM-DD-YYYY').toDate() : null;
 
                 this.imageToTextResponse.firstDose = this.patientForm.get('orgManufacturer').value;
                 this.imageToTextResponse.secondDose = this.patientForm.get('orgManufacturer').value;
@@ -1270,6 +1272,18 @@ export class Wizard2Component implements OnInit, AfterViewInit {
             }
         });
 
+        this.patientForm.get('orgState').valueChanges.subscribe(selectedValue => {
+            if (selectedValue === 'HI') {
+                this.patientForm.get('orgEmail').setValidators(Validators.required);
+                this.patientForm.get('orgEmail').updateValueAndValidity();
+            } else {
+                // this.patientForm.controls.orgEmail.setValue(null);
+                this.patientForm.controls.orgEmail.setErrors(null);
+                this.patientForm.controls.orgEmail.setValidators(null);
+                this.patientForm.controls.orgEmail.updateValueAndValidity();
+            }
+        });
+
     }
 
     // orgChange(selectedValue){
@@ -1317,8 +1331,8 @@ export class Wizard2Component implements OnInit, AfterViewInit {
         }
         // console.log('moment:', moment(this.patientForm.get('orgDose1').value, 'YYYY-MM-DD'))
         // console.log('moment:', moment(this.patientForm.get('orgDose1').value).add(this.gapDays, 'day'))
-        console.log('moment add days:', this.addDays(moment(this.patientForm.get('orgDose1').value, 'YYYY-MM-DD').toDate(), this.gapDays))
-        return this.patientForm.controls[controlName].value < this.addDays(moment(this.patientForm.controls[compareCtrlName].value, 'YYYY-MM-DD').toDate(), this.gapDays);
+        console.log('moment add days:', this.addDays(moment(this.patientForm.get('orgDose1').value, 'MM-DD-YYYY').toDate(), this.gapDays))
+        return this.patientForm.controls[controlName].value < this.addDays(moment(this.patientForm.controls[compareCtrlName].value, 'MM-DD-YYYY').toDate(), this.gapDays);
     }
 
     addDays(date: Date, days: number): Date {

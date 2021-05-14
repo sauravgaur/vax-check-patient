@@ -92,7 +92,7 @@
 									Vaccination Card
 								</div>
 								<div class="wizard-desc">
-									Upload copy of your Vaccination Card
+									Upload copy of your CDC card
 								</div>
 							</div>
 						</div>
@@ -185,7 +185,7 @@
 													class="cls-requiered">*</span></label>
 											<p-calendar [showIcon]="true" inputId="icon" formControlName="dob" required
 												[monthNavigator]="true" [yearNavigator]="true" [yearRange]="yearRange"
-												dateFormat="yy-mm-dd" class="p-inputtext-sm" [maxDate]="maxDate">
+												dateFormat="mm-dd-yy" class="p-inputtext-sm" [maxDate]="maxDate">
 											</p-calendar>
 											<mat-error *ngIf="isControlHasError('dob', 'required')">
 												<strong>Required field</strong>
@@ -212,7 +212,7 @@
 										</div>
 
 										<div class="p-field p-col-12 p-md-4">
-											<label for="firstname6">Address street 1<span
+											<label for="firstname6">Address street<span
 													class="cls-requiered">*</span></label>
 											<input id="firstname6" type="text" formControlName="address1" required
 												pInputText class="p-inputtext-sm">
@@ -237,7 +237,7 @@
 
 										<div class="p-field p-col-12 p-md-4">
 											<label for="lastname6">Zip code<span class="cls-requiered">*</span></label>
-											<p-inputMask mask="99999?-9999" maxlength="10" formControlName="zipcode"
+											<p-inputMask mask="99999" maxlength="5" minLength="5" formControlName="zipcode"
 												required pattern class="p-inputtext-sm"></p-inputMask>
 											<mat-error *ngIf="isControlHasError('zipcode', 'required')">
 												<strong>Required field</strong>
@@ -307,7 +307,7 @@
 													class="cls-requiered">*</span></label>
 											<p-calendar [showIcon]="true" inputId="icon"
 												formControlName="travelDateToHawaii" required [monthNavigator]="true"
-												[yearNavigator]="true" [yearRange]="yearRange" dateFormat="yy-mm-dd"
+												[yearNavigator]="true" [yearRange]="yearRange" dateFormat="mm-dd-yy"
 												class="p-inputtext-sm" [minDate]="minDate"
 												[tooltip]="tooltipJson.travelDateToHawaii" [trigger]="'click'"
 												[hideDelayTouchscreen]="3000" [hide-delay]="3000"
@@ -360,7 +360,7 @@
 											</mat-error>
 										</div>
 										<div class="p-field p-col-12 p-md-4">
-											<label for="firstname6">Address street 1<span
+											<label for="firstname6">Address street<span
 													class="cls-requiered">*</span></label>
 											<input id="firstname6" type="text" formControlName="orgAddress1" required
 												[tooltip]="tooltipJson.orgAddress1" [trigger]="'click'"
@@ -386,12 +386,12 @@
 
 
 										<div class="p-field p-col-12 p-md-4">
-											<label for="lastname6">Zip code<span class="cls-requiered">*</span></label>
-											<p-inputMask mask="99999?-9999" maxlength="10" formControlName="orgZipcode"
-												required pattern class="p-inputtext-sm"></p-inputMask>
-											<mat-error *ngIf="stepTwo && isControlHasError('orgZipcode', 'required')">
+											<label for="lastname6">Zip code</label>
+											<p-inputMask mask="99999" maxlength="10" minLength="5" formControlName="orgZipcode"
+												pattern class="p-inputtext-sm"></p-inputMask>
+											<!-- <mat-error *ngIf="stepTwo && isControlHasError('orgZipcode', 'required')">
 												<strong>Required field</strong>
-											</mat-error>
+											</mat-error> -->
 											<mat-error *ngIf="isControlHasError('orgZipcode', 'pattern')">
 												<strong>Field is not valid</strong>
 											</mat-error>
@@ -409,16 +409,15 @@
 										</div>
 
 										<div class="p-field p-col-12 p-md-4">
-											<label for="user_contact">Contact Number <span
-													class="cls-requiered">*</span></label>
+											<label for="user_contact">Contact Number</label>
 											<p-inputMask mask="9999999999" minLength="10" maxLength="10"
 												formControlName="orgContactNumber" pattern
 												class="p-inputtext-sm">
 											</p-inputMask>
-											<mat-error
+											<!-- <mat-error
 												*ngIf="stepTwo && isControlHasError('orgContactNumber', 'required')">
 												<strong>Required field</strong>
-											</mat-error>
+											</mat-error> -->
 											<mat-error
 												*ngIf="stepTwo && isControlHasError('orgContactNumber', 'minLength')">
 												<strong>Required field</strong>
@@ -429,12 +428,13 @@
 											</mat-error>
 										</div>
 										<div class="p-field p-col-12 p-md-4">
-											<label for="user_email">Email</label>
+											<label for="user_email">Email <span *ngIf="patientForm.value.orgState === 'HI'"
+												class="cls-requiered">*</span></label>
 											<input id="user_email" type="email" formControlName="orgEmail" pInputText
-												class="p-inputtext-sm">
-											<!-- <mat-error *ngIf="stepTwo && isControlHasError('orgEmail', 'required')">
+											 class="p-inputtext-sm">
+											<mat-error *ngIf="patientForm.value.orgState === 'HI' && stepTwo && isControlHasError('orgEmail', 'required')">
 												<strong>Required field</strong>
-											  </mat-error> -->
+											  </mat-error>
 											<mat-error *ngIf="stepTwo && isControlHasError('orgEmail', 'email')">
 												<strong>Field is not valid</strong>
 											</mat-error>
@@ -462,7 +462,7 @@
 												''}}<span class="cls-requiered">*</span></label>
 											<p-calendar [showIcon]="true" inputId="icon" formControlName="orgDose1"
 												required [monthNavigator]="true" [yearNavigator]="true"
-												[yearRange]="yearRange" dateFormat="yy-mm-dd" class="p-inputtext-sm"
+												[yearRange]="yearRange" dateFormat="mm-dd-yy" class="p-inputtext-sm"
 												[maxDate]="maxDate"></p-calendar>
 											<mat-error *ngIf="stepTwo && isControlHasError('orgDose1', 'required')">
 												<strong>Required field</strong>
@@ -474,7 +474,7 @@
 													class="cls-requiered">*</span></label>
 											<p-calendar [showIcon]="true" inputId="icon" formControlName="orgDose2"
 												required [monthNavigator]="true" [yearNavigator]="true"
-												[yearRange]="yearRange" dateFormat="yy-mm-dd" class="p-inputtext-sm"
+												[yearRange]="yearRange" dateFormat="mm-dd-yy" class="p-inputtext-sm"
 												[maxDate]="maxDate"></p-calendar>
 											<mat-error *ngIf="stepTwo && isControlHasError('orgDose2', 'required')">
 												<strong>Required field</strong>
@@ -492,6 +492,15 @@
 									</div>
 								</p-fieldset>
 
+								<p-fieldset legend="COVID Appointment Email Confirmation" [style.margin-top]="'20px'">
+									<div class="">
+										<label for="txt_appointment">If you received an email confirmation for your
+											vaccination appointment, please copy and paste the email here.
+										</label>
+										<textarea [rows]="5" style="width: 100%; min-height: 8rem;" pInputTextarea
+											autoResize="autoResize"></textarea>
+									</div>
+								</p-fieldset>
 							</div>
 							<!--end: Form Wizard Step 2-->
 
@@ -769,21 +778,7 @@ medica sobre las vacunas que ha recibido.
 
 							<!--begin: Form Wizard Step 4-->
 							<div class="pb-5" data-wizard-type="step-content">
-								<p-fieldset legend="COVID Appointment Email Confirmation">
-									<div class="">
-										<label for="txt_appointment">If you received an email confirmation for your
-											vaccination appointment, please copy and paste the email here.
-										</label>
-										<!-- <textarea id="txt_appointment"
-											style="width: 100%;border: 1px solid #ced4da;"></textarea> -->
-										<textarea [rows]="5" style="width: 100%; min-height: 8rem;" pInputTextarea
-											autoResize="autoResize"></textarea>
-									</div>
-									<div class="p-d-flex p-ai-start">
-										<span style="margin: 25px 10px;">---------------------- OR
-											---------------------- </span>
-									</div>
-									<h4>Upload Supplemental Documents</h4>
+								<p-fieldset legend="Upload Supplemental Documents">
 									Additional supporting vaccination documents can be uploaded here
 									<div class="p-d-flex p-ai-start" style="margin-top: 1rem;">
 										<div class="p-mr-2">
