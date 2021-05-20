@@ -59,39 +59,6 @@ td {
   border: 1px solid black;
 }
 
-.doseTable table,
-td {
-  height: 3em;
-}
-
-//   .editable > .form .form-group{
-//       padding: unset !important;
-//   }
-
-.box {
-  min-height: 50px;
-  min-width: 200px;
-  display: flex;
-  align-items: center;
-  justify-content: left;
-  border-radius: 4px;
-  padding-left: 1em;
-  padding-right: 1em;
-}
-
-// .box .p-shadow-3 > div {
-//   width: 100%;
-// }
-
-.editable {
-  width: 100%;
-}
-
-.p-card {
-  background: #e6e6e6 !important;
-  width: 45rem !important;
-}
-
 .p-md-10 {
   padding: 0.5rem !important;
 }
@@ -147,6 +114,39 @@ td {
 
 :host {
   ::ng-deep {
+    .box {
+      min-height: 50px;
+      min-width: 200px;
+      display: flex;
+      align-items: center;
+      justify-content: left;
+      border-radius: 4px;
+      padding-left: 1em;
+      padding-right: 1em;
+    }
+
+    .doseTable table,
+    td {
+      height: 3em;
+    }
+
+    //   .editable > .form .form-group{
+    //       padding: unset !important;
+    //   }
+
+    // .box .p-shadow-3 > div {
+    //   width: 100%;
+    // }
+
+    .editable {
+      width: 100%;
+    }
+
+    .p-card {
+      background: #e6e6e6 !important;
+      width: 45rem !important;
+    }
+
     .container {
       background: #aedaa6 !important;
       position: fixed;

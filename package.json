@@ -11,7 +11,8 @@
     "e2e": "ng e2e",
     "bundle-report": "webpack-bundle-analyzer dist/stats.json",
     "rtl": "webpack",
-    "prod-build":"ng build --base-href=/traveler/ --prod"
+    "prod-build": "ng build --base-href=/traveler/ --prod",
+    "generatereport": "ngxtslintreport"
   },
   "private": true,
   "dependencies": {
@@ -103,6 +104,7 @@
     "karma-coverage-istanbul-reporter": "~3.0.2",
     "karma-jasmine": "~4.0.0",
     "karma-jasmine-html-reporter": "^1.5.0",
+    "ngx-tslint-report": "^1.2.0",
     "protractor": "~7.0.0",
     "ts-node": "8.3.0",
     "tslint": "~6.1.0",

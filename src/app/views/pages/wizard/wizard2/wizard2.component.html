@@ -15,31 +15,32 @@
 		<p-dialog header="Secure Payment" [(visible)]="display" [breakpoints]="{'960px': '75vw', '640px': '100vw'}"
 			[style]="{width: '50vw'}">
 			<!-- <div class="card"> -->
-				<div class="p-d-flex">
-					<div class="photo">
-						<img src="./assets/media/logos/VAXChecks-logo.png" title="" alt="">
-					</div>
-					<p-divider layout="vertical"></p-divider>
-					<div class="p-grid">
-						<div class="p-col-12">
-							<h4>Verify and Certify COVID CDC Vaccination Cards
-								for Safe Travels Hawai’i
-							</h4>
-						</div>
-						<div class="p-col-12">
-							<h5>by VAXCheck, a service of FirstVitals Health and Wellness Inc</h5>
-						</div>
-						<div class="p-col-12">
-							<button pButton pRipple type="submit" label="PAY $36.65" style="width: 100%"
-							(click)="checkout()"
-								class="p-button-outlined p-button-success p-button-raised p-button-rounded"></button>
-						</div>
-					</div>
-					<!-- <button (click)="checkout()">Checkout</button> -->
+			<div class="p-d-flex">
+				<div class="photo">
+					<img src="./assets/media/logos/VAXChecks-logo.png" title="" alt="">
 				</div>
+				<p-divider layout="vertical"></p-divider>
+				<div class="p-grid">
+					<div class="p-col-12">
+						<h4>Verify and Certify COVID CDC Vaccination Cards
+							for Safe Travels Hawai’i
+						</h4>
+					</div>
+					<div class="p-col-12">
+						<h5>by VAXCheck, a service of FirstVitals Health and Wellness Inc</h5>
+					</div>
+					<div class="p-col-12">
+						<button pButton pRipple type="submit" label="PAY $36.65" style="width: 100%"
+							(click)="checkout()"
+							class="p-button-outlined p-button-success p-button-raised p-button-rounded"></button>
+					</div>
+				</div>
+				<!-- <button (click)="checkout()">Checkout</button> -->
+			</div>
 		</p-dialog>
 		<!-- <button type="button" (click)="showDialog()" icon="pi pi-info-circle" label="Show">Show</button> -->
-		<img src="./assets/media/logos/VAXChecks-logo.png" title="" alt="" style="right: 5%; width: 5.5%; position: absolute;">
+		<img src="./assets/media/logos/VAXChecks-logo.png" title="" alt=""
+			style="right: 5%; width: 5.5%; position: absolute;">
 		<!--begin: Wizard -->
 		<div #wizard class="wizard wizard-2" id="kt_wizard_v2" data-wizard-state="step-first">
 			<div class="wizard-nav border-right py-8 px-8 py-lg-20 px-lg-10">
@@ -134,647 +135,26 @@
 					<div class="offset-xxl-12">
 						<!--begin: Form Wizard Form-->
 						<form class="form" id="kt_form" novalidate="novalidate" [formGroup]="patientForm">
-							<!--begin: Form Wizard Step 1-->
-							<div class="pb-5" data-wizard-type="step-content" data-wizard-state="current">
-								<h4 class="mb-10 font-weight-bold text-dark">Traveler Info</h4>
-								<div class="kt-form__section kt-form__section--first">
-									<div class="p-fluid p-formgrid p-grid">
-										<div class="p-field p-col-12 p-md-4">
-											<label for="firstname6">First name<span class="cls-requiered">*</span>
-											</label>
-											<!-- <p-inputMask formControlName="firstName" mask="a?" class="p-inputtext-sm" required></p-inputMask> -->
-											<input id="firstname6" type="text" pInputText formControlName="firstName"
-												pattern="^[ A-Za-z-.,]*$"
-												oninput="validity.valid||(value=(this.value.substring(0, this.value.length - 1)))"
-												required class="p-inputtext-sm">
-											<!-- <span *ngIf="hasFormError(patientForm, isFormSubmitted, 'firstName','required')"
-                                style="color: red">This field is required</span> -->
-											<mat-error *ngIf="isControlHasError('firstName', 'required')">
-												<strong>Required field</strong>
-											</mat-error>
-											<mat-error *ngIf="isControlHasError('firstName', 'pattern')">
-												<strong>Field is not valid</strong>
-											</mat-error>
-										</div>
-										<div class="p-field p-col-12 p-md-4">
-											<label for="lastname6">Middle name</label>
-											<input id="lastname6" type="text" pInputText formControlName="middleName"
-												pattern="^[ A-Za-z-.,]*$"
-												oninput="validity.valid||(value=(this.value.substring(0, this.value.length - 1)))"
-												class="p-inputtext-sm">
-											<mat-error *ngIf="isControlHasError('middleName', 'pattern')">
-												<strong>Field is not valid</strong>
-											</mat-error>
-										</div>
-										<div class="p-field p-col-12 p-md-4">
-											<label for="lastname6">Last name<span class="cls-requiered">*</span></label>
-											<input id="lastname6" type="text" pInputText formControlName="lastName"
-												pattern="^[ A-Za-z-.,]*$"
-												oninput="validity.valid||(value=(this.value.substring(0, this.value.length - 1)))"
-												required class="p-inputtext-sm">
-											<mat-error *ngIf="isControlHasError('lastName', 'required')">
-												<strong>Required field</strong>
-											</mat-error>
-											<mat-error *ngIf="isControlHasError('lastName', 'pattern')">
-												<strong>Field is not valid</strong>
-											</mat-error>
-										</div>
-
-										<div class="p-field p-col-12 p-md-4">
-											<label for="firstname6">Date of birth<span
-													class="cls-requiered">*</span></label>
-											<p-calendar [showIcon]="true" inputId="icon" formControlName="dob" required
-												[monthNavigator]="true" [yearNavigator]="true" [yearRange]="yearRange"
-												dateFormat="mm-dd-yy" class="p-inputtext-sm" [maxDate]="maxDate">
-											</p-calendar>
-											<mat-error *ngIf="isControlHasError('dob', 'required')">
-												<strong>Required field</strong>
-											</mat-error>
-										</div>
-										<div class="p-field p-col-12 p-md-4">
-											<label for="user_email">Email<span class="cls-requiered">*</span></label>
-											<input id="user_email" type="email" formControlName="email" pInputText
-												class="p-inputtext-sm" required>
-											<mat-error *ngIf="isControlHasError('email', 'required')">
-												<strong>Required field</strong>
-											</mat-error>
-											<mat-error *ngIf="isControlHasError('email', 'email')">
-												<strong>Field is not valid</strong>
-											</mat-error>
-										</div>
-										<div class="p-field p-col-12 p-md-4">
-											<label for="lastname6">Gender<span class="cls-requiered">*</span></label>
-											<p-selectButton [options]="sex_item" formControlName="gender" required
-												class="p-inputtext-sm"></p-selectButton>
-											<mat-error *ngIf="isControlHasError('gender', 'required')">
-												<strong>Required field</strong>
-											</mat-error>
-										</div>
-
-										<div class="p-field p-col-12 p-md-4">
-											<label for="firstname6">Address street<span
-													class="cls-requiered">*</span></label>
-											<input id="firstname6" type="text" formControlName="address1" required
-												pInputText class="p-inputtext-sm">
-											<mat-error *ngIf="isControlHasError('address1', 'required')">
-												<strong>Required field</strong>
-											</mat-error>
-										</div>
-										<div class="p-field p-col-12 p-md-4">
-											<label for="lastname6">Address street 2</label>
-											<input id="lastname6" type="text" formControlName="address2" pInputText
-												class="p-inputtext-sm">
-										</div>
-										<div class="p-field p-col-12 p-md-4">
-											<label for="user_city">City<span class="cls-requiered">*</span></label>
-											<input id="user_city" type="text" formControlName="city" required pInputText
-												class="p-inputtext-sm">
-											<mat-error *ngIf="isControlHasError('city', 'required')">
-												<strong>Required field</strong>
-											</mat-error>
-										</div>
-
-
-										<div class="p-field p-col-12 p-md-4">
-											<label for="lastname6">Zip code<span class="cls-requiered">*</span></label>
-											<p-inputMask mask="99999" maxlength="5" minLength="5" formControlName="zipcode"
-												required pattern class="p-inputtext-sm"></p-inputMask>
-											<mat-error *ngIf="isControlHasError('zipcode', 'required')">
-												<strong>Required field</strong>
-											</mat-error>
-											<mat-error *ngIf="isControlHasError('zipcode', 'pattern')">
-												<strong>Field is not valid</strong>
-											</mat-error>
-										</div>
-										<div class="p-field p-col-12 p-md-4">
-											<label for="user_contact">Phone Number <span
-													class="cls-requiered">*</span></label>
-											<p-inputMask mask="9999999999" minLength="10" maxLength="10"
-												[tooltip]="tooltipJson.contactNumber" [trigger]="'click'"
-												[hideDelayTouchscreen]="3000" [hide-delay]="3000"
-												[animation-duration]="500" formControlName="contactNumber" required
-												pattern class="p-inputtext-sm">
-											</p-inputMask>
-											<mat-error *ngIf="isControlHasError('contactNumber', 'required')">
-												<strong>Required field</strong>
-											</mat-error>
-											<mat-error *ngIf="isControlHasError('contactNumber', 'minLength')">
-												<strong>Required field</strong>
-											</mat-error>
-											<mat-error *ngIf="isControlHasError('contactNumber', 'maxLength')">
-												<strong>Required field</strong>
-											</mat-error>
-										</div>
-										<div class="p-field p-col-12 p-md-4">
-											<label for="lastname6">Is this a cell phone number<span
-													class="cls-requiered">*</span></label>
-											<p-selectButton [options]="contact_item" formControlName="contactOption"
-												required class="p-inputtext-sm"></p-selectButton>
-											<mat-error *ngIf="isControlHasError('contactOption', 'required')">
-												<strong>Required field</strong>
-											</mat-error>
-										</div>
-										<div class="p-field p-col-12 p-md-4">
-											<label for="user_state">State<span class="cls-requiered">*</span></label>
-											<!-- <input id="user_state" type="text" pInputText class="p-inputtext-sm">  -->
-											<p-dropdown inputId="state" [options]="stateList" formControlName="state"
-												[filter]="true" filterBy="label" filterMatchMode="contains"
-												[showClear]="true" [resetFilterOnHide]="true" required
-												class="p-inputtext-sm" placeholder="Select State"></p-dropdown>
-											<mat-error *ngIf="isControlHasError('state', 'required')">
-												<strong>Required field</strong>
-											</mat-error>
-
-										</div>
-										<!-- <div class="p-field p-col-12 p-md-4" style="padding: 0px 14px !important;" ></div> -->
-										<div class="p-field p-col-12 p-md-4" [tooltip]="tooltipJson.resedenceItem"
-											[trigger]="'click'" [hideDelayTouchscreen]="3000" [hide-delay]="3000"
-											[animation-duration]="500"
-											*ngIf="patientForm.value.state && patientForm.value.state==='HI'">
-											<label for="user_state">Are you a Hawaii Resident<span
-													class="cls-requiered">*</span></label>
-											<!-- <input id="user_state" type="text" pInputText class="p-inputtext-sm">  -->
-											<p-selectButton [options]="resedence_item" formControlName="resedenceItem"
-												required class="p-inputtext-sm"></p-selectButton>
-											<mat-error *ngIf="isControlHasError('resedenceItem', 'required')">
-												<strong>Required field</strong>
-											</mat-error>
-										</div>
-
-										<div class="p-field p-col-12 p-md-4"
-											*ngIf="patientForm.value.state && patientForm.value.state==='HI'">
-											<label for="user_state">Travel date to Hawaii<span
-													class="cls-requiered">*</span></label>
-											<p-calendar [showIcon]="true" inputId="icon"
-												formControlName="travelDateToHawaii" required [monthNavigator]="true"
-												[yearNavigator]="true" [yearRange]="yearRange" dateFormat="mm-dd-yy"
-												class="p-inputtext-sm" [minDate]="minDate"
-												[tooltip]="tooltipJson.travelDateToHawaii" [trigger]="'click'"
-												[hideDelayTouchscreen]="3000" [hide-delay]="3000"
-												[animation-duration]="500">
-											</p-calendar>
-											<mat-error *ngIf="isControlHasError('travelDateToHawaii', 'required')">
-												<strong>Required field</strong>
-											</mat-error>
-										</div>
-
-										<div class="p-field p-col-12 p-md-4"
-											*ngIf="patientForm.value.state && patientForm.value.state==='HI'">
-											<label for="user_state">Island<span class="cls-requiered">*</span></label>
-											<!-- <input id="user_state" type="text" pInputText class="p-inputtext-sm">  -->
-											<p-dropdown inputId="state" [options]="island_item"
-												formControlName="islandItem" [filter]="true" filterBy="value"
-												filterMatchMode="contains" [showClear]="true" [resetFilterOnHide]="true"
-												required class="p-inputtext-sm" placeholder="Select Island">
-											</p-dropdown>
-											<mat-error *ngIf="isControlHasError('islandItem', 'required')">
-												<strong>Required field</strong>
-											</mat-error>
-										</div>
-
-
-									</div>
-								</div>
-							</div>
-							<!--end: Form Wizard Step 1-->
-
-							<!--begin: Form Wizard Step 2-->
-							<div class="pb-5" data-wizard-type="step-content">
-								<h4 class="mb-10 font-weight-bold text-dark">Vaccination Details</h4>
-								<p-fieldset legend="Vaccinator">
-									<div class="p-fluid p-formgrid p-grid">
-										<div class="p-field p-col-12 p-md-4">
-											<!-- *ngIf="patientForm.value.resedenceItem && patientForm.value.resedenceItem==='YES'" -->
-											<label for="org_name">Organization Name<span
-													class="cls-requiered">*</span></label>
-											<p-autoComplete formControlName="orgName" [suggestions]="filteredOrgs"
-												[tooltip]="tooltipJson.orgName" [trigger]="'click'"
-												[hideDelayTouchscreen]="3000" [hide-delay]="3000"
-												[animation-duration]="500" (completeMethod)="filterOrg($event)"
-												[forceSelection]="true" field="name" placeholder="Type 'a' for hint"
-												[minLength]="1" class="p-inputtext-sm" [autoHighlight]="true">
-											</p-autoComplete>
-											<!-- <input id="org_name" type="text" formControlName="orgName" pInputText class="p-inputtext-sm"> -->
-											<mat-error *ngIf="stepTwo && isControlHasError('orgName', 'required')">
-												<strong>Required field</strong>
-											</mat-error>
-										</div>
-										<div class="p-field p-col-12 p-md-4">
-											<label for="firstname6">Address street<span
-													class="cls-requiered">*</span></label>
-											<input id="firstname6" type="text" formControlName="orgAddress1" required
-												[tooltip]="tooltipJson.orgAddress1" [trigger]="'click'"
-												[hideDelayTouchscreen]="3000" [hide-delay]="3000"
-												[animation-duration]="500" pInputText class="p-inputtext-sm">
-											<mat-error *ngIf="stepTwo && isControlHasError('orgAddress1', 'required')">
-												<strong>Required field</strong>
-											</mat-error>
-										</div>
-										<div class="p-field p-col-12 p-md-4">
-											<label for="lastname6">Address street 2</label>
-											<input id="lastname6" type="text" formControlName="orgAddress2" pInputText
-												class="p-inputtext-sm">
-										</div>
-										<div class="p-field p-col-12 p-md-4">
-											<label for="org_city">City<span class="cls-requiered">*</span></label>
-											<input id="org_city" type="text" formControlName="orgCity" required
-												pInputText class="p-inputtext-sm">
-											<mat-error *ngIf="stepTwo && isControlHasError('orgCity', 'required')">
-												<strong>Required field</strong>
-											</mat-error>
-										</div>
-
-
-										<div class="p-field p-col-12 p-md-4">
-											<label for="lastname6">Zip code</label>
-											<p-inputMask mask="99999" maxlength="10" minLength="5" formControlName="orgZipcode"
-												pattern class="p-inputtext-sm"></p-inputMask>
-											<!-- <mat-error *ngIf="stepTwo && isControlHasError('orgZipcode', 'required')">
-												<strong>Required field</strong>
-											</mat-error> -->
-											<mat-error *ngIf="isControlHasError('orgZipcode', 'pattern')">
-												<strong>Field is not valid</strong>
-											</mat-error>
-										</div>
-										<div class="p-field p-col-12 p-md-4">
-											<label for="org_state">State<span class="cls-requiered">*</span></label>
-											<p-dropdown inputId="org_state" [options]="stateList"
-												formControlName="orgState" [filter]="true" filterBy="label"
-												filterMatchMode="contains" [showClear]="true" [resetFilterOnHide]="true"
-												required class="p-inputtext-sm" placeholder="Select State"></p-dropdown>
-											<!-- <input id="org_state" type="text" formControlName="orgState" required pInputText class="p-inputtext-sm">  -->
-											<mat-error *ngIf="stepTwo && isControlHasError('orgState', 'required')">
-												<strong>Required field</strong>
-											</mat-error>
-										</div>
-
-										<div class="p-field p-col-12 p-md-4">
-											<label for="user_contact">Contact Number</label>
-											<p-inputMask mask="9999999999" minLength="10" maxLength="10"
-												formControlName="orgContactNumber" pattern
-												class="p-inputtext-sm">
-											</p-inputMask>
-											<!-- <mat-error
-												*ngIf="stepTwo && isControlHasError('orgContactNumber', 'required')">
-												<strong>Required field</strong>
-											</mat-error> -->
-											<mat-error
-												*ngIf="stepTwo && isControlHasError('orgContactNumber', 'minLength')">
-												<strong>Required field</strong>
-											</mat-error>
-											<mat-error
-												*ngIf="stepTwo && isControlHasError('orgContactNumber', 'maxLength')">
-												<strong>Required field</strong>
-											</mat-error>
-										</div>
-										<div class="p-field p-col-12 p-md-4">
-											<label for="user_email">Email <span *ngIf="patientForm.value.orgState === 'HI'"
-												class="cls-requiered">*</span></label>
-											<input id="user_email" type="email" formControlName="orgEmail" pInputText
-											 class="p-inputtext-sm">
-											<mat-error *ngIf="patientForm.value.orgState === 'HI' && stepTwo && isControlHasError('orgEmail', 'required')">
-												<strong>Required field</strong>
-											  </mat-error>
-											<mat-error *ngIf="stepTwo && isControlHasError('orgEmail', 'email')">
-												<strong>Field is not valid</strong>
-											</mat-error>
-										</div>
-									</div>
-								</p-fieldset>
-								<p-fieldset legend="Vaccine Info" [style.margin-top]="'20px'">
-									<div class="p-fluid p-formgrid p-grid">
-										<div class="p-field p-col-12 p-md-4">
-											<label for="manufacturer_name">Vaccine manufacturer<span
-													class="cls-requiered">*</span></label>
-											<p-dropdown inputId="manufacturer" [options]="manufacturerList"
-												formControlName="orgManufacturer" [filter]="true" filterBy="label"
-												filterMatchMode="contains" [showClear]="true" [resetFilterOnHide]="true"
-												required class="p-inputtext-sm" placeholder="Select Manufacturer">
-											</p-dropdown>
-											<mat-error
-												*ngIf="stepTwo && isControlHasError('orgManufacturer', 'required')">
-												<strong>Required field</strong>
-											</mat-error>
-										</div>
-										<div class="p-field p-col-12 p-md-4">
-											<label for="dose1">Date of Dose(s) {{(patientForm.value.orgManufacturer &&
-												patientForm.value.orgManufacturer != 'Johnson \& Johnson') ? '1' :
-												''}}<span class="cls-requiered">*</span></label>
-											<p-calendar [showIcon]="true" inputId="icon" formControlName="orgDose1"
-												required [monthNavigator]="true" [yearNavigator]="true"
-												[yearRange]="yearRange" dateFormat="mm-dd-yy" class="p-inputtext-sm"
-												[maxDate]="maxDate"></p-calendar>
-											<mat-error *ngIf="stepTwo && isControlHasError('orgDose1', 'required')">
-												<strong>Required field</strong>
-											</mat-error>
-										</div>
-										<div class="p-field p-col-12 p-md-4"
-											*ngIf="(patientForm.value.orgManufacturer && patientForm.value.orgManufacturer != 'Johnson \& Johnson')">
-											<label for="dose2">Date of Dose(s) 2<span
-													class="cls-requiered">*</span></label>
-											<p-calendar [showIcon]="true" inputId="icon" formControlName="orgDose2"
-												required [monthNavigator]="true" [yearNavigator]="true"
-												[yearRange]="yearRange" dateFormat="mm-dd-yy" class="p-inputtext-sm"
-												[maxDate]="maxDate"></p-calendar>
-											<mat-error *ngIf="stepTwo && isControlHasError('orgDose2', 'required')">
-												<strong>Required field</strong>
-											</mat-error>
-											<mat-error
-												*ngIf="patientForm.value.orgDose2 && isgreatedThan('orgDose2','orgDose1')">
-												<strong>Date of Dose 2 needs to be after that of dose 1</strong>
-											</mat-error>
-											<mat-error
-												*ngIf="patientForm.value.orgDose2 && isMinimumGap('orgDose2','orgDose1')">
-												<strong>The interval between Dose 1 and Dose 2 should be minimum of
-													{{gapDays}} days</strong>
-											</mat-error>
-										</div>
-									</div>
-								</p-fieldset>
-
-								<p-fieldset legend="COVID Appointment Email Confirmation" [style.margin-top]="'20px'">
-									<div class="">
-										<label for="txt_appointment">If you received an email confirmation for your
-											vaccination appointment, please copy and paste the email here.
-										</label>
-										<textarea [rows]="5" style="width: 100%; min-height: 8rem;" pInputTextarea
-											autoResize="autoResize"></textarea>
-									</div>
-								</p-fieldset>
-							</div>
-							<!--end: Form Wizard Step 2-->
-
-							<!--begin: Form Wizard Step 3-->
-							<div class="pb-5" data-wizard-type="step-content">
-								<h4 class="mb-10 font-weight-bold text-dark">Upload Vax-Card</h4>
-								<div>
-									<p-card
-										[style]="{'width': '55rem', 'background': 'rgb(243 246 249)', 'margin-top': '2rem'}"
-										tooltip="Your vaccination card should look like this"
-										[hideDelayTouchscreen]="3000" [hide-delay]="3000" [animation-duration]="500"
-										styleClass="vaxCard">
-										<!-- <p-card [style]="{'width': '45rem', 'background': 'rgb(243 246 249)', 'margin-top': '2rem'}"
-										styleClass="vaxCard" *ngIf="imageToTextResponse"> -->
-										<ng-template pTemplate="header">
-											<div class="p-grid" style="
-											font-size: 1.5em;
-											font-weight: bold;
-											padding-top: 1rem;
-											padding-left: 1rem;">
-												<div class="p-col-8">
-													Covid-19 Vaccination Record Card
-												</div>
-												<div class="p-col-4"></div>
-											</div>
-
-										</ng-template>
-										<div class="p-grid">
-											<div class="p-col-12">
-												<pre style="white-space: pre-wrap;">
-Please keep this record card, which includes medical information
-about the vaccines you have received.
-
-Por favor, guarde esta tarjeta de resistro, que incluye informacion
-medica sobre las vacunas que ha recibido.
-												</pre>
-											</div>
-										</div>
-										<div class="p-grid" style="margin-bottom: 1em;">
-											<div class="p-col">
-												<div
-													style="font-style: italic;padding-bottom: .5em;font-weight: bold; padding-left: .2em;">
-													Last
-													Name</div>
-												<div class="box p-shadow-3">
-													<editable data-testid="sample-input-click" class="editable"
-														(save)="updateSingleField('lastInputText', 'lastNameInputControl')"
-														(cancel)="cancelSingleField('lastInputText', 'lastNameInputControl')">
-														<ng-template viewMode>
-															{{ lastInputText }} <i
-																class="kt-nav__link-icon flaticon2-pen text-primary"
-																style="float: right;"></i>
-														</ng-template>
-														<ng-template editMode>
-															<div class="form-group" style="padding: unset !important">
-																<input class="form-control" pattern="^[ A-Za-z-.,]*$"
-																	oninput="validity.valid||(value=(this.value.substring(0, this.value.length - 1)))"
-																	data-testid="sample-input-click-edit"
-																	placeholder="Last Name" type="text"
-																	[formControl]="lastNameInputControl" />
-															</div>
-														</ng-template>
-													</editable>
-												</div>
-												<span *ngIf="lastInputText?.length === 0"
-													style="color: red; font-weight: bold;">Required field</span>
-											</div>
-
-											<div class="p-col">
-												<div
-													style="font-style: italic;padding-bottom: .5em;font-weight: bold; padding-left: .2em;">
-													First Name</div>
-												<div class="box p-shadow-3">
-													<editable data-testid="sample-input-click" class="editable"
-														(save)="updateSingleField('firstInputText', 'firstNameInputControl')"
-														(cancel)="cancelSingleField('firstInputText', 'firstNameInputControl')">
-														<ng-template viewMode>
-															{{ firstInputText }} <i
-																class="kt-nav__link-icon flaticon2-pen text-primary"
-																style="float: right;"></i>
-														</ng-template>
-														<ng-template editMode>
-															<div class="form-group" style="padding: unset !important">
-																<input class="form-control" pattern="^[ A-Za-z-.,]*$"
-																	oninput="validity.valid||(value=(this.value.substring(0, this.value.length - 1)))"
-																	data-testid="sample-input-click-edit"
-																	placeholder="First Name" type="text"
-																	[formControl]="firstNameInputControl" />
-															</div>
-														</ng-template>
-													</editable>
-												</div>
-												<span *ngIf="firstInputText?.length === 0"
-													style="color: red; font-weight: bold;">Required field</span>
-											</div>
-											<div class="p-col">
-												<div
-													style="font-style: italic;padding-bottom: .5em;font-weight: bold; padding-left: .2em;">
-													Middle Name</div>
-												<div class="box p-shadow-3">
-													{{ patientForm?.value?.middleName }}
-												</div>
-
-											</div>
-											<div class="p-col">
-												<div
-													style="font-style: italic;padding-bottom: .5em;font-weight: bold; padding-left: .2em;">
-													DOB
-												</div>
-												<div class="box p-shadow-3">
-													{{ patientForm?.value?.dob ? (patientForm.value.dob | date:'MMM dd,
-													yyyy') : '' }}
-												</div>
-											</div>
-										</div>
-										<table class="doseTable">
-											<tr style="background: lightgray; text-align: center;">
-												<th style="width: 25%;">Vaccine</th>
-												<th style="width: 30%;">Product Name / Manufacturer<br>Lot Number</th>
-												<th style="width: 14%;">Date</th>
-												<th style="width: auto;">Healthcare Professional or Clinic Site</th>
-											</tr>
-											<tr>
-												<td style="background: lightgray;">1st Dose Covid-19</td>
-												<td>
-													{{ imageToTextResponse?.firstDose }}
-												</td>
-												<td>{{ imageToTextResponse?.firstDoseDate ?
-													(imageToTextResponse.firstDoseDate | date:'MMM dd, yyyy') : '' }}
-												</td>
-												<td>
-													<editable data-testid="sample-input-click" class="editable"
-														(save)="updateSingleField('firstClinicName', 'firstClinicNameInputControl')"
-														(cancel)="cancelSingleField('firstClinicName', 'firstClinicNameInputControl')">
-														<ng-template viewMode>
-															<div style="padding-left: .5em; padding-right: .5em;">
-																{{ firstClinicName}} <i
-																	class="kt-nav__link-icon flaticon2-pen text-primary"
-																	style="    float: right;"></i>
-															</div>
-														</ng-template>
-														<ng-template editMode>
-															<div class="form-group">
-																<input class="form-control"
-																	data-testid="sample-input-click-edit"
-																	placeholder="Clinic Name" type="text"
-																	[formControl]="firstClinicNameInputControl" />
-															</div>
-														</ng-template>
-													</editable>
-													<span *ngIf="firstClinicName?.length === 0"
-														style="color: red; font-weight: bold;">Required field</span>
-												</td>
-											</tr>
-											<tr
-												*ngIf="imageToTextResponse && imageToTextResponse.secondDose!=='Johnson & Johnson'">
-												<td style="background: lightgray;">2nd Dose Covid-19</td>
-												<td>
-													{{ imageToTextResponse?.secondDose }}
-												</td>
-												<td>
-													{{ imageToTextResponse?.secondDoseDate ?
-													(imageToTextResponse?.secondDoseDate | date:'MMM dd, yyyy') :
-													imageToTextResponse?.secondDoseDate }}
-												</td>
-												<td>
-													<editable *ngIf="patientForm?.value?.orgDose2"
-														data-testid="sample-input-click" class="editable"
-														(save)="updateSingleField('secondClinicName', 'secondClinicNameInputControl')"
-														(cancel)="cancelSingleField('secondClinicName', 'secondClinicNameInputControl')">
-														<ng-template viewMode>
-															<div style="padding-left: .5em; padding-right: .5em;">
-																{{ secondClinicName }} <i
-																	class="kt-nav__link-icon flaticon2-pen text-primary"
-																	style="    float: right;"></i>
-															</div>
-														</ng-template>
-														<ng-template editMode>
-															<div class="form-group">
-																<input class="form-control"
-																	data-testid="sample-input-click-edit"
-																	placeholder="Clinic Name" type="text"
-																	[formControl]="secondClinicNameInputControl" />
-															</div>
-														</ng-template>
-													</editable>
-													<span *ngIf="secondClinicName?.length === 0"
-														style="color: red; font-weight: bold;">Required field</span>
-												</td>
-											</tr>
-										</table>
-									</p-card>
-								</div>
-								<p-divider></p-divider>
-								<div class="p-fluid p-formgrid p-grid">
-									<mat-tab-group style="width: 100%;" (selectedTabChange)="onTabChanged($event);">
-										<mat-tab label="Take Snapshot">
-											<div class="p-field p-col-12 p-md-12" style="padding: 0;border: 1px dashed #cccccc;
-									margin-top: 30px;">
-												<h4>Take snapshot from below
-													<button pButton class="p-button-info" type="button" label="{{showWebcam
-														? 'Stop' : 'Start'}}" (click)="toggleWebCam($event)" [style.width]="'auto'"></button>
-
-													<!-- <button class="cls-actionBtn" (click)="toggleWebCam(e)">{{showWebcam
-														? 'Stop' : 'Start'}}</button> -->
-												</h4>
-												<webcam (imageCapture)="handleImage($event)" *ngIf="showWebcam"
-													[trigger]="triggerObservable"></webcam>
-												<div *ngIf="showWebcam">
-													<button class="cls-actionBtn" (click)="triggerSnapshot();">Take A
-														Snapshot</button> <i class="pi pi-info-circle"
-														style="font-size: 1.5rem; margin-left: 1rem; color: blue"
-														[tooltip]="tooltipJson.takeSnapShot" [trigger]="'click'"
-														[hideDelayTouchscreen]="3000" [hide-delay]="3000"
-														[animation-duration]="500"></i>
-												</div>
-												<div class="snapshot" style="display: block;width: 100%;"
-													*ngIf="webcamImage">
-													<h2>Nice one!</h2>
-													<button mat-stroked-button
-														(click)="uploadSnapshot(false)">Upload</button>
-													<img style="display: block;width: 120px"
-														[src]="webcamImage.imageAsDataUrl" />
-												</div>
-											</div>
-										</mat-tab>
-										<mat-tab label="Upload File">
-											<div class="p-field p-col-12 p-md-12 cls-form-upload" style="padding: 0;">
-												<input type="file" name="file" id="file" multiple class="inputfile"
-													(change)="onFileSelect($event)" />
-												<label for="file">Choose files from here</label>
-												<div style="width: 100%;
-												text-align: left;
-												padding: 0 13px;
-												margin-top: 10px;
-												color: blue;">
-													<!-- <img [src]="imageSrc"> -->
-													<img id="img_preview" height="120px" width="120px">
-													<button mat-stroked-button
-														(click)="uploadSnapshot()">Upload</button>
-												</div>
-
-											</div>
-										</mat-tab>
-									</mat-tab-group>
-									<div *ngIf="!webcamImage && !imageSrc && consentNotChecked"
-										style="color: red; font-weight: bold;">Please provide vaccination proof.</div>
-									<p-fieldset legend="Consent" [toggleable]="true">
-										<mat-checkbox class="example-margin" [(ngModel)]="consent"
-											[ngModelOptions]="{standalone: true}">I hereby consent to the release of my
-											medical records which includes COVID vaccination information to VAXCheck, a
-											service of FirstVitals Health and Wellness Inc, for verification and
-											certification purposes.
-											I understand that this consent will continue until revoked.
-											I may revoke this consent by written request at any time by contacting
-											VAXCheck.
-											I understand that the revocation will not apply to the information that has
-											already been released. The information will only be used, disclosed, and
-											shared
-											by VAXCheck as permitted in the VAXCheck’s Privacy Policy statement.
-										</mat-checkbox>
-										<div *ngIf="consentNotChecked == true && !consent"
-											style="color: red; font-weight: bold;">Please agree
-											the consent.</div>
-									</p-fieldset>
-
-								</div>
-								<p-divider></p-divider>
-								<div class="p-grid">
-									<div class="p-col-12">
-
-									</div>
-								</div>
-							</div>
+							<kt-traveler-info [travelerInfo]="patientForm" [tooltipJson]="tooltipJson"
+								[dateProperties]="dateProperties" [isControlHasError]=isControlHasError>
+							</kt-traveler-info>
+							<kt-vaccinator [vaccinator]="patientForm" [tooltipJson]="tooltipJson"
+								[dateProperties]="dateProperties" [isControlHasError]=isControlHasError
+								[stepTwo]="stepTwo"></kt-vaccinator>
+							<kt-upload-card [uploadCardForm]="patientForm" [tooltipJson]="tooltipJson"
+								[lastInputText]="lastInputText" [firstInputText]="firstInputText"
+								[firstClinicName]="firstClinicName" [secondClinicName]="secondClinicName"
+								[lastNameInputControl]="lastNameInputControl"
+								[firstNameInputControl]="firstNameInputControl"
+								[firstClinicNameInputControl]="firstClinicNameInputControl"
+								[secondClinicNameInputControl]="secondClinicNameInputControl"
+								[imageToTextResponse]="imageToTextResponse" [isControlHasError]=isControlHasError
+								[showWebcam]="showWebcam" [tab3Pressed]="tab3Pressed"
+								(firstEditedText)="updateFirstName($event)" (lastEditedText)="updateLastName($event)"
+								(firstEditedClinic)="updateFirstClinic($event)"
+								(secondEditedClinic)="updateSecondClinic($event)" (imageSrc)="updateImageSrc($event)"
+								(updateWebImage)="updateWebcamImage($event)">
+							</kt-upload-card>
 
 							<!--begin: Form Wizard Step 4-->
 							<div class="pb-5" data-wizard-type="step-content">
@@ -789,7 +169,7 @@ medica sobre las vacunas que ha recibido.
 											</div>
 											<input style="margin-top: 1rem;" type="file" id="file" multiple
 												class="inputfile" [fileUploadInputFor]="fileUploadQueue" />
-											<label for="file" style="margin-top: 1rem;">Choose files from here</label>
+											<label for="file" style="margin-top: 1rem;">Select files to upload</label>
 											<!-- <input style="margin-top: 1rem;" id="singleFile" type="file" multiple="multiple" [fileUploadInputFor]="fileUploadQueue" /> -->
 											<!-- <label for="file">choose a file</label> -->
 										</div>
@@ -804,46 +184,26 @@ medica sobre las vacunas que ha recibido.
 										</div>
 									</div>
 								</p-fieldset>
-								<!-- <div>
-									<input id="singleFile" type="file" multiple="multiple" [fileUploadInputFor]="fileUploadQueue" />
-									<div [fileUploadInputFor]="fileUploadQueue" class="upload-drop-zone">
-										Just drag and drop files here
-									  </div>
-									<div style="width: 500px;">
-										<mat-file-upload-queue
-										  #fileUploadQueue
-										  [fileAlias]="'file'"
-										  [httpUrl]="'http://localhost:8080/jax-rs-jersey-application-sample'"
-										  multiple
-										>
-										  <mat-file-upload
-											[file]="file"
-											[id]="i"
-											*ngFor="let file of fileUploadQueue.files; let i = index"
-										  ></mat-file-upload>
-										</mat-file-upload-queue>
-									  </div>
-								</div> -->
-								<p-fieldset legend="Vaccination Details">
+								<p-fieldset legend="Vaccination Summary">
 									<div class="card">
 										<div class="p-fluid" style="padding-left: .5rem;">
 											<div class="p-field p-grid">
 												<label for="firstname4" class="p-col-12 p-mb-2 p-md-2 p-mb-md-0"
-													style="color: gray;">Vaccine admin:</label>
+													style="color: gray;">Vaccine Site:</label>
 												<div class="p-col-12 p-md-10">
 													<b>{{firstClinicName}}</b>
 												</div>
 											</div>
 											<div class="p-field p-grid">
 												<label for="lastname4" class="p-col-12 p-mb-2 p-md-2 p-mb-md-0"
-													style="color: gray;">Doses received:</label>
+													style="color: gray;">Doses Received:</label>
 												<div class="p-col-12 p-md-10">
 													<b *ngIf="imageToTextResponse">{{doseReceived}}</b>
 												</div>
 											</div>
 											<div class="p-field p-grid">
 												<label for="firstname4" class="p-col-12 p-mb-2 p-md-2 p-mb-md-0"
-													style="color: gray;">Series complete:</label>
+													style="color: gray;">Series Completed:</label>
 												<div class="p-col-12 p-md-10">
 													<b>{{seriesComplete}}</b>
 												</div>
@@ -853,12 +213,12 @@ medica sobre las vacunas que ha recibido.
 												<label for="firstname4" class="p-col-12 p-mb-2 p-md-2 p-mb-md-0"
 													style="color: gray;">Message:</label>
 												<div class="p-col-12 p-md-10">
-													<b>N/A</b>
+													<b>CDC Vaccination Information Submitted for Verification</b>
 												</div>
 											</div>
 											<div class="p-field p-grid">
 												<label for="lastname4" class="p-col-12 p-mb-2 p-md-2 p-mb-md-0"
-													style="color: gray;">Effective date:</label>
+													style="color: gray;">Effective Date:</label>
 												<div class="p-col-12 p-md-10">
 													<b>{{effectiveDate ? (effectiveDate | date:'MMM dd, yyyy') :
 														'N/A'}}</b>
@@ -886,11 +246,17 @@ medica sobre las vacunas que ha recibido.
 									</div>
 								</div>
 								<div>
-									<div (click)="onSubmit()"
+									<button class="btn btn-success font-weight-bold text-uppercase px-9 py-4 fa" 
+									data-wizard-type="action-submit"
+									[disabled]="isLoading" (click)="onSubmit()"><i
+											[ngClass]="{'fa-spin fa-spinner': isLoading, 'fa-check': !isLoading}"></i>
+										{{button}}</button>
+
+									<!-- <div (click)="onSubmit()"
 										class="btn btn-success font-weight-bold text-uppercase px-9 py-4"
 										data-wizard-type="action-submit">
 										{{submitButton.value}}
-									</div>
+									</div> -->
 									<div class="btn btn-primary font-weight-bold text-uppercase px-9 py-4"
 										data-wizard-type="action-next">
 										Next Step

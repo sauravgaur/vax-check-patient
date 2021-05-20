@@ -61,7 +61,7 @@ const routes: Routes = [
       //   loadChildren: () => import('./views/theme/content/builder/builder.module').then(m => m.BuilderModule),
       // },
       {path: 'dashboard', redirectTo: 'dashboard', pathMatch: 'full'},
-      {path: '**', redirectTo: 'traveler/registration', pathMatch: 'full'},
+      {path: '**', redirectTo: '/', pathMatch: 'full'},
     ],
   },
   {path: '**', redirectTo: 'error/403', pathMatch: 'full'},

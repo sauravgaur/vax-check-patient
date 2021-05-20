@@ -1,0 +1,270 @@
+<div [formGroup]="uploadCardForm">
+    <!--begin: Form Wizard Step 3-->
+    <div class="pb-5" data-wizard-type="step-content">
+        <h4 class="mb-10 font-weight-bold text-dark">Upload Vax-Card</h4>
+        <div>
+            <p-card
+                [style]="{'width': '55rem', 'background': 'rgb(243 246 249)', 'margin-top': '2rem'}"
+                tooltip="Your vaccination card should look like this"
+                [hideDelayTouchscreen]="3000" [hide-delay]="3000" [animation-duration]="500"
+                styleClass="vaxCard">
+                <!-- <p-card [style]="{'width': '45rem', 'background': 'rgb(243 246 249)', 'margin-top': '2rem'}"
+                styleClass="vaxCard" *ngIf="imageToTextResponse"> -->
+                <ng-template pTemplate="header">
+                    <div class="p-grid" style="
+                    font-size: 1.5em;
+                    font-weight: bold;
+                    padding-top: 1rem;
+                    padding-left: 1rem;">
+                        <div class="p-col-8">
+                            Covid-19 Vaccination Record Card
+                        </div>
+                        <div class="p-col-4"></div>
+                    </div>
+
+                </ng-template>
+                <div class="p-grid">
+                    <div class="p-col-12">
+                        <pre style="white-space: pre-wrap;">
+Please keep this record card, which includes medical information
+about the vaccines you have received.
+
+Por favor, guarde esta tarjeta de resistro, que incluye informacion
+medica sobre las vacunas que ha recibido.
+                        </pre>
+                    </div>
+                </div>
+                <div class="p-grid" style="margin-bottom: 1em;">
+                    <div class="p-col">
+                        <div
+                            style="font-style: italic;padding-bottom: .5em;font-weight: bold; padding-left: .2em;">
+                            Last
+                            Name</div>
+                        <div class="box p-shadow-3">
+                            <editable data-testid="sample-input-click" class="editable"
+                                (save)="updateSingleField('lastInputText', 'lastNameInputControl')"
+                                (cancel)="cancelSingleField('lastInputText', 'lastNameInputControl')">
+                                <ng-template viewMode>
+                                    {{ lastInputText }} <i
+                                        class="kt-nav__link-icon flaticon2-pen text-primary"
+                                        style="float: right;"></i>
+                                </ng-template>
+                                <ng-template editMode>
+                                    <div class="form-group" style="padding: unset !important">
+                                        <input class="form-control" pattern="^[ A-Za-z-.,]*$"
+                                            oninput="validity.valid||(value=(this.value.substring(0, this.value.length - 1)))"
+                                            data-testid="sample-input-click-edit"
+                                            placeholder="Last Name" type="text"
+                                            [formControl]="lastNameInputControl" />
+                                    </div>
+                                </ng-template>
+                            </editable>
+                        </div>
+                        <span *ngIf="lastInputText?.length === 0"
+                            style="color: red; font-weight: bold;">Required field</span>
+                    </div>
+
+                    <div class="p-col">
+                        <div
+                            style="font-style: italic;padding-bottom: .5em;font-weight: bold; padding-left: .2em;">
+                            First Name</div>
+                        <div class="box p-shadow-3">
+                            <editable data-testid="sample-input-click" class="editable"
+                                (save)="updateSingleField('firstInputText', 'firstNameInputControl')"
+                                (cancel)="cancelSingleField('firstInputText', 'firstNameInputControl')">
+                                <ng-template viewMode>
+                                    {{ firstInputText }} <i
+                                        class="kt-nav__link-icon flaticon2-pen text-primary"
+                                        style="float: right;"></i>
+                                </ng-template>
+                                <ng-template editMode>
+                                    <div class="form-group" style="padding: unset !important">
+                                        <input class="form-control" pattern="^[ A-Za-z-.,]*$"
+                                            oninput="validity.valid||(value=(this.value.substring(0, this.value.length - 1)))"
+                                            data-testid="sample-input-click-edit"
+                                            placeholder="First Name" type="text"
+                                            [formControl]="firstNameInputControl" />
+                                    </div>
+                                </ng-template>
+                            </editable>
+                        </div>
+                        <span *ngIf="firstInputText?.length === 0"
+                            style="color: red; font-weight: bold;">Required field</span>
+                    </div>
+                    <div class="p-col">
+                        <div
+                            style="font-style: italic;padding-bottom: .5em;font-weight: bold; padding-left: .2em;">
+                            Middle Name</div>
+                        <div class="box p-shadow-3">
+                            {{ uploadCardForm?.value?.middleName }}
+                        </div>
+
+                    </div>
+                    <div class="p-col">
+                        <div
+                            style="font-style: italic;padding-bottom: .5em;font-weight: bold; padding-left: .2em;">
+                            DOB
+                        </div>
+                        <div class="box p-shadow-3">
+                            {{ uploadCardForm?.value?.dob ? (uploadCardForm.value.dob | date:'MMM dd,
+                            yyyy') : '' }}
+                        </div>
+                    </div>
+                </div>
+                <table class="doseTable">
+                    <tr style="background: lightgray; text-align: center;">
+                        <th style="width: 25%;">Vaccine</th>
+                        <th style="width: 30%;">Product Name / Manufacturer<br>Lot Number</th>
+                        <th style="width: 14%;">Date</th>
+                        <th style="width: auto;">Healthcare Professional or Clinic Site</th>
+                    </tr>
+                    <tr>
+                        <td style="background: lightgray;">1st Dose Covid-19</td>
+                        <td>
+                            {{ imageToTextResponse?.firstDose }}
+                        </td>
+                        <td>{{ imageToTextResponse?.firstDoseDate ?
+                            (imageToTextResponse.firstDoseDate | date:'MMM dd, yyyy') : '' }}
+                        </td>
+                        <td>
+                            <editable data-testid="sample-input-click" class="editable"
+                                (save)="updateSingleField('firstClinicName', 'firstClinicNameInputControl')"
+                                (cancel)="cancelSingleField('firstClinicName', 'firstClinicNameInputControl')">
+                                <ng-template viewMode>
+                                    <div style="padding-left: .5em; padding-right: .5em;">
+                                        {{ firstClinicName}} <i
+                                            class="kt-nav__link-icon flaticon2-pen text-primary"
+                                            style="    float: right;"></i>
+                                    </div>
+                                </ng-template>
+                                <ng-template editMode>
+                                    <div class="form-group">
+                                        <input class="form-control"
+                                            data-testid="sample-input-click-edit"
+                                            placeholder="Clinic Name" type="text"
+                                            [formControl]="firstClinicNameInputControl" />
+                                    </div>
+                                </ng-template>
+                            </editable>
+                            <span *ngIf="firstClinicName?.length === 0"
+                                style="color: red; font-weight: bold;">Required field</span>
+                        </td>
+                    </tr>
+                    <tr
+                        *ngIf="imageToTextResponse && imageToTextResponse.secondDose!=='Johnson & Johnson'">
+                        <td style="background: lightgray;">2nd Dose Covid-19</td>
+                        <td>
+                            {{ imageToTextResponse?.secondDose }}
+                        </td>
+                        <td>
+                            {{ imageToTextResponse?.secondDoseDate ?
+                            (imageToTextResponse?.secondDoseDate | date:'MMM dd, yyyy') :
+                            imageToTextResponse?.secondDoseDate }}
+                        </td>
+                        <td>
+                            <editable *ngIf="uploadCardForm?.value?.orgDose2"
+                                data-testid="sample-input-click" class="editable"
+                                (save)="updateSingleField('secondClinicName', 'secondClinicNameInputControl')"
+                                (cancel)="cancelSingleField('secondClinicName', 'secondClinicNameInputControl')">
+                                <ng-template viewMode>
+                                    <div style="padding-left: .5em; padding-right: .5em;">
+                                        {{ secondClinicName }} <i
+                                            class="kt-nav__link-icon flaticon2-pen text-primary"
+                                            style="    float: right;"></i>
+                                    </div>
+                                </ng-template>
+                                <ng-template editMode>
+                                    <div class="form-group">
+                                        <input class="form-control"
+                                            data-testid="sample-input-click-edit"
+                                            placeholder="Clinic Name" type="text"
+                                            [formControl]="secondClinicNameInputControl" />
+                                    </div>
+                                </ng-template>
+                            </editable>
+                            <span *ngIf="secondClinicName?.length === 0"
+                                style="color: red; font-weight: bold;">Required field</span>
+                        </td>
+                    </tr>
+                </table>
+            </p-card>
+        </div>
+        <p-divider></p-divider>
+        <div class="p-fluid p-formgrid p-grid">
+            <mat-tab-group style="width: 100%;" (selectedTabChange)="onTabChanged($event);">
+                <mat-tab label="Take Snapshot">
+                    <div class="p-field p-col-12 p-md-12" style="padding: 0;border: 1px dashed #cccccc;
+            margin-top: 30px;">
+                        <h4>Take snapshot from below
+                            <button pButton class="p-button-info" type="button" label="{{showWebcam
+                                ? 'Stop' : 'Start'}}" (click)="toggleWebCam($event)" [style.width]="'auto'"></button>
+
+                            <!-- <button class="cls-actionBtn" (click)="toggleWebCam(e)">{{showWebcam
+                                ? 'Stop' : 'Start'}}</button> -->
+                        </h4>
+                        <webcam (imageCapture)="handleImage($event)" *ngIf="showWebcam"
+                            [trigger]="triggerObservable"></webcam>
+                        <div *ngIf="showWebcam">
+                            <button class="cls-actionBtn" (click)="triggerSnapshot();">Take A
+                                Snapshot</button> <i class="pi pi-info-circle"
+                                style="font-size: 1.5rem; margin-left: 1rem; color: blue"
+                                [tooltip]="tooltipJson.takeSnapShot" [trigger]="'click'"
+                                [hideDelayTouchscreen]="3000" [hide-delay]="3000"
+                                [animation-duration]="500"></i>
+                        </div>
+                        <div class="snapshot" style="display: block;width: 100%;"
+                            *ngIf="webcamImage">
+                            <h2>Nice one!</h2>
+                            <button mat-stroked-button
+                                (click)="uploadSnapshot(false)">Upload</button>
+                            <img style="display: block;width: 120px"
+                                [src]="webcamImage.imageAsDataUrl" />
+                        </div>
+                    </div>
+                </mat-tab>
+                <mat-tab label="Upload File">
+                    <div class="p-field p-col-12 p-md-12 cls-form-upload" style="padding: 0;">
+                        <input type="file" name="file" id="file" multiple class="inputfile"
+                            (change)="onFileSelect($event)" />
+                        <label for="file">Choose files from here</label>
+                        <div style="width: 100%;
+                        text-align: left;
+                        padding: 0 13px;
+                        margin-top: 10px;
+                        color: blue;">
+                            <!-- <img [src]="imageSrc"> -->
+                            <img id="img_preview" height="120px" width="120px">
+                            <button mat-stroked-button
+                                (click)="uploadSnapshot()">Upload</button>
+                        </div>
+
+                    </div>
+                </mat-tab>
+            </mat-tab-group>
+            <div *ngIf="!webcamImage && !imageSrc && tab3Pressed"
+                style="color: red; font-weight: bold;">Please provide vaccination proof.</div>
+            <p-fieldset legend="Consent" [toggleable]="true">
+                <mat-checkbox class="example-margin" formControlName="consent">I hereby consent to the release of my
+                    medical records which includes COVID vaccination information to VAXCheck, a
+                    service of FirstVitals Health and Wellness Inc, for verification and
+                    certification purposes.
+                    I understand that this consent will continue until revoked.
+                    I may revoke this consent by written request at any time by contacting
+                    VAXCheck.
+                    I understand that the revocation will not apply to the information that has
+                    already been released. The information will only be used, disclosed, and
+                    shared
+                    by VAXCheck as permitted in the VAXCheck’s Privacy Policy statement.
+                </mat-checkbox>
+                <mat-error *ngIf="hasError('consent', 'required')">
+                    <strong>Please agree
+                        the consent.</strong>
+                </mat-error>
+                <!-- <div *ngIf="consentNotChecked == true && !consent"
+                    style="color: red; font-weight: bold;">Please agree
+                    the consent.</div> -->
+            </p-fieldset>
+
+        </div>
+    </div>
+</div>

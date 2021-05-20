@@ -1,0 +1,5 @@
+{
+    "tslint": "tslint.json",
+    "tsconfig": "tsconfig.json",
+    "reportHostPort": 8090
+}

@@ -39,11 +39,17 @@ import {DialogModule} from 'primeng/dialog';
 import {ConfirmDialogModule} from 'primeng/confirmdialog';
 import {MessagesModule} from 'primeng/messages';
 import {MessageModule} from 'primeng/message';
+import { TravelerInfoComponent } from './wizard2/traveler.info.component';
+import { VaccinatorComponent } from './wizard2/vaccinator.component';
+import { UploadCardComponent } from './wizard2/upload.card.component';
 
 @NgModule({
 	declarations: [
 		WizardComponent,
 		Wizard2Component,
+		TravelerInfoComponent,
+		VaccinatorComponent,
+		UploadCardComponent
 	],
 	imports: [
 		CommonModule,

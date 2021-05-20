@@ -1,0 +1,150 @@
+<div [formGroup]="vaccinator">
+    <!--begin: Form Wizard Step 2-->
+    <div class="pb-5" data-wizard-type="step-content">
+        <h4 class="mb-10 font-weight-bold text-dark">Vaccination Details</h4>
+        <p-fieldset legend="Vaccinator">
+            <div class="p-fluid p-formgrid p-grid">
+                <div class="p-field p-col-12 p-md-4">
+                    <!-- *ngIf="vaccinator.value.resedenceItem && vaccinator.value.resedenceItem==='YES'" -->
+                    <label for="org_name">Organization Name<span class="cls-requiered">*</span></label>
+                    <p-autoComplete formControlName="orgName" [suggestions]="filteredOrgs"
+                        [tooltip]="tooltipJson.orgName" [trigger]="'click'" [hideDelayTouchscreen]="3000"
+                        [hide-delay]="3000" [animation-duration]="500" (completeMethod)="filterOrg($event)"
+                        [forceSelection]="true" field="name" placeholder="Type 'a' for hint" [minLength]="1"
+                        class="p-inputtext-sm" [autoHighlight]="true">
+                    </p-autoComplete>
+                    <!-- <input id="org_name" type="text" formControlName="orgName" pInputText class="p-inputtext-sm"> -->
+                    <mat-error *ngIf="stepTwo && hasError('orgName', 'required')">
+                        <strong>Required field</strong>
+                    </mat-error>
+                </div>
+                <div class="p-field p-col-12 p-md-4">
+                    <label for="firstname6">Address street<span class="cls-requiered">*</span></label>
+                    <input id="firstname6" type="text" formControlName="orgAddress1" required
+                        [tooltip]="tooltipJson.orgAddress1" [trigger]="'click'" [hideDelayTouchscreen]="3000"
+                        [hide-delay]="3000" [animation-duration]="500" pInputText class="p-inputtext-sm">
+                    <mat-error *ngIf="stepTwo && hasError('orgAddress1', 'required')">
+                        <strong>Required field</strong>
+                    </mat-error>
+                </div>
+                <div class="p-field p-col-12 p-md-4">
+                    <label for="lastname6">Address street 2</label>
+                    <input id="lastname6" type="text" formControlName="orgAddress2" pInputText class="p-inputtext-sm">
+                </div>
+                <div class="p-field p-col-12 p-md-4">
+                    <label for="org_city">City<span class="cls-requiered">*</span></label>
+                    <input id="org_city" type="text" formControlName="orgCity" required pInputText
+                        class="p-inputtext-sm">
+                    <mat-error *ngIf="stepTwo && hasError('orgCity', 'required')">
+                        <strong>Required field</strong>
+                    </mat-error>
+                </div>
+
+
+                <div class="p-field p-col-12 p-md-4">
+                    <label for="lastname6">Zip code</label>
+                    <p-inputMask mask="99999" maxlength="10" minLength="5" formControlName="orgZipcode" pattern
+                        class="p-inputtext-sm"></p-inputMask>
+                    <!-- <mat-error *ngIf="stepTwo && hasError('orgZipcode', 'required')">
+                    <strong>Required field</strong>
+                </mat-error> -->
+                    <mat-error *ngIf="hasError('orgZipcode', 'pattern')">
+                        <strong>Field is not valid</strong>
+                    </mat-error>
+                </div>
+                <div class="p-field p-col-12 p-md-4">
+                    <label for="org_state">State<span class="cls-requiered">*</span></label>
+                    <p-dropdown inputId="org_state" [options]="stateList" formControlName="orgState" [filter]="true"
+                        filterBy="label" filterMatchMode="contains" [showClear]="true" [resetFilterOnHide]="true"
+                        required class="p-inputtext-sm" placeholder="Select State"></p-dropdown>
+                    <!-- <input id="org_state" type="text" formControlName="orgState" required pInputText class="p-inputtext-sm">  -->
+                    <mat-error *ngIf="stepTwo && hasError('orgState', 'required')">
+                        <strong>Required field</strong>
+                    </mat-error>
+                </div>
+
+                <div class="p-field p-col-12 p-md-4">
+                    <label for="user_contact">Contact Number</label>
+                    <p-inputMask mask="9999999999" minLength="10" maxLength="10" formControlName="orgContactNumber"
+                        pattern class="p-inputtext-sm">
+                    </p-inputMask>
+                    <!-- <mat-error
+                    *ngIf="stepTwo && hasError('orgContactNumber', 'required')">
+                    <strong>Required field</strong>
+                </mat-error> -->
+                    <mat-error *ngIf="stepTwo && hasError('orgContactNumber', 'minLength')">
+                        <strong>Required field</strong>
+                    </mat-error>
+                    <mat-error *ngIf="stepTwo && hasError('orgContactNumber', 'maxLength')">
+                        <strong>Required field</strong>
+                    </mat-error>
+                </div>
+                <div class="p-field p-col-12 p-md-4">
+                    <label for="user_email">Email <span *ngIf="vaccinator.value.orgState === 'HI'"
+                            class="cls-requiered">*</span></label>
+                    <input id="user_email" type="email" formControlName="orgEmail" pInputText class="p-inputtext-sm">
+                    <mat-error
+                        *ngIf="vaccinator.value.orgState === 'HI' && stepTwo && hasError('orgEmail', 'required')">
+                        <strong>Required field</strong>
+                    </mat-error>
+                    <mat-error *ngIf="stepTwo && hasError('orgEmail', 'email')">
+                        <strong>Field is not valid</strong>
+                    </mat-error>
+                </div>
+            </div>
+        </p-fieldset>
+        <p-fieldset legend="Vaccine Info" [style.margin-top]="'20px'">
+            <div class="p-fluid p-formgrid p-grid">
+                <div class="p-field p-col-12 p-md-4">
+                    <label for="manufacturer_name">Vaccine manufacturer<span class="cls-requiered">*</span></label>
+                    <p-dropdown inputId="manufacturer" [options]="manufacturerList" formControlName="orgManufacturer"
+                        [filter]="true" filterBy="label" filterMatchMode="contains" [showClear]="true"
+                        [resetFilterOnHide]="true" required class="p-inputtext-sm" placeholder="Select Manufacturer">
+                    </p-dropdown>
+                    <mat-error *ngIf="stepTwo && hasError('orgManufacturer', 'required')">
+                        <strong>Required field</strong>
+                    </mat-error>
+                </div>
+                <div class="p-field p-col-12 p-md-4">
+                    <label for="dose1">Date of Dose(s) {{(vaccinator.value.orgManufacturer &&
+                        vaccinator.value.orgManufacturer != 'Johnson \& Johnson') ? '1' :
+                        ''}}<span class="cls-requiered">*</span></label>
+                    <p-calendar [showIcon]="true" inputId="icon" formControlName="orgDose1" required
+                        [monthNavigator]="true" [yearNavigator]="true" [yearRange]="dateProperties.yearRange" [dateFormat]="dateProperties.dateFormat"
+                        class="p-inputtext-sm" [maxDate]="dateProperties.maxDate"></p-calendar>
+                    <mat-error *ngIf="stepTwo && hasError('orgDose1', 'required')">
+                        <strong>Required field</strong>
+                    </mat-error>
+                </div>
+                <div class="p-field p-col-12 p-md-4"
+                    *ngIf="(vaccinator.value.orgManufacturer && vaccinator.value.orgManufacturer != 'Johnson \& Johnson')">
+                    <label for="dose2">Date of Dose(s) 2<span class="cls-requiered">*</span></label>
+                    <p-calendar [showIcon]="true" inputId="icon" formControlName="orgDose2" required
+                        [monthNavigator]="true" [yearNavigator]="true" [yearRange]="dateProperties.yearRange" [dateFormat]="dateProperties.dateFormat"
+                        class="p-inputtext-sm" [maxDate]="dateProperties.maxDate"></p-calendar>
+                    <mat-error *ngIf="stepTwo && hasError('orgDose2', 'required')">
+                        <strong>Required field</strong>
+                    </mat-error>
+                    <mat-error *ngIf="vaccinator.value.orgDose2 && isGreatedThan('orgDose2','orgDose1')">
+                        <strong>Date of Dose 2 needs to be after that of dose 1</strong>
+                    </mat-error>
+                    <mat-error *ngIf="vaccinator.value.orgDose2 && isMinimumGap('orgDose2','orgDose1')">
+                        <strong>The interval between Dose 1 and Dose 2 should be minimum of
+                            {{gapDays}} days</strong>
+                    </mat-error>
+                </div>
+            </div>
+        </p-fieldset>
+
+        <p-fieldset legend="COVID Appointment Email Confirmation" [style.margin-top]="'20px'">
+            <div class="">
+                <label for="txt_appointment">If you received an email confirmation for your
+                    vaccination appointment, please copy and paste the email here.
+                </label>
+                <textarea [rows]="5" style="width: 100%; min-height: 8rem;" pInputTextarea
+                    autoResize="autoResize"></textarea>
+            </div>
+        </p-fieldset>
+    </div>
+    <!--end: Form Wizard Step 2-->
+</div>

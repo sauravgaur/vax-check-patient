@@ -19,19 +19,22 @@
 </div> -->
 <kt-portlet>
     <kt-portlet-body>
-        <img src="./assets/media/logos/VAXChecks-logo.png" title="" alt="" style="right: 5%; width: 5.5%; position: absolute;;">
+        <img src="./assets/media/logos/VAXChecks-logo.png" title="" alt=""
+            style="right: 5%; width: 5.5%; position: absolute;;">
         <div class="p-grid p-jc-center">
             <div class="p-col-6">
                 <div class="box">
                     <!-- <p-card> -->
-                    <div class="p-shadow-10" style="padding: 2rem; border-radius: 20px; background: #d4f5d4;">
+                    <div *ngIf="!connectClosed" class="p-shadow-10"
+                        style="padding: 2rem; border-radius: 20px; background: #d4f5d4;">
                         <h4 style="text-align: center; font-weight: bold;">Thank you!</h4>
 
                         <h5 style="text-align: center;">Your order was completed successfully.</h5>
                         <br>
                         <div class="p-grid">
                             <div class="p-col-1">
-                                <img src="./assets/media/logos/email_sent_icon.jpg" title="mail sent" alt="" width="100%">
+                                <img src="./assets/media/logos/email_sent_icon.jpg" title="mail sent" alt=""
+                                    width="100%">
                             </div>
                             <div class="p-col-11">An email receipt has been sent to the email address provided.<br>
                                 Please keep it for your records.</div>
@@ -59,10 +62,41 @@
                         padding: 0 2rem; height: 22rem;
                         border: none;" src="https://www.youtube.com/embed/pcTdDdkmCJM?feature=oembed">
                         </iframe> -->
-                        <h5 style="text-align: center;"><button pButton pRipple label="OK" style="text-align: center;"
-                            class="p-button-outlined p-button-success p-button-raised p-button-rounded" [routerLink]="'/traveler/registration'"></button></h5>
+                        <h5 style="text-align: center;">
+                            <div class="hapi__token-container">
+                                <div *ngIf="!connectClosed">
+
+                                    <button *ngIf="buttonHumanFlg" pButton pRipple [label]="button"
+                                    class="p-button-outlined p-button-success p-button-raised p-button-rounded"
+									[attr.data-hapi-token]="token"
+									[disabled]="isLoading" (click)="onSubmit()"><i
+											[ngClass]="{'fa-spin fa-spinner': isLoading, 'fa-check': !isLoading}"></i>
+									</button>
+
+                                    <!-- <button *ngIf="buttonHumanFlg" pButton pRipple label="Connect your Health Data"
+                                        style="text-align: center;"
+                                        class="p-button-outlined p-button-success p-button-raised p-button-rounded"
+                                        [attr.data-hapi-token]="token"></button> -->
+                                    <!-- <button class="button is-link"
+                                    [attr.data-hapi-token]="token">Connect your Health Data
+                                    </button> -->
+                                </div>
+                            </div>
+                            <button *ngIf="" pButton pRipple label="OK" style="text-align: center;"
+                                class="p-button-outlined p-button-success p-button-raised p-button-rounded"
+                                [routerLink]="'/traveler/registration'"></button>
+                        </h5>
                     </div>
-                    <!-- </p-card> -->
+                    <div *ngIf="connectClosed" class="p-shadow-10"
+                        style="padding: 2rem; border-radius: 20px; background: #d4f5d4;">
+
+                        <h4 style="text-align: center;">Thank you for connecting your Health
+                            Data</h4>
+
+                        <h5 style="text-align: center;"><button pButton pRipple label="OK" style="text-align: center;"
+                                class="p-button-outlined p-button-success p-button-raised p-button-rounded"
+                                [routerLink]="'/traveler/registration'"></button></h5>
+                    </div>
                 </div>
             </div>
         </div>
