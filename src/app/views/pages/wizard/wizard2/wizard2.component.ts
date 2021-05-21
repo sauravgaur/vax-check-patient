@@ -130,6 +130,7 @@ export class Wizard2Component implements OnInit, AfterViewInit {
     webcamImage: any;
     button = 'Submit';
     isLoading = false;
+    mailFormat = '^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$';
     constructor(
         private cd: ChangeDetectorRef,
         private http: HttpClient,
@@ -160,6 +161,7 @@ export class Wizard2Component implements OnInit, AfterViewInit {
     token = '';
     connectClosed = false;
     ngOnInit() {
+
         localStorage.removeItem('travelerData');
         // this.patientForm = this.fb1.group({
         //     id: new FormControl(''),
@@ -193,32 +195,49 @@ export class Wizard2Component implements OnInit, AfterViewInit {
         //     travelDateToHawaii: new FormControl(''),
         //     consent: new FormControl(true)
         // });
+
+        // this.patientForm.get('firstName').setValidators(Validators.compose([Validators.required, Validators.pattern('^[ A-Za-z-.,]*$')]));
+        //         this.patientForm.get('lastName').setValidators(Validators.required);
+        //         this.patientForm.get('dob').setValidators(Validators.required);
+        //         this.patientForm.get('email').setValidators(Validators.compose([Validators.required, Validators.pattern(this.mailFormat)]));
+        //         this.patientForm.get('gender').setValidators(Validators.required);
+        //         this.patientForm.get('address1').setValidators(Validators.required);
+        //         this.patientForm.get('city').setValidators(Validators.required);
+        //         this.patientForm.get('state').setValidators(Validators.required);
+        //         this.patientForm.get('zipcode').setValidators(Validators.compose([Validators.required, Validators.pattern('^\\d{5}')]));
+        //         this.patientForm.get('contactNumber').
+        //             setValidators(Validators.compose([Validators.required, Validators.minLength(10), Validators.maxLength(10)]));
+        //         this.patientForm.get('contactOption').setValidators(Validators.required);
+
         this.patientForm = this.fb1.group({
             id: new FormControl(''),
-            firstName: new FormControl(''),
-            middleName: new FormControl(''),
-            lastName: new FormControl(''),
-            dob: new FormControl(),
-            email: new FormControl(''),
-            gender: new FormControl(''),
-            address1: new FormControl(''),
+            firstName: new FormControl('', Validators.compose([Validators.required, Validators.pattern('^[ A-Za-z-.,]*$')])),
+            middleName: new FormControl('', Validators.pattern('^[ A-Za-z-.,]*$')),
+            lastName: new FormControl('', Validators.compose([Validators.required, Validators.pattern('^[ A-Za-z-.,]*$')])),
+            dob: new FormControl('', Validators.required),
+            email: new FormControl('', Validators.compose([Validators.required, Validators.pattern(this.mailFormat)])),
+            gender: new FormControl('', Validators.required),
+            address1: new FormControl('', Validators.required),
             address2: new FormControl(''),
-            city: new FormControl(''),
-            zipcode: new FormControl(''),
-            state: new FormControl(''),
+            city: new FormControl('', Validators.required),
+            zipcode: new FormControl('', Validators.required),
+            state: new FormControl('', Validators.required),
             resedenceItem: new FormControl(''),
             islandItem: new FormControl(''),
-            contactNumber: new FormControl(''),
-            contactNumber2: new FormControl(''),
-            contactOption: new FormControl(''),
+            contactNumber: new FormControl('',
+                Validators.compose([Validators.required, Validators.minLength(10), Validators.maxLength(10)])),
+            contactNumber2: new FormControl('',
+                Validators.compose([Validators.minLength(10), Validators.maxLength(10)])),
+            contactOption: new FormControl('', Validators.required),
             orgName: new FormControl(''),
             orgAddress1: new FormControl(''),
             orgAddress2: new FormControl(''),
             orgCity: new FormControl(''),
             orgZipcode: new FormControl(''),
             orgState: new FormControl(''),
-            orgContactNumber: new FormControl(''),
-            orgEmail: new FormControl(''),
+            orgContactNumber: new FormControl('',
+            Validators.compose([Validators.minLength(10), Validators.maxLength(10)])),
+            orgEmail: new FormControl('', Validators.pattern(this.mailFormat)),
             orgManufacturer: new FormControl(''),
             orgDose1: new FormControl(),
             orgDose2: new FormControl(),
@@ -231,18 +250,6 @@ export class Wizard2Component implements OnInit, AfterViewInit {
         // console.log('this.org options:', this.orgOptions);
         this.subscribeValueChanges();
         // this.initGroupedForm();
-
-        this.stripeTest = this.fb.group({
-            stripe_firstName: ['', [Validators.required]],
-            stripe_lastName: ['', [Validators.required]],
-            stripe_amount: ['', [Validators.required]],
-            stripe_city: ['', [Validators.required]],
-            stripe_state: ['', [Validators.required]],
-            stripe_zipcode: ['', [Validators.required]],
-            stripe_address1: ['', [Validators.required]]
-        });
-
-        // const  HumanConnect  = window;
 
         if (!this.token) {
             // this.fetchToken();
@@ -408,18 +415,6 @@ export class Wizard2Component implements OnInit, AfterViewInit {
             if (wizardObj.currentStep === 1) {
                 this.stepOne = true;
                 this.stepTwo = false;
-                this.patientForm.get('firstName').setValidators([Validators.required, Validators.pattern('^[ A-Za-z-.,]*$')]);
-                this.patientForm.get('lastName').setValidators(Validators.required);
-                this.patientForm.get('dob').setValidators(Validators.required);
-                this.patientForm.get('email').setValidators([Validators.required, Validators.email]);
-                this.patientForm.get('gender').setValidators(Validators.required);
-                this.patientForm.get('address1').setValidators(Validators.required);
-                this.patientForm.get('city').setValidators(Validators.required);
-                this.patientForm.get('state').setValidators(Validators.required);
-                this.patientForm.get('zipcode').setValidators([Validators.required, Validators.pattern('^\\d{5}')]);
-                this.patientForm.get('contactNumber').
-                    setValidators([Validators.required, Validators.minLength(10), Validators.maxLength(10)]);
-                this.patientForm.get('contactOption').setValidators(Validators.required);
 
                 this.patientForm.get('orgName').clearValidators();
                 this.patientForm.get('orgName').setValidators(null);
@@ -609,7 +604,11 @@ export class Wizard2Component implements OnInit, AfterViewInit {
                 // }
             }, 500);
             this.changeStep = wizardObj.currentStep;
-            if (wizardObj.currentStep === 3) {
+            if (wizardObj.currentStep === 2) {
+                this.patientForm.get('orgEmail').setValidators(Validators.compose([Validators.pattern(this.mailFormat), Validators.email]));
+                this.patientForm.get('orgEmail').updateValueAndValidity();
+            }
+            else if (wizardObj.currentStep === 3) {
                 this.doseReceived = this.patientForm.get('orgDose2').value ? 2 : 1;
                 this.seriesComplete = (this.patientForm.get('orgManufacturer').value !== 'Johnson \& Johnson' && this.doseReceived === 2) ? 'YES' : 'NO';
                 const doseDate = this.patientForm.get('orgDose2').value ? this.patientForm.get('orgDose2').value : this.patientForm.get('orgDose1').value;
@@ -695,12 +694,15 @@ export class Wizard2Component implements OnInit, AfterViewInit {
     }
     listenToOrgStateChange(selectedValue) {
         if (selectedValue === 'HI') {
-            this.patientForm.get('orgEmail').setValidators(Validators.required);
+            this.patientForm.get('orgEmail')
+                .setValidators(Validators.compose([Validators.required, Validators.pattern(this.mailFormat)]));
             this.patientForm.get('orgEmail').updateValueAndValidity();
         } else {
             // this.patientForm.controls.orgEmail.setValue(null);
             this.patientForm.controls.orgEmail.setErrors(null);
             this.patientForm.controls.orgEmail.setValidators(null);
+            this.patientForm.get('orgEmail')
+                .setValidators(Validators.compose([Validators.pattern(this.mailFormat)]));
             this.patientForm.controls.orgEmail.updateValueAndValidity();
         }
     }

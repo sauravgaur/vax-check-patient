@@ -21,6 +21,7 @@ export class VaccinatorComponent implements OnInit {
   @Input() dateProperties: IDateProperties;
   @Input() tooltipJson: any;
   @Input() stepTwo: boolean;
+  @Input() mailformat: string;
   @Input() isControlHasError: (controlName: string, validationType: string) => boolean;
   constructor(private constants: AppConstants) {
     this.manufacturerList = this.constants.MANUFACTURER;

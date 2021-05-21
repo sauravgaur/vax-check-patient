@@ -23,7 +23,7 @@ export class Widget4Component implements OnInit {
 	// Public properties
 	@Input() data: Widget4Data[];
 
-	@ContentChild('actionTemplate', {static: true}) actionTemplate: TemplateRef<any>;
+	@ContentChild('actionTemplate', { static: true }) actionTemplate: TemplateRef<any>;
 
 	/**
 	 * Component constructor
@@ -46,28 +46,28 @@ export class Widget4Component implements OnInit {
 			this.data = shuffle([
 				{
 					pic: './assets/media/files/doc.svg',
-					title: 'Metronic Documentation',
-					url: 'https://keenthemes.com.my/metronic',
+					title: 'VAxcheck Documentation',
+					url: 'javascript:void(0);',
 				}, {
 					pic: './assets/media/files/jpg.svg',
 					title: 'Project Launch Evgent',
-					url: 'https://keenthemes.com.my/metronic',
+					url: 'javascript:void(0);',
 				}, {
 					pic: './assets/media/files/pdf.svg',
 					title: 'Full Developer Manual For 4.7',
-					url: 'https://keenthemes.com.my/metronic',
+					url: 'javascript:void(0);',
 				}, {
 					pic: './assets/media/files/javascript.svg',
 					title: 'Make JS Development',
-					url: 'https://keenthemes.com.my/metronic',
+					url: 'javascript:void(0);',
 				}, {
 					pic: './assets/media/files/zip.svg',
 					title: 'Download Ziped version OF 5.0',
-					url: 'https://keenthemes.com.my/metronic',
+					url: 'javascript:void(0);',
 				}, {
 					pic: './assets/media/files/pdf.svg',
 					title: 'Finance Report 2016/2017',
-					url: 'https://keenthemes.com.my/metronic',
+					url: 'javascript:void(0);',
 				},
 			]);
 		}

@@ -63,17 +63,21 @@
                 <div class="p-field p-col-12 p-md-4">
                     <label for="user_email">Email<span class="cls-requiered">*</span></label>
                     <input id="user_email" type="email" formControlName="email" pInputText class="p-inputtext-sm"
-                        required>
+                    [pattern]="mailformat" required>
                     <mat-error *ngIf="hasError('email', 'required')">
                         <strong>Required field</strong>
                     </mat-error>
-                    <mat-error *ngIf="hasError('email', 'email')">
+                    <!-- <mat-error *ngIf="hasError('email', 'email')">
+                        <strong>Field is not valid</strong>
+                    </mat-error> -->
+                    <mat-error *ngIf="hasError('email', 'pattern')">
                         <strong>Field is not valid</strong>
                     </mat-error>
                 </div>
                 <div class="p-field p-col-12 p-md-4">
                     <label for="user_contact">Phone Number <span class="cls-requiered">*</span></label>
-                    <p-inputMask mask="9999999999" minLength="10" maxLength="10" [tooltip]="tooltipJson.contactNumber"
+                    <p-inputMask mask="9999999999" minLength="10" maxLength="10" 
+                    slotChar='' [tooltip]="tooltipJson.contactNumber"
                         [trigger]="'click'" [hideDelayTouchscreen]="3000" [hide-delay]="3000" [animation-duration]="500"
                         formControlName="contactNumber" required pattern class="p-inputtext-sm">
                     </p-inputMask>
@@ -97,16 +101,16 @@
                 </div>
                 <div class="p-field p-col-12 p-md-4">
                     <label for="user_contact2">{{phoneNumberLabel}} <span *ngIf="travelerInfo.value.contactOption === 'NO'" class="cls-requiered">*</span></label>
-                    <p-inputMask mask="9999999999" minLength="10" maxLength="10"
+                    <p-inputMask mask="9999999999" [autoClear]="false" minlength="10" maxlength="10" slotChar=''
                         formControlName="contactNumber2" pattern class="p-inputtext-sm">
                     </p-inputMask>
                     <mat-error *ngIf="travelerInfo.value.contactOption === 'NO' && hasError('contactNumber2', 'required')">
                         <strong>Required field</strong>
                     </mat-error>
-                    <mat-error *ngIf="hasError('contactNumber2', 'minLength')">
+                    <mat-error *ngIf="hasError('contactNumber2', 'minlength')">
                         <strong>Required field</strong>
                     </mat-error>
-                    <mat-error *ngIf="hasError('contactNumber2', 'maxLength')">
+                    <mat-error *ngIf="hasError('contactNumber2', 'maxlength')">
                         <strong>Required field</strong>
                     </mat-error>
                 </div>
@@ -126,7 +130,7 @@
                 <div class="p-field p-col-12 p-md-4">
                     <label for="lastname6">Zip code<span class="cls-requiered">*</span></label>
                     <p-inputMask mask="99999" maxlength="5" minLength="5" formControlName="zipcode" required pattern
-                        class="p-inputtext-sm"></p-inputMask>
+                    slotChar='' class="p-inputtext-sm" [autoClear]="false"></p-inputMask>
                     <mat-error *ngIf="hasError('zipcode', 'required')">
                         <strong>Required field</strong>
                     </mat-error>

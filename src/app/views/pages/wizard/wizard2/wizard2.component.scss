@@ -1,8 +1,4 @@
 @import "../../../../../assets/sass/pages/wizard/wizard-2";
-.cls-requiered {
-  color: red;
-  margin-left: 5px;
-}
 
 #video {
   background-color: #000000;
@@ -114,6 +110,10 @@ td {
 
 :host {
   ::ng-deep {
+    .cls-requiered {
+      color: red;
+      margin-left: 5px;
+    }
     .gender_select .p-button {
       padding: 0.5rem 0rem !important;
     }

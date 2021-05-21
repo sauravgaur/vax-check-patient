@@ -19,6 +19,7 @@ export class TravelerInfoComponent implements OnInit {
   @Input() travelerInfo: FormGroup;
   @Input() dateProperties: IDateProperties;
   @Input() tooltipJson: any;
+  @Input() mailformat: string;
   @Input() isControlHasError: (controlName: string, validationType: string) => boolean;
 
   constructor(private constants: AppConstants) {
@@ -87,12 +88,14 @@ export class TravelerInfoComponent implements OnInit {
       this.phoneNumberLabel = 'Secondary Phone Number';
       this.travelerInfo.get('contactNumber2').setValue('');
       this.travelerInfo.get('contactNumber2').clearValidators();
-      this.travelerInfo.get('contactNumber2').setValidators(null);
       this.travelerInfo.get('contactNumber2').setErrors(null);
+      this.travelerInfo.get('contactNumber2')
+        .setValidators(Validators.compose([Validators.minLength(10), Validators.maxLength(10)]));
       this.travelerInfo.get('contactNumber2').updateValueAndValidity();
     } else {
       this.phoneNumberLabel = 'Mobile Phone Number';
-      this.travelerInfo.get('contactNumber2').setValidators(Validators.required);
+      this.travelerInfo.get('contactNumber2')
+        .setValidators(Validators.compose([Validators.required, Validators.minLength(10), Validators.maxLength(10)]));
       this.travelerInfo.get('contactNumber2').updateValueAndValidity();
     }
   }

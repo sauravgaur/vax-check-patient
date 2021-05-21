@@ -44,7 +44,7 @@
                 <div class="p-field p-col-12 p-md-4">
                     <label for="lastname6">Zip code</label>
                     <p-inputMask mask="99999" maxlength="10" minLength="5" formControlName="orgZipcode" pattern
-                        class="p-inputtext-sm"></p-inputMask>
+                    slotChar='' class="p-inputtext-sm"></p-inputMask>
                     <!-- <mat-error *ngIf="stepTwo && hasError('orgZipcode', 'required')">
                     <strong>Required field</strong>
                 </mat-error> -->
@@ -66,7 +66,7 @@
                 <div class="p-field p-col-12 p-md-4">
                     <label for="user_contact">Contact Number</label>
                     <p-inputMask mask="9999999999" minLength="10" maxLength="10" formControlName="orgContactNumber"
-                        pattern class="p-inputtext-sm">
+                    slotChar='' pattern class="p-inputtext-sm">
                     </p-inputMask>
                     <!-- <mat-error
                     *ngIf="stepTwo && hasError('orgContactNumber', 'required')">
@@ -82,12 +82,16 @@
                 <div class="p-field p-col-12 p-md-4">
                     <label for="user_email">Email <span *ngIf="vaccinator.value.orgState === 'HI'"
                             class="cls-requiered">*</span></label>
-                    <input id="user_email" type="email" formControlName="orgEmail" pInputText class="p-inputtext-sm">
+                    <input id="user_email" type="email" formControlName="orgEmail" [pattern]="mailformat"
+                    pInputText class="p-inputtext-sm">
                     <mat-error
                         *ngIf="vaccinator.value.orgState === 'HI' && stepTwo && hasError('orgEmail', 'required')">
                         <strong>Required field</strong>
                     </mat-error>
-                    <mat-error *ngIf="stepTwo && hasError('orgEmail', 'email')">
+                    <!-- <mat-error *ngIf="stepTwo && hasError('orgEmail', 'email')">
+                        <strong>Field is not valid</strong>
+                    </mat-error> -->
+                    <mat-error *ngIf="hasError('orgEmail', 'pattern')">
                         <strong>Field is not valid</strong>
                     </mat-error>
                 </div>

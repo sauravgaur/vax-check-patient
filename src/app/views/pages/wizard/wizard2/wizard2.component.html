@@ -136,9 +136,10 @@
 						<!--begin: Form Wizard Form-->
 						<form class="form" id="kt_form" novalidate="novalidate" [formGroup]="patientForm">
 							<kt-traveler-info [travelerInfo]="patientForm" [tooltipJson]="tooltipJson"
+							[mailformat]="mailformat"
 								[dateProperties]="dateProperties" [isControlHasError]=isControlHasError>
 							</kt-traveler-info>
-							<kt-vaccinator [vaccinator]="patientForm" [tooltipJson]="tooltipJson"
+							<kt-vaccinator [vaccinator]="patientForm" [tooltipJson]="tooltipJson" [mailformat]="mailformat"
 								[dateProperties]="dateProperties" [isControlHasError]=isControlHasError
 								[stepTwo]="stepTwo"></kt-vaccinator>
 							<kt-upload-card [uploadCardForm]="patientForm" [tooltipJson]="tooltipJson"
