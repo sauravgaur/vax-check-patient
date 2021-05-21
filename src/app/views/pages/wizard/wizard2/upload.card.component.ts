@@ -35,7 +35,7 @@ export class UploadCardComponent implements OnInit, AfterViewInit {
   @Input() isControlHasError: (controlName: string, validationType: string) => boolean;
   @Input() imageToTextResponse: IImageToText;
   @Input() tab3Pressed: boolean;
-  
+
   @Output() firstEditedText = new EventEmitter<string>();
   @Output() lastEditedText = new EventEmitter<string>();
   @Output() firstEditedClinic = new EventEmitter<string>();
