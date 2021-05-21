@@ -436,14 +436,6 @@ export class Wizard2Component implements OnInit, AfterViewInit {
                 this.patientForm.get('orgState').setValidators(null);
                 this.patientForm.get('orgState').setErrors(null);
 
-                // this.patientForm.get('orgContactNumber').clearValidators();
-                // this.patientForm.get('orgContactNumber').setValidators(null);
-                // this.patientForm.get('orgContactNumber').setErrors(null);
-
-                // this.patientForm.get('orgZipcode').clearValidators();
-                // this.patientForm.get('orgZipcode').setValidators(null);
-                // this.patientForm.get('orgZipcode').setErrors(null);
-
                 this.patientForm.get('orgManufacturer').clearValidators();
                 this.patientForm.get('orgManufacturer').setValidators(null);
                 this.patientForm.get('orgManufacturer').setErrors(null);
@@ -462,11 +454,7 @@ export class Wizard2Component implements OnInit, AfterViewInit {
 
                 // if (wizardObj.currentStep === 2) {
                 // if (!this.lastInputText && !this.firstInputText) {
-                this.lastInputText = this.patientForm.get('lastName').value;
-                this.lastNameInputControl.setValue(this.lastInputText);
-
-                this.firstInputText = this.patientForm.get('firstName').value;
-                this.firstNameInputControl.setValue(this.firstInputText);
+               
 
                 // } else {
                 //     this.patientForm.get('firstName').setValue(this.firstInputText);
@@ -492,55 +480,10 @@ export class Wizard2Component implements OnInit, AfterViewInit {
                 }
 
             } else if (wizardObj.currentStep === 2) {
-                this.stepOne = false;
                 this.stepTwo = true;
-
-                this.patientForm.get('consent').clearValidators();
-                this.patientForm.get('consent').setValidators(null);
-                this.patientForm.get('consent').setErrors(null);
-
-                this.patientForm.get('orgName').setValidators(Validators.required);
-                this.patientForm.get('orgName').updateValueAndValidity({ emitEvent: false, onlySelf: true });
-                this.patientForm.get('orgAddress1').setValidators(Validators.required);
-                this.patientForm.get('orgAddress1').updateValueAndValidity();
-                this.patientForm.get('orgCity').setValidators(Validators.required);
-                this.patientForm.get('orgCity').updateValueAndValidity();
-
-                // this.patientForm.get('orgEmail').setValidators(Validators.email);
-                // this.patientForm.get('orgEmail').updateValueAndValidity();
-
-                this.patientForm.get('orgState').setValidators(Validators.required);
-                this.patientForm.get('orgState').updateValueAndValidity();
-                // this.patientForm.get('orgContactNumber').setValidators(Validators.required);
-                // this.patientForm.get('orgContactNumber').updateValueAndValidity();
-                this.patientForm.get('orgZipcode').setValidators(Validators.pattern('^\\d{5}'));
-                this.patientForm.get('orgZipcode').updateValueAndValidity();
-
-                this.patientForm.get('orgManufacturer').setValidators(Validators.required);
-                this.patientForm.get('orgManufacturer').updateValueAndValidity();
-
-                this.patientForm.get('orgDose1').setValidators(Validators.required);
-                this.patientForm.get('orgDose1').updateValueAndValidity();
-
-                this.patientForm.get('orgDose2').setValidators((this.patientForm.get('orgManufacturer').value && this.patientForm.get('orgManufacturer').value !== 'Johnson \& Johnson') ? Validators.required : null);
-                this.patientForm.get('orgDose2').updateValueAndValidity();
-
-                this.firstClinicName = this.firstClinicName ? this.firstClinicName :
-                    (this.patientForm.get('orgDose1').value ? this.patientForm.get('orgName').value.name : '');
-                this.firstClinicNameInputControl.setValue(this.firstClinicName);
-
-                this.secondClinicName = this.secondClinicName ? this.secondClinicName :
-                    (this.patientForm.get('orgDose2').value ? this.patientForm.get('orgName').value.name : '');
-                this.secondClinicNameInputControl.setValue(this.secondClinicName);
-                // const orgName = this.patientForm.get('orgName').value;
-                // if (!orgName || orgName.toUpperCase().includes('QUEENS')){
-                //     this.submitButton = 'Submit'
-                // } else if(orgName.toUpperCase() === ('TIMES PHARMACY')) {
-                //     this.submitButton = 'Start Verification'
-                // } else this.submitButton = `Verify with ${orgName}`
             } else if (wizardObj.currentStep === 3) {
-                this.patientForm.get('consent').setValidators(Validators.required);
-                this.patientForm.get('consent').updateValueAndValidity();
+                // this.patientForm.get('consent').setValidators(Validators.required);
+                // this.patientForm.get('consent').updateValueAndValidity();
                 this.showWebcam = false;
                 // this.tab3Pressed == true;
                 if (!this.firstInputText || !this.lastInputText || !this.firstClinicName || !this.patientForm.valid
@@ -605,10 +548,73 @@ export class Wizard2Component implements OnInit, AfterViewInit {
             }, 500);
             this.changeStep = wizardObj.currentStep;
             if (wizardObj.currentStep === 2) {
+
+                this.lastInputText = this.patientForm.get('lastName').value;
+                this.lastNameInputControl.setValue(this.lastInputText);
+
+                this.firstInputText = this.patientForm.get('firstName').value;
+                this.firstNameInputControl.setValue(this.firstInputText);
+
+                this.stepOne = true;
+                this.stepTwo = false;
+
+                this.patientForm.get('consent').clearValidators();
+                this.patientForm.get('consent').setValidators(null);
+                this.patientForm.get('consent').setErrors(null);
+
+                this.patientForm.get('orgName').setValidators(Validators.required);
+                this.patientForm.get('orgName').markAsPristine();
+                this.patientForm.get('orgName').updateValueAndValidity({ emitEvent: false, onlySelf: true });
+
+                this.patientForm.get('orgAddress1').setValidators(Validators.required);
+                this.patientForm.get('orgAddress1').updateValueAndValidity();
+                this.patientForm.get('orgAddress1').markAsPristine();
+
+                this.patientForm.get('orgCity').setValidators(Validators.required);
+                this.patientForm.get('orgCity').updateValueAndValidity();
+                this.patientForm.get('orgCity').markAsPristine();
+
+                // this.patientForm.get('orgEmail').setValidators(Validators.email);
+                // this.patientForm.get('orgEmail').updateValueAndValidity();
+
+                this.patientForm.get('orgState').setValidators(Validators.required);
+                this.patientForm.get('orgState').updateValueAndValidity();
+                this.patientForm.get('orgState').markAsPristine();
+
+                // this.patientForm.get('orgContactNumber').setValidators(Validators.required);
+                // this.patientForm.get('orgContactNumber').updateValueAndValidity();
+                this.patientForm.get('orgZipcode').setValidators(Validators.pattern('^\\d{5}'));
+                this.patientForm.get('orgZipcode').updateValueAndValidity();
+                this.patientForm.get('orgZipcode').markAsPristine();
+
+                this.patientForm.get('orgManufacturer').setValidators(Validators.required);
+                this.patientForm.get('orgManufacturer').updateValueAndValidity();
+                this.patientForm.get('orgManufacturer').markAsPristine();
+
+                this.patientForm.get('orgDose1').setValidators(Validators.required);
+                this.patientForm.get('orgDose1').updateValueAndValidity();
+                this.patientForm.get('orgDose1').markAsPristine();
+
+                this.patientForm.get('orgDose2').setValidators((this.patientForm.get('orgManufacturer').value && this.patientForm.get('orgManufacturer').value !== 'Johnson \& Johnson') ? Validators.required : null);
+                this.patientForm.get('orgDose2').updateValueAndValidity();
+                this.patientForm.get('orgDose2').markAsPristine();
+
                 this.patientForm.get('orgEmail').setValidators(Validators.compose([Validators.pattern(this.mailFormat), Validators.email]));
                 this.patientForm.get('orgEmail').updateValueAndValidity();
+                this.patientForm.get('orgEmail').markAsPristine();
             }
             else if (wizardObj.currentStep === 3) {
+                this.patientForm.get('consent').setValidators(Validators.required);
+                this.patientForm.get('consent').updateValueAndValidity();
+
+                this.firstClinicName = this.firstClinicName ? this.firstClinicName :
+                    (this.patientForm.get('orgDose1').value ? this.patientForm.get('orgName').value.name : '');
+                this.firstClinicNameInputControl.setValue(this.firstClinicName);
+
+                this.secondClinicName = this.secondClinicName ? this.secondClinicName :
+                    (this.patientForm.get('orgDose2').value ? this.patientForm.get('orgName').value.name : '');
+                this.secondClinicNameInputControl.setValue(this.secondClinicName);
+
                 this.doseReceived = this.patientForm.get('orgDose2').value ? 2 : 1;
                 this.seriesComplete = (this.patientForm.get('orgManufacturer').value !== 'Johnson \& Johnson' && this.doseReceived === 2) ? 'YES' : 'NO';
                 const doseDate = this.patientForm.get('orgDose2').value ? this.patientForm.get('orgDose2').value : this.patientForm.get('orgDose1').value;
@@ -665,6 +671,7 @@ export class Wizard2Component implements OnInit, AfterViewInit {
         this.patientForm.get('orgState').valueChanges.subscribe(selectedValue => {
             this.listenToOrgStateChange(selectedValue);
         });
+        this.cd.markForCheck();
     }
 
     listenToOrgManufacturerChange(selectedValue) {
@@ -681,7 +688,10 @@ export class Wizard2Component implements OnInit, AfterViewInit {
     listenToOrgChange(selectedValue) {
         this.messageSeverity = '';
         this.messageContent = '';
-        if (!selectedValue || selectedValue.value.toUpperCase().includes('HPH')) {
+        if (!selectedValue) {
+            this.patientForm.get('orgName').setValidators(Validators.required);
+            this.patientForm.get('orgName').updateValueAndValidity({ emitEvent: false, onlySelf: true });
+        } else if (selectedValue.value.toUpperCase().includes('HPH')) {
             this.submitButton = { id: 1, value: 'Submit' };
         } else if (selectedValue.value.toUpperCase().includes('CVS')) {
             this.submitButton = { id: 2, value: 'Start Verification' };
