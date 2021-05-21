@@ -9,7 +9,6 @@ export const environment = {
   local_url: 'http://localhost:5700',
   stripe_key: 'pk_test_51IllDFIoULcjF60KfMk1Jbb3COmYyAbZ1QLxLRMugIk3WU6p2k2nWp5YgCPTswBQqhbLjQspbDeONmOmh7z8r1hv00LOfVmm6o',
   api_url: 'http://localhost:3000/api',
-  api_url1: 'http://localhost:4242'
 };
 
 /*

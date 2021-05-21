@@ -604,6 +604,8 @@ export class Wizard2Component implements OnInit, AfterViewInit {
                 this.patientForm.get('orgEmail').markAsPristine();
             }
             else if (wizardObj.currentStep === 3) {
+                this.patientForm.get('consent').setErrors(null);
+                this.patientForm.get('consent').markAsPristine();
                 this.patientForm.get('consent').setValidators(Validators.required);
                 this.patientForm.get('consent').updateValueAndValidity();
 

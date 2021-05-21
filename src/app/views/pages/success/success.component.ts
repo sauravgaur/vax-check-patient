@@ -64,7 +64,7 @@ export class SuccessComponent implements OnInit {
     };
 
     // create a `GET` request
-    xhr.open('POST', environment.api_url1 + '/humanapi/create-token');
+    xhr.open('POST', environment.api_url + '/humanapi/create-token');
 
     // send request
     xhr.send();
