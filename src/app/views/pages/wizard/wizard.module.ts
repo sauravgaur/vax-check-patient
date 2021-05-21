@@ -42,6 +42,7 @@ import {MessageModule} from 'primeng/message';
 import { TravelerInfoComponent } from './wizard2/traveler.info.component';
 import { VaccinatorComponent } from './wizard2/vaccinator.component';
 import { UploadCardComponent } from './wizard2/upload.card.component';
+import { FileInputComponent } from '../file-input/file-input.component';
 
 @NgModule({
 	declarations: [
@@ -49,7 +50,8 @@ import { UploadCardComponent } from './wizard2/upload.card.component';
 		Wizard2Component,
 		TravelerInfoComponent,
 		VaccinatorComponent,
-		UploadCardComponent
+		UploadCardComponent,
+		FileInputComponent
 	],
 	imports: [
 		CommonModule,

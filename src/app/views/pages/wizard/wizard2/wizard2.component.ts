@@ -35,7 +35,7 @@ const BASE_URL = 'http://localhost:3100/api';
 })
 export class Wizard2Component implements OnInit, AfterViewInit {
 
-    stripeTest: FormGroup;
+    // stripeTest: FormGroup;
     @ViewChild('wizard', { static: true }) el: ElementRef;
 
     isHawaiiState = false;
@@ -161,68 +161,68 @@ export class Wizard2Component implements OnInit, AfterViewInit {
     connectClosed = false;
     ngOnInit() {
         localStorage.removeItem('travelerData');
-        // this.patientForm = this.fb1.group({
-        //     id: new FormControl(''),
-        //     firstName: new FormControl('a'),
-        //     middleName: new FormControl('a'),
-        //     lastName: new FormControl('a'),
-        //     dob: new FormControl(new Date('2021-04-01')),
-        //     email: new FormControl('a@a.com'),
-        //     gender: new FormControl('MALE'),
-        //     address1: new FormControl('a'),
-        //     address2: new FormControl(''),
-        //     city: new FormControl('a'),
-        //     zipcode: new FormControl('12312'),
-        //     state: new FormControl('AK'),
-        //     resedenceItem: new FormControl(''),
-        //     islandItem: new FormControl(''),
-        //     contactNumber: new FormControl('2342342342'),
-        //     contactOption: new FormControl('YES'),
-        //     orgName: new FormControl({ name: 'CVS/Long Drugs', value: 'CVS/Long Drugs' }),
-        //     orgAddress1: new FormControl('a'),
-        //     orgAddress2: new FormControl(''),
-        //     orgCity: new FormControl('a'),
-        //     orgZipcode: new FormControl('23423'),
-        //     orgState: new FormControl('AK'),
-        //     orgContactNumber: new FormControl('223423423'),
-        //     orgEmail: new FormControl(''),
-        //     orgManufacturer: new FormControl('Moderna'),
-        //     orgDose1: new FormControl(new Date('2021-04-01')),
-        //     orgDose2: new FormControl(new Date('2021-05-05')),
-        //     travelDateToHawaii: new FormControl(''),
-        //     consent: new FormControl(true)
-        // });
         this.patientForm = this.fb1.group({
             id: new FormControl(''),
-            firstName: new FormControl(''),
-            middleName: new FormControl(''),
-            lastName: new FormControl(''),
-            dob: new FormControl(),
-            email: new FormControl(''),
-            gender: new FormControl(''),
-            address1: new FormControl(''),
+            firstName: new FormControl('a'),
+            middleName: new FormControl('a'),
+            lastName: new FormControl('a'),
+            dob: new FormControl(new Date('2021-04-01')),
+            email: new FormControl('a@a.com'),
+            gender: new FormControl('MALE'),
+            address1: new FormControl('a'),
             address2: new FormControl(''),
-            city: new FormControl(''),
-            zipcode: new FormControl(''),
-            state: new FormControl(''),
+            city: new FormControl('a'),
+            zipcode: new FormControl('12312'),
+            state: new FormControl('AK'),
             resedenceItem: new FormControl(''),
             islandItem: new FormControl(''),
-            contactNumber: new FormControl(''),
-            contactOption: new FormControl(''),
-            orgName: new FormControl(''),
-            orgAddress1: new FormControl(''),
+            contactNumber: new FormControl('2342342342'),
+            contactOption: new FormControl('YES'),
+            orgName: new FormControl({ name: 'CVS/Long Drugs', value: 'CVS/Long Drugs' }),
+            orgAddress1: new FormControl('a'),
             orgAddress2: new FormControl(''),
-            orgCity: new FormControl(''),
-            orgZipcode: new FormControl(''),
-            orgState: new FormControl(''),
-            orgContactNumber: new FormControl(''),
+            orgCity: new FormControl('a'),
+            orgZipcode: new FormControl('23423'),
+            orgState: new FormControl('AK'),
+            orgContactNumber: new FormControl('223423423'),
             orgEmail: new FormControl(''),
-            orgManufacturer: new FormControl(''),
-            orgDose1: new FormControl(),
-            orgDose2: new FormControl(),
+            orgManufacturer: new FormControl('Moderna'),
+            orgDose1: new FormControl(new Date('2021-04-01')),
+            orgDose2: new FormControl(new Date('2021-05-05')),
             travelDateToHawaii: new FormControl(''),
-            consent: new FormControl()
+            consent: new FormControl(true)
         });
+        // this.patientForm = this.fb1.group({
+        //     id: new FormControl(''),
+        //     firstName: new FormControl(''),
+        //     middleName: new FormControl(''),
+        //     lastName: new FormControl(''),
+        //     dob: new FormControl(),
+        //     email: new FormControl(''),
+        //     gender: new FormControl(''),
+        //     address1: new FormControl(''),
+        //     address2: new FormControl(''),
+        //     city: new FormControl(''),
+        //     zipcode: new FormControl(''),
+        //     state: new FormControl(''),
+        //     resedenceItem: new FormControl(''),
+        //     islandItem: new FormControl(''),
+        //     contactNumber: new FormControl(''),
+        //     contactOption: new FormControl(''),
+        //     orgName: new FormControl(''),
+        //     orgAddress1: new FormControl(''),
+        //     orgAddress2: new FormControl(''),
+        //     orgCity: new FormControl(''),
+        //     orgZipcode: new FormControl(''),
+        //     orgState: new FormControl(''),
+        //     orgContactNumber: new FormControl(''),
+        //     orgEmail: new FormControl(''),
+        //     orgManufacturer: new FormControl(''),
+        //     orgDose1: new FormControl(),
+        //     orgDose2: new FormControl(),
+        //     travelDateToHawaii: new FormControl(''),
+        //     consent: new FormControl()
+        // });
 
         // this.stateItem = this.constants.STATES;
 
@@ -230,15 +230,15 @@ export class Wizard2Component implements OnInit, AfterViewInit {
         this.subscribeValueChanges();
         // this.initGroupedForm();
 
-        this.stripeTest = this.fb.group({
-            stripe_firstName: ['', [Validators.required]],
-            stripe_lastName: ['', [Validators.required]],
-            stripe_amount: ['', [Validators.required]],
-            stripe_city: ['', [Validators.required]],
-            stripe_state: ['', [Validators.required]],
-            stripe_zipcode: ['', [Validators.required]],
-            stripe_address1: ['', [Validators.required]]
-        });
+        // this.stripeTest = this.fb.group({
+        //     stripe_firstName: ['', [Validators.required]],
+        //     stripe_lastName: ['', [Validators.required]],
+        //     stripe_amount: ['', [Validators.required]],
+        //     stripe_city: ['', [Validators.required]],
+        //     stripe_state: ['', [Validators.required]],
+        //     stripe_zipcode: ['', [Validators.required]],
+        //     stripe_address1: ['', [Validators.required]]
+        // });
 
         // const  HumanConnect  = window;
 
@@ -781,7 +781,7 @@ export class Wizard2Component implements OnInit, AfterViewInit {
                 middle_name: formData.middleName,
                 last_name: formData.lastName
             },
-            unique_identifier: 'test',
+            unique_identifier: null,
             address: {
                 city: formData.city,
                 state: formData.state,
@@ -800,7 +800,7 @@ export class Wizard2Component implements OnInit, AfterViewInit {
             travel_date: formData.travelDateToHawaii ? Utils.formatToUSStandared(formData.travelDateToHawaii) : null
         };
         const vaccination: IVaccinations = {
-            profiles_skyflow_id: Math.random().toString(36).substr(2, 5),
+            profiles_skyflow_id: null,
             effective_date: Utils.formatToUSStandared(moment(this.effectiveDate).toDate()),
             expiration_date: Utils.formatToUSStandared(moment(this.expirationDate).toDate()),
             vaccine_manufacturer_name: formData.orgManufacturer,

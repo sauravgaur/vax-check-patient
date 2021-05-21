@@ -1,0 +1,77 @@
+.container {
+    position: relative;
+    border: 2px dashed transparent;
+    border-radius: 4px;
+    &__dropzone {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+    }
+    &.drag {
+      border-color: #757575;
+    }
+  }
+  
+  .fake {
+    &__button {
+      margin-right: 16px;
+    }
+    &__no-file {
+      margin-right: 16px;
+      white-space: nowrap;
+      font-size: 14px;
+    }
+  }
+  
+  .input {
+    display: flex;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    &__left {
+      display: flex;
+      align-items: center;
+      min-height: 40px;
+    }
+    &__center {
+      flex: 1;
+    }
+  }
+  
+  .clear-buttton {
+    color: rgba(black, 0.54);;
+  }
+  
+  .chips {
+    max-height: 130px;
+    overflow: auto;
+    margin-top: 4px;
+    margin-right: 8px;
+  }
+  
+  .dropzone {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(0, 0, 0, 0.24);
+    &__text {
+      margin: 0;
+      font-size: 18px;
+    }
+  }
+  
+  :host ::ng-deep .chip {
+    display: inline-flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 32px;
+    margin-right: 8px;
+    margin-bottom: 4px;
+    padding: 0 12px 0 12px;
+    font-size: 14px;
+    background-color: #fafafa;
+    border: 1px solid rgba(black, 0.12);
+    border-radius: 4px;
+    white-space: nowrap;
+  }
