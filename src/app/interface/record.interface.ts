@@ -18,6 +18,7 @@ export interface IProfile {
     mobile_number?: string;
     mobile_number2?: string;
     email_address?: string;
+    residency_state?: string;
     name: {
         first_name: string,
         middle_name: string,
@@ -39,6 +40,14 @@ export interface IProfile {
     };
     created_timestamp?: string | Date;
     updated_timestamp?: string | Date;
+}
+
+export interface IVaccineDosing {
+    dose_number?: string;
+    date?: string;
+    lot_number?: string;
+    site_name?: string;
+    site_address?: IAddress2;
 }
 
 export interface IDiagnosticReports {
@@ -153,6 +162,21 @@ export interface IMATADATARECORDS {
     };
 }
 
+export interface IProvider {
+    provider_org_name?: string;
+    provider_name?: string;
+    provider_type?: string;
+    provider_npi?: string;
+    provider_email?: string;
+    provider_address?: IAddress2;
+}
+
+export interface IMedia {
+    profiles_skyflow_id?: string;
+    document_type?: 'VAX_CARD' | 'SUPPLEMENT_DOC' | 'EVIDENCE' | 'MISC1' | 'MISC2' | 'MISC3' | 'DIAGNOSTIC_TEST';
+    file_path?: string;
+}
+
 export interface IVaccinations {
     skyflow_id?: string;
     profiles_skyflow_id?: string;
@@ -192,6 +216,7 @@ export interface IVaccinations {
     traveler_type?: string;
     service_availed?: string;
     verification_expiry_date?: string;
+    vaccine_dosing?: IVaccineDosing[];
     recipient?: {
         unique_identifier?: string,
         phone_number?: string,
@@ -205,6 +230,7 @@ export interface IVaccinations {
             last_name?: string
         },
     };
+    verification_notes?: string;
     performer?: {
         performer_org_name?: string,
         performer_name?: string,
@@ -212,6 +238,7 @@ export interface IVaccinations {
         performer_npi?: string,
         performer_address?: IPatientAddress
     };
+    provider?: IProvider;
 }
 
 // export interface IPatientAddress{
@@ -233,11 +260,24 @@ export interface IPatientAddress {
     city?: string;
 }
 
+export interface IAddress2 {
+    street_address?: string;
+    street_address2?: string;
+    state?: string;
+    country?: string;
+    zip_code?: string;
+    city?: string;
+    county?: string;
+    county_fips?: string;
+    island?: string;
+}
+
 export interface IRecord {
     profiles?: IProfile;
     diagnostic_reports?: IDiagnosticReports;
     metadata_records?: IMATADATARECORDS;
     vaccinations?: IVaccinations;
+    media?: IMedia[];
 }
 
 export interface ISourceProvider {

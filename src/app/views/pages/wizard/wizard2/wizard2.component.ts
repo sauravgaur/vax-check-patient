@@ -236,7 +236,7 @@ export class Wizard2Component implements OnInit, AfterViewInit {
             orgZipcode: new FormControl(''),
             orgState: new FormControl(''),
             orgContactNumber: new FormControl('',
-            Validators.compose([Validators.minLength(10), Validators.maxLength(10)])),
+                Validators.compose([Validators.minLength(10), Validators.maxLength(10)])),
             orgEmail: new FormControl('', Validators.pattern(this.mailFormat)),
             orgManufacturer: new FormControl(''),
             orgDose1: new FormControl(),
@@ -357,7 +357,7 @@ export class Wizard2Component implements OnInit, AfterViewInit {
                 successUrl: `${environment.local_url}/success`,
                 cancelUrl: `${environment.local_url}/failure`,
                 orderAmount: 2000,
-                masterId: 1, travelerEmail: 'siddharthgpatel@yahoo.com'
+                masterId: 1, travelerEmail: this.patientForm.get('email').value
             }).toPromise();
         console.log('session:', getSession);
         // When the customer clicks on the button, redirect them to Checkout.
@@ -756,7 +756,7 @@ export class Wizard2Component implements OnInit, AfterViewInit {
                 middle_name: formData.middleName,
                 last_name: formData.lastName
             },
-            unique_identifier: 'test',
+            // unique_identifier: 'test',
             address: {
                 city: formData.city,
                 state: formData.state,
@@ -775,13 +775,14 @@ export class Wizard2Component implements OnInit, AfterViewInit {
             travel_date: formData.travelDateToHawaii ? Utils.formatToUSStandared(formData.travelDateToHawaii) : null
         };
         const vaccination: IVaccinations = {
-            profiles_skyflow_id: Math.random().toString(36).substr(2, 5),
+            profiles_skyflow_id: null, //Math.random().toString(36).substr(2, 5),
             effective_date: Utils.formatToUSStandared(moment(this.effectiveDate).toDate()),
             expiration_date: Utils.formatToUSStandared(moment(this.expirationDate).toDate()),
             vaccine_manufacturer_name: formData.orgManufacturer,
-            performer: {
-                performer_org_name: formData.orgName,
-                performer_address: {
+            provider: {
+                provider_org_name: formData.orgName.value,
+                provider_email: formData.orgEmail,
+                provider_address: {
                     street_address: formData.orgAddress1,
                     street_address2: formData.orgAddress2,
                     state: formData.orgState,
