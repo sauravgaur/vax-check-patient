@@ -53,6 +53,14 @@
                     </mat-error>
                 </div>
                 <div class="p-field p-col-12 p-md-4">
+                    <label for="lastname6">Gender<span class="cls-requiered">*</span></label>
+                    <p-selectButton [styleClass]="'gender_select'" [options]="genderOptions" formControlName="gender" required class="p-inputtext-sm">
+                    </p-selectButton>
+                    <mat-error *ngIf="hasError('gender', 'required')">
+                        <strong>Required field</strong>
+                    </mat-error>
+                </div>
+                <div class="p-field p-col-12 p-md-4">
                     <label for="user_email">Email<span class="cls-requiered">*</span></label>
                     <input id="user_email" type="email" formControlName="email" pInputText class="p-inputtext-sm"
                         required>
@@ -60,47 +68,6 @@
                         <strong>Required field</strong>
                     </mat-error>
                     <mat-error *ngIf="hasError('email', 'email')">
-                        <strong>Field is not valid</strong>
-                    </mat-error>
-                </div>
-                <div class="p-field p-col-12 p-md-4">
-                    <label for="lastname6">Gender<span class="cls-requiered">*</span></label>
-                    <p-selectButton [options]="genderOptions" formControlName="gender" required class="p-inputtext-sm">
-                    </p-selectButton>
-                    <mat-error *ngIf="hasError('gender', 'required')">
-                        <strong>Required field</strong>
-                    </mat-error>
-                </div>
-
-                <div class="p-field p-col-12 p-md-4">
-                    <label for="firstname6">Address street<span class="cls-requiered">*</span></label>
-                    <input id="firstname6" type="text" formControlName="address1" required pInputText
-                        class="p-inputtext-sm">
-                    <mat-error *ngIf="hasError('address1', 'required')">
-                        <strong>Required field</strong>
-                    </mat-error>
-                </div>
-                <div class="p-field p-col-12 p-md-4">
-                    <label for="lastname6">Address street 2</label>
-                    <input id="lastname6" type="text" formControlName="address2" pInputText class="p-inputtext-sm">
-                </div>
-                <div class="p-field p-col-12 p-md-4">
-                    <label for="user_city">City<span class="cls-requiered">*</span></label>
-                    <input id="user_city" type="text" formControlName="city" required pInputText class="p-inputtext-sm">
-                    <mat-error *ngIf="hasError('city', 'required')">
-                        <strong>Required field</strong>
-                    </mat-error>
-                </div>
-
-
-                <div class="p-field p-col-12 p-md-4">
-                    <label for="lastname6">Zip code<span class="cls-requiered">*</span></label>
-                    <p-inputMask mask="99999" maxlength="5" minLength="5" formControlName="zipcode" required pattern
-                        class="p-inputtext-sm"></p-inputMask>
-                    <mat-error *ngIf="hasError('zipcode', 'required')">
-                        <strong>Required field</strong>
-                    </mat-error>
-                    <mat-error *ngIf="hasError('zipcode', 'pattern')">
                         <strong>Field is not valid</strong>
                     </mat-error>
                 </div>
@@ -125,6 +92,52 @@
                     <p-selectButton [options]="contactOptions" formControlName="contactOption" required
                         class="p-inputtext-sm"></p-selectButton>
                     <mat-error *ngIf="hasError('contactOption', 'required')">
+                        <strong>Required field</strong>
+                    </mat-error>
+                </div>
+                <div class="p-field p-col-12 p-md-4">
+                    <label for="user_contact2">{{phoneNumberLabel}} <span *ngIf="travelerInfo.value.contactOption === 'NO'" class="cls-requiered">*</span></label>
+                    <p-inputMask mask="9999999999" minLength="10" maxLength="10"
+                        formControlName="contactNumber2" pattern class="p-inputtext-sm">
+                    </p-inputMask>
+                    <mat-error *ngIf="travelerInfo.value.contactOption === 'NO' && hasError('contactNumber2', 'required')">
+                        <strong>Required field</strong>
+                    </mat-error>
+                    <mat-error *ngIf="hasError('contactNumber2', 'minLength')">
+                        <strong>Required field</strong>
+                    </mat-error>
+                    <mat-error *ngIf="hasError('contactNumber2', 'maxLength')">
+                        <strong>Required field</strong>
+                    </mat-error>
+                </div>
+                
+                <div class="p-field p-col-12 p-md-4">
+                    <label for="firstname6">Address street<span class="cls-requiered">*</span></label>
+                    <input id="firstname6" type="text" formControlName="address1" required pInputText
+                        class="p-inputtext-sm">
+                    <mat-error *ngIf="hasError('address1', 'required')">
+                        <strong>Required field</strong>
+                    </mat-error>
+                </div>
+                <div class="p-field p-col-12 p-md-4">
+                    <label for="lastname6">Address street 2</label>
+                    <input id="lastname6" type="text" formControlName="address2" pInputText class="p-inputtext-sm">
+                </div>
+                <div class="p-field p-col-12 p-md-4">
+                    <label for="lastname6">Zip code<span class="cls-requiered">*</span></label>
+                    <p-inputMask mask="99999" maxlength="5" minLength="5" formControlName="zipcode" required pattern
+                        class="p-inputtext-sm"></p-inputMask>
+                    <mat-error *ngIf="hasError('zipcode', 'required')">
+                        <strong>Required field</strong>
+                    </mat-error>
+                    <mat-error *ngIf="hasError('zipcode', 'pattern')">
+                        <strong>Field is not valid</strong>
+                    </mat-error>
+                </div>
+                <div class="p-field p-col-12 p-md-4">
+                    <label for="user_city">City<span class="cls-requiered">*</span></label>
+                    <input id="user_city" type="text" formControlName="city" required pInputText class="p-inputtext-sm">
+                    <mat-error *ngIf="hasError('city', 'required')">
                         <strong>Required field</strong>
                     </mat-error>
                 </div>

@@ -177,6 +177,7 @@ export class Wizard2Component implements OnInit, AfterViewInit {
         //     resedenceItem: new FormControl(''),
         //     islandItem: new FormControl(''),
         //     contactNumber: new FormControl('2342342342'),
+        //     contactNumber2: new FormControl(''),
         //     contactOption: new FormControl('YES'),
         //     orgName: new FormControl({ name: 'CVS/Long Drugs', value: 'CVS/Long Drugs' }),
         //     orgAddress1: new FormControl('a'),
@@ -208,6 +209,7 @@ export class Wizard2Component implements OnInit, AfterViewInit {
             resedenceItem: new FormControl(''),
             islandItem: new FormControl(''),
             contactNumber: new FormControl(''),
+            contactNumber2: new FormControl(''),
             contactOption: new FormControl(''),
             orgName: new FormControl(''),
             orgAddress1: new FormControl(''),
@@ -554,7 +556,7 @@ export class Wizard2Component implements OnInit, AfterViewInit {
                     this.cd.markForCheck();
                     return;
                 }
-            } else if(wizardObj.currentStep === 4) {
+            } else if (wizardObj.currentStep === 4) {
                 this.showWebcam = false;
             }
             this.tab3Pressed = false;
@@ -649,87 +651,58 @@ export class Wizard2Component implements OnInit, AfterViewInit {
     }
 
     subscribeValueChanges() {
-        this.patientForm.get('state').valueChanges.subscribe(selectedValue => {
-            console.log('firstname value changed');
-            console.log(selectedValue);                              // latest value of firstname
-            if (selectedValue !== 'HI') {
-                this.patientForm.get('resedenceItem').setValue('');
-                this.patientForm.get('resedenceItem').clearValidators();
-                this.patientForm.get('resedenceItem').setValidators(null);
-                this.patientForm.get('resedenceItem').setErrors(null);
-                this.patientForm.get('resedenceItem').updateValueAndValidity();
-
-                this.patientForm.get('islandItem').setValue('');
-                this.patientForm.get('islandItem').clearValidators();
-                this.patientForm.get('islandItem').setValidators(null);
-                this.patientForm.get('islandItem').setErrors(null);
-                this.patientForm.get('islandItem').updateValueAndValidity();
-
-                this.patientForm.get('travelDateToHawaii').setValue('');
-                this.patientForm.get('travelDateToHawaii').clearValidators();
-                this.patientForm.get('travelDateToHawaii').setValidators(null);
-                this.patientForm.get('travelDateToHawaii').setErrors(null);
-                this.patientForm.get('travelDateToHawaii').updateValueAndValidity();
-
-                // this.patientForm.get('orgName').clearValidators();
-                // this.patientForm.get('orgName').setValidators(null);
-                // this.patientForm.get('orgName').setErrors(null);
-                // this.patientForm.get('orgName').updateValueAndValidity();
-            } else {
-                this.patientForm.get('resedenceItem').setValidators(Validators.required);
-                this.patientForm.get('resedenceItem').updateValueAndValidity();
-
-                this.patientForm.get('islandItem').setValidators(Validators.required);
-                this.patientForm.get('islandItem').updateValueAndValidity();
-
-                this.patientForm.get('travelDateToHawaii').setValidators(Validators.required);
-                this.patientForm.get('travelDateToHawaii').updateValueAndValidity();
-
-                // this.patientForm.get('orgName').setValidators(Validators.required);
-                // this.patientForm.get('orgName').updateValueAndValidity();
-            }
-            this.patientForm.updateValueAndValidity();
+        this.patientForm.get('orgState').valueChanges.subscribe(selectedValue => {
+            this.listenToOrgStateChange(selectedValue);
         });
 
         this.patientForm.get('orgManufacturer').valueChanges.subscribe(selectedValue => {
-            if (selectedValue === 'Johnson \& Johnson' || !selectedValue) {
-                this.patientForm.controls.orgDose2.setValue(null);
-                this.patientForm.controls.orgDose2.setErrors(null);
-                this.patientForm.controls.orgDose2.setValidators(null);
-                this.patientForm.controls.orgDose2.updateValueAndValidity();
-            } else {
-                this.patientForm.get('orgDose2').setValidators(Validators.required);
-                this.patientForm.get('orgDose2').updateValueAndValidity();
-            }
+            this.listenToOrgManufacturerChange(selectedValue);
         });
 
         this.patientForm.get('orgName').valueChanges.subscribe((selectedValue: any) => {
-            this.messageSeverity = '';
-            this.messageContent = '';
-            if (!selectedValue || selectedValue.value.toUpperCase().includes('HPH')) {
-                this.submitButton = { id: 1, value: 'Submit' };
-            } else if (selectedValue.value.toUpperCase().includes('CVS')) {
-                this.submitButton = { id: 2, value: 'Start Verification' };
-            } else {
-                this.submitButton = { id: 3, value: `Verify with ${selectedValue.value}` };
-            }
-            if (this.submitButton.id === 2) {
-                this.confirm2();
-            }
+            this.listenToOrgChange(selectedValue);
         });
 
         this.patientForm.get('orgState').valueChanges.subscribe(selectedValue => {
-            if (selectedValue === 'HI') {
-                this.patientForm.get('orgEmail').setValidators(Validators.required);
-                this.patientForm.get('orgEmail').updateValueAndValidity();
-            } else {
-                // this.patientForm.controls.orgEmail.setValue(null);
-                this.patientForm.controls.orgEmail.setErrors(null);
-                this.patientForm.controls.orgEmail.setValidators(null);
-                this.patientForm.controls.orgEmail.updateValueAndValidity();
-            }
+            this.listenToOrgStateChange(selectedValue);
         });
+    }
 
+    listenToOrgManufacturerChange(selectedValue) {
+        if (selectedValue === 'Johnson \& Johnson' || !selectedValue) {
+            this.patientForm.controls.orgDose2.setValue(null);
+            this.patientForm.controls.orgDose2.setErrors(null);
+            this.patientForm.controls.orgDose2.setValidators(null);
+            this.patientForm.controls.orgDose2.updateValueAndValidity();
+        } else {
+            this.patientForm.get('orgDose2').setValidators(Validators.required);
+            this.patientForm.get('orgDose2').updateValueAndValidity();
+        }
+    }
+    listenToOrgChange(selectedValue) {
+        this.messageSeverity = '';
+        this.messageContent = '';
+        if (!selectedValue || selectedValue.value.toUpperCase().includes('HPH')) {
+            this.submitButton = { id: 1, value: 'Submit' };
+        } else if (selectedValue.value.toUpperCase().includes('CVS')) {
+            this.submitButton = { id: 2, value: 'Start Verification' };
+        } else {
+            this.submitButton = { id: 3, value: `Verify with ${selectedValue.value}` };
+        }
+        if (this.submitButton.id === 2) {
+            this.confirm2();
+        }
+    }
+    listenToOrgStateChange(selectedValue) {
+        if (selectedValue === 'HI') {
+            this.patientForm.get('orgEmail').setValidators(Validators.required);
+            this.patientForm.get('orgEmail').updateValueAndValidity();
+        } else {
+            // this.patientForm.controls.orgEmail.setValue(null);
+            this.patientForm.controls.orgEmail.setErrors(null);
+            this.patientForm.controls.orgEmail.setValidators(null);
+            this.patientForm.controls.orgEmail.updateValueAndValidity();
+        }
     }
 
     // orgChange(selectedValue){
@@ -795,8 +768,8 @@ export class Wizard2Component implements OnInit, AfterViewInit {
             date_of_birth: Utils.formatToUSStandared(formData.dob),
             email_address: formData.email,
             sex: formData.gender,
-            mobile_number: formData.contactOption === 'YES' ? formData.contactNumber : '',
-            mobile_number2: formData.contactOption === 'NO' ? formData.contactNumber : '',
+            mobile_number: formData.contactOption === 'YES' ? formData.contactNumber : formData.contactOption2,
+            mobile_number2: formData.contactOption === 'NO' ? formData.contactNumber2 : formData.contactNumber,
             travel_date: formData.travelDateToHawaii ? Utils.formatToUSStandared(formData.travelDateToHawaii) : null
         };
         const vaccination: IVaccinations = {

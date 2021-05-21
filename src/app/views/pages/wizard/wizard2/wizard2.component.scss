@@ -114,6 +114,9 @@ td {
 
 :host {
   ::ng-deep {
+    .gender_select .p-button {
+      padding: 0.5rem 0rem !important;
+    }
     .box {
       min-height: 50px;
       min-width: 200px;

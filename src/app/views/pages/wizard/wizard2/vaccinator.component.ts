@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { FormGroup, FormBuilder } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { SelectItem } from 'primeng/api';
 import Utils from 'src/app/utils';
 import { AppConstants } from '../../../../app.constants';
@@ -33,6 +33,7 @@ export class VaccinatorComponent implements OnInit {
     this.orgs = this.constants.ORGS;
     this.orgOptions = this.orgs.map((x) => x.name);
     this.stateList = this.constants.STATES;
+    // this.subscribeValueChanges();
   }
 
   filterOrg(event) {
@@ -61,4 +62,41 @@ export class VaccinatorComponent implements OnInit {
     return this.vaccinator.controls[controlName].value <
       Utils.addDays(moment(this.vaccinator.controls[compareCtrlName].value, 'MM-DD-YYYY').toDate(), this.gapDays);
   }
+
+  // listenToOrgManufacturerChange(selectedValue) {
+  //   if (selectedValue === 'Johnson \& Johnson' || !selectedValue) {
+  //     this.vaccinator.controls.orgDose2.setValue(null);
+  //     this.vaccinator.controls.orgDose2.setErrors(null);
+  //     this.vaccinator.controls.orgDose2.setValidators(null);
+  //     this.vaccinator.controls.orgDose2.updateValueAndValidity();
+  //   } else {
+  //     this.vaccinator.get('orgDose2').setValidators(Validators.required);
+  //     this.vaccinator.get('orgDose2').updateValueAndValidity();
+  //   }
+  // }
+  // listenToOrgChange(selectedValue) {
+  //   this.messageSeverity = '';
+  //   this.messageContent = '';
+  //   if (!selectedValue || selectedValue.value.toUpperCase().includes('HPH')) {
+  //     this.submitButton = { id: 1, value: 'Submit' };
+  //   } else if (selectedValue.value.toUpperCase().includes('CVS')) {
+  //     this.submitButton = { id: 2, value: 'Start Verification' };
+  //   } else {
+  //     this.submitButton = { id: 3, value: `Verify with ${selectedValue.value}` };
+  //   }
+  //   if (this.submitButton.id === 2) {
+  //     this.confirm2();
+  //   }
+  // }
+  // listenToOrgStateChange(selectedValue) {
+  //   if (selectedValue === 'HI') {
+  //     this.vaccinator.get('orgEmail').setValidators(Validators.required);
+  //     this.vaccinator.get('orgEmail').updateValueAndValidity();
+  //   } else {
+  //     // this.vaccinator.controls.orgEmail.setValue(null);
+  //     this.vaccinator.controls.orgEmail.setErrors(null);
+  //     this.vaccinator.controls.orgEmail.setValidators(null);
+  //     this.vaccinator.controls.orgEmail.updateValueAndValidity();
+  //   }
+  // }
 }
