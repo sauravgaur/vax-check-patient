@@ -110,11 +110,22 @@ td {
 
 :host {
   ::ng-deep {
+    // .p-inputtext.p-inputtext-sm, .p-inputtext-sm .p-inputtext, .p-inputtext-sm{
+    //   padding: .4375rem !important;
+    // }
+    // .p-calendar-w-btn .p-datepicker-trigger.p-button {
+    //   position: absolute;
+    // }
+
+    // .p-fluid .p-calendar .p-inputtext {
+    //   padding-left: 3rem;
+    // }
+
     .cls-requiered {
       color: red;
       margin-left: 5px;
     }
-    .gender_select .p-button {
+    .select_button .p-button {
       padding: 0.5rem 0rem !important;
     }
     .box {

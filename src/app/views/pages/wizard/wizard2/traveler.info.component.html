@@ -5,14 +5,13 @@
         <div class="kt-form__section kt-form__section--first">
             <div class="p-fluid p-formgrid p-grid">
                 <div class="p-field p-col-12 p-md-4">
-                    <label for="firstname6">First name<span class="cls-requiered">*</span>
-                    </label>
-                    <!-- <p-inputMask formControlName="firstName" mask="a?" class="p-inputtext-sm" required></p-inputMask> -->
-                    <input id="firstname6" type="text" pInputText formControlName="firstName" pattern="^[ A-Za-z-.,]*$"
-                        oninput="validity.valid||(value=(this.value.substring(0, this.value.length - 1)))" required
-                        class="p-inputtext-sm">
-                    <!-- <span *ngIf="hasFormError(travelerInfo, isFormSubmitted, 'firstName','required')"
-    style="color: red">This field is required</span> -->
+                    <span class="p-float-label p-input-icon-right">
+                        <i class="pi pi-user"></i>
+                        <input id="float-input" type="text" pInputText formControlName="firstName"
+                            pattern="^[ A-Za-z-.,]*$"
+                            oninput="validity.valid||(value=(this.value.substring(0, this.value.length - 1)))" required>
+                        <label for="float-input">First name<span class="cls-requiered">*</span></label>
+                    </span>
                     <mat-error *ngIf="hasError('firstName', 'required')">
                         <strong>Required field</strong>
                     </mat-error>
@@ -21,19 +20,33 @@
                     </mat-error>
                 </div>
                 <div class="p-field p-col-12 p-md-4">
-                    <label for="lastname6">Middle name</label>
+                    <span class="p-float-label p-input-icon-right">
+                        <i class="pi pi-user"></i>
+                        <input id="float-input" type="text" pInputText formControlName="middleName"
+                            pattern="^[ A-Za-z-.,]*$"
+                            oninput="validity.valid||(value=(this.value.substring(0, this.value.length - 1)))">
+                        <label for="float-input">Middle name</label>
+                    </span>
+                    <!-- <label for="lastname6">Middle name</label>
                     <input id="lastname6" type="text" pInputText formControlName="middleName" pattern="^[ A-Za-z-.,]*$"
                         oninput="validity.valid||(value=(this.value.substring(0, this.value.length - 1)))"
-                        class="p-inputtext-sm">
+                        > -->
                     <mat-error *ngIf="hasError('middleName', 'pattern')">
                         <strong>Field is not valid</strong>
                     </mat-error>
                 </div>
                 <div class="p-field p-col-12 p-md-4">
-                    <label for="lastname6">Last name<span class="cls-requiered">*</span></label>
+                    <span class="p-float-label p-input-icon-right">
+                        <i class="pi pi-user"></i>
+                        <input id="float-input" type="text" pInputText formControlName="lastName"
+                            pattern="^[ A-Za-z-.,]*$"
+                            oninput="validity.valid||(value=(this.value.substring(0, this.value.length - 1)))" required>
+                        <label for="float-input">Last name<span class="cls-requiered">*</span></label>
+                    </span>
+                    <!-- <label for="lastname6">Last name<span class="cls-requiered">*</span></label>
                     <input id="lastname6" type="text" pInputText formControlName="lastName" pattern="^[ A-Za-z-.,]*$"
                         oninput="validity.valid||(value=(this.value.substring(0, this.value.length - 1)))" required
-                        class="p-inputtext-sm">
+                        > -->
                     <mat-error *ngIf="hasError('lastName', 'required')">
                         <strong>Required field</strong>
                     </mat-error>
@@ -43,27 +56,42 @@
                 </div>
 
                 <div class="p-field p-col-12 p-md-4">
-                    <label for="firstname6">Date of birth<span class="cls-requiered">*</span></label>
+                    <span class="p-float-label p-input-icon-right">
+                        <p-calendar [showIcon]="true" inputId="icon" formControlName="dob" required
+                            [monthNavigator]="true" [yearNavigator]="true" [yearRange]="dateProperties.yearRange"
+                            [dateFormat]="dateProperties.dateFormat" [maxDate]="dateProperties.maxDate"> </p-calendar>
+                        <label for="float-input">Date of birth<span class="cls-requiered">*</span></label>
+                    </span>
+
+                    <!-- <label for="firstname6">Date of birth<span class="cls-requiered">*</span></label>
                     <p-calendar [showIcon]="true" inputId="icon" formControlName="dob" required [monthNavigator]="true"
-                        [yearNavigator]="true" [yearRange]="dateProperties.yearRange" [dateFormat]="dateProperties.dateFormat" class="p-inputtext-sm"
+                        [yearNavigator]="true" [yearRange]="dateProperties.yearRange" 
+                        
+                        [dateFormat]="dateProperties.dateFormat" 
                         [maxDate]="dateProperties.maxDate">
-                    </p-calendar>
+                    </p-calendar> -->
                     <mat-error *ngIf="hasError('dob', 'required')">
                         <strong>Required field</strong>
                     </mat-error>
                 </div>
                 <div class="p-field p-col-12 p-md-4">
                     <label for="lastname6">Gender<span class="cls-requiered">*</span></label>
-                    <p-selectButton [styleClass]="'gender_select'" [options]="genderOptions" formControlName="gender" required class="p-inputtext-sm">
+                    <p-selectButton [styleClass]="'select_button'" [options]="genderOptions" formControlName="gender"
+                        required>
                     </p-selectButton>
                     <mat-error *ngIf="hasError('gender', 'required')">
                         <strong>Required field</strong>
                     </mat-error>
                 </div>
                 <div class="p-field p-col-12 p-md-4">
-                    <label for="user_email">Email<span class="cls-requiered">*</span></label>
-                    <input id="user_email" type="email" formControlName="email" pInputText class="p-inputtext-sm"
-                    [pattern]="mailformat" required>
+                    <!-- <label for="user_email">Email<span class="cls-requiered">*</span></label>
+                    <input id="user_email" type="email" formControlName="email" pInputText [pattern]="mailformat" required> -->
+                    <span class="p-float-label p-input-icon-right">
+                        <i class="pi pi-envelope"></i>
+                        <input id="float-input" type="email" formControlName="email" pInputText [pattern]="mailformat"
+                            required>
+                        <label for="float-input">Email<span class="cls-requiered">*</span></label>
+                    </span>
                     <mat-error *ngIf="hasError('email', 'required')">
                         <strong>Required field</strong>
                     </mat-error>
@@ -75,12 +103,21 @@
                     </mat-error>
                 </div>
                 <div class="p-field p-col-12 p-md-4">
-                    <label for="user_contact">Phone Number <span class="cls-requiered">*</span></label>
+                    <span class="p-float-label p-input-icon-right">
+                        <i [class]="travelerInfo.value.contactOption === 'NO' ? 'pi pi-phone' : 'pi pi-mobile'"></i>
+                        <p-inputMask id="float-input" mask="9999999999" minLength="10" maxLength="10" slotChar='_'
+                            [tooltip]="tooltipJson.contactNumber" [trigger]="'click'" [hideDelayTouchscreen]="3000"
+                            [hide-delay]="3000" [animation-duration]="500" formControlName="contactNumber" required
+                            pattern>
+                        </p-inputMask>
+                        <label for="float-input">Phone Number<span class="cls-requiered">*</span></label>
+                    </span>
+                    <!-- <label for="user_contact">Phone Number <span class="cls-requiered">*</span></label>
                     <p-inputMask mask="9999999999" minLength="10" maxLength="10" 
-                    slotChar='' [tooltip]="tooltipJson.contactNumber"
+                    slotChar='_' [tooltip]="tooltipJson.contactNumber"
                         [trigger]="'click'" [hideDelayTouchscreen]="3000" [hide-delay]="3000" [animation-duration]="500"
-                        formControlName="contactNumber" required pattern class="p-inputtext-sm">
-                    </p-inputMask>
+                        formControlName="contactNumber" required pattern >
+                    </p-inputMask> -->
                     <mat-error *ngIf="hasError('contactNumber', 'required')">
                         <strong>Required field</strong>
                     </mat-error>
@@ -94,17 +131,27 @@
                 <div class="p-field p-col-12 p-md-4">
                     <label for="lastname6">Is this a cell phone number<span class="cls-requiered">*</span></label>
                     <p-selectButton [options]="contactOptions" formControlName="contactOption" required
-                        class="p-inputtext-sm"></p-selectButton>
+                        [styleClass]="'select_button'"></p-selectButton>
                     <mat-error *ngIf="hasError('contactOption', 'required')">
                         <strong>Required field</strong>
                     </mat-error>
                 </div>
                 <div class="p-field p-col-12 p-md-4">
-                    <label for="user_contact2">{{phoneNumberLabel}} <span *ngIf="travelerInfo.value.contactOption === 'NO'" class="cls-requiered">*</span></label>
+                    <span class="p-float-label p-input-icon-right">
+                        <i [class]="travelerInfo.value.contactOption === 'NO' ? 'pi pi-mobile' : 'pi pi-phone'"></i>
+                        <p-inputMask id="float-input" mask="9999999999" [autoClear]="false" minlength="10" maxlength="10" slotChar=''
+                            formControlName="contactNumber2" pattern>
+                        </p-inputMask>
+                        <label for="float-input">{{phoneNumberLabel}}<span
+                                *ngIf="travelerInfo.value.contactOption === 'NO'" class="cls-requiered">*</span></label>
+                    </span>
+
+                    <!-- <label for="user_contact2">{{phoneNumberLabel}} <span *ngIf="travelerInfo.value.contactOption === 'NO'" class="cls-requiered">*</span></label>
                     <p-inputMask mask="9999999999" [autoClear]="false" minlength="10" maxlength="10" slotChar=''
-                        formControlName="contactNumber2" pattern class="p-inputtext-sm">
-                    </p-inputMask>
-                    <mat-error *ngIf="travelerInfo.value.contactOption === 'NO' && hasError('contactNumber2', 'required')">
+                        formControlName="contactNumber2" pattern >
+                    </p-inputMask> -->
+                    <mat-error
+                        *ngIf="travelerInfo.value.contactOption === 'NO' && hasError('contactNumber2', 'required')">
                         <strong>Required field</strong>
                     </mat-error>
                     <mat-error *ngIf="hasError('contactNumber2', 'minlength')">
@@ -114,23 +161,39 @@
                         <strong>Required field</strong>
                     </mat-error>
                 </div>
-                
+
                 <div class="p-field p-col-12 p-md-4">
-                    <label for="firstname6">Address street<span class="cls-requiered">*</span></label>
-                    <input id="firstname6" type="text" formControlName="address1" required pInputText
-                        class="p-inputtext-sm">
+                    <!-- <label for="firstname6">Address street<span class="cls-requiered">*</span></label>
+                    <input id="firstname6" type="text" formControlName="address1" required pInputText> -->
+                    <span class="p-float-label p-input-icon-right">
+                        <i class="pi pi-home"></i>
+                        <input id="float-input" type="text" pInputText formControlName="lastName" required>
+                        <label for="float-input">Address street<span class="cls-requiered">*</span></label>
+                    </span>
                     <mat-error *ngIf="hasError('address1', 'required')">
                         <strong>Required field</strong>
                     </mat-error>
                 </div>
                 <div class="p-field p-col-12 p-md-4">
-                    <label for="lastname6">Address street 2</label>
-                    <input id="lastname6" type="text" formControlName="address2" pInputText class="p-inputtext-sm">
+                    <!-- <label for="lastname6">Address street 2</label>
+                    <input id="lastname6" type="text" formControlName="address2" pInputText> -->
+                    <span class="p-float-label p-input-icon-right">
+                        <i class="pi pi-home"></i>
+                        <input id="float-input" type="text" formControlName="address2" required pInputText>
+                        <label for="float-input">Address street 2</label>
+                    </span>
+
                 </div>
                 <div class="p-field p-col-12 p-md-4">
-                    <label for="lastname6">Zip code<span class="cls-requiered">*</span></label>
+                    <!-- <label for="lastname6">Zip code<span class="cls-requiered">*</span></label>
                     <p-inputMask mask="99999" maxlength="5" minLength="5" formControlName="zipcode" required pattern
-                    slotChar='' class="p-inputtext-sm" [autoClear]="false"></p-inputMask>
+                        slotChar='' [autoClear]="false"></p-inputMask> -->
+                    <span class="p-float-label p-input-icon-right">
+                        <i class="pi pi-map-marker"></i>
+                        <p-inputMask id="float-input" mask="99999" maxlength="5" minLength="5" formControlName="zipcode" required pattern
+                            slotChar='' [autoClear]="false"></p-inputMask>
+                        <label for="float-input">Zip code<span class="cls-requiered">*</span></label>
+                    </span>
                     <mat-error *ngIf="hasError('zipcode', 'required')">
                         <strong>Required field</strong>
                     </mat-error>
@@ -139,18 +202,25 @@
                     </mat-error>
                 </div>
                 <div class="p-field p-col-12 p-md-4">
-                    <label for="user_city">City<span class="cls-requiered">*</span></label>
-                    <input id="user_city" type="text" formControlName="city" required pInputText class="p-inputtext-sm">
+                    <!-- <label for="user_city">City<span class="cls-requiered">*</span></label>
+                    <input id="user_city" type="text" formControlName="city" required pInputText> -->
+                    <span class="p-float-label p-input-icon-right">
+                        <i class="pi pi-home"></i>
+                        <input id="float-input" type="text" formControlName="city" required pInputText>
+                        <label for="float-input">City<span class="cls-requiered">*</span></label>
+                    </span>
                     <mat-error *ngIf="hasError('city', 'required')">
                         <strong>Required field</strong>
                     </mat-error>
                 </div>
                 <div class="p-field p-col-12 p-md-4">
-                    <label for="user_state">State<span class="cls-requiered">*</span></label>
-                    <!-- <input id="user_state" type="text" pInputText class="p-inputtext-sm">  -->
-                    <p-dropdown inputId="state" [options]="stateList" formControlName="state" [filter]="true"
-                        filterBy="label" filterMatchMode="contains" [showClear]="true" [resetFilterOnHide]="true"
-                        required class="p-inputtext-sm" placeholder="Select State"></p-dropdown>
+                    <span class="p-float-label p-input-icon-right">
+                        <i class="pi pi-user"></i>
+                        <p-dropdown inputId="state" [options]="stateList" formControlName="state" [filter]="true"
+                            filterBy="label" filterMatchMode="contains" [showClear]="true" [resetFilterOnHide]="true"
+                            required placeholder= ' '></p-dropdown>
+                        <label for="user_state">State<span class="cls-requiered">*</span></label>
+                    </span>
                     <mat-error *ngIf="hasError('state', 'required')">
                         <strong>Required field</strong>
                     </mat-error>
@@ -161,34 +231,41 @@
                     [hideDelayTouchscreen]="3000" [hide-delay]="3000" [animation-duration]="500"
                     *ngIf="travelerInfo.value.state && travelerInfo.value.state==='HI'">
                     <label for="user_state">Are you a Hawaii Resident<span class="cls-requiered">*</span></label>
-                    <!-- <input id="user_state" type="text" pInputText class="p-inputtext-sm">  -->
-                    <p-selectButton [options]="resedenceOptions" formControlName="resedenceItem" required
-                        class="p-inputtext-sm"></p-selectButton>
+                    <!-- <input id="user_state" type="text" pInputText >  -->
+                    <p-selectButton [options]="resedenceOptions" formControlName="resedenceItem" required>
+                    </p-selectButton>
                     <mat-error *ngIf="hasError('resedenceItem', 'required')">
                         <strong>Required field</strong>
                     </mat-error>
                 </div>
 
-                <div class="p-field p-col-12 p-md-4" *ngIf="travelerInfo.value.state && travelerInfo.value.state==='HI'">
-                    <label for="user_state">Travel date to Hawaii<span class="cls-requiered">*</span></label>
-                    <p-calendar [showIcon]="true" inputId="icon" formControlName="travelDateToHawaii" required
-                        [monthNavigator]="true" [yearNavigator]="true" [yearRange]="yearRange" [dateFormat]="dateProperties.dateFormat"
-                        class="p-inputtext-sm" [minDate]="dateProperties.minDate" [tooltip]="tooltipJson.travelDateToHawaii"
-                        [trigger]="'click'" [hideDelayTouchscreen]="3000" [hide-delay]="3000"
-                        [animation-duration]="500">
-                    </p-calendar>
+                <div class="p-field p-col-12 p-md-4"
+                    *ngIf="travelerInfo.value.state && travelerInfo.value.state==='HI'">
+                    <span class="p-float-label p-input-icon-right">
+                        <p-calendar [showIcon]="true" inputId="icon" formControlName="travelDateToHawaii" required
+                            [monthNavigator]="true" [yearNavigator]="true" [yearRange]="yearRange"
+                            [dateFormat]="dateProperties.dateFormat" [minDate]="dateProperties.minDate"
+                            [tooltip]="tooltipJson.travelDateToHawaii" [trigger]="'click'" [hideDelayTouchscreen]="3000"
+                            [hide-delay]="3000" [animation-duration]="500">
+                        </p-calendar>
+                        <label for="user_state">Travel date to Hawaii<span class="cls-requiered">*</span></label>
+                    </span>
                     <mat-error *ngIf="hasError('travelDateToHawaii', 'required')">
                         <strong>Required field</strong>
                     </mat-error>
                 </div>
 
-                <div class="p-field p-col-12 p-md-4" *ngIf="travelerInfo.value.state && travelerInfo.value.state==='HI'">
-                    <label for="user_state">Island<span class="cls-requiered">*</span></label>
-                    <!-- <input id="user_state" type="text" pInputText class="p-inputtext-sm">  -->
-                    <p-dropdown inputId="state" [options]="islandOptions" formControlName="islandItem" [filter]="true"
-                        filterBy="value" filterMatchMode="contains" [showClear]="true" [resetFilterOnHide]="true"
-                        required class="p-inputtext-sm" placeholder="Select Island">
-                    </p-dropdown>
+                <div class="p-field p-col-12 p-md-4"
+                    *ngIf="travelerInfo.value.state && travelerInfo.value.state==='HI'">
+                    <!-- <input id="user_state" type="text" pInputText >  -->
+                    <span class="p-float-label p-input-icon-right">
+                        <i class="pi pi-user"></i>
+                        <p-dropdown inputId="state" [options]="islandOptions" formControlName="islandItem"
+                            [filter]="true" filterBy="value" filterMatchMode="contains" [showClear]="true"
+                            [resetFilterOnHide]="true" required placeholder=" ">
+                        </p-dropdown>
+                        <label for="user_state">Island<span class="cls-requiered">*</span></label>
+                    </span>
                     <mat-error *ngIf="hasError('islandItem', 'required')">
                         <strong>Required field</strong>
                     </mat-error>
