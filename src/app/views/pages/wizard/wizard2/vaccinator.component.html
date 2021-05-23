@@ -7,16 +7,15 @@
                 <div class="p-field p-col-12 p-md-4">
                     <!-- *ngIf="vaccinator.value.resedenceItem && vaccinator.value.resedenceItem==='YES'" -->
                     <span class="p-float-label p-input-icon-right">
-                        <i class="pi pi-mobile"></i>
+                        <i class="pi pi-users"></i>
                         <p-autoComplete id="float-input" formControlName="orgName" [suggestions]="filteredOrgs"
-                            [tooltip]="tooltipJson.orgName" [trigger]="'click'" [hideDelayTouchscreen]="3000"
-                            [hide-delay]="3000" [animation-duration]="500" (completeMethod)="filterOrg($event)"
-                            [forceSelection]="true" field="name" [minLength]="1"
+                            (completeMethod)="filterOrg($event)" [forceSelection]="true" field="name" [minLength]="1"
                             class="p-inputtext-sm" [autoHighlight]="true">
                         </p-autoComplete>
                         <label for="org_name">Organization Name<span class="cls-requiered">*</span></label>
                     </span>
-                    <small id="username1-help">Type 'a' for hint.</small>
+                    <small id="field-help" [innerHTML]="tooltipJson.orgName">Type 'a' for hint.</small>
+                    <!-- <small id="field-help">Type 'a' for hint.</small> -->
                     <!-- <input id="org_name" type="text" formControlName="orgName" pInputText class="p-inputtext-sm"> -->
                     <mat-error *ngIf="stepTwo && hasError('orgName', 'required')">
                         <strong>Required field</strong>
@@ -24,27 +23,27 @@
                 </div>
                 <div class="p-field p-col-12 p-md-4">
                     <span class="p-float-label p-input-icon-right">
-                        <i class="pi pi-phone"></i>
-                        <input id="float-input" type="text" formControlName="orgAddress1" required
-                            [tooltip]="tooltipJson.orgAddress1" [trigger]="'click'" [hideDelayTouchscreen]="3000"
-                            [hide-delay]="3000" [animation-duration]="500" pInputText class="p-inputtext-sm">
+                        <i class="pi pi-home"></i>
+                        <input id="float-input" type="text" formControlName="orgAddress1" required pInputText
+                            class="p-inputtext-sm">
                         <label for="firstname6">Address street<span class="cls-requiered">*</span></label>
                     </span>
+                    <small id="field-help">{{tooltipJson.orgAddress1}}</small>
                     <mat-error *ngIf="stepTwo && hasError('orgAddress1', 'required')">
                         <strong>Required field</strong>
                     </mat-error>
                 </div>
                 <div class="p-field p-col-12 p-md-4">
                     <span class="p-float-label p-input-icon-right">
-                        <i class="pi pi-phone"></i>
-                        <label for="lastname6">Address street 2</label>
+                        <i class="pi pi-home"></i>
                         <input id="float-input" type="text" formControlName="orgAddress2" pInputText
                             class="p-inputtext-sm">
+                        <label for="lastname6">Address street 2</label>
                     </span>
                 </div>
                 <div class="p-field p-col-12 p-md-4">
                     <span class="p-float-label p-input-icon-right">
-                        <i class="pi pi-phone"></i>
+                        <i class="pi pi-home"></i>
                         <input id="float-input" type="text" formControlName="orgCity" required pInputText
                             class="p-inputtext-sm">
                         <label for="org_city">City<span class="cls-requiered">*</span></label>
@@ -57,7 +56,7 @@
 
                 <div class="p-field p-col-12 p-md-4">
                     <span class="p-float-label p-input-icon-right">
-                        <i class="pi pi-phone"></i>
+                        <i class="pi pi-map-marker"></i>
                         <p-inputMask id="float-input" mask="99999" maxlength="10" minLength="5"
                             formControlName="orgZipcode" pattern slotChar='' class="p-inputtext-sm"></p-inputMask>
                         <label for="lastname6">Zip code</label>
@@ -71,7 +70,7 @@
                 </div>
                 <div class="p-field p-col-12 p-md-4">
                     <span class="p-float-label p-input-icon-right">
-                        <i class="pi pi-phone"></i>
+                        <i class="pi pi-mobile"></i>
                         <p-dropdown id="float-input" inputId="org_state" [options]="stateList"
                             formControlName="orgState" [filter]="true" filterBy="label" filterMatchMode="contains"
                             [showClear]="true" [resetFilterOnHide]="true" required class="p-inputtext-sm"
@@ -86,7 +85,7 @@
 
                 <div class="p-field p-col-12 p-md-4">
                     <span class="p-float-label p-input-icon-right">
-                        <i class="pi pi-phone"></i>
+                        <i class="pi pi-mobile"></i>
                         <p-inputMask id="float-input" mask="9999999999" minLength="10" maxLength="10"
                             formControlName="orgContactNumber" slotChar='' pattern class="p-inputtext-sm">
                         </p-inputMask>
@@ -105,7 +104,7 @@
                 </div>
                 <div class="p-field p-col-12 p-md-4">
                     <span class="p-float-label p-input-icon-right">
-                        <i class="pi pi-phone"></i>
+                        <i class="pi pi-envelope"></i>
                         <input id="float-input" type="email" formControlName="orgEmail" [pattern]="mailformat"
                             pInputText class="p-inputtext-sm">
                         <label for="user_email">Email <span *ngIf="vaccinator.value.orgState === 'HI'"
@@ -142,7 +141,6 @@
                 </div>
                 <div class="p-field p-col-12 p-md-4">
                     <span class="p-float-label p-input-icon-right">
-                        <i class="pi pi-phone"></i>
                         <p-calendar id="float-input" [showIcon]="true" inputId="icon" formControlName="orgDose1"
                             required [monthNavigator]="true" [yearNavigator]="true"
                             [yearRange]="dateProperties.yearRange" [dateFormat]="dateProperties.dateFormat"
@@ -158,7 +156,6 @@
                 <div class="p-field p-col-12 p-md-4"
                     *ngIf="(vaccinator.value.orgManufacturer && vaccinator.value.orgManufacturer != 'Johnson \& Johnson')">
                     <span class="p-float-label p-input-icon-right">
-                        <i class="pi pi-phone"></i>
                         <p-calendar id="float-input" [showIcon]="true" inputId="icon" formControlName="orgDose2"
                             required [monthNavigator]="true" [yearNavigator]="true"
                             [yearRange]="dateProperties.yearRange" [dateFormat]="dateProperties.dateFormat"
@@ -182,7 +179,7 @@
         <p-fieldset legend="COVID Appointment Email Confirmation" [style.margin-top]="'20px'">
             <div class="">
                 <span class="p-float-label p-input-icon-right" style="width: 100%;">
-                    <i class="pi pi-phone"></i>
+                    <i class="pi pi-envalop"></i>
                     <textarea id="float-input" [rows]="5" style="width: 100%; min-height: 8rem;" pInputTextarea
                         autoResize="autoResize"></textarea>
                     <label for="txt_appointment">If you received an email confirmation for your
