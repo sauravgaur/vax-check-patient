@@ -66,9 +66,14 @@ export class UploadCardComponent implements OnInit, AfterViewInit {
     this.cd.markForCheck();
   }
 
-  onFileSelect(event) {
-    console.log(event.target.files);
-    this.selectedFiles = event.target.files;
+  onFileSelect(file) {
+    if (!file) {
+      this.selectedFiles = [];
+      document.getElementById('img_preview')['src'] = '';
+      return;
+    }
+    console.log('onFileSelect: ', file);
+    this.selectedFiles = [file];
     const reader = new FileReader();
     reader.onload = e => {
       console.log('reader.result-->', reader.result);
@@ -79,7 +84,7 @@ export class UploadCardComponent implements OnInit, AfterViewInit {
       // tslint:disable-next-line: no-string-literal
       document.getElementById('img_preview')['src'] = reader.result;
     };
-    reader.readAsDataURL(event.target.files[0]);
+    reader.readAsDataURL(file);
     // this.selectedFiles.source = window.URL.createObjectURL(event.target.files[0]);
   }
 

@@ -106,8 +106,7 @@ medica sobre las vacunas que ha recibido.
                             DOB
                         </div>
                         <div class="box p-shadow-3">
-                            {{ uploadCardForm?.value?.dob ? (uploadCardForm.value.dob | date:'MMM dd,
-                            yyyy') : '' }}
+                            {{ uploadCardForm?.value?.dob ? (uploadCardForm.value.dob | date:'MMM dd, yyyy') : '' }}
                         </div>
                     </div>
                 </div>
@@ -223,10 +222,11 @@ medica sobre las vacunas que ha recibido.
                     </div>
                 </mat-tab>
                 <mat-tab label="Upload File">
-                    <div class="p-field p-col-12 p-md-12 cls-form-upload" style="padding: 0;">
-                        <input type="file" name="file" id="file" multiple class="inputfile"
+                    <div class="p-field p-col-12 p-md-12 cls-form-upload" style="padding: 0 !important;">
+                        <!-- <input type="file" name="file" id="file" multiple class="inputfile"
                             (change)="onFileSelect($event)" />
-                        <label for="file">Choose files from here</label>
+                        <label for="file">Choose files from here</label> -->
+                        <kt-file-upload (fileSelection)="onFileSelect($event)" [onlyImage]="true"></kt-file-upload>
                         <div style="width: 100%;
                         text-align: left;
                         padding: 0 13px;

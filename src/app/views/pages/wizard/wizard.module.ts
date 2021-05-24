@@ -41,6 +41,7 @@ import {MessageModule} from 'primeng/message';
 import { TravelerInfoComponent } from './wizard2/traveler.info.component';
 import { VaccinatorComponent } from './wizard2/vaccinator.component';
 import { UploadCardComponent } from './wizard2/upload.card.component';
+import { CustomFileUploadModule } from '../file-upload/file-upload.module';
 
 @NgModule({
 	declarations: [
@@ -96,7 +97,8 @@ import { UploadCardComponent } from './wizard2/upload.card.component';
 		DialogModule,
 		ConfirmDialogModule,
 		MessagesModule,
-		MessageModule
+		MessageModule,
+		CustomFileUploadModule,
 		// NgxStripeModule.forChild('pk_test_aeUUjYYcx4XNfKVW60pmHTtI')
 	],
 })

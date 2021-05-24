@@ -38,6 +38,7 @@ export class Wizard2Component implements OnInit, AfterViewInit {
     stripeTest: FormGroup;
     @ViewChild('wizard', { static: true }) el: ElementRef;
 
+    supportingDocFile = null;
     isHawaiiState = false;
     showWebcam = false;
     stateList: SelectItem[];
@@ -382,7 +383,7 @@ export class Wizard2Component implements OnInit, AfterViewInit {
 
         // Initialize form wizard
         const wizard = new KTWizard(this.el.nativeElement, {
-            startStep: 1
+            startStep: 3
         });
 
         // var wizardEl = document.querySelector('#wizard');
@@ -835,6 +836,12 @@ export class Wizard2Component implements OnInit, AfterViewInit {
 
         // this.router.navigateByUrl('/dashboard');
     }
+
+    onFileSelect(file) {
+        console.log('onFileSelect: ', file);
+        this.supportingDocFile = file;
+    }
+
     updateImageSrc(data) {
         console.log('in update image src:', data);
         this.imageSrc = data;

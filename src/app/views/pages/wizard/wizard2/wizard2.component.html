@@ -161,19 +161,20 @@
 							<div class="pb-5" data-wizard-type="step-content">
 								<p-fieldset legend="Upload Supplemental Documents">
 									Additional supporting vaccination documents can be uploaded here
-									<div class="p-d-flex p-ai-start" style="margin-top: 1rem;">
-										<div class="p-mr-2">
+									<kt-file-upload (fileSelection)="onFileSelect($event)"></kt-file-upload>
+									<!-- <div class="p-d-flex p-ai-start" style="margin-top: 1rem;">
+										<div class="p-mr-2"> -->
 											<!-- <input id="singleFile" type="file" style="display: none;" multiple="multiple" [fileUploadInputFor]="fileUploadQueue" /> -->
-											<div [fileUploadInputFor]="fileUploadQueue" class="upload-drop-zone">
+											<!-- <div [fileUploadInputFor]="fileUploadQueue" class="upload-drop-zone">
 												<i class="pi pi-upload" style="font-size: 2rem"></i><br>
 												Drag files to upload
 											</div>
 											<input style="margin-top: 1rem;" type="file" id="file"
 												class="inputfile" [fileUploadInputFor]="fileUploadQueue" />
-											<label for="file" style="margin-top: 1rem;">Select files to upload</label>
+											<label for="file" style="margin-top: 1rem;">Select files to upload</label> -->
 											<!-- <input style="margin-top: 1rem;" id="singleFile" type="file" multiple="multiple" [fileUploadInputFor]="fileUploadQueue" /> -->
 											<!-- <label for="file">choose a file</label> -->
-										</div>
+										<!-- </div>
 										<div style="width: 500px;" class="uploadedFiles">
 											<mat-file-upload-queue #fileUploadQueue [fileAlias]="'file'"
 												[httpUrl]="'http://localhost:8080/jax-rs-jersey-application-sample'"
@@ -183,7 +184,7 @@
 												</mat-file-upload>
 											</mat-file-upload-queue>
 										</div>
-									</div>
+									</div> -->
 								</p-fieldset>
 								<p-fieldset legend="Vaccination Summary">
 									<div class="card">
