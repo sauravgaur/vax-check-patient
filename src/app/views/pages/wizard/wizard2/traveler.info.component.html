@@ -138,7 +138,7 @@
                 <div class="p-field p-col-12 p-md-4">
                     <span class="p-float-label p-input-icon-right">
                         <i [class]="travelerInfo.value.contactOption === 'NO' ? 'pi pi-mobile' : 'pi pi-phone'"></i>
-                        <p-inputMask id="float-input" mask="9999999999" [autoClear]="false" minlength="10"
+                        <p-inputMask id="float-input" class="p-inputtext-sm" mask="9999999999" [autoClear]="false" minlength="10"
                             maxlength="10" slotChar='' formControlName="contactNumber2" pattern>
                         </p-inputMask>
                         <label for="float-input">{{phoneNumberLabel}}<span
