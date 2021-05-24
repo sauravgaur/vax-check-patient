@@ -168,7 +168,7 @@
 												<i class="pi pi-upload" style="font-size: 2rem"></i><br>
 												Drag files to upload
 											</div>
-											<input style="margin-top: 1rem;" type="file" id="file" multiple
+											<input style="margin-top: 1rem;" type="file" id="file"
 												class="inputfile" [fileUploadInputFor]="fileUploadQueue" />
 											<label for="file" style="margin-top: 1rem;">Select files to upload</label>
 											<!-- <input style="margin-top: 1rem;" id="singleFile" type="file" multiple="multiple" [fileUploadInputFor]="fileUploadQueue" /> -->
@@ -177,7 +177,7 @@
 										<div style="width: 500px;" class="uploadedFiles">
 											<mat-file-upload-queue #fileUploadQueue [fileAlias]="'file'"
 												[httpUrl]="'http://localhost:8080/jax-rs-jersey-application-sample'"
-												multiple>
+												>
 												<mat-file-upload [file]="file" [id]="i"
 													*ngFor="let file of fileUploadQueue.files; let i = index">
 												</mat-file-upload>

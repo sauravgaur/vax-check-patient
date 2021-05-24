@@ -45,7 +45,7 @@ export class Wizard2Component implements OnInit, AfterViewInit {
     tooltipJson: any = {
         contactNumber: 'Prefered mobile phone number',
         resedenceItem: 'Are you a permanent Hawaii resident?',
-        orgName: `Who organized the vaccination?<br> This is autocomplete text.<br> Type at least 1 alphabet.`,
+        orgName: `Who organized the vaccination?<br> Type at least 1 alphabet.`,
         orgAddress1: 'Address of the Organization',
         takeSnapShot: 'Take a picture of you vaccination card',
         travelDateToHawaii: 'Trip date in Safe Travels'
@@ -163,78 +163,78 @@ export class Wizard2Component implements OnInit, AfterViewInit {
     ngOnInit() {
 
         localStorage.removeItem('travelerData');
-        // this.patientForm = this.fb1.group({
-        //     id: new FormControl(''),
-
-        //     firstName: new FormControl('A', Validators.compose([Validators.required, Validators.pattern('^[ A-Za-z-.,]*$')])),
-        //     middleName: new FormControl('A', Validators.pattern('^[ A-Za-z-.,]*$')),
-        //     lastName: new FormControl('A', Validators.compose([Validators.required, Validators.pattern('^[ A-Za-z-.,]*$')])),
-        //     dob: new FormControl(new Date('2021-04-01'), Validators.required),
-        //     email: new FormControl('a@a.com', Validators.compose([Validators.required, Validators.pattern(this.mailFormat)])),
-        //     gender: new FormControl('MALE', Validators.required),
-        //     address1: new FormControl('test', Validators.required),
-        //     address2: new FormControl('test'),
-        //     city: new FormControl('test', Validators.required),
-        //     zipcode: new FormControl('12323', Validators.required),
-        //     state: new FormControl('AK', Validators.required),
-        //     resedenceItem: new FormControl('YES'),
-        //     islandItem: new FormControl(''),
-        //     contactNumber: new FormControl('1231231231',
-        //         Validators.compose([Validators.required, Validators.minLength(10), Validators.maxLength(10)])),
-        //     contactNumber2: new FormControl('',
-        //         Validators.compose([Validators.minLength(10), Validators.maxLength(10)])),
-        //     contactOption: new FormControl('YES', Validators.required),
-        //     orgName: new FormControl({ name: 'CVS/Long Drugs', value: 'CVS/Long Drugs' }),
-        //     orgAddress1: new FormControl('a'),
-        //     orgAddress2: new FormControl('334'),
-        //     orgCity: new FormControl('a'),
-        //     orgZipcode: new FormControl('23423'),
-        //     orgState: new FormControl('AK'),
-        //     orgContactNumber: new FormControl('4234234232',
-        //         Validators.compose([Validators.minLength(10), Validators.maxLength(10)])),
-        //     orgEmail: new FormControl('sdf@lkj.com', Validators.pattern(this.mailFormat)),
-        //     orgManufacturer: new FormControl('Moderna'),
-        //     orgDose1: new FormControl(new Date('2021-04-01')),
-        //     orgDose2: new FormControl(new Date('2021-05-05')),
-        //     travelDateToHawaii: new FormControl(''),
-        //     consent: new FormControl(true)
-        // });
-
         this.patientForm = this.fb1.group({
             id: new FormControl(''),
-            firstName: new FormControl('', Validators.compose([Validators.required, Validators.pattern('^[ A-Za-z-.,]*$')])),
-            middleName: new FormControl('', Validators.pattern('^[ A-Za-z-.,]*$')),
-            lastName: new FormControl('', Validators.compose([Validators.required, Validators.pattern('^[ A-Za-z-.,]*$')])),
-            dob: new FormControl('', Validators.required),
-            email: new FormControl('', Validators.compose([Validators.required, Validators.pattern(this.mailFormat)])),
-            gender: new FormControl('', Validators.required),
-            address1: new FormControl('', Validators.required),
-            address2: new FormControl(''),
-            city: new FormControl('', Validators.required),
-            zipcode: new FormControl('', Validators.required),
-            state: new FormControl('', Validators.required),
-            resedenceItem: new FormControl(''),
+
+            firstName: new FormControl('A', Validators.compose([Validators.required, Validators.pattern('^[ A-Za-z-.,]*$')])),
+            middleName: new FormControl('A', Validators.pattern('^[ A-Za-z-.,]*$')),
+            lastName: new FormControl('A', Validators.compose([Validators.required, Validators.pattern('^[ A-Za-z-.,]*$')])),
+            dob: new FormControl(new Date('2021-04-01'), Validators.required),
+            email: new FormControl('a@a.com', Validators.compose([Validators.required, Validators.pattern(this.mailFormat)])),
+            gender: new FormControl('MALE', Validators.required),
+            address1: new FormControl('test', Validators.required),
+            address2: new FormControl('test'),
+            city: new FormControl('test', Validators.required),
+            zipcode: new FormControl('12323', Validators.required),
+            state: new FormControl('AK', Validators.required),
+            resedenceItem: new FormControl('YES'),
             islandItem: new FormControl(''),
-            contactNumber: new FormControl('',
+            contactNumber: new FormControl('1231231231',
                 Validators.compose([Validators.required, Validators.minLength(10), Validators.maxLength(10)])),
             contactNumber2: new FormControl('',
                 Validators.compose([Validators.minLength(10), Validators.maxLength(10)])),
-            contactOption: new FormControl('', Validators.required),
-            orgName: new FormControl(''),
-            orgAddress1: new FormControl(''),
-            orgAddress2: new FormControl(''),
-            orgCity: new FormControl(''),
-            orgZipcode: new FormControl(''),
-            orgState: new FormControl(''),
-            orgContactNumber: new FormControl('',
+            contactOption: new FormControl('YES', Validators.required),
+            orgName: new FormControl({ name: 'CVS/Long Drugs', value: 'CVS/Long Drugs' }),
+            orgAddress1: new FormControl('a'),
+            orgAddress2: new FormControl('334'),
+            orgCity: new FormControl('a'),
+            orgZipcode: new FormControl('23423'),
+            orgState: new FormControl('AK'),
+            orgContactNumber: new FormControl('4234234232',
                 Validators.compose([Validators.minLength(10), Validators.maxLength(10)])),
-            orgEmail: new FormControl('', Validators.pattern(this.mailFormat)),
-            orgManufacturer: new FormControl(''),
-            orgDose1: new FormControl(),
-            orgDose2: new FormControl(),
+            orgEmail: new FormControl('sdf@lkj.com', Validators.pattern(this.mailFormat)),
+            orgManufacturer: new FormControl('Moderna'),
+            orgDose1: new FormControl(new Date('2021-04-01')),
+            orgDose2: new FormControl(new Date('2021-05-05')),
             travelDateToHawaii: new FormControl(''),
-            consent: new FormControl()
+            consent: new FormControl(true)
         });
+
+        // this.patientForm = this.fb1.group({
+        //     id: new FormControl(''),
+        //     firstName: new FormControl('', Validators.compose([Validators.required, Validators.pattern('^[ A-Za-z-.,]*$')])),
+        //     middleName: new FormControl('', Validators.pattern('^[ A-Za-z-.,]*$')),
+        //     lastName: new FormControl('', Validators.compose([Validators.required, Validators.pattern('^[ A-Za-z-.,]*$')])),
+        //     dob: new FormControl('', Validators.required),
+        //     email: new FormControl('', Validators.compose([Validators.required, Validators.pattern(this.mailFormat)])),
+        //     gender: new FormControl('', Validators.required),
+        //     address1: new FormControl('', Validators.required),
+        //     address2: new FormControl(''),
+        //     city: new FormControl('', Validators.required),
+        //     zipcode: new FormControl('', Validators.required),
+        //     state: new FormControl('', Validators.required),
+        //     resedenceItem: new FormControl(''),
+        //     islandItem: new FormControl(''),
+        //     contactNumber: new FormControl('',
+        //         Validators.compose([Validators.required, Validators.minLength(10), Validators.maxLength(10)])),
+        //     contactNumber2: new FormControl('',
+        //         Validators.compose([Validators.minLength(10), Validators.maxLength(10)])),
+        //     contactOption: new FormControl('', Validators.required),
+        //     orgName: new FormControl(''),
+        //     orgAddress1: new FormControl(''),
+        //     orgAddress2: new FormControl(''),
+        //     orgCity: new FormControl(''),
+        //     orgZipcode: new FormControl(''),
+        //     orgState: new FormControl(''),
+        //     orgContactNumber: new FormControl('',
+        //         Validators.compose([Validators.minLength(10), Validators.maxLength(10)])),
+        //     orgEmail: new FormControl('', Validators.pattern(this.mailFormat)),
+        //     orgManufacturer: new FormControl(''),
+        //     orgDose1: new FormControl(),
+        //     orgDose2: new FormControl(),
+        //     travelDateToHawaii: new FormControl(''),
+        //     consent: new FormControl()
+        // });
 
         // this.stateItem = this.constants.STATES;
 
@@ -403,6 +403,7 @@ export class Wizard2Component implements OnInit, AfterViewInit {
             console.log('before next', this.patientForm.value);
             this.isFormSubmitted = true;
             console.log('wizard obj in before next:', wizardObj, wizardObj.getStep());
+            this.showWebcam = false;
             if (wizardObj.currentStep === 1) {
                 this.stepOne = true;
                 this.stepTwo = false;
@@ -475,7 +476,6 @@ export class Wizard2Component implements OnInit, AfterViewInit {
             } else if (wizardObj.currentStep === 3) {
                 // this.patientForm.get('consent').setValidators(Validators.required);
                 // this.patientForm.get('consent').updateValueAndValidity();
-                this.showWebcam = false;
                 // this.tab3Pressed == true;
                 if (!this.firstInputText || !this.lastInputText || !this.firstClinicName || !this.patientForm.valid
                     || (this.patientForm.get('orgDose2').value && !this.secondClinicName)
@@ -679,6 +679,7 @@ export class Wizard2Component implements OnInit, AfterViewInit {
         }
     }
     listenToOrgChange(selectedValue) {
+        this.submitButton = { id: 1, value: 'Submit' };
         this.messageSeverity = '';
         this.messageContent = '';
         if (!selectedValue) {

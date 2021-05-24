@@ -178,7 +178,7 @@
                     <input id="lastname6" type="text" formControlName="address2" pInputText> -->
                     <span class="p-float-label p-input-icon-right">
                         <i class="pi pi-home"></i>
-                        <input id="float-input" class="p-inputtext-sm" type="text" formControlName="address2" required pInputText>
+                        <input id="float-input" class="p-inputtext-sm" type="text" formControlName="address2" pInputText>
                         <label for="float-input">Address street 2</label>
                     </span>
 
@@ -200,7 +200,7 @@
                         <strong>Field is not valid</strong>
                     </mat-error>
                 </div>
-                <div class="p-field p-col-12 p-md-4">
+                <div class="p-field p-col-12 p-md-4" [style.margin-top]="travelerInfo.value.state === 'HI' ? '1rem' : ''">
                     <!-- <label for="user_city">City<span class="cls-requiered">*</span></label>
                     <input id="user_city" type="text" formControlName="city" required pInputText> -->
                     <span class="p-float-label p-input-icon-right">
@@ -212,7 +212,7 @@
                         <strong>Required field</strong>
                     </mat-error>
                 </div>
-                <div class="p-field p-col-12 p-md-4">
+                <div class="p-field p-col-12 p-md-4" [style.margin-top]="travelerInfo.value.state === 'HI' ? '1rem' : ''">
                     <span class="p-float-label p-input-icon-right">
                         <i class="pi pi-user"></i>
                         <p-dropdown inputId="state" class="p-inputtext-sm" [options]="stateList" formControlName="state" [filter]="true"
@@ -227,7 +227,7 @@
                 </div>
                 <!-- <div class="p-field p-col-12 p-md-4" style="padding: 0px 14px !important;" ></div> -->
                 <div class="p-field p-col-12 p-md-4"
-                    *ngIf="travelerInfo.value.state && travelerInfo.value.state==='HI'">
+                    *ngIf="travelerInfo.value.state && travelerInfo.value.state==='HI'" style="margin-top: -1rem;">
                     <label for="user_state">Are you a Hawaii Resident<span class="cls-requiered">*</span></label>
                     <!-- <input id="user_state" type="text" pInputText >  -->
                     <p-selectButton [options]="resedenceOptions" class="p-inputtext-sm" formControlName="resedenceItem" required>
