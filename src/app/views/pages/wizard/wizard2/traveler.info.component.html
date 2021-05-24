@@ -55,7 +55,7 @@
                     </mat-error>
                 </div>
 
-                <div class="p-field p-col-12 p-md-4">
+                <div class="p-field p-col-12 p-md-4" style="margin-top: 1rem;">
                     <span class="p-float-label p-input-icon-right">
                         <p-calendar [showIcon]="true" inputId="icon" formControlName="dob" required
                         class="p-inputtext-sm" [monthNavigator]="true" [yearNavigator]="true" [yearRange]="dateProperties.yearRange"
@@ -74,7 +74,7 @@
                         <strong>Required field</strong>
                     </mat-error>
                 </div>
-                <div class="p-field p-col-12 p-md-4">
+                <div class="p-field p-col-12 p-md-4" style="margin-top: 1rem;">
                     <label for="lastname6">Gender<span class="cls-requiered">*</span></label>
                     <p-selectButton class="p-inputtext-sm" [styleClass]="'select_button'" [options]="genderOptions" formControlName="gender"
                         required>
@@ -83,7 +83,7 @@
                         <strong>Required field</strong>
                     </mat-error>
                 </div>
-                <div class="p-field p-col-12 p-md-4">
+                <div class="p-field p-col-12 p-md-4" style="margin-top: 1rem;">
                     <!-- <label for="user_email">Email<span class="cls-requiered">*</span></label>
                     <input id="user_email" type="email" formControlName="email" pInputText [pattern]="mailformat" required> -->
                     <span class="p-float-label p-input-icon-right">
@@ -102,7 +102,7 @@
                         <strong>Field is not valid</strong>
                     </mat-error>
                 </div>
-                <div class="p-field p-col-12 p-md-4">
+                <div class="p-field p-col-12 p-md-4" style="margin-top: 1rem;">
                     <span class="p-float-label p-input-icon-right">
                         <i [class]="travelerInfo.value.contactOption === 'NO' ? 'pi pi-phone' : 'pi pi-mobile'"></i>
                         <p-inputMask class="p-inputtext-sm" id="float-input" mask="9999999999" minLength="10" maxLength="10" slotChar='_'
@@ -127,7 +127,7 @@
                         <strong>Required field</strong>
                     </mat-error>
                 </div>
-                <div class="p-field p-col-12 p-md-4">
+                <div class="p-field p-col-12 p-md-4" style="margin-top: -1rem;">
                     <label for="lastname6">Is this a cell phone number<span class="cls-requiered">*</span></label>
                     <p-selectButton class="p-inputtext-sm" [options]="contactOptions" formControlName="contactOption" required
                         [styleClass]="'select_button'"></p-selectButton>
@@ -135,7 +135,7 @@
                         <strong>Required field</strong>
                     </mat-error>
                 </div>
-                <div class="p-field p-col-12 p-md-4">
+                <div class="p-field p-col-12 p-md-4" style="margin-top: 1rem;">
                     <span class="p-float-label p-input-icon-right">
                         <i [class]="travelerInfo.value.contactOption === 'NO' ? 'pi pi-mobile' : 'pi pi-phone'"></i>
                         <p-inputMask id="float-input" class="p-inputtext-sm" mask="9999999999" [autoClear]="false" minlength="10"
