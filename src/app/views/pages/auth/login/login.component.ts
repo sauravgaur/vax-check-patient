@@ -108,14 +108,14 @@ export class LoginComponent implements OnInit, OnDestroy {
 		};
 
 		this.corporateForm = this.fb1.group({
-			firstName: new FormControl('Alexandra', Validators.compose([Validators.required, Validators.pattern('^[ A-Za-z-.,]*$')])),
-			middleName: new FormControl('A', Validators.pattern('^[ A-Za-z-.,]*$')),
-			lastName: new FormControl('Chan', Validators.compose([Validators.required, Validators.pattern('^[ A-Za-z-.,]*$')])),
-			dob: new FormControl(new Date('1994-10-24'), Validators.required),
-			email: new FormControl('alexandra.chan55@gmail.com', Validators.compose([Validators.required, Validators.pattern(this.mailFormat)])),
-			contactNumber: new FormControl('5108628139',
+			firstName: new FormControl('', Validators.compose([Validators.required, Validators.pattern('^[ A-Za-z-.,]*$')])),
+			middleName: new FormControl('', Validators.pattern('^[ A-Za-z-.,]*$')),
+			lastName: new FormControl('', Validators.compose([Validators.required, Validators.pattern('^[ A-Za-z-.,]*$')])),
+			dob: new FormControl('', Validators.required),
+			email: new FormControl('', Validators.compose([Validators.required, Validators.pattern(this.mailFormat)])),
+			contactNumber: new FormControl('',
 				Validators.compose([Validators.required, Validators.minLength(10), Validators.maxLength(10)])),
-			corporateId: new FormControl('8869', Validators.required)
+			corporateId: new FormControl('', Validators.required)
 		});
 
 		// redirect back to the returnUrl before login
