@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { SelectItem } from 'primeng/api';
 import Utils from 'src/app/utils';
@@ -23,6 +23,7 @@ export class VaccinatorComponent implements OnInit {
   @Input() stepTwo: boolean;
   @Input() mailformat: string;
   @Input() isControlHasError: (controlName: string, validationType: string) => boolean;
+  @Output() orgNameChange = new EventEmitter<string>();
   constructor(private constants: AppConstants) {
     this.manufacturerList = this.constants.MANUFACTURER;
   }
@@ -39,10 +40,12 @@ export class VaccinatorComponent implements OnInit {
 
   filterOrg(event) {
     const filtered: any[] = [];
-    const query = event.query.toLowerCase();
-    for (const org of this.orgs) {
-      if (org.name.toLowerCase().indexOf(query) > -1) {
-        filtered.push(org);
+    if (this.vaccinator.controls.state.value === 'HI') {
+      const query = event.query.toLowerCase();
+      for (const org of this.orgs) {
+        if (org.name.toLowerCase().indexOf(query) > -1) {
+          filtered.push(org);
+        }
       }
     }
     this.filteredOrgs = filtered;
@@ -59,9 +62,22 @@ export class VaccinatorComponent implements OnInit {
     }
     // console.log('moment:', moment(this.vaccinator.get('orgDose1').value, 'YYYY-MM-DD'))
     // console.log('moment:', moment(this.vaccinator.get('orgDose1').value).add(this.gapDays, 'day'))
-    console.log('moment add days:', Utils.addDays(moment(this.vaccinator.get('orgDose1').value, 'MM-DD-YYYY').toDate(), this.gapDays));
+    // console.log('moment add days:', Utils.addDays(moment(this.vaccinator.get('orgDose1').value, 'MM-DD-YYYY').toDate(), this.gapDays));
     return this.vaccinator.controls[controlName].value <
       Utils.addDays(moment(this.vaccinator.controls[compareCtrlName].value, 'MM-DD-YYYY').toDate(), this.gapDays);
+  }
+
+  selectOrg(val) {
+    console.log('on select org name:', this.vaccinator.controls.orgName.value)
+  }
+
+  onOrgNameBlur(event) {
+    console.log('on blur event:', this.vaccinator.controls.orgName.value);
+    const dt = this.vaccinator.controls.orgName.value;
+    if (!dt.value) {
+      console.log('call listen to org changes:', dt);
+      this.orgNameChange.emit(dt);
+    }
   }
 
   // listenToOrgManufacturerChange(selectedValue) {

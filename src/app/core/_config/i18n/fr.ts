@@ -58,6 +58,7 @@ export const locale = {
         MIN_LENGTH_FIELD: 'Minimum field length:',
         MAX_LENGTH_FIELD: 'Maximum field length:',
         INVALID_FIELD: 'Field is not valid',
+        EMPLOYEE_NOT_FOUND: 'Employee not found.'
       }
     },
     ECOMMERCE: {

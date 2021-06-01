@@ -2,7 +2,10 @@ type YES_NO = 'YES' | 'NO';
 type GENDER = 'MALE' | 'FEMALE' | 'OTHER';
 type STATUS = 'PENDING' | 'SUCCESS' | 'FAIL';
 type DIAGNOSTIC_TEST_TYPE = 'ANTIBODY' | 'ANTIGEN' | 'MOLECULAR';
-
+type DOCUMENT_TYPE = 'VAX_CARD' | 'SUPPLEMENT_DOC' | 'EVIDENCE' | 'MISC1' | 'MISC2' | 'MISC3' | 'DIAGNOSTIC_TEST'
+export interface IMediaArray extends Array<IMedia> {
+    0: IMedia; // ensure that at least one 'value' is present
+}
 export interface IProfile {
     unique_identifier?: string;
     age?: number;
@@ -43,7 +46,6 @@ export interface IProfile {
 }
 
 export interface IVaccineDosing {
-    dose_number?: string;
     date?: string;
     lot_number?: string;
     site_name?: string;
@@ -173,7 +175,7 @@ export interface IProvider {
 
 export interface IMedia {
     profiles_skyflow_id?: string;
-    document_type?: 'VAX_CARD' | 'SUPPLEMENT_DOC' | 'EVIDENCE' | 'MISC1' | 'MISC2' | 'MISC3' | 'DIAGNOSTIC_TEST';
+    document_type?: DOCUMENT_TYPE;
     file_path?: string;
 }
 
@@ -209,14 +211,15 @@ export interface IVaccinations {
     reference_id?: string;
     reference_system?: string;
     verification_source?: string;
-    verification_status?: string;
+    verification_status?: 'PENDING' | 'VERIFIED' | 'DECLINED' | 'CONDITION_APPROVAL';
     access_code?: string;
     travel_date?: string;
     supporting_doc?: string;
     traveler_type?: string;
     service_availed?: string;
     verification_expiry_date?: string;
-    vaccine_dosing?: IVaccineDosing[];
+    vaccine_dose_1?: IVaccineDosing;
+    vaccine_dose_2?: IVaccineDosing;
     recipient?: {
         unique_identifier?: string,
         phone_number?: string,
@@ -277,7 +280,7 @@ export interface IRecord {
     diagnostic_reports?: IDiagnosticReports;
     metadata_records?: IMATADATARECORDS;
     vaccinations?: IVaccinations;
-    media?: IMedia[];
+    media?: IMediaArray;
 }
 
 export interface ISourceProvider {
@@ -293,4 +296,15 @@ export interface IBatch {
     status: STATUS;
     batch_id: string;
     records: IRecord[];
+}
+
+export interface ITravelerExists {
+    isTravelerExists: boolean;
+    isPaymentDone: boolean;
+    profile_skyflow_id?: string;
+}
+
+export enum LOCAL_STORAGE_KEYS {
+    LOGIN_FORM_DATA,
+    LOGIN_RESPONSE_DATA
 }

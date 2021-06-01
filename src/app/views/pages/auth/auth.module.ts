@@ -24,7 +24,12 @@ import { ForgotPasswordComponent } from './forgot-password/forgot-password.compo
 import { AuthNoticeComponent } from './auth-notice/auth-notice.component';
 // Auth
 import { AuthEffects, AuthGuard, authReducer, AuthService } from '../../../core/auth';
-
+import { InputTextModule } from 'primeng/inputtext';
+import { CardModule } from 'primeng/card';
+import { InputTextareaModule } from 'primeng/inputtextarea';
+import { ButtonModule } from 'primeng/button';
+import { InputMaskModule } from 'primeng/inputmask';
+import { CalendarModule } from 'primeng/calendar';
 const routes: Routes = [
 	{
 		path: '',
@@ -65,7 +70,13 @@ const routes: Routes = [
 		MatCheckboxModule,
 		TranslateModule.forChild(),
 		StoreModule.forFeature('auth', authReducer),
-		EffectsModule.forFeature([AuthEffects])
+		EffectsModule.forFeature([AuthEffects]),
+		InputTextModule,
+		CardModule,
+		InputTextareaModule,
+		ButtonModule,
+		InputMaskModule,
+		CalendarModule
 	],
 	providers: [
 		InterceptService,

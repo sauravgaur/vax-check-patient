@@ -51,6 +51,7 @@ export class TravelerInfoComponent implements OnInit {
   }
 
   listenToStateChange(selectedValue) {
+    console.log('selected value on state:', selectedValue);
     console.log(selectedValue);                              // latest value of firstname
     if (selectedValue !== 'HI') {
       this.travelerInfo.get('resedenceItem').setValue('');

@@ -22,9 +22,12 @@ import { environment } from '../../../../../environments/environment';
 import { AppConstants } from '../../../../app.constants';
 import { IDateProperties } from '../../../../interface/date.properties';
 import { IImageToText } from '../../../../interface/image.text';
-import { IProfile, IPatientAddress, IVaccinations } from '../../../../interface/record.interface';
-import Utils from '../../../../utils';
+import {
+    IProfile, IPatientAddress, IVaccinations, ITravelerExists,
+    IAddress2, IProvider, IMediaArray, IVaccineDosing, IMedia, LOCAL_STORAGE_KEYS
+} from '../../../../interface/record.interface';
 import { WizardService } from './wizard.service';
+import Utils from '../../../../utils';
 const BASE_URL = 'http://localhost:3100/api';
 
 @Component({
@@ -42,40 +45,13 @@ export class Wizard2Component implements OnInit, AfterViewInit {
     isHawaiiState = false;
     showWebcam = false;
     stateList: SelectItem[];
-
     tooltipJson: any = {
         contactNumber: 'Prefered mobile phone number',
         resedenceItem: 'Are you a permanent Hawaii resident?',
-        orgName: `Who organized the vaccination?<br> Type at least 1 alphabet.`,
+        orgName: `Who organized the vaccination?`,
         orgAddress1: 'Address of the Organization',
         takeSnapShot: 'Take a picture of you vaccination card',
         travelDateToHawaii: 'Trip date in Safe Travels'
-    };
-    model: any = {
-        fname: 'John',
-        lname: 'Wick',
-        phone: '+61412345678',
-        email: 'john.wick@reeves.com',
-        address1: 'Address Line 1',
-        address2: 'Address Line 2',
-        postcode: '3000',
-        city: 'Melbourne',
-        state: 'VIC',
-        country: 'AU',
-        delivery: 'overnight',
-        packaging: 'regular',
-        preferreddelivery: 'morning',
-        locaddress1: 'Address Line 1',
-        locaddress2: 'Address Line 2',
-        locpostcode: '3072',
-        loccity: 'Preston',
-        locstate: 'VIC',
-        loccountry: 'AU',
-        ccname: 'John Wick',
-        ccnumber: '4444 3333 2222 1111',
-        ccmonth: '01',
-        ccyear: '21',
-        cccvv: '123',
     };
     submitted = false;
 
@@ -83,15 +59,7 @@ export class Wizard2Component implements OnInit, AfterViewInit {
     selectedNDC: any;
 
     states: any[] = [];
-    // selectedState: any;
     items: MenuItem[];
-
-    // stateItem: SelectItem[];
-    // selectedState: any;
-    // selectedStateUser: any;
-
-    // cityItem: SelectItem[];
-    // selectedCity: any;
 
     stepOne = false;
     stepTwo = false;
@@ -132,6 +100,8 @@ export class Wizard2Component implements OnInit, AfterViewInit {
     button = 'Submit';
     isLoading = false;
     mailFormat = '^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$';
+    skyflowId: string;
+    forceSelection = false;
     constructor(
         private cd: ChangeDetectorRef,
         private http: HttpClient,
@@ -164,102 +134,117 @@ export class Wizard2Component implements OnInit, AfterViewInit {
     ngOnInit() {
 
         localStorage.removeItem('travelerData');
-        // this.patientForm = this.fb1.group({
-        //     id: new FormControl(''),
-
-        //     firstName: new FormControl('A', Validators.compose([Validators.required, Validators.pattern('^[ A-Za-z-.,]*$')])),
-        //     middleName: new FormControl('A', Validators.pattern('^[ A-Za-z-.,]*$')),
-        //     lastName: new FormControl('A', Validators.compose([Validators.required, Validators.pattern('^[ A-Za-z-.,]*$')])),
-        //     dob: new FormControl(new Date('2021-04-01'), Validators.required),
-        //     email: new FormControl('a@a.com', Validators.compose([Validators.required, Validators.pattern(this.mailFormat)])),
-        //     gender: new FormControl('MALE', Validators.required),
-        //     address1: new FormControl('test', Validators.required),
-        //     address2: new FormControl('test'),
-        //     city: new FormControl('test', Validators.required),
-        //     zipcode: new FormControl('12323', Validators.required),
-        //     state: new FormControl('AK', Validators.required),
-        //     resedenceItem: new FormControl('YES'),
-        //     islandItem: new FormControl(''),
-        //     contactNumber: new FormControl('1231231231',
-        //         Validators.compose([Validators.required, Validators.minLength(10), Validators.maxLength(10)])),
-        //     contactNumber2: new FormControl('',
-        //         Validators.compose([Validators.minLength(10), Validators.maxLength(10)])),
-        //     contactOption: new FormControl('YES', Validators.required),
-        //     orgName: new FormControl({ name: 'CVS/Long Drugs', value: 'CVS/Long Drugs' }),
-        //     orgAddress1: new FormControl('a'),
-        //     orgAddress2: new FormControl('334'),
-        //     orgCity: new FormControl('a'),
-        //     orgZipcode: new FormControl('23423'),
-        //     orgState: new FormControl('AK'),
-        //     orgContactNumber: new FormControl('4234234232',
-        //         Validators.compose([Validators.minLength(10), Validators.maxLength(10)])),
-        //     orgEmail: new FormControl('sdf@lkj.com', Validators.pattern(this.mailFormat)),
-        //     orgManufacturer: new FormControl('Moderna'),
-        //     orgDose1: new FormControl(new Date('2021-04-01')),
-        //     orgDose2: new FormControl(new Date('2021-05-05')),
-        //     travelDateToHawaii: new FormControl(''),
-        //     consent: new FormControl(true)
-        // });
-
         this.patientForm = this.fb1.group({
             id: new FormControl(''),
-            firstName: new FormControl('', Validators.compose([Validators.required, Validators.pattern('^[ A-Za-z-.,]*$')])),
-            middleName: new FormControl('', Validators.pattern('^[ A-Za-z-.,]*$')),
-            lastName: new FormControl('', Validators.compose([Validators.required, Validators.pattern('^[ A-Za-z-.,]*$')])),
-            dob: new FormControl('', Validators.required),
-            email: new FormControl('', Validators.compose([Validators.required, Validators.pattern(this.mailFormat)])),
-            gender: new FormControl('', Validators.required),
-            address1: new FormControl('', Validators.required),
-            address2: new FormControl(''),
-            city: new FormControl('', Validators.required),
-            zipcode: new FormControl('', Validators.required),
-            state: new FormControl('', Validators.required),
-            resedenceItem: new FormControl(''),
+
+            firstName: new FormControl('A', Validators.compose([Validators.required, Validators.pattern('^[ A-Za-z-.,]*$')])),
+            middleName: new FormControl('A', Validators.pattern('^[ A-Za-z-.,]*$')),
+            lastName: new FormControl('A', Validators.compose([Validators.required, Validators.pattern('^[ A-Za-z-.,]*$')])),
+            dob: new FormControl(new Date('2021-04-01'), Validators.required),
+            email: new FormControl('a@a.com', Validators.compose([Validators.required, Validators.pattern(this.mailFormat)])),
+            gender: new FormControl('MALE', Validators.required),
+            address1: new FormControl('test', Validators.required),
+            address2: new FormControl('test'),
+            city: new FormControl('test', Validators.required),
+            zipcode: new FormControl('12323', Validators.required),
+            state: new FormControl('AL', Validators.required),
+            resedenceItem: new FormControl('YES'),
             islandItem: new FormControl(''),
-            contactNumber: new FormControl('',
+            contactNumber: new FormControl('1231231231',
                 Validators.compose([Validators.required, Validators.minLength(10), Validators.maxLength(10)])),
             contactNumber2: new FormControl('',
                 Validators.compose([Validators.minLength(10), Validators.maxLength(10)])),
-            contactOption: new FormControl('', Validators.required),
-            orgName: new FormControl(''),
-            orgAddress1: new FormControl(''),
-            orgAddress2: new FormControl(''),
-            orgCity: new FormControl(''),
-            orgZipcode: new FormControl(''),
-            orgState: new FormControl(''),
-            orgContactNumber: new FormControl('',
+            contactOption: new FormControl('YES', Validators.required),
+            orgName: new FormControl({ name: 'CVS/Long Drugs', value: 'CVS/Long Drugs' }),
+            orgAddress1: new FormControl('a'),
+            orgAddress2: new FormControl('334'),
+            orgCity: new FormControl('a'),
+            orgZipcode: new FormControl('23423'),
+            orgState: new FormControl('AL'),
+            orgContactNumber: new FormControl('4234234232',
                 Validators.compose([Validators.minLength(10), Validators.maxLength(10)])),
-            orgEmail: new FormControl('', Validators.pattern(this.mailFormat)),
-            orgManufacturer: new FormControl(''),
-            orgDose1: new FormControl(),
-            orgDose2: new FormControl(),
+            orgEmail: new FormControl('sdf@lkj.com', Validators.pattern(this.mailFormat)),
+            orgManufacturer: new FormControl('Moderna'),
+            orgDose1: new FormControl(new Date('2021-04-01')),
+            orgDose2: new FormControl(new Date('2021-05-05')),
             travelDateToHawaii: new FormControl(''),
-            consent: new FormControl()
+            consent: new FormControl(true)
         });
 
-        // this.stateItem = this.constants.STATES;
+        // this.patientForm = this.fb1.group({
+        //     id: new FormControl(''),
+        //     firstName: new FormControl('', Validators.compose([Validators.required, Validators.pattern('^[ A-Za-z-.,]*$')])),
+        //     middleName: new FormControl('', Validators.pattern('^[ A-Za-z-.,]*$')),
+        //     lastName: new FormControl('', Validators.compose([Validators.required, Validators.pattern('^[ A-Za-z-.,]*$')])),
+        //     dob: new FormControl('', Validators.required),
+        //     email: new FormControl('', Validators.compose([Validators.required, Validators.pattern(this.mailFormat)])),
+        //     gender: new FormControl('', Validators.required),
+        //     address1: new FormControl('', Validators.required),
+        //     address2: new FormControl(''),
+        //     city: new FormControl('', Validators.required),
+        //     zipcode: new FormControl('', Validators.required),
+        //     state: new FormControl('', Validators.required),
+        //     resedenceItem: new FormControl(''),
+        //     islandItem: new FormControl(''),
+        //     contactNumber: new FormControl('',
+        //         Validators.compose([Validators.required, Validators.minLength(10), Validators.maxLength(10)])),
+        //     contactNumber2: new FormControl('',
+        //         Validators.compose([Validators.minLength(10), Validators.maxLength(10)])),
+        //     contactOption: new FormControl('', Validators.required),
+        //     orgName: new FormControl(''),
+        //     orgAddress1: new FormControl(''),
+        //     orgAddress2: new FormControl(''),
+        //     orgCity: new FormControl(''),
+        //     orgZipcode: new FormControl(''),
+        //     orgState: new FormControl(''),
+        //     orgContactNumber: new FormControl('',
+        //         Validators.compose([Validators.minLength(10), Validators.maxLength(10)])),
+        //     orgEmail: new FormControl('', Validators.pattern(this.mailFormat)),
+        //     orgManufacturer: new FormControl(''),
+        //     orgDose1: new FormControl(),
+        //     orgDose2: new FormControl(),
+        //     travelDateToHawaii: new FormControl(''),
+        //     consent: new FormControl()
+        // });
 
+        // this.stateItem = this.constants.STATES;
+        const storageData = localStorage.getItem(LOCAL_STORAGE_KEYS[LOCAL_STORAGE_KEYS.LOGIN_RESPONSE_DATA]);
+        console.log('storage data:', storageData);
+        if (storageData) {
+            const loginResponse: { IProfile, IVaccinations } = JSON.parse(storageData);
+            localStorage.clear();
+            // localStorage.removeItem(LOCAL_STORAGE_KEYS[LOCAL_STORAGE_KEYS.LOGIN_FORM_DATA]);
+            // localStorage.removeItem(LOCAL_STORAGE_KEYS[LOCAL_STORAGE_KEYS.LOGIN_RESPONSE_DATA]);
+            console.log('before if:', loginResponse);
+            if (loginResponse) {
+                this.preFilledForm(loginResponse);
+            }
+        }
         // console.log('this.org options:', this.orgOptions);
         this.subscribeValueChanges();
         // this.initGroupedForm();
+    }
 
-        if (!this.token) {
-            // this.fetchToken();
-        }
+    preFilledForm(data) {
+        console.log('data in prefilled form', data);
+        const profiles: IProfile = data.profiles;
+        const vaccinations: IVaccinations = data.vaccinations;
+        this.patientForm.controls.firstName.setValue(profiles.name.first_name);
+        this.patientForm.controls.middleName.setValue(profiles.name.middle_name);
+        this.patientForm.controls.lastName.setValue(profiles.name.last_name);
+        this.patientForm.controls.dob.setValue(moment(profiles.date_of_birth, 'YYYY-MM-DD').format('MM-DD-YYYY'));
+        this.patientForm.controls.address1.setValue(profiles.address.street_address);
+        this.patientForm.controls.address2.setValue(profiles.address?.street_address2);
+        this.patientForm.controls.city.setValue(profiles.address.city);
+        this.patientForm.controls.state.setValue(profiles.address.state);
+        this.patientForm.controls.zipcode.setValue(profiles.address.zip_code);
+        this.patientForm.controls.email.setValue(profiles.email_address);
+        this.patientForm.controls.contactNumber.setValue(profiles.mobile_number);
+        this.patientForm.controls.contactNumber2.setValue(profiles.mobile_number2);
+        this.patientForm.controls.gender.setValue(profiles.sex);
+        // this.patientForm.controls.gender.setValue(profiles.sex);
 
-        // if (HumanConnect) {
-        //     HumanConnect.on('connect', response => {
-        //         console.log('response connect:', response)
-        //     });
-        //     HumanConnect.on('disconnect', response => {
-        //         console.log('response disconnect:', response)
-        //     });
-        //     HumanConnect.on('close', response => {
-        //         this.connectClosed = true;
-        //         console.log('response close:', response)
-        //     });
-        // }
-
+        this.patientForm.updateValueAndValidity();
     }
 
     updateFirstName(firstName: string) {
@@ -349,7 +334,8 @@ export class Wizard2Component implements OnInit, AfterViewInit {
                 successUrl: `${environment.local_url}/success`,
                 cancelUrl: `${environment.local_url}/failure`,
                 orderAmount: 2000,
-                masterId: 1, travelerEmail: this.patientForm.get('email').value
+                profiles_skyflow_id: this.skyflowId,
+                travelerEmail: this.patientForm.get('email').value
             }).toPromise();
         console.log('session:', getSession);
         // When the customer clicks on the button, redirect them to Checkout.
@@ -383,7 +369,7 @@ export class Wizard2Component implements OnInit, AfterViewInit {
 
         // Initialize form wizard
         const wizard = new KTWizard(this.el.nativeElement, {
-            startStep: 3
+            startStep: 1
         });
 
         // var wizardEl = document.querySelector('#wizard');
@@ -447,7 +433,7 @@ export class Wizard2Component implements OnInit, AfterViewInit {
 
                 // if (wizardObj.currentStep === 2) {
                 // if (!this.lastInputText && !this.firstInputText) {
-               
+
 
                 // } else {
                 //     this.patientForm.get('firstName').setValue(this.firstInputText);
@@ -456,22 +442,30 @@ export class Wizard2Component implements OnInit, AfterViewInit {
 
                 // }
                 if (this.patientForm.valid) {
-                    // const checkTravelerExists: any = await this.http.post(`${environment.api_url}/batch/check-patient`, {
-                    //     firstName: this.patientForm.get('firstName').value,
-                    //     lastName: this.patientForm.get('lastName').value,
-                    //     middleName: this.patientForm.get('middleName').value,
-                    //     dateOfBirth: this.patientForm.get('dob').value
-                    // }).toPromise();
-                    // console.log('checkTravelerExists: ', checkTravelerExists)
-                    // if (checkTravelerExists.isUserExist) {
-                    //     console.log('in user exists')
+                    console.log('after form valid');
+
+                    // const checkTravelerExists =
+                    //     await this.http.post<ITravelerExists>(`${environment.api_url}${this.constants.API_URI.PAYMENT_STATUS}`, {
+                    //         firstName: this.patientForm.get('firstName').value,
+                    //         lastName: this.patientForm.get('lastName').value,
+                    //         middleName: this.patientForm.get('middleName').value,
+                    //         dateOfBirth: this.patientForm.get('dob').value
+                    //     }).toPromise();
+                    // console.log('checkTravelerExists: ', checkTravelerExists);
+                    // if (checkTravelerExists.isTravelerExists) {
+                    //     console.log('in user exists');
+                    //     if (checkTravelerExists.isPaymentDone) {
+                    //         console.log('payment done');
+                    //     }
                     //     wizardObj.stop();
                     //     this.cd.markForCheck();
                     //     return;
 
-                    // } else console.log('in user not exists')
+                    // } else {
+                    //     console.log('in user not exists');
+                    // }
                 }
-
+                console.log('after if of validate form');
             } else if (wizardObj.currentStep === 2) {
                 this.stepTwo = true;
             } else if (wizardObj.currentStep === 3) {
@@ -528,15 +522,6 @@ export class Wizard2Component implements OnInit, AfterViewInit {
 
             setTimeout(() => {
                 KTUtil.scrollTop();
-                // if(wizardObj.currentStep==3 && !this.isCameraSet){
-                //   this.isCameraSet=true;
-                //   if(navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-                //     navigator.mediaDevices.getUserMedia({ video: true }).then(stream => {
-                //         this.video.nativeElement.src = window.URL.createObjectURL(stream);
-                //         this.video.nativeElement.play();
-                //     });
-                // }
-                // }
             }, 500);
             this.changeStep = wizardObj.currentStep;
             if (wizardObj.currentStep === 2) {
@@ -596,10 +581,10 @@ export class Wizard2Component implements OnInit, AfterViewInit {
                 this.patientForm.get('orgEmail').markAsPristine();
             }
             else if (wizardObj.currentStep === 3) {
-                this.patientForm.get('consent').setErrors(null);
-                this.patientForm.get('consent').markAsPristine();
-                this.patientForm.get('consent').setValidators(Validators.required);
+                // this.patientForm.get('consent').setErrors(null);
+                this.patientForm.get('consent').setValidators(Validators.requiredTrue);
                 this.patientForm.get('consent').updateValueAndValidity();
+                this.patientForm.get('consent').markAsPristine();
 
                 this.firstClinicName = this.firstClinicName ? this.firstClinicName :
                     (this.patientForm.get('orgDose1').value ? this.patientForm.get('orgName').value.name : '');
@@ -640,6 +625,7 @@ export class Wizard2Component implements OnInit, AfterViewInit {
                 this.imageToTextResponse.secondDose = this.patientForm.get('orgManufacturer').value;
             }
             if (wizardObj.currentStep === 4) {
+                this.showWebcam = false;
                 this.patientForm.get('firstName').setValue(this.firstInputText ?
                     this.firstInputText : this.patientForm.get('firstName').value);
                 this.patientForm.get('lastName').setValue(this.lastInputText ?
@@ -679,16 +665,18 @@ export class Wizard2Component implements OnInit, AfterViewInit {
             this.patientForm.get('orgDose2').updateValueAndValidity();
         }
     }
+
     listenToOrgChange(selectedValue) {
+        console.log('listen to org change:', selectedValue)
         this.submitButton = { id: 1, value: 'Submit' };
         this.messageSeverity = '';
         this.messageContent = '';
         if (!selectedValue) {
             this.patientForm.get('orgName').setValidators(Validators.required);
             this.patientForm.get('orgName').updateValueAndValidity({ emitEvent: false, onlySelf: true });
-        } else if (selectedValue.value.toUpperCase().includes('HPH')) {
+        } else if (selectedValue.value?.toUpperCase().includes('HPH')) {
             this.submitButton = { id: 1, value: 'Submit' };
-        } else if (selectedValue.value.toUpperCase().includes('CVS')) {
+        } else if (selectedValue.value?.toUpperCase().includes('CVS')) {
             this.submitButton = { id: 2, value: 'Start Verification' };
         } else {
             this.submitButton = { id: 3, value: `Verify with ${selectedValue.value}` };
@@ -696,6 +684,10 @@ export class Wizard2Component implements OnInit, AfterViewInit {
         if (this.submitButton.id === 2) {
             this.confirm2();
         }
+    }
+    orgNameTextChange(val) {
+        this.patientForm.controls.orgName.setValue({ name: val, value: val });
+        this.listenToOrgChange({ name: val, value: val });
     }
     listenToOrgStateChange(selectedValue) {
         if (selectedValue === 'HI') {
@@ -739,7 +731,6 @@ export class Wizard2Component implements OnInit, AfterViewInit {
         if (!control) {
             return false;
         }
-
         const result = control.hasError(validationType) && (control.dirty || control.touched);
         return result;
     }
@@ -748,14 +739,58 @@ export class Wizard2Component implements OnInit, AfterViewInit {
     // }
 
     // tslint:disable-next-line: indent
-    onSubmit() {
+    async onSubmit() {
         // var cardNumberEle : any = document.querySelector('[data-elements-stable-field-name="cardNumber"]');
         // console.log('card number ele', cardNumberEle)
         // console.log('card number:', cardNumberEle.defaultValue)
         const formData = this.patientForm.value;
         console.log('Form Data:', formData);
         this.submitted = true;
-        const profile: IProfile = {
+        console.log('webcamImage:', this.webcamImage, 'imgsrc', this.imageSrc);
+        console.log('this.supportingDocFile:', this.supportingDocFile);
+        let webcamPath;
+        let srcPath;
+        let supplementPath;
+        if (this.imageSrc) {
+            console.log('inside imgsrc found');
+            srcPath = await this.wizardService
+                .uploadFile(this.imageSrc, this.constants.API_URI.SNAPSHOT_UPLOAD, 'snapshot').toPromise();
+        }
+        if (this.webcamImage) {
+            console.log('inside webcam foudn');
+            webcamPath = await this.wizardService
+                .uploadFile(this.webcamImage, this.constants.API_URI.SNAPSHOT_UPLOAD, 'snapshot').toPromise();
+        }
+        if (this.supportingDocFile) {
+            console.log('inside supplient found');
+            supplementPath = this.wizardService
+                .uploadFile(this.imageSrc, this.constants.API_URI.SUPPLIMENT_DOC_UPLOAD, 'supplementDoc').toPromise();
+        }
+        console.log('srcpath', srcPath);
+        console.log('webPath:', webcamPath);
+        console.log('supplementPath', supplementPath);
+        // return false;
+        let media: IMedia[] = [];
+        if (webcamPath) {
+            media.push({
+                document_type: 'VAX_CARD',
+                file_path: webcamPath
+            });
+        }
+        if (srcPath) {
+            media.push({
+                document_type: 'VAX_CARD',
+                file_path: srcPath
+            });
+        }
+        if (supplementPath) {
+            media.push({
+                document_type: 'SUPPLEMENT_DOC',
+                file_path: supplementPath
+            });
+        }
+
+        const profiles: IProfile = {
             name: {
                 first_name: formData.firstName,
                 middle_name: formData.middleName,
@@ -770,7 +805,7 @@ export class Wizard2Component implements OnInit, AfterViewInit {
                 zip_code: formData.zipcode
             },
             consent: {
-                given: this.consent,
+                given: formData.consent,
             },
             date_of_birth: Utils.formatToUSStandared(formData.dob),
             email_address: formData.email,
@@ -779,25 +814,47 @@ export class Wizard2Component implements OnInit, AfterViewInit {
             mobile_number2: formData.contactOption === 'NO' ? formData.contactNumber2 : formData.contactNumber,
             travel_date: formData.travelDateToHawaii ? Utils.formatToUSStandared(formData.travelDateToHawaii) : null
         };
+        const providerAddress: IAddress2 = {
+            street_address: formData.orgAddress1,
+            street_address2: formData.orgAddress2,
+            state: formData.orgState,
+            zip_code: formData.orgZipcode,
+            city: formData.orgCity,
+        };
+
+        const provider: IProvider = {
+            provider_org_name: formData.orgName.value,
+            provider_email: formData.orgEmail,
+            provider_address: providerAddress
+        };
+
+        const vaccineDose1: IVaccineDosing = {
+            date: Utils.formatToUSStandared(formData.orgDose1),
+            site_name: this.firstClinicName,
+            site_address: providerAddress
+        };
+
+        let vaccineDose2: IVaccineDosing;
+        if (formData.orgDose2) {
+            vaccineDose2 = {
+                date: Utils.formatToUSStandared(formData.orgDose2),
+                site_name: this.secondClinicName,
+                site_address: providerAddress,
+            };
+        }
+
         const vaccination: IVaccinations = {
             profiles_skyflow_id: null, //Math.random().toString(36).substr(2, 5),
             effective_date: Utils.formatToUSStandared(moment(this.effectiveDate).toDate()),
             expiration_date: Utils.formatToUSStandared(moment(this.expirationDate).toDate()),
             vaccine_manufacturer_name: formData.orgManufacturer,
-            provider: {
-                provider_org_name: formData.orgName.value,
-                provider_email: formData.orgEmail,
-                provider_address: {
-                    street_address: formData.orgAddress1,
-                    street_address2: formData.orgAddress2,
-                    state: formData.orgState,
-                    zip_code: formData.orgZipcode,
-                    city: formData.orgCity,
-                }
-            }
+            provider,
+            // vaccine_dose_1: vaccineDose1,
+            // vaccine_dose_2: vaccineDose2,
         };
+
         const postObject = {
-            profile, vaccination
+            profiles, vaccination, media
         };
         if (this.patientForm.valid) {
             this.isLoading = true;
@@ -806,35 +863,26 @@ export class Wizard2Component implements OnInit, AfterViewInit {
             localStorage.setItem('travelerData', JSON.stringify(this.patientForm.value));
             this.wizardService.registerTraveller(postObject).subscribe((data: any) => {
                 console.log('result after save:', data);
-                this.isLoading = false;
-                this.button = 'Submit';
-                this.checkout();
+                this.skyflowId = 'test';
+                if (data.msg) {
+                    console.log('data.msg:', data);
+                } else {
+                    this.skyflowId = data.profileResponse.responses[0].records[0].skyflow_id;
+                }
+                // this.isLoading = false;
+                // this.button = 'Submit';
+                // this.checkout();
+                // this.router.navigate(['/success']);
             },
                 error => {
-                    console.log('Error while processing data:' + postObject);
-                    this.isLoading = false;
-                    this.button = 'Submit';
-                    this.checkout();
+                    console.log('Error while processing data:', postObject);
+                    // this.router.navigate(['/success']);
+                    // this.isLoading = false;
+                    // this.button = 'Submit';
+                    // this.checkout();
                 }
             );
         }
-        // this.showDialog();
-
-        // this.stripeTest.controls.stripe_firstName.setValue(this.patientForm.controls.firstName.value)
-        // this.stripeTest.controls.stripe_lastName.setValue(this.patientForm.controls.lastName.value)
-        // this.stripeTest.controls.stripe_address1.setValue(this.patientForm.controls.address1.value)
-        // this.stripeTest.controls.stripe_city.setValue(this.patientForm.controls.city.value)
-        // this.stripeTest.controls.stripe_state.setValue(this.patientForm.controls.state.value)
-        // this.stripeTest.controls.stripe_zipcode.setValue(this.patientForm.controls.zipcode.value)
-        // console.log('stripe console:', this.stripeTest.value)
-        // this.stripeTest.updateValueAndValidity();
-
-        // let navigationExtras: NavigationExtras = {
-        //     queryParams: this.patientForm.value
-        // };
-        // this.router.navigate(["payment"], navigationExtras);
-
-        // this.router.navigateByUrl('/dashboard');
     }
 
     onFileSelect(file) {

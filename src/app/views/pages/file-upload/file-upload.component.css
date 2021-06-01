@@ -25,7 +25,12 @@
 }
 
 .cls-file-name {
-    display: block;
+    /* display: block; */
+    background: lightblue;
+    display: inline-block;
+    border-radius: 15px;
+    padding: 1rem;
+    margin-top: 1rem;
 }
 
 .cls-file-error {

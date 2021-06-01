@@ -9,12 +9,13 @@
                     <span class="p-float-label p-input-icon-right">
                         <i class="pi pi-users"></i>
                         <p-autoComplete id="float-input" formControlName="orgName" [suggestions]="filteredOrgs"
-                            (completeMethod)="filterOrg($event)" [forceSelection]="true" field="name" [minLength]="1"
+                            (completeMethod)="filterOrg($event)" (onBlur)="onOrgNameBlur($event)" [forceSelection]="vaccinator.value.state.value === 'HI'" field="name" [minLength]="1"
                             class="p-inputtext-sm" [autoHighlight]="true">
                         </p-autoComplete>
                         <label for="org_name">Organization Name<span class="cls-requiered">*</span></label>
                     </span>
-                    <small id="field-help" [innerHTML]="tooltipJson.orgName">Type 'a' for hint.</small>
+                    <small id="field-help" [innerHTML]="tooltipJson.orgName"></small>
+                    <small id="field-help" [innerHTML]="vaccinator.value.state === 'HI' ? 'Type `a` for hint.' : ''"></small>
                     <!-- <small id="field-help">Type 'a' for hint.</small> -->
                     <!-- <input id="org_name" type="text" formControlName="orgName" pInputText class="p-inputtext-sm"> -->
                     <mat-error *ngIf="stepTwo && hasError('orgName', 'required')">

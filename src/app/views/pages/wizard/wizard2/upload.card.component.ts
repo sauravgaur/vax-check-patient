@@ -41,7 +41,7 @@ export class UploadCardComponent implements OnInit, AfterViewInit {
   @Output() firstEditedClinic = new EventEmitter<string>();
   @Output() secondEditedClinic = new EventEmitter<string>();
   @Output() updateImageSrc = new EventEmitter<string | ArrayBuffer>();
-  @Output() updateWebImage = new EventEmitter<WebcamImage>();
+  @Output() updateWebImage = new EventEmitter<File>();
 
   constructor(private cd: ChangeDetectorRef) {
   }
@@ -55,14 +55,19 @@ export class UploadCardComponent implements OnInit, AfterViewInit {
 
   public triggerSnapshot(): void {
     this.trigger.next();
+    this.showWebcam = false;
   }
   public get triggerObservable(): Observable<void> {
     return this.trigger.asObservable();
   }
-  public handleImage(webcamImage: WebcamImage): void {
+  public async handleImage(webcamImage: WebcamImage): Promise<void> {
     console.log('received webcam image', webcamImage);
     this.webcamImage = webcamImage;
-    this.updateWebImage.emit(webcamImage);
+    await fetch(this.webcamImage.imageAsDataUrl)
+      .then(response => response.blob())
+      .then(blob => this.updateWebImage
+        .emit(new File([blob], `webcam-image${Date.now()}`, { type: 'image/jpeg', lastModified: Date.now() })));
+    // this.updateWebImage.emit(webcamImage);
     this.cd.markForCheck();
   }
 
@@ -72,12 +77,14 @@ export class UploadCardComponent implements OnInit, AfterViewInit {
       document.getElementById('img_preview')['src'] = '';
       return;
     }
-    console.log('onFileSelect: ', file);
+    // console.log('onFileSelect: ', file);
+    this.updateImageSrc.emit(file);
+    // return;
     this.selectedFiles = [file];
     const reader = new FileReader();
     reader.onload = e => {
-      console.log('reader.result-->', reader.result);
-      this.updateImageSrc.emit(reader.result);
+      // console.log('reader.result-->', reader.result);
+      // this.updateImageSrc.emit(reader.result);
       this.imageSrc = reader.result;
       this.cd.markForCheck();
       // console.log('imageSrc-->', this.imageSrc);

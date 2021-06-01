@@ -5,6 +5,20 @@ import { SelectItem } from 'primeng/api';
     providedIn: 'root'
 })
 export class AppConstants {
+
+    public API_URI = {
+        PAYMENT_STATUS: '/batch/payment-status',
+        SNAPSHOT_UPLOAD: '/media/snapshots',
+        SUPPLIMENT_DOC_UPLOAD: '/media/supplement-doc',
+        PATIENT_BY_ID: '/batch/patient-by-id',
+        HUMAN_API:{
+            CREATE_TOKEN: '/humanapi/create-token',
+            CREATE_ACCESS_TOKEN: '/humanapi/create-access-token'
+        }
+    };
+
+    public PAYMENT_STATUS_API = '/batch/payment-status';
+
     public CONTACT_ITEM: SelectItem[] = [{ label: 'Yes', value: 'YES' },
     { label: 'No', value: 'NO' }];
 
@@ -19,7 +33,7 @@ export class AppConstants {
         },
         {
             label: 'Alaska',
-            value: 'AK'
+            value: 'AL'
         },
         {
             label: 'American Samoa',

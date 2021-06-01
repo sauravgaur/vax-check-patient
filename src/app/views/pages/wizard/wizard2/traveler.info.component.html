@@ -1,4 +1,4 @@
-<div [formGroup]="travelerInfo">
+<form [formGroup]="travelerInfo">
     <!--begin: Form Wizard Step 1-->
     <div class="pb-5" data-wizard-type="step-content" data-wizard-state="current">
         <h4 class="mb-10 font-weight-bold text-dark">Traveler Info</h4>
@@ -62,14 +62,6 @@
                             [dateFormat]="dateProperties.dateFormat" [maxDate]="dateProperties.maxDate"> </p-calendar>
                         <label for="float-input">Date of birth<span class="cls-requiered">*</span></label>
                     </span>
-
-                    <!-- <label for="firstname6">Date of birth<span class="cls-requiered">*</span></label>
-                    <p-calendar [showIcon]="true" inputId="icon" formControlName="dob" required [monthNavigator]="true"
-                        [yearNavigator]="true" [yearRange]="dateProperties.yearRange" 
-                        
-                        [dateFormat]="dateProperties.dateFormat" 
-                        [maxDate]="dateProperties.maxDate">
-                    </p-calendar> -->
                     <mat-error *ngIf="hasError('dob', 'required')">
                         <strong>Required field</strong>
                     </mat-error>
@@ -95,9 +87,6 @@
                     <mat-error *ngIf="hasError('email', 'required')">
                         <strong>Required field</strong>
                     </mat-error>
-                    <!-- <mat-error *ngIf="hasError('email', 'email')">
-                        <strong>Field is not valid</strong>
-                    </mat-error> -->
                     <mat-error *ngIf="hasError('email', 'pattern')">
                         <strong>Field is not valid</strong>
                     </mat-error>
@@ -111,12 +100,6 @@
                         <label for="float-input">Phone Number<span class="cls-requiered">*</span></label>
                     </span>
                     <small id="field-help">{{tooltipJson.contactNumber}}</small>
-                    <!-- <label for="user_contact">Phone Number <span class="cls-requiered">*</span></label>
-                    <p-inputMask mask="9999999999" minLength="10" maxLength="10" 
-                    slotChar='_' [tooltip]="tooltipJson.contactNumber"
-                        [trigger]="'click'" [hideDelayTouchscreen]="3000" [hide-delay]="3000" [animation-duration]="500"
-                        formControlName="contactNumber" required pattern >
-                    </p-inputMask> -->
                     <mat-error *ngIf="hasError('contactNumber', 'required')">
                         <strong>Required field</strong>
                     </mat-error>
@@ -272,4 +255,4 @@
         </div>
     </div>
     <!--end: Form Wizard Step 1-->
-</div>
+</form>

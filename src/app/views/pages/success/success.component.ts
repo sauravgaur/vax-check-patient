@@ -1,14 +1,17 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import * as HumanConnect from "humanapi-connect-client";
 import { environment } from '../../../../environments/environment';
+import { WizardService } from '../wizard/wizard2/wizard.service';
+
 @Component({
-  selector: 'app-success',
+  selector: 'kt-success',
   templateUrl: './success.component.html',
-  styleUrls: ['./success.component.scss']
+  styleUrls: ['./success.component.scss'],
+  providers: [WizardService]
 })
 export class SuccessComponent implements OnInit {
 
-  constructor(private cd: ChangeDetectorRef) { }
+  constructor(private cd: ChangeDetectorRef, private wizardService: WizardService) { }
 
   token = '';
   connectClosed = false;
@@ -44,30 +47,65 @@ export class SuccessComponent implements OnInit {
 
   fetchToken() {
     // create an XHR object
-    const xhr = new XMLHttpRequest();
+    this.token = '';
 
-    // listen for `onload` event
-    xhr.onload = () => {
-      let resp = JSON.parse(xhr.response);
-
-      // process response
-      if (xhr.status === 200) {
-        // parse JSON data
-        this.token = resp.session_token || resp;
-        this.cd.markForCheck();
-
+    this.wizardService.createToken().subscribe((resp: any) => {
+      if (resp.error) {
+        this.wizardService.createAccessToken().subscribe((res: any) => {
+          console.log('response from create access token:', res);
+          this.token = res.id_token;
+          // process.nextTick(() => {
+          //   const event = document.createEvent('Event');
+          //   event.initEvent('load', true, true);
+          //   window.dispatchEvent(event);
+          // });
+          this.isLoading = false;
+          this.button = 'Connect your Health Data';
+          this.cd.markForCheck();
+        },
+        error => {
+          console.log('some error');
+        });
       } else {
-        console.error('Error!');
+        this.token = resp.session_token;
+        // process.nextTick(() => {
+        //   const event = document.createEvent('Event');
+        //   event.initEvent('load', true, true);
+        //   window.dispatchEvent(event);
+        // });
+        this.isLoading = false;
+        this.button = 'Connect your Health Data';
+        this.cd.markForCheck();
       }
-      this.isLoading = false;
-      this.button = 'Connect your Health Data';
-    };
-
-    // create a `GET` request
-    xhr.open('POST', environment.api_url + '/humanapi/create-token');
-
-    // send request
-    xhr.send();
+    },
+    error => {
+      console.log('Some error');
+    });
+    console.log('token:', this.token);
+    // const xhr = new XMLHttpRequest();
+    // xhr.onload = () => {
+    //   const resp = JSON.parse(xhr.response);
+    //   if (xhr.status === 200) {
+    //     if (resp.error) {
+    //       console.log('in resp.error:', resp);
+    //       this.wizardService.createAccessToken().subscribe((res: any) => {
+    //         console.log('response from create access token:', res);
+    //         this.token = res.accessToken;
+    //         this.cd.markForCheck();
+    //       });
+    //     } else {
+    //       this.token = resp.session_token ? resp.session_token : '';
+    //       console.log('token:', this.token);
+    //       this.cd.markForCheck();
+    //     }
+    //   } else {
+    //     console.error('Error!');
+    //   }
+    //   this.isLoading = false;
+    //   this.button = 'Connect your Health Data';
+    // };
+    // xhr.open('POST', environment.api_url + '/humanapi/create-token');
+    // xhr.send();
   }
 
 }

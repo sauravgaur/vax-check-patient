@@ -12,9 +12,8 @@
 </div> -->
 <kt-portlet>
 	<kt-portlet-body>
-		<p-dialog header="Secure Payment" [(visible)]="display" [breakpoints]="{'960px': '75vw', '640px': '100vw'}"
+		<!-- <p-dialog header="Secure Payment" [(visible)]="display" [breakpoints]="{'960px': '75vw', '640px': '100vw'}"
 			[style]="{width: '50vw'}">
-			<!-- <div class="card"> -->
 			<div class="p-d-flex">
 				<div class="photo">
 					<img src="./assets/media/logos/VAXChecks-logo.png" title="" alt="">
@@ -35,9 +34,8 @@
 							class="p-button-outlined p-button-success p-button-raised p-button-rounded"></button>
 					</div>
 				</div>
-				<!-- <button (click)="checkout()">Checkout</button> -->
 			</div>
-		</p-dialog>
+		</p-dialog> -->
 		<!-- <button type="button" (click)="showDialog()" icon="pi pi-info-circle" label="Show">Show</button> -->
 		<img src="./assets/media/logos/VAXChecks-logo.png" title="" alt=""
 			style="right: 5%; width: 5.5%; position: absolute;">
@@ -134,14 +132,15 @@
 				<div class="">
 					<div class="offset-xxl-12">
 						<!--begin: Form Wizard Form-->
-						<form class="form" id="kt_form" novalidate="novalidate" [formGroup]="patientForm">
+						<form class="form" id="kt_form" autocomplete="off" novalidate="novalidate" [formGroup]="patientForm">
 							<kt-traveler-info [travelerInfo]="patientForm" [tooltipJson]="tooltipJson"
 							[mailformat]="mailFormat"
 								[dateProperties]="dateProperties" [isControlHasError]=isControlHasError>
 							</kt-traveler-info>
 							<kt-vaccinator [vaccinator]="patientForm" [tooltipJson]="tooltipJson" [mailformat]="mailFormat"
 								[dateProperties]="dateProperties" [isControlHasError]=isControlHasError
-								[stepTwo]="stepTwo"></kt-vaccinator>
+								[stepTwo]="stepTwo"
+								(orgNameChange)="orgNameTextChange($event)"></kt-vaccinator>
 							<kt-upload-card [uploadCardForm]="patientForm" [tooltipJson]="tooltipJson"
 								[lastInputText]="lastInputText" [firstInputText]="firstInputText"
 								[firstClinicName]="firstClinicName" [secondClinicName]="secondClinicName"
@@ -251,7 +250,7 @@
 									<button class="btn btn-success font-weight-bold text-uppercase px-9 py-4 fa" 
 									data-wizard-type="action-submit"
 									[disabled]="isLoading" (click)="onSubmit()"><i
-											[ngClass]="{'fa fa-spinner': isLoading, 'pi pi-check': !isLoading}"></i>
+									[class]="isLoading ? 'pi pi-spin pi-spinner' : 'pi pi-check'"></i>
 										{{button}}</button>
 
 									<!-- <div (click)="onSubmit()"

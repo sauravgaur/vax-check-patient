@@ -120,16 +120,25 @@ p {
 }
 
 .p-fluid .p-buttonset {
-  height: 3.2rem;
+  height: 3.3rem;
 }
 
 #field-help {
   font-style: italic;
   display: block;
-  color: rgb(53,64,198);
+  color: rgb(53, 64, 198);
   font-weight: 600;
 }
 
 body .ui-datepicker table {
   font-size: 10px !important;
+}
+
+@media (min-width: 768px) {
+  .p-md-4 {
+    padding: 1.5rem !important;
+  }
+  .p-md-12 {
+    padding: 1.5rem !important;
+  }
 }

@@ -8,7 +8,7 @@ import { BaseComponent } from './views/theme/base/base.component';
 import { AuthGuard } from './core/auth';
 
 const routes: Routes = [
-  // {path: 'auth', loadChildren: () => import('./views/pages/auth/auth.module').then(m => m.AuthModule)},
+  {path: 'corporate', loadChildren: () => import('./views/pages/auth/auth.module').then(m => m.AuthModule)},
   // {path: 'error', loadChildren: () => import('./views/pages/error/error.module').then(m => m.ErrorModule)},
   {
     path: '',
@@ -29,7 +29,15 @@ const routes: Routes = [
         loadChildren: () => import('./views/pages/failure/failure.module').then(m => m.FailureModule),
       },
       {
+        path: 'corporate',
+        loadChildren: () => import('./views/pages/corporate/login.module').then(m => m.LoginModule),
+      },
+      {
           path: '',
+          loadChildren: () => import('./views/pages/wizard/wizard.module').then(m => m.WizardModule),
+        },
+        {
+          path: 'profile',
           loadChildren: () => import('./views/pages/wizard/wizard.module').then(m => m.WizardModule),
         },
       // {

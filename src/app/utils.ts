@@ -1,3 +1,4 @@
+import { FormGroup } from '@angular/forms';
 import moment from 'moment';
 
 export default class Utils {
@@ -9,5 +10,13 @@ export default class Utils {
     }
     static formatToUSStandared(date: Date): string {
         return moment(date).format('YYYY-MM-DD');
+    }
+    static hasError(pageForm: FormGroup, controlName: string, validationType: string): boolean {
+        const control = pageForm.controls[controlName];
+        if (!control) {
+            return false;
+        }
+        const result = control.hasError(validationType) && (control.dirty || control.touched);
+        return result;
     }
 }

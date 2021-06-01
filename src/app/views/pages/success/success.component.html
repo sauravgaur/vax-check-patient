@@ -65,12 +65,13 @@
                         <h5 style="text-align: center;">
                             <div class="hapi__token-container">
                                 <div *ngIf="!connectClosed">
-
+                                    
                                     <button *ngIf="buttonHumanFlg" pButton pRipple [label]="button"
                                     class="p-button-outlined p-button-success p-button-raised p-button-rounded"
 									[attr.data-hapi-token]="token"
-									[disabled]="isLoading" (click)="onSubmit()"><i
-											[ngClass]="{'fa fa-spinner': isLoading, 'pi pi-check': !isLoading}"></i>
+									[disabled]="isLoading"><i [class]="isLoading ? 'pi pi-spin pi-spinner' : 'pi pi-check'"
+											></i>&nbsp;
+                                            <!-- [class]="{'pi pi-spin pi-spinner': isLoading, 'pi pi-check': !isLoading}" -->
 									</button>
 
                                     <!-- <button *ngIf="buttonHumanFlg" pButton pRipple label="Connect your Health Data"
