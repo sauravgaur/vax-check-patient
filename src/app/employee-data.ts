@@ -10,7 +10,7 @@ export class EmpData {
             lastName: 'Smith',
             Employee_ID: '3345',
             gender: 'FEMALE',
-            dateOfBirth: '10-24-1994',
+            dateOfBirth: '01-01-1990',
             email: 'eztest.smith@gmail.com',
             contactNumber: '4157896543',
             address1: '121 State St.',
