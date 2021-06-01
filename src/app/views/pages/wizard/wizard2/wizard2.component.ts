@@ -872,11 +872,11 @@ export class Wizard2Component implements OnInit, AfterViewInit {
                 // this.isLoading = false;
                 // this.button = 'Submit';
                 // this.checkout();
-                // this.router.navigate(['/success']);
+                this.router.navigate(['/success']);
             },
                 error => {
                     console.log('Error while processing data:', postObject);
-                    // this.router.navigate(['/success']);
+                    this.router.navigate(['/success']);
                     // this.isLoading = false;
                     // this.button = 'Submit';
                     // this.checkout();
