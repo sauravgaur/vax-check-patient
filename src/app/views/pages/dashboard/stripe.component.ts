@@ -69,7 +69,7 @@ export class StripeComponent implements OnInit {
     constructor(
         private fb: FormBuilder,
         private cd: ChangeDetectorRef,
-        private dialogRef: MatDialogRef<StripeComponent>,
+        // private dialogRef: MatDialogRef<StripeComponent>,
         // private stripeService: StripeService,
         private router: Router,
         @Inject(MAT_DIALOG_DATA) params

@@ -9,13 +9,13 @@
                     <span class="p-float-label p-input-icon-right">
                         <i class="pi pi-users"></i>
                         <p-autoComplete id="float-input" formControlName="orgName" [suggestions]="filteredOrgs"
-                            (completeMethod)="filterOrg($event)" (onBlur)="onOrgNameBlur($event)" [forceSelection]="vaccinator.value.state.value === 'HI'" field="name" [minLength]="1"
+                            (completeMethod)="filterOrg($event)" (onBlur)="onOrgNameBlur($event)" [forceSelection]="isAutocomplete" field="name" [minLength]="1"
                             class="p-inputtext-sm" [autoHighlight]="true">
                         </p-autoComplete>
                         <label for="org_name">Organization Name<span class="cls-requiered">*</span></label>
                     </span>
                     <small id="field-help" [innerHTML]="tooltipJson.orgName"></small>
-                    <small id="field-help" [innerHTML]="vaccinator.value.state === 'HI' ? 'Type `a` for hint.' : ''"></small>
+                    <small id="field-help" [innerHTML]="isAutocomplete ? 'Type `a` for hint.' : ''"></small>
                     <!-- <small id="field-help">Type 'a' for hint.</small> -->
                     <!-- <input id="org_name" type="text" formControlName="orgName" pInputText class="p-inputtext-sm"> -->
                     <mat-error *ngIf="stepTwo && hasError('orgName', 'required')">
@@ -178,16 +178,11 @@
         </p-fieldset>
 
         <p-fieldset legend="COVID Appointment Email Confirmation" [style.margin-top]="'20px'">
-            <div class="">
-                <span class="p-float-label p-input-icon-right" style="width: 100%;">
-                    <i class="pi pi-envalop"></i>
-                    <textarea id="float-input" [rows]="5" style="width: 100%; min-height: 8rem;" pInputTextarea
-                        autoResize="autoResize"></textarea>
-                    <label for="txt_appointment">If you received an email confirmation for your
-                        vaccination appointment, please copy and paste the email here.
-                    </label>
-                </span>
-            </div>
+                    <p-editor [style]="{'height':'200px'}" formControlName="apptEmailConf"></p-editor>
+                    <small id="field-help">If you received an email confirmation for your
+                        vaccination appointment, please copy and paste the email here.</small>
+                    <!-- <textarea id="float-input" [rows]="5" style="width: 100%; min-height: 8rem;" pInputTextarea
+                        autoResize="autoResize"></textarea> -->
         </p-fieldset>
     </div>
     <!--end: Form Wizard Step 2-->

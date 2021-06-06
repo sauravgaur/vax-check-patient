@@ -118,6 +118,17 @@ export class LoginComponent implements OnInit, OnDestroy {
 			corporateId: new FormControl('', Validators.required)
 		});
 
+		// this.corporateForm = this.fb1.group({
+		// 	firstName: new FormControl('ab', Validators.compose([Validators.required, Validators.pattern('^[ A-Za-z-.,]*$')])),
+		// 	middleName: new FormControl('ab', Validators.pattern('^[ A-Za-z-.,]*$')),
+		// 	lastName: new FormControl('ab', Validators.compose([Validators.required, Validators.pattern('^[ A-Za-z-.,]*$')])),
+		// 	dob: new FormControl(new Date('2021-04-01'), Validators.required),
+		// 	email: new FormControl('a@a.com', Validators.compose([Validators.required, Validators.pattern(this.mailFormat)])),
+		// 	contactNumber: new FormControl('1231231231',
+		// 		Validators.compose([Validators.required, Validators.minLength(10), Validators.maxLength(10)])),
+		// 	corporateId: new FormControl('7890', Validators.required)
+		// });
+
 		// redirect back to the returnUrl before login
 		this.route.queryParams.subscribe(params => {
 			this.returnUrl = params.returnUrl || '/traveler/registration';
@@ -222,89 +233,90 @@ export class LoginComponent implements OnInit, OnDestroy {
 			};
 			localStorage.setItem(LOCAL_STORAGE_KEYS[LOCAL_STORAGE_KEYS.LOGIN_FORM_DATA], JSON.stringify(this.corporateForm.value));
 			console.log('Utils.formatToUSStandared(x.dateOfBirth):', formObj.dateOfBirth);
-			const findEmp = this.empData.find((x: any) => formObj.firstName == x.firstName && formObj.lastName == x.lastName
-				&& formObj.dateOfBirth == Utils.formatToUSStandared(x.dateOfBirth)
-				&& formObj.contactNumber == x.contactNumber
-				&& formObj.email == x.email);
-			if (findEmp) {
-				const address: IPatientAddress = {
-					street_address: findEmp.address1,
-					street_address2: findEmp.address2,
-					state: findEmp.state,
-					zip_code: findEmp.zipcode,
-					city: findEmp.city
-				};
+			// const findEmp = this.empData.find((x: any) => formObj.firstName == x.firstName && formObj.lastName == x.lastName
+			// 	&& formObj.dateOfBirth == Utils.formatToUSStandared(x.dateOfBirth)
+			// 	&& formObj.contactNumber == x.contactNumber
+			// 	&& formObj.email == x.email);
+			// if (findEmp) {
+			// 	const address: IPatientAddress = {
+			// 		street_address: findEmp.address1,
+			// 		street_address2: findEmp.address2,
+			// 		state: findEmp.state,
+			// 		zip_code: findEmp.zipcode,
+			// 		city: findEmp.city
+			// 	};
 
-				const profiles: IProfile = {
-					name: {
-						first_name: findEmp.firstName,
-						middle_name: findEmp.middleName ? findEmp.middleName : this.corporateForm.get('middleName').value,
-						last_name: findEmp.lastName
-					},
-					sex: findEmp.gender,
-					email_address: findEmp.email,
-					date_of_birth: moment(findEmp.dateOfBirth, 'MM-DD-YYYY').format('YYYY-MM-DD'),
-					access_code: this.corporateForm.get('corporateId').value,
-					address, mobile_number: findEmp.contactNumber,
-					mobile_number2: findEmp.contactNumber2
-				};
-				localStorage.setItem(LOCAL_STORAGE_KEYS[LOCAL_STORAGE_KEYS.LOGIN_RESPONSE_DATA], JSON.stringify({ profiles }));
-				setTimeout(() => {
-					this.router.navigateByUrl('/corporate/profile');
-				}, 1000);
-			} else {
-				setTimeout(() => {
-					this.message = 'Employee not found !';
-					this.type = 'danger';
-					this.isSubmitted = false;
-					this.buttonLabel = 'Log In';
-					this.cdr.markForCheck();
-				}, 1000);
-			}
-
-
-			// this.wizardService.isExists(formObj).subscribe((res: ITravelerExists) => {
-			// 	res.profile_skyflow_id = 'f4a90203-c091-11eb-afac-6e8fbbfa3e7b';
-			// 	if (res.profile_skyflow_id) {
-			// 		this.wizardService.patientById(res.profile_skyflow_id).subscribe((resp: any) => {
-			// 			if (resp.records.length > 0) {
-			// 				const profiles: IProfile = resp.records[0].profiles;
-			// 				const vaccinations: IVaccinations = resp.records[0].vaccinations;
-			// 				console.log('profile:', profiles);
-			// 				console.log('vaccinations: ', vaccinations);
-			// 				localStorage.setItem(LOCAL_STORAGE_KEYS[LOCAL_STORAGE_KEYS.LOGIN_RESPONSE_DATA], JSON.stringify({ profiles, vaccinations }));
-			// 				this.router.navigateByUrl('/corporate/profile');
-			// 			} else {
-			// 				this.message = 'Employee exists, but details not found !';
-			// 				this.type = 'danger';
-			// 				this.isSubmitted = false;
-			// 				this.buttonLabel = 'Log In';
-			// 				this.cdr.markForCheck();
-			// 			}
+			// 	const profiles: IProfile = {
+			// 		name: {
+			// 			first_name: findEmp.firstName,
+			// 			middle_name: findEmp.middleName ? findEmp.middleName : this.corporateForm.get('middleName').value,
+			// 			last_name: findEmp.lastName
 			// 		},
-			// 			error => {
-			// 				this.message = 'Something went wrong, please try again.';
-			// 				this.type = 'danger';
-			// 				this.isSubmitted = false;
-			// 				this.buttonLabel = 'Log In';
-			// 				this.cdr.markForCheck();
-			// 			});
-			// 	} else {
-			// 		// this.authNoticeService.setNotice(this.translate.instant('AUTH.VALIDATION.EMPLOYEE_NOT_FOUND'), 'danger');
+			// 		sex: findEmp.gender,
+			// 		email_address: findEmp.email,
+			// 		date_of_birth: moment(findEmp.dateOfBirth, 'MM-DD-YYYY').format('YYYY-MM-DD'),
+			// 		access_code: this.corporateForm.get('corporateId').value,
+			// 		address, mobile_number: findEmp.contactNumber,
+			// 		mobile_number2: findEmp.contactNumber2,
+			// 		org_id: this.corporateForm.get('corporateId').value
+			// 	};
+			// 	localStorage.setItem(LOCAL_STORAGE_KEYS[LOCAL_STORAGE_KEYS.LOGIN_RESPONSE_DATA], JSON.stringify({ profiles }));
+			// 	setTimeout(() => {
+			// 		this.router.navigateByUrl('/corporate/profile');
+			// 	}, 1000);
+			// } else {
+			// 	setTimeout(() => {
 			// 		this.message = 'Employee not found !';
 			// 		this.type = 'danger';
 			// 		this.isSubmitted = false;
 			// 		this.buttonLabel = 'Log In';
 			// 		this.cdr.markForCheck();
-			// 	}
-			// },
-			// 	error => {
-			// 		this.message = 'Something went wrong, please try again.';
-			// 		this.type = 'danger';
-			// 		this.isSubmitted = false;
-			// 		this.buttonLabel = 'Log In';
-			// 		this.cdr.markForCheck();
-			// 	});
+			// 	}, 1000);
+			// }
+
+
+			this.wizardService.isExists(formObj).subscribe((res: ITravelerExists) => {
+				// res.profiles_skyflow_id = 'f4a90203-c091-11eb-afac-6e8fbbfa3e7b';
+				if (res.profiles_skyflow_id) {
+					this.wizardService.patientById(res.profiles_skyflow_id).subscribe((resp: any) => {
+						if (resp.records.length > 0) {
+							const profiles: IProfile = resp.records[0].profiles;
+							const vaccinations: IVaccinations = resp.records[0].vaccinations;
+							console.log('profile:', profiles);
+							console.log('vaccinations: ', vaccinations);
+							localStorage.setItem(LOCAL_STORAGE_KEYS[LOCAL_STORAGE_KEYS.LOGIN_RESPONSE_DATA], JSON.stringify({ profiles, vaccinations }));
+							this.router.navigateByUrl('/corporate/profile');
+						} else {
+							this.message = 'Employee exists, but details not found !';
+							this.type = 'danger';
+							this.isSubmitted = false;
+							this.buttonLabel = 'Log In';
+							this.cdr.markForCheck();
+						}
+					},
+						error => {
+							this.message = 'Something went wrong, please try again.';
+							this.type = 'danger';
+							this.isSubmitted = false;
+							this.buttonLabel = 'Log In';
+							this.cdr.markForCheck();
+						});
+				} else {
+					// this.authNoticeService.setNotice(this.translate.instant('AUTH.VALIDATION.EMPLOYEE_NOT_FOUND'), 'danger');
+					this.message = 'Employee not found !';
+					this.type = 'danger';
+					this.isSubmitted = false;
+					this.buttonLabel = 'Log In';
+					this.cdr.markForCheck();
+				}
+			},
+				error => {
+					this.message = 'Something went wrong, please try again.';
+					this.type = 'danger';
+					this.isSubmitted = false;
+					this.buttonLabel = 'Log In';
+					this.cdr.markForCheck();
+				});
 		}
 	}
 

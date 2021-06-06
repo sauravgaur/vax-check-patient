@@ -84,7 +84,6 @@ export class Wizard2Component implements OnInit, AfterViewInit {
     display = false;
     messageContent = '';
     messageSeverity = '';
-    stripePromise = loadStripe(environment.stripe_key);
     yearRange: any;
     dateProperties: IDateProperties;
     firstInputText: string;
@@ -102,6 +101,7 @@ export class Wizard2Component implements OnInit, AfterViewInit {
     mailFormat = '^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$';
     skyflowId: string;
     forceSelection = false;
+    isLoadingNext = false;
     constructor(
         private cd: ChangeDetectorRef,
         private http: HttpClient,
@@ -115,7 +115,6 @@ export class Wizard2Component implements OnInit, AfterViewInit {
         private constants: AppConstants,
         private wizardService: WizardService,
     ) {
-        this.stateList = this.constants.STATES;
         this.dateProperties = {
             dateFormat: 'mm-dd-yy',
             maxDate: new Date(),
@@ -131,8 +130,10 @@ export class Wizard2Component implements OnInit, AfterViewInit {
     inputs: any;
     token = '';
     connectClosed = false;
+    isCorporalteUser: boolean;
     ngOnInit() {
-
+        this.stateList = this.constants.STATES;
+        this.isCorporalteUser = false;
         localStorage.removeItem('travelerData');
         // this.patientForm = this.fb1.group({
         //     id: new FormControl(''),
@@ -147,7 +148,7 @@ export class Wizard2Component implements OnInit, AfterViewInit {
         //     address2: new FormControl('test'),
         //     city: new FormControl('test', Validators.required),
         //     zipcode: new FormControl('12323', Validators.required),
-        //     state: new FormControl('AL', Validators.required),
+        //     state: new FormControl('', Validators.required),
         //     resedenceItem: new FormControl('YES'),
         //     islandItem: new FormControl(''),
         //     contactNumber: new FormControl('1231231231',
@@ -155,7 +156,7 @@ export class Wizard2Component implements OnInit, AfterViewInit {
         //     contactNumber2: new FormControl('',
         //         Validators.compose([Validators.minLength(10), Validators.maxLength(10)])),
         //     contactOption: new FormControl('YES', Validators.required),
-        //     orgName: new FormControl({ name: 'CVS/Long Drugs', value: 'CVS/Long Drugs' }),
+        //     orgName: new FormControl({ name: 'CVS/Long Drugs', type: 'HAPI' }),
         //     orgAddress1: new FormControl('a'),
         //     orgAddress2: new FormControl('334'),
         //     orgCity: new FormControl('a'),
@@ -168,7 +169,8 @@ export class Wizard2Component implements OnInit, AfterViewInit {
         //     orgDose1: new FormControl(new Date('2021-04-01')),
         //     orgDose2: new FormControl(new Date('2021-05-05')),
         //     travelDateToHawaii: new FormControl(''),
-        //     consent: new FormControl(true)
+        //     consent: new FormControl(true),
+        //     apptEmailConf: new FormControl('test')
         // });
 
         this.patientForm = this.fb1.group({
@@ -204,7 +206,8 @@ export class Wizard2Component implements OnInit, AfterViewInit {
             orgDose1: new FormControl(),
             orgDose2: new FormControl(),
             travelDateToHawaii: new FormControl(''),
-            consent: new FormControl()
+            consent: new FormControl(),
+            apptEmailConf: new FormControl('')
         });
 
         // this.stateItem = this.constants.STATES;
@@ -229,6 +232,7 @@ export class Wizard2Component implements OnInit, AfterViewInit {
         console.log('data in prefilled form', data);
         const profiles: IProfile = data.profiles;
         const vaccinations: IVaccinations = data.vaccinations;
+        this.isCorporalteUser = true;
         this.patientForm.controls.firstName.setValue(profiles.name.first_name);
         this.patientForm.controls.middleName.setValue(profiles.name.middle_name);
         this.patientForm.controls.lastName.setValue(profiles.name.last_name);
@@ -236,7 +240,9 @@ export class Wizard2Component implements OnInit, AfterViewInit {
         this.patientForm.controls.address1.setValue(profiles.address.street_address);
         this.patientForm.controls.address2.setValue(profiles.address?.street_address2);
         this.patientForm.controls.city.setValue(profiles.address.city);
-        this.patientForm.controls.state.setValue(profiles.address.state);
+        if (this.stateList.map((x: any) => x.value).includes(profiles.address.state)) {
+            this.patientForm.controls.state.setValue(profiles.address.state);
+        }
         this.patientForm.controls.zipcode.setValue(profiles.address.zip_code);
         this.patientForm.controls.email.setValue(profiles.email_address);
         this.patientForm.controls.contactNumber.setValue(profiles.mobile_number);
@@ -339,17 +345,10 @@ export class Wizard2Component implements OnInit, AfterViewInit {
             }).toPromise();
         console.log('session:', getSession);
         // When the customer clicks on the button, redirect them to Checkout.
-        const stripe = await this.stripePromise;
+        const stripe = await loadStripe(environment.stripe_key);
         const { error } = await stripe.redirectToCheckout({
             sessionId: getSession.sessionId,
-            // mode: 'payment',
-            // lineItems: [{ price: this.priceId, quantity: this.quantity }],
-            // successUrl: `${window.location.href}/success`,
-            // cancelUrl: `${window.location.href}/failure`,
         });
-        // If `redirectToCheckout` fails due to a browser or network
-        // error, display the localized error message to your customer
-        // using `error.message`.
         if (error) {
             console.log(error);
         }
@@ -387,10 +386,27 @@ export class Wizard2Component implements OnInit, AfterViewInit {
         // Validation before going to next page
 
         wizard.on('beforeNext', async (wizardObj) => {
+            wizardObj.stop();
+
             console.log('before next', this.patientForm.value);
             this.isFormSubmitted = true;
+            console.log('patient form:', this.patientForm.value);
+            const controls = this.patientForm.controls;
+            Object.keys(controls).forEach(controlName => {
+                controls[controlName].markAsTouched();
+                controls[controlName].markAsDirty();
+            });
+            Object.keys(this.patientForm.controls).forEach(key => {
+                const controlErrors: ValidationErrors = this.patientForm.get(key).errors;
+                if (controlErrors != null) {
+                    Object.keys(controlErrors).forEach(keyError => {
+                        console.log('Key control: ' + key + ', keyError: ' + keyError + ', err value: ', controlErrors[keyError]);
+                    });
+                }
+            });
             console.log('wizard obj in before next:', wizardObj, wizardObj.getStep());
             this.showWebcam = false;
+            this.isLoadingNext = true;
             if (wizardObj.currentStep === 1) {
                 this.stepOne = true;
                 this.stepTwo = false;
@@ -431,88 +447,75 @@ export class Wizard2Component implements OnInit, AfterViewInit {
                 this.patientForm.get('consent').setValidators(null);
                 this.patientForm.get('consent').setErrors(null);
 
-                // if (wizardObj.currentStep === 2) {
-                // if (!this.lastInputText && !this.firstInputText) {
-
-
-                // } else {
-                //     this.patientForm.get('firstName').setValue(this.firstInputText);
-                //     this.patientForm.get('lastName').setValue(this.lastInputText);
-                // }
-
-                // }
                 if (this.patientForm.valid) {
-                    console.log('after form valid');
+                    if (!this.isCorporalteUser) {
+                        console.log('in check curretn step: 1');
+                        this.wizardService.isExists({
+                            firstName: this.patientForm.get('firstName').value,
+                            lastName: this.patientForm.get('lastName').value,
+                            middleName: this.patientForm.get('middleName').value,
+                            dateOfBirth: Utils.formatToUSStandared(this.patientForm.get('dob').value),
 
-                    // const checkTravelerExists =
-                    //     await this.http.post<ITravelerExists>(`${environment.api_url}${this.constants.API_URI.PAYMENT_STATUS}`, {
-                    //         firstName: this.patientForm.get('firstName').value,
-                    //         lastName: this.patientForm.get('lastName').value,
-                    //         middleName: this.patientForm.get('middleName').value,
-                    //         dateOfBirth: this.patientForm.get('dob').value
-                    //     }).toPromise();
-                    // console.log('checkTravelerExists: ', checkTravelerExists);
-                    // if (checkTravelerExists.isTravelerExists) {
-                    //     console.log('in user exists');
-                    //     if (checkTravelerExists.isPaymentDone) {
-                    //         console.log('payment done');
-                    //     }
-                    //     wizardObj.stop();
-                    //     this.cd.markForCheck();
-                    //     return;
+                        }).subscribe((resp: ITravelerExists) => {
+                            console.log('in subscribe: resp : ', resp);
+                            if (resp.isTravelerExists) {
+                                if (resp.isPaymentDone) {
+                                    alert('Traveler is already registered. Payment has been done successfully for this traveler!');
+                                } else {
+                                    try {
+                                        this.skyflowId = resp.profiles_skyflow_id;
+                                        this.checkout();
+                                    } catch (error) {
+                                        this.isLoadingNext = true;
+                                        console.log('in check out error');
+                                        alert('Something went wrong, please try again.');
+                                    }
+                                }
+                            } else {
+                                this.isLoadingNext = false;
+                                wizard.goNext();
+                            }
+                            this.cd.markForCheck();
+                        }, error => {
+                            this.isLoadingNext = false;
+                            wizard.goNext();
 
-                    // } else {
-                    //     console.log('in user not exists');
-                    // }
+                        });
+                    } else {
+                        this.isLoadingNext = false;
+                        wizard.goNext();
+                    }
+                } else {
+                    this.isLoadingNext = false;
+                    // wizard.goNext();
                 }
                 console.log('after if of validate form');
             } else if (wizardObj.currentStep === 2) {
                 this.stepTwo = true;
+                this.isLoadingNext = false;
+                if (this.patientForm.valid) {
+                    wizard.goNext();
+                }
             } else if (wizardObj.currentStep === 3) {
-                // this.patientForm.get('consent').setValidators(Validators.required);
-                // this.patientForm.get('consent').updateValueAndValidity();
-                // this.tab3Pressed == true;
+                this.tab3Pressed = true;
                 if (!this.firstInputText || !this.lastInputText || !this.firstClinicName || !this.patientForm.valid
                     || (this.patientForm.get('orgDose2').value && !this.secondClinicName)
                     || ((!this.webcamImage && !this.imageSrc))) {
-                    this.tab3Pressed = true;
-                    wizardObj.stop();
                     this.cd.markForCheck();
+                    this.isLoadingNext = false;
                     return;
+                } else {
+                    this.tab3Pressed = false;
+                    this.isLoadingNext = false;
+                    wizard.goNext();
                 }
             } else if (wizardObj.currentStep === 4) {
                 this.showWebcam = false;
+                wizard.goNext();
+                this.isLoadingNext = false;
             }
-            this.tab3Pressed = false;
             this.patientForm.updateValueAndValidity();
-            console.log('patient form:', this.patientForm.value);
-            const controls = this.patientForm.controls;
-            // if (this.patientForm.invalid) {
-            Object.keys(controls).forEach(controlName => {
-                controls[controlName].markAsTouched();
-                controls[controlName].markAsDirty();
-            }
-            );
-            // }
             this.cd.markForCheck();
-            Object.keys(this.patientForm.controls).forEach(key => {
-                const controlErrors: ValidationErrors = this.patientForm.get(key).errors;
-                if (controlErrors != null) {
-                    Object.keys(controlErrors).forEach(keyError => {
-                        console.log('Key control: ' + key + ', keyError: ' + keyError + ', err value: ', controlErrors[keyError]);
-                    });
-                }
-            });
-            // return;
-            // }
-            if (this.patientForm.valid) {
-                wizardObj.goNext();
-            } else { wizardObj.stop(); }
-            // https://angular.io/guide/forms
-            // https://angular.io/guide/form-validation
-
-            // validate the form and use below function to stop the wizard's step
-            // wizardObj.stop();
         });
 
         // Change event
@@ -524,14 +527,11 @@ export class Wizard2Component implements OnInit, AfterViewInit {
                 KTUtil.scrollTop();
             }, 500);
             this.changeStep = wizardObj.currentStep;
-            if (wizardObj.currentStep === 2) {
-
-                this.lastInputText = this.patientForm.get('lastName').value;
-                this.lastNameInputControl.setValue(this.lastInputText);
-
-                this.firstInputText = this.patientForm.get('firstName').value;
-                this.firstNameInputControl.setValue(this.firstInputText);
-
+            console.log('before check steps');
+            if (wizardObj.currentStep === 1) {
+            }
+            else if (wizardObj.currentStep === 2) {
+                console.log('after setting first and last name:', this.lastInputText, this.firstInputText);
                 this.stepOne = true;
                 this.stepTwo = false;
 
@@ -579,19 +579,49 @@ export class Wizard2Component implements OnInit, AfterViewInit {
                 this.patientForm.get('orgEmail').setValidators(Validators.compose([Validators.pattern(this.mailFormat), Validators.email]));
                 this.patientForm.get('orgEmail').updateValueAndValidity();
                 this.patientForm.get('orgEmail').markAsPristine();
+                this.cd.markForCheck();
             }
             else if (wizardObj.currentStep === 3) {
+                this.lastInputText = this.patientForm.get('lastName').value;
+                this.lastNameInputControl.setValue(this.lastInputText);
+
+                this.firstInputText = this.patientForm.get('firstName').value;
+                this.firstNameInputControl.setValue(this.firstInputText);
                 // this.patientForm.get('consent').setErrors(null);
                 this.patientForm.get('consent').setValidators(Validators.requiredTrue);
                 this.patientForm.get('consent').updateValueAndValidity();
                 this.patientForm.get('consent').markAsPristine();
+                if (!this.firstClinicName) {
+                    const orgVal = this.patientForm.get('orgName').value;
+                    if (orgVal) {
+                        if (orgVal.name) {
+                            this.firstClinicName = orgVal.name;
+                        } else {
+                            this.firstClinicName = orgVal;
+                        }
+                    } else {
+                        this.firstClinicName = '';
+                    }
+                }
 
-                this.firstClinicName = this.firstClinicName ? this.firstClinicName :
-                    (this.patientForm.get('orgDose1').value ? this.patientForm.get('orgName').value.name : '');
+                // this.firstClinicName = this.firstClinicName ? this.firstClinicName :
+                //     (this.patientForm.get('orgDose1').value ? this.patientForm.get('orgName').value.name : '');
                 this.firstClinicNameInputControl.setValue(this.firstClinicName);
 
-                this.secondClinicName = this.secondClinicName ? this.secondClinicName :
-                    (this.patientForm.get('orgDose2').value ? this.patientForm.get('orgName').value.name : '');
+                if (!this.secondClinicName) {
+                    const orgVal = this.patientForm.get('orgName').value;
+                    if (orgVal) {
+                        if (orgVal.name) {
+                            this.secondClinicName = orgVal.name;
+                        } else {
+                            this.secondClinicName = orgVal;
+                        }
+                    } else {
+                        this.secondClinicName = '';
+                    }
+                }
+                // this.secondClinicName = this.secondClinicName ? this.secondClinicName :
+                //     (this.patientForm.get('orgDose2').value ? this.patientForm.get('orgName').value.name : '');
                 this.secondClinicNameInputControl.setValue(this.secondClinicName);
 
                 this.doseReceived = this.patientForm.get('orgDose2').value ? 2 : 1;
@@ -624,13 +654,14 @@ export class Wizard2Component implements OnInit, AfterViewInit {
                 this.imageToTextResponse.firstDose = this.patientForm.get('orgManufacturer').value;
                 this.imageToTextResponse.secondDose = this.patientForm.get('orgManufacturer').value;
             }
-            if (wizardObj.currentStep === 4) {
+            else if (wizardObj.currentStep === 4) {
                 this.showWebcam = false;
                 this.patientForm.get('firstName').setValue(this.firstInputText ?
                     this.firstInputText : this.patientForm.get('firstName').value);
                 this.patientForm.get('lastName').setValue(this.lastInputText ?
                     this.lastInputText : this.patientForm.get('lastName').value);
             }
+            console.log('after check step done');
             this.cd.markForCheck();
         });
     }
@@ -667,27 +698,44 @@ export class Wizard2Component implements OnInit, AfterViewInit {
     }
 
     listenToOrgChange(selectedValue) {
-        console.log('listen to org change:', selectedValue)
+        console.log('listen to org change:', selectedValue);
         this.submitButton = { id: 1, value: 'Submit' };
         this.messageSeverity = '';
         this.messageContent = '';
         if (!selectedValue) {
             this.patientForm.get('orgName').setValidators(Validators.required);
             this.patientForm.get('orgName').updateValueAndValidity({ emitEvent: false, onlySelf: true });
-        } else if (selectedValue.value?.toUpperCase().includes('HPH')) {
+        } else if (selectedValue.type?.toUpperCase() === 'EXTERNAL') {
             this.submitButton = { id: 1, value: 'Submit' };
-        } else if (selectedValue.value?.toUpperCase().includes('CVS')) {
+        } else if (selectedValue.type?.toUpperCase() === 'HAPI') {
             this.submitButton = { id: 2, value: 'Start Verification' };
-        } else {
-            this.submitButton = { id: 3, value: `Verify with ${selectedValue.value}` };
         }
+        // else {
+        //     this.submitButton = { id: 3, value: `Verify with ${selectedValue.name}` };
+        // }
         if (this.submitButton.id === 2) {
             this.confirm2();
         }
+        console.log('this.submit button on listentoorg change:', this.submitButton)
     }
     orgNameTextChange(val) {
-        this.patientForm.controls.orgName.setValue({ name: val, value: val });
-        this.listenToOrgChange({ name: val, value: val });
+        let lookupType = '';
+        if (val?.trim()) {
+            lookupType = 'External';
+            if (val.toUpperCase().includes('CVS')) {
+                lookupType = 'HAPI';
+            }
+            // else if (val.toUpperCase().includes('HPH')) {
+            //     lookupType = 'Direct';
+            // }
+            this.patientForm.controls.orgName.setValue({ name: val, type: lookupType });
+            this.listenToOrgChange({ name: val, type: lookupType });
+        } else {
+            this.patientForm.controls.orgName.setValue(null);
+            this.listenToOrgChange(null);
+        }
+        // this.patientForm.controls.orgName.updateValueAndValidity({ emitEvent: false, onlySelf: true });
+
     }
     listenToOrgStateChange(selectedValue) {
         if (selectedValue === 'HI') {
@@ -740,9 +788,6 @@ export class Wizard2Component implements OnInit, AfterViewInit {
 
     // tslint:disable-next-line: indent
     async onSubmit() {
-        // var cardNumberEle : any = document.querySelector('[data-elements-stable-field-name="cardNumber"]');
-        // console.log('card number ele', cardNumberEle)
-        // console.log('card number:', cardNumberEle.defaultValue)
         const formData = this.patientForm.value;
         console.log('Form Data:', formData);
         this.submitted = true;
@@ -751,115 +796,115 @@ export class Wizard2Component implements OnInit, AfterViewInit {
         let webcamPath;
         let srcPath;
         let supplementPath;
-        if (this.imageSrc) {
-            console.log('inside imgsrc found');
-            srcPath = await this.wizardService
-                .uploadFile(this.imageSrc, this.constants.API_URI.SNAPSHOT_UPLOAD, 'snapshot').toPromise();
-        }
-        if (this.webcamImage) {
-            console.log('inside webcam foudn');
-            webcamPath = await this.wizardService
-                .uploadFile(this.webcamImage, this.constants.API_URI.SNAPSHOT_UPLOAD, 'snapshot').toPromise();
-        }
-        if (this.supportingDocFile) {
-            console.log('inside supplient found');
-            supplementPath = this.wizardService
-                .uploadFile(this.imageSrc, this.constants.API_URI.SUPPLIMENT_DOC_UPLOAD, 'supplementDoc').toPromise();
-        }
-        console.log('srcpath', srcPath);
-        console.log('webPath:', webcamPath);
-        console.log('supplementPath', supplementPath);
-        // return false;
-        let media: IMedia[] = [];
-        if (webcamPath) {
-            media.push({
-                document_type: 'VAX_CARD',
-                file_path: webcamPath
-            });
-        }
-        if (srcPath) {
-            media.push({
-                document_type: 'VAX_CARD',
-                file_path: srcPath
-            });
-        }
-        if (supplementPath) {
-            media.push({
-                document_type: 'SUPPLEMENT_DOC',
-                file_path: supplementPath
-            });
-        }
-
-        const profiles: IProfile = {
-            name: {
-                first_name: formData.firstName,
-                middle_name: formData.middleName,
-                last_name: formData.lastName
-            },
-            // unique_identifier: 'test',
-            address: {
-                city: formData.city,
-                state: formData.state,
-                street_address: formData.address1,
-                street_address2: formData.address2,
-                zip_code: formData.zipcode
-            },
-            consent: {
-                given: formData.consent,
-            },
-            date_of_birth: Utils.formatToUSStandared(formData.dob),
-            email_address: formData.email,
-            sex: formData.gender,
-            mobile_number: formData.contactOption === 'YES' ? formData.contactNumber : formData.contactOption2,
-            mobile_number2: formData.contactOption === 'NO' ? formData.contactNumber2 : formData.contactNumber,
-            travel_date: formData.travelDateToHawaii ? Utils.formatToUSStandared(formData.travelDateToHawaii) : null
-        };
-        const providerAddress: IAddress2 = {
-            street_address: formData.orgAddress1,
-            street_address2: formData.orgAddress2,
-            state: formData.orgState,
-            zip_code: formData.orgZipcode,
-            city: formData.orgCity,
-        };
-
-        const provider: IProvider = {
-            provider_org_name: formData.orgName.value,
-            provider_email: formData.orgEmail,
-            provider_address: providerAddress
-        };
-
-        const vaccineDose1: IVaccineDosing = {
-            date: Utils.formatToUSStandared(formData.orgDose1),
-            site_name: this.firstClinicName,
-            site_address: providerAddress
-        };
-
-        let vaccineDose2: IVaccineDosing;
-        if (formData.orgDose2) {
-            vaccineDose2 = {
-                date: Utils.formatToUSStandared(formData.orgDose2),
-                site_name: this.secondClinicName,
-                site_address: providerAddress,
-            };
-        }
-
-        const vaccination: IVaccinations = {
-            profiles_skyflow_id: null, //Math.random().toString(36).substr(2, 5),
-            effective_date: Utils.formatToUSStandared(moment(this.effectiveDate).toDate()),
-            expiration_date: Utils.formatToUSStandared(moment(this.expirationDate).toDate()),
-            vaccine_manufacturer_name: formData.orgManufacturer,
-            provider,
-            // vaccine_dose_1: vaccineDose1,
-            // vaccine_dose_2: vaccineDose2,
-        };
-
-        const postObject = {
-            profiles, vaccination, media
-        };
         if (this.patientForm.valid) {
             this.isLoading = true;
-            this.button = 'Processing';
+            this.submitButton.value = 'Processing';
+            if (this.imageSrc) {
+                console.log('inside imgsrc found');
+                srcPath = await this.wizardService
+                    .uploadFile(this.imageSrc, this.constants.API_URI.SNAPSHOT_UPLOAD, 'snapshot').toPromise();
+            }
+            if (this.webcamImage) {
+                console.log('inside webcam foudn');
+                webcamPath = await this.wizardService
+                    .uploadFile(this.webcamImage, this.constants.API_URI.SNAPSHOT_UPLOAD, 'snapshot').toPromise();
+            }
+            if (this.supportingDocFile) {
+                console.log('inside supplient found');
+                supplementPath = await this.wizardService
+                    .uploadFile(this.supportingDocFile, this.constants.API_URI.SUPPLIMENT_DOC_UPLOAD, 'supplementDoc').toPromise();
+            }
+            console.log('srcpath', srcPath);
+            console.log('webPath:', webcamPath);
+            console.log('supplementPath', supplementPath);
+            // return false;
+            const media: IMedia[] = [];
+            if (webcamPath) {
+                media.push({
+                    document_type: 'VAX_CARD',
+                    file_path: webcamPath
+                });
+            }
+            if (srcPath) {
+                media.push({
+                    document_type: 'VAX_CARD',
+                    file_path: srcPath
+                });
+            }
+            if (supplementPath) {
+                media.push({
+                    document_type: 'SUPPLEMENT_DOC',
+                    file_path: supplementPath
+                });
+            }
 
+            const profiles: IProfile = {
+                name: {
+                    first_name: formData.firstName,
+                    middle_name: formData.middleName,
+                    last_name: formData.lastName
+                },
+                // unique_identifier: 'test',
+                address: {
+                    city: formData.city,
+                    state: formData.state,
+                    street_address: formData.address1,
+                    street_address2: formData.address2,
+                    zip_code: formData.zipcode
+                },
+                consent: {
+                    given: formData.consent,
+                },
+                date_of_birth: Utils.formatToUSStandared(formData.dob),
+                email_address: formData.email,
+                sex: formData.gender,
+                mobile_number: formData.contactOption === 'YES' ? formData.contactNumber : formData.contactOption2,
+                mobile_number2: formData.contactOption === 'NO' ? formData.contactNumber2 : formData.contactNumber,
+                travel_date: formData.travelDateToHawaii ? Utils.formatToUSStandared(formData.travelDateToHawaii) : null
+            };
+            const providerAddress: IAddress2 = {
+                street_address: formData.orgAddress1,
+                street_address2: formData.orgAddress2,
+                state: formData.orgState,
+                zip_code: formData.orgZipcode,
+                city: formData.orgCity,
+            };
+
+            const provider: IProvider = {
+                provider_org_name: formData.orgName.name,
+                provider_email: formData.orgEmail,
+                provider_address: providerAddress
+            };
+
+            const vaccineDose1: IVaccineDosing = {
+                date: Utils.formatToUSStandared(formData.orgDose1),
+                site_name: this.firstClinicName,
+                site_address: providerAddress
+            };
+
+            let vaccineDose2: IVaccineDosing;
+            if (formData.orgDose2) {
+                vaccineDose2 = {
+                    date: Utils.formatToUSStandared(formData.orgDose2),
+                    site_name: this.secondClinicName,
+                    site_address: providerAddress,
+                };
+            }
+
+            const vaccination: IVaccinations = {
+                profiles_skyflow_id: null, // Math.random().toString(36).substr(2, 5),
+                effective_date: Utils.formatToUSStandared(moment(this.effectiveDate).toDate()),
+                expiration_date: Utils.formatToUSStandared(moment(this.expirationDate).toDate()),
+                vaccine_manufacturer_name: formData.orgManufacturer,
+                appointment_email_confirmation: formData.apptEmailConf,
+                provider,
+                vaccine_dose_1: vaccineDose1,
+                vaccine_dose_2: vaccineDose2,
+            };
+
+            const postObject = {
+                profiles, vaccination, media
+            };
             localStorage.setItem('travelerData', JSON.stringify(this.patientForm.value));
             this.wizardService.registerTraveller(postObject).subscribe((data: any) => {
                 console.log('result after save:', data);
@@ -869,17 +914,11 @@ export class Wizard2Component implements OnInit, AfterViewInit {
                 } else {
                     this.skyflowId = data.profileResponse.responses[0].records[0].skyflow_id;
                 }
-                // this.isLoading = false;
-                // this.button = 'Submit';
-                // this.checkout();
                 this.router.navigate(['/success']);
             },
                 error => {
                     console.log('Error while processing data:', postObject);
                     this.router.navigate(['/success']);
-                    // this.isLoading = false;
-                    // this.button = 'Submit';
-                    // this.checkout();
                 }
             );
         }

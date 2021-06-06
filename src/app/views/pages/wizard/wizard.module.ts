@@ -42,7 +42,7 @@ import { TravelerInfoComponent } from './wizard2/traveler.info.component';
 import { VaccinatorComponent } from './wizard2/vaccinator.component';
 import { UploadCardComponent } from './wizard2/upload.card.component';
 import { CustomFileUploadModule } from '../file-upload/file-upload.module';
-
+import {EditorModule} from 'primeng/editor';
 @NgModule({
 	declarations: [
 		WizardComponent,
@@ -99,6 +99,7 @@ import { CustomFileUploadModule } from '../file-upload/file-upload.module';
 		MessagesModule,
 		MessageModule,
 		CustomFileUploadModule,
+		EditorModule
 		// NgxStripeModule.forChild('pk_test_aeUUjYYcx4XNfKVW60pmHTtI')
 	],
 })

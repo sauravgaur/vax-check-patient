@@ -132,14 +132,15 @@
 				<div class="">
 					<div class="offset-xxl-12">
 						<!--begin: Form Wizard Form-->
-						<form class="form" id="kt_form" autocomplete="off" novalidate="novalidate" [formGroup]="patientForm">
+						<form class="form" id="kt_form" autocomplete="off" novalidate="novalidate"
+							[formGroup]="patientForm">
 							<kt-traveler-info [travelerInfo]="patientForm" [tooltipJson]="tooltipJson"
-							[mailformat]="mailFormat"
-								[dateProperties]="dateProperties" [isControlHasError]=isControlHasError>
+								[mailformat]="mailFormat" [dateProperties]="dateProperties"
+								[isControlHasError]=isControlHasError>
 							</kt-traveler-info>
-							<kt-vaccinator [vaccinator]="patientForm" [tooltipJson]="tooltipJson" [mailformat]="mailFormat"
-								[dateProperties]="dateProperties" [isControlHasError]=isControlHasError
-								[stepTwo]="stepTwo"
+							<kt-vaccinator [vaccinator]="patientForm" [tooltipJson]="tooltipJson"
+								[mailformat]="mailFormat" [dateProperties]="dateProperties"
+								[isControlHasError]=isControlHasError [stepTwo]="stepTwo"
 								(orgNameChange)="orgNameTextChange($event)"></kt-vaccinator>
 							<kt-upload-card [uploadCardForm]="patientForm" [tooltipJson]="tooltipJson"
 								[lastInputText]="lastInputText" [firstInputText]="firstInputText"
@@ -152,8 +153,8 @@
 								[showWebcam]="showWebcam" [tab3Pressed]="tab3Pressed"
 								(firstEditedText)="updateFirstName($event)" (lastEditedText)="updateLastName($event)"
 								(firstEditedClinic)="updateFirstClinic($event)"
-								(secondEditedClinic)="updateSecondClinic($event)" (updateImageSrc)="updateImageSrc($event)"
-								(updateWebImage)="updateWebcamImage($event)">
+								(secondEditedClinic)="updateSecondClinic($event)"
+								(updateImageSrc)="updateImageSrc($event)" (updateWebImage)="updateWebcamImage($event)">
 							</kt-upload-card>
 
 							<!--begin: Form Wizard Step 4-->
@@ -163,17 +164,17 @@
 									<kt-file-upload (fileSelection)="onFileSelect($event)"></kt-file-upload>
 									<!-- <div class="p-d-flex p-ai-start" style="margin-top: 1rem;">
 										<div class="p-mr-2"> -->
-											<!-- <input id="singleFile" type="file" style="display: none;" multiple="multiple" [fileUploadInputFor]="fileUploadQueue" /> -->
-											<!-- <div [fileUploadInputFor]="fileUploadQueue" class="upload-drop-zone">
+									<!-- <input id="singleFile" type="file" style="display: none;" multiple="multiple" [fileUploadInputFor]="fileUploadQueue" /> -->
+									<!-- <div [fileUploadInputFor]="fileUploadQueue" class="upload-drop-zone">
 												<i class="pi pi-upload" style="font-size: 2rem"></i><br>
 												Drag files to upload
 											</div>
 											<input style="margin-top: 1rem;" type="file" id="file"
 												class="inputfile" [fileUploadInputFor]="fileUploadQueue" />
 											<label for="file" style="margin-top: 1rem;">Select files to upload</label> -->
-											<!-- <input style="margin-top: 1rem;" id="singleFile" type="file" multiple="multiple" [fileUploadInputFor]="fileUploadQueue" /> -->
-											<!-- <label for="file">choose a file</label> -->
-										<!-- </div>
+									<!-- <input style="margin-top: 1rem;" id="singleFile" type="file" multiple="multiple" [fileUploadInputFor]="fileUploadQueue" /> -->
+									<!-- <label for="file">choose a file</label> -->
+									<!-- </div>
 										<div style="width: 500px;" class="uploadedFiles">
 											<mat-file-upload-queue #fileUploadQueue [fileAlias]="'file'"
 												[httpUrl]="'http://localhost:8080/jax-rs-jersey-application-sample'"
@@ -247,21 +248,26 @@
 									</div>
 								</div>
 								<div>
-									<button class="btn btn-success font-weight-bold text-uppercase px-9 py-4 fa" 
-									data-wizard-type="action-submit"
-									[disabled]="isLoading" (click)="onSubmit()"><i
-									[class]="isLoading ? 'pi pi-spin pi-spinner' : 'pi pi-check'"></i>
-										{{button}}</button>
+									<button class="btn btn-success font-weight-bold text-uppercase px-9 py-4 fa"
+										data-wizard-type="action-submit" [disabled]="isLoading" (click)="onSubmit()"><i
+											[class]="isLoading ? 'pi pi-spin pi-spinner' : 'pi pi-check'"></i>
+										{{submitButton.value}}</button>
 
 									<!-- <div (click)="onSubmit()"
 										class="btn btn-success font-weight-bold text-uppercase px-9 py-4"
 										data-wizard-type="action-submit">
 										{{submitButton.value}}
 									</div> -->
-									<div class="btn btn-primary font-weight-bold text-uppercase px-9 py-4"
+
+									<button class="btn btn-primary font-weight-bold text-uppercase px-9 py-4"
+										data-wizard-type="action-next" [disabled]="isLoadingNext"><i
+											[class]="isLoadingNext ? 'pi pi-spin pi-spinner' : ''"></i>
+										Next Step</button>
+
+									<!-- <div class="btn btn-primary font-weight-bold text-uppercase px-9 py-4"
 										data-wizard-type="action-next">
 										Next Step
-									</div>
+									</div> -->
 								</div>
 							</div>
 							<!--end: Form Actions -->

@@ -35,7 +35,9 @@
               "node_modules/primeng/resources/themes/md-light-indigo/theme.css",
               "node_modules/primeng/resources/primeng.min.css",
               "node_modules/primeflex/primeflex.css",
-              "node_modules/shepherd.js/dist/css/shepherd.css"
+              "node_modules/shepherd.js/dist/css/shepherd.css",
+              "node_modules/quill/dist/quill.core.css",
+              "node_modules/quill/dist/quill.snow.css"
             ],
             "scripts": [
               "node_modules/popper.js/dist/umd/popper.js",
@@ -43,6 +45,7 @@
               "node_modules/perfect-scrollbar/dist/perfect-scrollbar.js",
               "node_modules/clipboard/dist/clipboard.js",
               "node_modules/apexcharts/dist/apexcharts.min.js",
+              "node_modules/quill/dist/quill.js",
               "src/assets/js/layout/extended/examples.js"
             ]
           },

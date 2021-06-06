@@ -1,10 +1,11 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, ChangeDetectorRef } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { SelectItem } from 'primeng/api';
 import Utils from 'src/app/utils';
 import { AppConstants } from '../../../../app.constants';
 import { IDateProperties } from '../../../../interface/date.properties';
 import moment from 'moment';
+import { WizardService } from './wizard.service';
 
 @Component({
   selector: 'kt-vaccinator',
@@ -24,23 +25,42 @@ export class VaccinatorComponent implements OnInit {
   @Input() mailformat: string;
   @Input() isControlHasError: (controlName: string, validationType: string) => boolean;
   @Output() orgNameChange = new EventEmitter<string>();
-  constructor(private constants: AppConstants) {
+  constructor(private constants: AppConstants, private wizardService: WizardService, private cd: ChangeDetectorRef) {
     this.manufacturerList = this.constants.MANUFACTURER;
   }
+  isAutocomplete = false;
   hasError(controlName: string, validationType: string) {
     return this.isControlHasError(controlName, validationType);
   }
 
-  ngOnInit() {
-    this.orgs = this.constants.ORGS;
-    this.orgOptions = this.orgs.map((x) => x.name);
+  async ngOnInit() {
+    console.log('ng on init of vaccinator')
+
+    // this.isAutocomplete = this.constants.STATE_ORG[this.vaccinator.controls.state.value]?.length > 0 ? true : false;
+    // this.orgs = this.constants.STATE_ORG[this.vaccinator.controls.state.value];
+    // if(this.orgs.length > 0) {
+    //   this.orgOptions = this.orgs.map((x) => x.name);
+    // }
     this.stateList = this.constants.STATES;
-    // this.subscribeValueChanges();
+    this.subscribeValueChanges();
   }
 
+  subscribeValueChanges() {
+    this.vaccinator.get('state').valueChanges.subscribe(async (selectedValue) => {
+      this.vaccinator.controls.orgName.setValue(null);
+      const orgList: any = await this.wizardService.getOrgByState(selectedValue).toPromise();
+      this.isAutocomplete = orgList.data.length > 0 ? true : false;
+      this.orgs = orgList.data.length > 0 ? orgList.data.sort((a, b) => (a.name > b.name) ? 1 : -1) : '';
+      console.log('this . org:', this.orgs);
+      console.log('this.autocomplete:', this.isAutocomplete);
+      this.cd.markForCheck();
+      // this.isAutocomplete = this.constants.STATE_ORG[this.vaccinator.controls.state.value]?.length > 0 ? true : false;
+      // this.orgs = this.constants.STATE_ORG[this.vaccinator.controls.state.value];
+    });
+  }
   filterOrg(event) {
     const filtered: any[] = [];
-    if (this.vaccinator.controls.state.value === 'HI') {
+    if (this.isAutocomplete) {
       const query = event.query.toLowerCase();
       for (const org of this.orgs) {
         if (org.name.toLowerCase().indexOf(query) > -1) {
@@ -68,13 +88,13 @@ export class VaccinatorComponent implements OnInit {
   }
 
   selectOrg(val) {
-    console.log('on select org name:', this.vaccinator.controls.orgName.value)
+    console.log('on select org name:', this.vaccinator.controls.orgName.value);
   }
 
   onOrgNameBlur(event) {
     console.log('on blur event:', this.vaccinator.controls.orgName.value);
     const dt = this.vaccinator.controls.orgName.value;
-    if (!dt.value) {
+    if (!dt?.name) {
       console.log('call listen to org changes:', dt);
       this.orgNameChange.emit(dt);
     }

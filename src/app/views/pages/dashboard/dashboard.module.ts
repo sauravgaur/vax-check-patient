@@ -33,7 +33,7 @@ import { MatButtonModule } from '@angular/material/button';
 import {CheckboxModule} from 'primeng/checkbox';
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import {DialogModule} from 'primeng/dialog';
-import { StripeComponent } from './stripe.component';
+// import { StripeComponent } from './stripe.component';
 import { MatDialogModule } from '@angular/material/dialog';
 @NgModule({
   imports: [
@@ -80,9 +80,12 @@ import { MatDialogModule } from '@angular/material/dialog';
   ],
   providers: [],
   declarations: [
-    DashboardComponent, StripeComponent
+    DashboardComponent, 
+	// StripeComponent
   ],
-  entryComponents: [StripeComponent]
+  entryComponents: [
+	//   StripeComponent
+	]
 })
 export class DashboardModule {
 }

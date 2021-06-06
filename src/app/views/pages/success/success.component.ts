@@ -1,8 +1,7 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import * as HumanConnect from "humanapi-connect-client";
+import * as HumanConnect from 'humanapi-connect-client';
 import { environment } from '../../../../environments/environment';
 import { WizardService } from '../wizard/wizard2/wizard.service';
-
 @Component({
   selector: 'kt-success',
   templateUrl: './success.component.html',
@@ -21,7 +20,7 @@ export class SuccessComponent implements OnInit {
   ngOnInit(): void {
     const travelerData = JSON.parse(localStorage.getItem('travelerData'));
     console.log('travel data:', travelerData);
-    this.buttonHumanFlg = travelerData.orgName.value.toUpperCase().includes('CVS') ? true : false;
+    this.buttonHumanFlg = travelerData.orgName.type.toUpperCase() === 'HAPI' ? true : false;
 
     if (!this.token && this.buttonHumanFlg) {
       this.fetchToken();
@@ -54,34 +53,34 @@ export class SuccessComponent implements OnInit {
         this.wizardService.createAccessToken().subscribe((res: any) => {
           console.log('response from create access token:', res);
           this.token = res.id_token;
-          // process.nextTick(() => {
-          //   const event = document.createEvent('Event');
-          //   event.initEvent('load', true, true);
-          //   window.dispatchEvent(event);
-          // });
+          setTimeout(() => {
+            const event = document.createEvent('Event');
+            event.initEvent('load', true, true);
+            window.dispatchEvent(event);
+          }, 0);
           this.isLoading = false;
           this.button = 'Connect your Health Data';
           this.cd.markForCheck();
         },
-        error => {
-          console.log('some error');
-        });
+          error => {
+            console.log('some error');
+          });
       } else {
         this.token = resp.session_token;
-        // process.nextTick(() => {
-        //   const event = document.createEvent('Event');
-        //   event.initEvent('load', true, true);
-        //   window.dispatchEvent(event);
-        // });
+        setTimeout(() => {
+          const event = document.createEvent('Event');
+          event.initEvent('load', true, true);
+          window.dispatchEvent(event);
+        }, 0);
         this.isLoading = false;
         this.button = 'Connect your Health Data';
         this.cd.markForCheck();
       }
+      console.log('token:', this.token);
     },
-    error => {
-      console.log('Some error');
-    });
-    console.log('token:', this.token);
+      error => {
+        console.log('Some error');
+      });
     // const xhr = new XMLHttpRequest();
     // xhr.onload = () => {
     //   const resp = JSON.parse(xhr.response);

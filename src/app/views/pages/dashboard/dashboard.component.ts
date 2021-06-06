@@ -5,7 +5,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from "@angular/router";
 import Swal from 'sweetalert2';
 import {MatDialog, MatDialogConfig} from "@angular/material/dialog";
-import { StripeComponent } from './stripe.component';
+// import { StripeComponent } from './stripe.component';
 
 @Component({
   selector: 'kt-dashboard',
@@ -51,7 +51,7 @@ export class DashboardComponent implements OnInit {
     dialogConfig.hasBackdrop = false;
     dialogConfig.data = params
     dialogConfig.width = '50%'
-    this.dialog.open(StripeComponent, dialogConfig);
+    // this.dialog.open(StripeComponent, dialogConfig);
 }
 
   showPayment() {

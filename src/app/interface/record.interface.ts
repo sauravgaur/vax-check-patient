@@ -2,7 +2,7 @@ type YES_NO = 'YES' | 'NO';
 type GENDER = 'MALE' | 'FEMALE' | 'OTHER';
 type STATUS = 'PENDING' | 'SUCCESS' | 'FAIL';
 type DIAGNOSTIC_TEST_TYPE = 'ANTIBODY' | 'ANTIGEN' | 'MOLECULAR';
-type DOCUMENT_TYPE = 'VAX_CARD' | 'SUPPLEMENT_DOC' | 'EVIDENCE' | 'MISC1' | 'MISC2' | 'MISC3' | 'DIAGNOSTIC_TEST'
+type DOCUMENT_TYPE = 'VAX_CARD' | 'SUPPLEMENT_DOC' | 'EVIDENCE' | 'MISC1' | 'MISC2' | 'MISC3' | 'DIAGNOSTIC_TEST';
 export interface IMediaArray extends Array<IMedia> {
     0: IMedia; // ensure that at least one 'value' is present
 }
@@ -10,7 +10,11 @@ export interface IProfile {
     unique_identifier?: string;
     age?: number;
     date_of_birth?: string;
+    employeeid?: string;
+    org_id?: string;
+    work_location?: string;
     race?: string;
+    stripe_session_id?: string;
     race2?: string;
     race3?: string;
     ethnicity?: string;
@@ -18,6 +22,7 @@ export interface IProfile {
     traveler_type?: string;
     access_code?: string;
     sex?: GENDER;
+    emp_id?: string;
     mobile_number?: string;
     mobile_number2?: string;
     email_address?: string;
@@ -188,6 +193,7 @@ export interface IVaccinations {
     vaccination_certification_status?: string;
     vaccination_issuer_type?: string;
     ordered_date?: string;
+    appointment_email_confirmation?: string;
     administered_date?: string;
     effective_date?: string;
     expiration_date?: string;
@@ -301,7 +307,7 @@ export interface IBatch {
 export interface ITravelerExists {
     isTravelerExists: boolean;
     isPaymentDone: boolean;
-    profile_skyflow_id?: string;
+    profiles_skyflow_id?: string;
 }
 
 export enum LOCAL_STORAGE_KEYS {
