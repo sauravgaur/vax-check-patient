@@ -50,7 +50,7 @@ export class UploadCardComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit() {
-    console.log('oninit: firstClinicNameInputControl:', this.firstClinicNameInputControl);
+    // console.log('oninit: firstClinicNameInputControl:', this.firstClinicNameInputControl);
   }
 
   public triggerSnapshot(): void {
@@ -61,7 +61,7 @@ export class UploadCardComponent implements OnInit, AfterViewInit {
     return this.trigger.asObservable();
   }
   public async handleImage(webcamImage: WebcamImage): Promise<void> {
-    console.log('received webcam image', webcamImage);
+    // console.log('received webcam image', webcamImage);
     this.webcamImage = webcamImage;
     await fetch(this.webcamImage.imageAsDataUrl)
       .then(response => response.blob())
@@ -112,12 +112,12 @@ export class UploadCardComponent implements OnInit, AfterViewInit {
   }
 
   onTabChanged(event) {
-    console.log(event);
+    // console.log(event);
     this.tabIndex = event.index;
   }
 
   toggleWebCam(e) {
-    console.log('in toggel web cam');
+    // console.log('in toggel web cam');
     if (e.keyCode === 13) {
       return;
     }

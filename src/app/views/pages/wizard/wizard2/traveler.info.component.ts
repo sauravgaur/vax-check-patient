@@ -40,7 +40,7 @@ export class TravelerInfoComponent implements OnInit {
 
   subscribeValueChanges() {
     this.travelerInfo.get('state').valueChanges.subscribe(selectedValue => {
-      console.log('firstname value changed');
+      // console.log('firstname value changed');
       this.listenToStateChange(selectedValue);
     });
 
@@ -51,7 +51,7 @@ export class TravelerInfoComponent implements OnInit {
   }
 
   listenToStateChange(selectedValue) {
-    console.log('selected value on state:', selectedValue);
+    // console.log('selected value on state:', selectedValue);
     if (selectedValue !== 'HI') {
       this.travelerInfo.get('resedenceItem').setValue('');
       this.travelerInfo.get('resedenceItem').clearValidators();

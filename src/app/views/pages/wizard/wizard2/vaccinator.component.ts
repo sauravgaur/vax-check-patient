@@ -34,7 +34,7 @@ export class VaccinatorComponent implements OnInit {
   }
 
   async ngOnInit() {
-    console.log('ng on init of vaccinator')
+    // console.log('ng on init of vaccinator')
 
     // this.isAutocomplete = this.constants.STATE_ORG[this.vaccinator.controls.state.value]?.length > 0 ? true : false;
     // this.orgs = this.constants.STATE_ORG[this.vaccinator.controls.state.value];
@@ -42,22 +42,29 @@ export class VaccinatorComponent implements OnInit {
     //   this.orgOptions = this.orgs.map((x) => x.name);
     // }
     this.stateList = this.constants.STATES;
+    this.listenToStateChange(this.vaccinator.get('state').value);
     this.subscribeValueChanges();
   }
 
   subscribeValueChanges() {
     this.vaccinator.get('state').valueChanges.subscribe(async (selectedValue) => {
+      this.listenToStateChange(selectedValue);
+    });
+  }
+
+  async listenToStateChange(selectedValue: string) {
+    if (selectedValue) {
+      // console.log('state value change inside subscribe', this.vaccinator.get('state').value);
       this.vaccinator.controls.orgName.setValue(null);
       const orgList: any = await this.wizardService.getOrgByState(selectedValue).toPromise();
       this.isAutocomplete = orgList.data.length > 0 ? true : false;
       this.orgs = orgList.data.length > 0 ? orgList.data.sort((a, b) => (a.name > b.name) ? 1 : -1) : '';
-      console.log('this . org:', this.orgs);
-      console.log('this.autocomplete:', this.isAutocomplete);
+      // console.log('this . org:', this.orgs);
+      // console.log('this.autocomplete:', this.isAutocomplete);
       this.cd.markForCheck();
-      // this.isAutocomplete = this.constants.STATE_ORG[this.vaccinator.controls.state.value]?.length > 0 ? true : false;
-      // this.orgs = this.constants.STATE_ORG[this.vaccinator.controls.state.value];
-    });
+    }
   }
+
   filterOrg(event) {
     const filtered: any[] = [];
     if (this.isAutocomplete) {
@@ -87,15 +94,15 @@ export class VaccinatorComponent implements OnInit {
       Utils.addDays(moment(this.vaccinator.controls[compareCtrlName].value, 'MM-DD-YYYY').toDate(), this.gapDays);
   }
 
-  selectOrg(val) {
-    console.log('on select org name:', this.vaccinator.controls.orgName.value);
-  }
+  // selectOrg(val) {
+  //   console.log('on select org name:', this.vaccinator.controls.orgName.value);
+  // }
 
   onOrgNameBlur(event) {
-    console.log('on blur event:', this.vaccinator.controls.orgName.value);
+    // console.log('on blur event:', this.vaccinator.controls.orgName.value);
     const dt = this.vaccinator.controls.orgName.value;
     if (!dt?.name) {
-      console.log('call listen to org changes:', dt);
+      // console.log('call listen to org changes:', dt);
       this.orgNameChange.emit(dt);
     }
   }

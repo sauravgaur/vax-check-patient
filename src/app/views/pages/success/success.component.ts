@@ -19,7 +19,7 @@ export class SuccessComponent implements OnInit {
   isLoading = true;
   ngOnInit(): void {
     const travelerData = JSON.parse(localStorage.getItem('travelerData'));
-    console.log('travel data:', travelerData);
+    // console.log('travel data:', travelerData);
     this.buttonHumanFlg = travelerData.orgName.type.toUpperCase() === 'HAPI' ? true : false;
 
     if (!this.token && this.buttonHumanFlg) {
@@ -51,7 +51,7 @@ export class SuccessComponent implements OnInit {
     this.wizardService.createToken().subscribe((resp: any) => {
       if (resp.error) {
         this.wizardService.createAccessToken().subscribe((res: any) => {
-          console.log('response from create access token:', res);
+          // console.log('response from create access token:', res);
           this.token = res.id_token;
           setTimeout(() => {
             const event = document.createEvent('Event');
@@ -76,7 +76,7 @@ export class SuccessComponent implements OnInit {
         this.button = 'Connect your Health Data';
         this.cd.markForCheck();
       }
-      console.log('token:', this.token);
+      // console.log('token:', this.token);
     },
       error => {
         console.log('Some error');

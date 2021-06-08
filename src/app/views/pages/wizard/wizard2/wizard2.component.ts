@@ -212,13 +212,13 @@ export class Wizard2Component implements OnInit, AfterViewInit {
 
         // this.stateItem = this.constants.STATES;
         const storageData = localStorage.getItem(LOCAL_STORAGE_KEYS[LOCAL_STORAGE_KEYS.LOGIN_RESPONSE_DATA]);
-        console.log('storage data:', storageData);
+        // console.log('storage data:', storageData);
         if (storageData) {
             const loginResponse: { IProfile, IVaccinations } = JSON.parse(storageData);
             localStorage.clear();
             // localStorage.removeItem(LOCAL_STORAGE_KEYS[LOCAL_STORAGE_KEYS.LOGIN_FORM_DATA]);
             // localStorage.removeItem(LOCAL_STORAGE_KEYS[LOCAL_STORAGE_KEYS.LOGIN_RESPONSE_DATA]);
-            console.log('before if:', loginResponse);
+            // console.log('before if:', loginResponse);
             if (loginResponse) {
                 this.preFilledForm(loginResponse);
             }
@@ -229,7 +229,7 @@ export class Wizard2Component implements OnInit, AfterViewInit {
     }
 
     preFilledForm(data) {
-        console.log('data in prefilled form', data);
+        // console.log('data in prefilled form', data);
         const profiles: IProfile = data.profiles;
         const vaccinations: IVaccinations = data.vaccinations;
         this.isCorporalteUser = true;
@@ -254,22 +254,22 @@ export class Wizard2Component implements OnInit, AfterViewInit {
     }
 
     updateFirstName(firstName: string) {
-        console.log('in first name update', firstName);
+        // console.log('in first name update', firstName);
         this.firstInputText = firstName;
     }
 
     updateLastName(lastName: string) {
-        console.log('in lastName update', lastName);
+        // console.log('in lastName update', lastName);
         this.lastInputText = lastName;
     }
 
     updateFirstClinic(clinicName: string) {
-        console.log('in first clinicName update', clinicName);
+        // console.log('in first clinicName update', clinicName);
         this.firstClinicName = clinicName;
     }
 
     updateSecondClinic(clinicName: string) {
-        console.log('in secpmd clinicName update', clinicName);
+        // console.log('in secpmd clinicName update', clinicName);
         this.secondClinicName = clinicName;
     }
 
@@ -343,14 +343,14 @@ export class Wizard2Component implements OnInit, AfterViewInit {
                 profiles_skyflow_id: this.skyflowId,
                 travelerEmail: this.patientForm.get('email').value
             }).toPromise();
-        console.log('session:', getSession);
+        // console.log('session:', getSession);
         // When the customer clicks on the button, redirect them to Checkout.
         const stripe = await loadStripe(environment.stripe_key);
         const { error } = await stripe.redirectToCheckout({
             sessionId: getSession.sessionId,
         });
         if (error) {
-            console.log(error);
+            // console.log(error);
         }
 
     }
@@ -388,9 +388,9 @@ export class Wizard2Component implements OnInit, AfterViewInit {
         wizard.on('beforeNext', async (wizardObj) => {
             wizardObj.stop();
 
-            console.log('before next', this.patientForm.value);
+            // console.log('before next', this.patientForm.value);
             this.isFormSubmitted = true;
-            console.log('patient form:', this.patientForm.value);
+            // console.log('patient form:', this.patientForm.value);
             const controls = this.patientForm.controls;
             Object.keys(controls).forEach(controlName => {
                 controls[controlName].markAsTouched();
@@ -400,11 +400,11 @@ export class Wizard2Component implements OnInit, AfterViewInit {
                 const controlErrors: ValidationErrors = this.patientForm.get(key).errors;
                 if (controlErrors != null) {
                     Object.keys(controlErrors).forEach(keyError => {
-                        console.log('Key control: ' + key + ', keyError: ' + keyError + ', err value: ', controlErrors[keyError]);
+                        // console.log('Key control: ' + key + ', keyError: ' + keyError + ', err value: ', controlErrors[keyError]);
                     });
                 }
             });
-            console.log('wizard obj in before next:', wizardObj, wizardObj.getStep());
+            // console.log('wizard obj in before next:', wizardObj, wizardObj.getStep());
             this.showWebcam = false;
             this.isLoadingNext = true;
             if (wizardObj.currentStep === 1) {
@@ -449,7 +449,7 @@ export class Wizard2Component implements OnInit, AfterViewInit {
 
                 if (this.patientForm.valid) {
                     if (!this.isCorporalteUser) {
-                        console.log('in check curretn step: 1');
+                        // console.log('in check curretn step: 1');
                         this.wizardService.isExists({
                             firstName: this.patientForm.get('firstName').value,
                             lastName: this.patientForm.get('lastName').value,
@@ -457,7 +457,7 @@ export class Wizard2Component implements OnInit, AfterViewInit {
                             dateOfBirth: Utils.formatToUSStandared(this.patientForm.get('dob').value),
 
                         }).subscribe((resp: ITravelerExists) => {
-                            console.log('in subscribe: resp : ', resp);
+                            // console.log('in subscribe: resp : ', resp);
                             if (resp.isTravelerExists) {
                                 if (resp.isPaymentDone) {
                                     alert('Traveler is already registered. Payment has been done successfully for this traveler!');
@@ -467,7 +467,7 @@ export class Wizard2Component implements OnInit, AfterViewInit {
                                         this.checkout();
                                     } catch (error) {
                                         this.isLoadingNext = true;
-                                        console.log('in check out error');
+                                        // console.log('in check out error');
                                         alert('Something went wrong, please try again.');
                                     }
                                 }
@@ -489,7 +489,7 @@ export class Wizard2Component implements OnInit, AfterViewInit {
                     this.isLoadingNext = false;
                     // wizard.goNext();
                 }
-                console.log('after if of validate form');
+                // console.log('after if of validate form');
             } else if (wizardObj.currentStep === 2) {
                 this.stepTwo = true;
                 this.isLoadingNext = false;
@@ -520,18 +520,18 @@ export class Wizard2Component implements OnInit, AfterViewInit {
 
         // Change event
         wizard.on('change', (wizardObj) => {
-            console.log('Change', this.patientForm.value);
-            console.log('wizardObj--> ', wizardObj);
+            // console.log('Change', this.patientForm.value);
+            // console.log('wizardObj--> ', wizardObj);
 
             setTimeout(() => {
                 KTUtil.scrollTop();
             }, 500);
             this.changeStep = wizardObj.currentStep;
-            console.log('before check steps');
+            // console.log('before check steps');
             if (wizardObj.currentStep === 1) {
             }
             else if (wizardObj.currentStep === 2) {
-                console.log('after setting first and last name:', this.lastInputText, this.firstInputText);
+                // console.log('after setting first and last name:', this.lastInputText, this.firstInputText);
                 this.stepOne = true;
                 this.stepTwo = false;
 
@@ -661,7 +661,7 @@ export class Wizard2Component implements OnInit, AfterViewInit {
                 this.patientForm.get('lastName').setValue(this.lastInputText ?
                     this.lastInputText : this.patientForm.get('lastName').value);
             }
-            console.log('after check step done');
+            // console.log('after check step done');
             this.cd.markForCheck();
         });
     }
@@ -698,7 +698,7 @@ export class Wizard2Component implements OnInit, AfterViewInit {
     }
 
     listenToOrgChange(selectedValue) {
-        console.log('listen to org change:', selectedValue);
+        // console.log('listen to org change:', selectedValue);
         this.submitButton = { id: 1, value: 'Submit' };
         this.messageSeverity = '';
         this.messageContent = '';
@@ -716,7 +716,7 @@ export class Wizard2Component implements OnInit, AfterViewInit {
         if (this.submitButton.id === 2) {
             this.confirm2();
         }
-        console.log('this.submit button on listentoorg change:', this.submitButton)
+        // console.log('this.submit button on listentoorg change:', this.submitButton)
     }
     orgNameTextChange(val) {
         let lookupType = '';
@@ -789,10 +789,10 @@ export class Wizard2Component implements OnInit, AfterViewInit {
     // tslint:disable-next-line: indent
     async onSubmit() {
         const formData = this.patientForm.value;
-        console.log('Form Data:', formData);
+        // console.log('Form Data:', formData);
         this.submitted = true;
-        console.log('webcamImage:', this.webcamImage, 'imgsrc', this.imageSrc);
-        console.log('this.supportingDocFile:', this.supportingDocFile);
+        // console.log('webcamImage:', this.webcamImage, 'imgsrc', this.imageSrc);
+        // console.log('this.supportingDocFile:', this.supportingDocFile);
         let webcamPath;
         let srcPath;
         let supplementPath;
@@ -800,23 +800,23 @@ export class Wizard2Component implements OnInit, AfterViewInit {
             this.isLoading = true;
             this.submitButton.value = 'Processing';
             if (this.imageSrc) {
-                console.log('inside imgsrc found');
+                // console.log('inside imgsrc found');
                 srcPath = await this.wizardService
                     .uploadFile(this.imageSrc, this.constants.API_URI.SNAPSHOT_UPLOAD, 'snapshot').toPromise();
             }
             if (this.webcamImage) {
-                console.log('inside webcam foudn');
+                // console.log('inside webcam foudn');
                 webcamPath = await this.wizardService
                     .uploadFile(this.webcamImage, this.constants.API_URI.SNAPSHOT_UPLOAD, 'snapshot').toPromise();
             }
             if (this.supportingDocFile) {
-                console.log('inside supplient found');
+                // console.log('inside supplient found');
                 supplementPath = await this.wizardService
                     .uploadFile(this.supportingDocFile, this.constants.API_URI.SUPPLIMENT_DOC_UPLOAD, 'supplementDoc').toPromise();
             }
-            console.log('srcpath', srcPath);
-            console.log('webPath:', webcamPath);
-            console.log('supplementPath', supplementPath);
+            // console.log('srcpath', srcPath);
+            // console.log('webPath:', webcamPath);
+            // console.log('supplementPath', supplementPath);
             // return false;
             const media: IMedia[] = [];
             if (webcamPath) {
@@ -907,17 +907,17 @@ export class Wizard2Component implements OnInit, AfterViewInit {
             };
             localStorage.setItem('travelerData', JSON.stringify(this.patientForm.value));
             this.wizardService.registerTraveller(postObject).subscribe((data: any) => {
-                console.log('result after save:', data);
+                // console.log('result after save:', data);
                 this.skyflowId = 'test';
                 if (data.msg) {
-                    console.log('data.msg:', data);
+                    // console.log('data.msg:', data);
                 } else {
                     this.skyflowId = data.profileResponse.responses[0].records[0].skyflow_id;
                 }
                 this.router.navigate(['/success']);
             },
                 error => {
-                    console.log('Error while processing data:', postObject);
+                    // console.log('Error while processing data:', postObject);
                     this.router.navigate(['/success']);
                 }
             );
@@ -925,17 +925,17 @@ export class Wizard2Component implements OnInit, AfterViewInit {
     }
 
     onFileSelect(file) {
-        console.log('onFileSelect: ', file);
+        // console.log('onFileSelect: ', file);
         this.supportingDocFile = file;
     }
 
     updateImageSrc(data) {
-        console.log('in update image src:', data);
+        // console.log('in update image src:', data);
         this.imageSrc = data;
     }
 
     updateWebcamImage(data) {
-        console.log('in update web cam image', data);
+        // console.log('in update web cam image', data);
         this.webcamImage = data;
     }
     dataURLtoFile(dataurl, filename) {
