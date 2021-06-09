@@ -7,6 +7,7 @@ export interface IMediaArray extends Array<IMedia> {
     0: IMedia; // ensure that at least one 'value' is present
 }
 export interface IProfile {
+    skyflow_id?: string;
     unique_identifier?: string;
     age?: number;
     date_of_birth?: string;
@@ -179,6 +180,7 @@ export interface IProvider {
 }
 
 export interface IMedia {
+    skyflow_id?: string;
     profiles_skyflow_id?: string;
     document_type?: DOCUMENT_TYPE;
     file_path?: string;
@@ -308,6 +310,13 @@ export interface ITravelerExists {
     isTravelerExists: boolean;
     isPaymentDone: boolean;
     profiles_skyflow_id?: string;
+    media_ids?: IMedieaIds[];
+    vaccination_skyflow_id?: string;
+}
+
+export interface IMedieaIds {
+    skyflow_id?: string;
+    document_type?: string;
 }
 
 export enum LOCAL_STORAGE_KEYS {

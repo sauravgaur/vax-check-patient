@@ -102,6 +102,7 @@ export class Wizard2Component implements OnInit, AfterViewInit {
     skyflowId: string;
     forceSelection = false;
     isLoadingNext = false;
+    loginResponse: { profiles: IProfile, vaccinations: IVaccinations, media: IMedia[], travelerExists: ITravelerExists };
     constructor(
         private cd: ChangeDetectorRef,
         private http: HttpClient,
@@ -135,6 +136,7 @@ export class Wizard2Component implements OnInit, AfterViewInit {
         this.stateList = this.constants.STATES;
         this.isCorporalteUser = false;
         localStorage.removeItem('travelerData');
+        this.loginResponse = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEYS[LOCAL_STORAGE_KEYS.LOGIN_RESPONSE_DATA]));
         // this.patientForm = this.fb1.group({
         //     id: new FormControl(''),
 
@@ -211,27 +213,17 @@ export class Wizard2Component implements OnInit, AfterViewInit {
         });
 
         // this.stateItem = this.constants.STATES;
-        const storageData = localStorage.getItem(LOCAL_STORAGE_KEYS[LOCAL_STORAGE_KEYS.LOGIN_RESPONSE_DATA]);
         // console.log('storage data:', storageData);
-        if (storageData) {
-            const loginResponse: { IProfile, IVaccinations } = JSON.parse(storageData);
-            localStorage.clear();
-            // localStorage.removeItem(LOCAL_STORAGE_KEYS[LOCAL_STORAGE_KEYS.LOGIN_FORM_DATA]);
-            // localStorage.removeItem(LOCAL_STORAGE_KEYS[LOCAL_STORAGE_KEYS.LOGIN_RESPONSE_DATA]);
-            // console.log('before if:', loginResponse);
-            if (loginResponse) {
-                this.preFilledForm(loginResponse);
-            }
-        }
+        // localStorage.clear();
+        this.preFilledForm(this.loginResponse);
         // console.log('this.org options:', this.orgOptions);
         this.subscribeValueChanges();
         // this.initGroupedForm();
     }
 
     preFilledForm(data) {
-        // console.log('data in prefilled form', data);
+        console.log('data in prefilled form', data);
         const profiles: IProfile = data.profiles;
-        const vaccinations: IVaccinations = data.vaccinations;
         this.isCorporalteUser = true;
         this.patientForm.controls.firstName.setValue(profiles.name.first_name);
         this.patientForm.controls.middleName.setValue(profiles.name.middle_name);
@@ -820,25 +812,61 @@ export class Wizard2Component implements OnInit, AfterViewInit {
             // return false;
             const media: IMedia[] = [];
             if (webcamPath) {
+                let vaxSkyflowId = null;
+                if (this.loginResponse.media && this.loginResponse.media.length > 0) {
+                    const webMedia = this.loginResponse.media.find((x: any) => x.document_type === 'VAX_CARD');
+                    if (webMedia) {
+                        vaxSkyflowId = webMedia.skyflow_id;
+                    }
+                }
                 media.push({
                     document_type: 'VAX_CARD',
-                    file_path: webcamPath
+                    file_path: webcamPath,
+                    skyflow_id: vaxSkyflowId
                 });
-            }
-            if (srcPath) {
+            } else if (srcPath) {
+                let vaxSkyflowId = null;
+                if (this.loginResponse.media && this.loginResponse.media.length > 0) {
+                    const srcMedia = this.loginResponse.media.find((x: any) => x.document_type === 'VAX_CARD');
+                    if (srcMedia) {
+                        vaxSkyflowId = srcMedia.skyflow_id;
+                    }
+                }
                 media.push({
                     document_type: 'VAX_CARD',
-                    file_path: srcPath
+                    file_path: srcPath,
+                    skyflow_id: vaxSkyflowId
+                });
+            } else {
+                media.push({
+                    document_type: 'VAX_CARD',
+                    file_path: null,
+                    skyflow_id: null
                 });
             }
             if (supplementPath) {
+                let supplementSkyflowId = null;
+                if (this.loginResponse.media && this.loginResponse.media.length > 0) {
+                    const supplementMedia = this.loginResponse.media.find((x: any) => x.document_type === 'SUPPLEMENT_DOC');
+                    if (supplementMedia) {
+                        supplementSkyflowId = supplementMedia.skyflow_id;
+                    }
+                }
                 media.push({
                     document_type: 'SUPPLEMENT_DOC',
-                    file_path: supplementPath
+                    file_path: supplementPath,
+                    skyflow_id: supplementSkyflowId
+                });
+            } else {
+                media.push({
+                    document_type: 'SUPPLEMENT_DOC',
+                    file_path: null,
+                    skyflow_id: null
                 });
             }
 
             const profiles: IProfile = {
+                skyflow_id: this.loginResponse.travelerExists.profiles_skyflow_id,
                 name: {
                     first_name: formData.firstName,
                     middle_name: formData.middleName,
@@ -887,12 +915,18 @@ export class Wizard2Component implements OnInit, AfterViewInit {
                 vaccineDose2 = {
                     date: Utils.formatToUSStandared(formData.orgDose2),
                     site_name: this.secondClinicName,
-                    site_address: providerAddress,
+                    site_address: providerAddress
+                };
+            } else {
+                vaccineDose2 = {
+                    date: null,
+                    site_name: null,
+                    site_address: null
                 };
             }
 
             const vaccination: IVaccinations = {
-                profiles_skyflow_id: null, // Math.random().toString(36).substr(2, 5),
+                skyflow_id: this.loginResponse.travelerExists.vaccination_skyflow_id,
                 effective_date: Utils.formatToUSStandared(moment(this.effectiveDate).toDate()),
                 expiration_date: Utils.formatToUSStandared(moment(this.expirationDate).toDate()),
                 vaccine_manufacturer_name: formData.orgManufacturer,
@@ -906,6 +940,7 @@ export class Wizard2Component implements OnInit, AfterViewInit {
                 profiles, vaccination, media
             };
             localStorage.setItem('travelerData', JSON.stringify(this.patientForm.value));
+            localStorage.removeItem(LOCAL_STORAGE_KEYS[LOCAL_STORAGE_KEYS.LOGIN_RESPONSE_DATA]);
             this.wizardService.registerTraveller(postObject).subscribe((data: any) => {
                 // console.log('result after save:', data);
                 this.skyflowId = 'test';
@@ -931,11 +966,13 @@ export class Wizard2Component implements OnInit, AfterViewInit {
 
     updateImageSrc(data) {
         // console.log('in update image src:', data);
+        this.webcamImage = '';
         this.imageSrc = data;
     }
 
     updateWebcamImage(data) {
         // console.log('in update web cam image', data);
+        this.imageSrc = '';
         this.webcamImage = data;
     }
     dataURLtoFile(dataurl, filename) {

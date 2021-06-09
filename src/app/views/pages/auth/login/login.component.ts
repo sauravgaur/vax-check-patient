@@ -15,7 +15,7 @@ import { AuthNoticeService, AuthService, Login } from '../../../../core/auth';
 import { WizardService } from '../../wizard/wizard2/wizard.service';
 import Utils from '../../../../../app/utils';
 import { IDateProperties } from '../../../../interface/date.properties';
-import { IProfile, ITravelerExists, IVaccinations, LOCAL_STORAGE_KEYS } from '../../../../interface/record.interface';
+import { IMedia, IProfile, ITravelerExists, IVaccinations, LOCAL_STORAGE_KEYS, IMediaArray, IMedieaIds } from '../../../../interface/record.interface';
 import { IPatientAddress } from '../../../../interface/record.interface';
 import { EmpData } from '../../../../../app/employee-data';
 import moment from 'moment';
@@ -279,13 +279,19 @@ export class LoginComponent implements OnInit, OnDestroy {
 			this.wizardService.isExists(formObj).subscribe((res: ITravelerExists) => {
 				// res.profiles_skyflow_id = 'f4a90203-c091-11eb-afac-6e8fbbfa3e7b';
 				if (res.profiles_skyflow_id) {
+					const travelerExists: ITravelerExists = res;
 					this.wizardService.patientById(res.profiles_skyflow_id).subscribe((resp: any) => {
 						if (resp.records.length > 0) {
 							const profiles: IProfile = resp.records[0].profiles;
+							// profiles.skyflow_id = res.profiles_skyflow_id;
 							const vaccinations: IVaccinations = resp.records[0].vaccinations;
+							const media: IMedia = resp.records[0].media;
+							// vaccinations.skyflow_id = res.vaccination_skyflow_id;
+							// const mediaIds: IMedieaIds[] = res.media_ids;
 							// console.log('profile:', profiles);
 							// console.log('vaccinations: ', vaccinations);
-							localStorage.setItem(LOCAL_STORAGE_KEYS[LOCAL_STORAGE_KEYS.LOGIN_RESPONSE_DATA], JSON.stringify({ profiles, vaccinations }));
+							localStorage.setItem(LOCAL_STORAGE_KEYS[LOCAL_STORAGE_KEYS.LOGIN_RESPONSE_DATA],
+								JSON.stringify({ profiles, vaccinations, media, travelerExists }));
 							this.router.navigateByUrl('/corporate/profile');
 						} else {
 							this.message = 'Employee exists, but details not found !';
