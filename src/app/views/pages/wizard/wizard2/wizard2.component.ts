@@ -811,12 +811,12 @@ export class Wizard2Component implements OnInit, AfterViewInit {
             // console.log('supplementPath', supplementPath);
             // return false;
             const media: IMedia[] = [];
+            const existingVaxCard = this.loginResponse.media.find((x: any) => x.document_type === 'VAX_CARD');
             if (webcamPath) {
                 let vaxSkyflowId = null;
                 if (this.loginResponse.media && this.loginResponse.media.length > 0) {
-                    const webMedia = this.loginResponse.media.find((x: any) => x.document_type === 'VAX_CARD');
-                    if (webMedia) {
-                        vaxSkyflowId = webMedia.skyflow_id;
+                    if (existingVaxCard) {
+                        vaxSkyflowId = existingVaxCard.skyflow_id;
                     }
                 }
                 media.push({
@@ -827,9 +827,8 @@ export class Wizard2Component implements OnInit, AfterViewInit {
             } else if (srcPath) {
                 let vaxSkyflowId = null;
                 if (this.loginResponse.media && this.loginResponse.media.length > 0) {
-                    const srcMedia = this.loginResponse.media.find((x: any) => x.document_type === 'VAX_CARD');
-                    if (srcMedia) {
-                        vaxSkyflowId = srcMedia.skyflow_id;
+                    if (existingVaxCard) {
+                        vaxSkyflowId = existingVaxCard.skyflow_id;
                     }
                 }
                 media.push({
@@ -838,18 +837,21 @@ export class Wizard2Component implements OnInit, AfterViewInit {
                     skyflow_id: vaxSkyflowId
                 });
             } else {
-                media.push({
-                    document_type: 'VAX_CARD',
-                    file_path: null,
-                    skyflow_id: null
-                });
+                if (existingVaxCard) {
+                    media.push({
+                        document_type: 'VAX_CARD',
+                        file_path: null,
+                        skyflow_id: existingVaxCard.skyflow_id
+                    });
+                }
             }
+
+            const existingSuppliment = this.loginResponse.media.find((x: any) => x.document_type === 'SUPPLEMENT_DOC');
             if (supplementPath) {
                 let supplementSkyflowId = null;
                 if (this.loginResponse.media && this.loginResponse.media.length > 0) {
-                    const supplementMedia = this.loginResponse.media.find((x: any) => x.document_type === 'SUPPLEMENT_DOC');
-                    if (supplementMedia) {
-                        supplementSkyflowId = supplementMedia.skyflow_id;
+                    if (existingSuppliment) {
+                        supplementSkyflowId = existingSuppliment.skyflow_id;
                     }
                 }
                 media.push({
@@ -858,11 +860,13 @@ export class Wizard2Component implements OnInit, AfterViewInit {
                     skyflow_id: supplementSkyflowId
                 });
             } else {
-                media.push({
-                    document_type: 'SUPPLEMENT_DOC',
-                    file_path: null,
-                    skyflow_id: null
-                });
+                if (existingSuppliment) {
+                    media.push({
+                        document_type: 'SUPPLEMENT_DOC',
+                        file_path: null,
+                        skyflow_id: existingSuppliment.skyflow_id
+                    });
+                }
             }
 
             const profiles: IProfile = {
@@ -941,6 +945,7 @@ export class Wizard2Component implements OnInit, AfterViewInit {
             };
             localStorage.setItem('travelerData', JSON.stringify(this.patientForm.value));
             localStorage.removeItem(LOCAL_STORAGE_KEYS[LOCAL_STORAGE_KEYS.LOGIN_RESPONSE_DATA]);
+
             this.wizardService.registerTraveller(postObject).subscribe((data: any) => {
                 // console.log('result after save:', data);
                 this.skyflowId = 'test';
