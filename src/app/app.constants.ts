@@ -15,7 +15,11 @@ export class AppConstants {
             CREATE_TOKEN: '/humanapi/create-token',
             CREATE_ACCESS_TOKEN: '/humanapi/create-access-token'
         },
-        ORG_BY_STATE: '/json/orgList'
+        ORG_BY_STATE: '/json/orgList',
+        LOGIN: {
+            SEND_OTP: '/login-emp-via-otp',
+            VERIFY_OTP: '/verify-otp/'
+        }
     };
 
     public PAYMENT_STATUS_API = '/batch/payment-status';

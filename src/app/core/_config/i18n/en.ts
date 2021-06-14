@@ -58,7 +58,10 @@ export const locale = {
         MIN_LENGTH_FIELD: 'Minimum field length:',
         MAX_LENGTH_FIELD: 'Maximum field length:',
         INVALID_FIELD: 'Field is not valid',
-        EMPLOYEE_NOT_FOUND: 'Employee not found.'
+        EMPLOYEE_NOT_FOUND: 'Employee not found.',
+        EMAIL_NOT_FOUND: 'Email address not found.',
+        OTP_SENT: 'OTP has been sent to your email address.',
+        TRY_AGAIN: 'Oops, Something went wrong. Please try again!'
       }
     },
     ECOMMERCE: {

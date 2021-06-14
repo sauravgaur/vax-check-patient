@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable, of } from 'rxjs';
+import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+import { Observable, of, throwError } from 'rxjs';
 import { User } from '../_models/user.model';
 import { Permission } from '../_models/permission.model';
 import { Role } from '../_models/role.model';
@@ -12,27 +12,29 @@ const API_USERS_URL = 'api/users';
 const API_PERMISSION_URL = 'api/permissions';
 const API_ROLES_URL = 'api/roles';
 
+import { AppConstants } from '../../../app.constants';
+
 @Injectable()
 export class AuthService {
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private constants: AppConstants) {
   }
 
   // Authentication/Authorization
   login(email: string, password: string): Observable<User> {
-    return this.http.post<User>(API_USERS_URL, {email, password});
+    return this.http.post<User>(API_USERS_URL, { email, password });
   }
 
   getUserByToken(): Observable<User> {
     const userToken = localStorage.getItem(environment.authTokenKey);
     let httpHeaders = new HttpHeaders();
     httpHeaders = httpHeaders.set('Authorization', 'Bearer ' + userToken);
-    return this.http.get<User>(API_USERS_URL, {headers: httpHeaders});
+    return this.http.get<User>(API_USERS_URL, { headers: httpHeaders });
   }
 
   register(user: User): Observable<any> {
     let httpHeaders = new HttpHeaders();
     httpHeaders = httpHeaders.set('Content-Type', 'application/json');
-    return this.http.post<User>(API_USERS_URL, user, {headers: httpHeaders})
+    return this.http.post<User>(API_USERS_URL, user, { headers: httpHeaders })
       .pipe(
         map((res: User) => {
           return res;
@@ -76,14 +78,14 @@ export class AuthService {
   updateUser(_user: User): Observable<any> {
     let httpHeaders = new HttpHeaders();
     httpHeaders = httpHeaders.set('Content-Type', 'application/json');
-    return this.http.put(API_USERS_URL, _user, {headers: httpHeaders});
+    return this.http.put(API_USERS_URL, _user, { headers: httpHeaders });
   }
 
   // CREATE =>  POST: add a new user to the server
   createUser(user: User): Observable<User> {
     let httpHeaders = new HttpHeaders();
     httpHeaders = httpHeaders.set('Content-Type', 'application/json');
-    return this.http.post<User>(API_USERS_URL, user, {headers: httpHeaders});
+    return this.http.post<User>(API_USERS_URL, user, { headers: httpHeaders });
   }
 
   // Method from server should return QueryResultsModel(items: any[], totalsCount: number)
@@ -91,7 +93,7 @@ export class AuthService {
   findUsers(queryParams: QueryParamsModel): Observable<QueryResultsModel> {
     let httpHeaders = new HttpHeaders();
     httpHeaders = httpHeaders.set('Content-Type', 'application/json');
-    return this.http.post<QueryResultsModel>(API_USERS_URL + '/findUsers', queryParams, {headers: httpHeaders});
+    return this.http.post<QueryResultsModel>(API_USERS_URL + '/findUsers', queryParams, { headers: httpHeaders });
   }
 
   // Permission
@@ -117,14 +119,14 @@ export class AuthService {
     // Note: Add headers if needed (tokens/bearer)
     let httpHeaders = new HttpHeaders();
     httpHeaders = httpHeaders.set('Content-Type', 'application/json');
-    return this.http.post<Role>(API_ROLES_URL, role, {headers: httpHeaders});
+    return this.http.post<Role>(API_ROLES_URL, role, { headers: httpHeaders });
   }
 
   // UPDATE => PUT: update the role on the server
   updateRole(role: Role): Observable<any> {
     let httpHeaders = new HttpHeaders();
     httpHeaders = httpHeaders.set('Content-Type', 'application/json');
-    return this.http.put(API_ROLES_URL, role, {headers: httpHeaders});
+    return this.http.put(API_ROLES_URL, role, { headers: httpHeaders });
   }
 
   // DELETE => delete the role from the server
@@ -142,7 +144,19 @@ export class AuthService {
     // This code imitates server calls
     let httpHeaders = new HttpHeaders();
     httpHeaders = httpHeaders.set('Content-Type', 'application/json');
-    return this.http.post<QueryResultsModel>(API_ROLES_URL + '/findRoles', queryParams, {headers: httpHeaders});
+    return this.http.post<QueryResultsModel>(API_ROLES_URL + '/findRoles', queryParams, { headers: httpHeaders });
+  }
+
+  public sendOTP(data): Observable<any> {
+    return this.http.post<any>(environment.api_url + this.constants.API_URI.LOGIN.SEND_OTP, data).pipe(
+      catchError(this.handleError('send-otp', []))
+    );
+  }
+
+  public verifyOTP(otp: string): Observable<any> {
+    return this.http.post<any>(environment.api_url + this.constants.API_URI.LOGIN.VERIFY_OTP + otp, {}).pipe(
+      catchError(this.handleError('verify-otp', []))
+    );
   }
 
   /*
@@ -152,13 +166,28 @@ export class AuthService {
   * @param operation - name of the operation that failed
    * @param result - optional value to return as the observable result
    */
+
+  // private handleError1(error: HttpErrorResponse) {
+  //   if (error.status === 0) {
+  //     // A client-side or network error occurred. Handle it accordingly.
+  //     console.error('An error occurred:', error.error);
+  //   } else {
+  //     // The backend returned an unsuccessful response code.
+  //     // The response body may contain clues as to what went wrong.
+  //     console.error(
+  //       `Backend returned code ${error.status}, ` +
+  //       `body was: ${error.error}`);
+  //   }
+  //   // Return an observable with a user-facing error message.
+  //   return throwError(
+  //     'Something bad happened; please try again later.');
+  // }
+
   private handleError<T>(operation = 'operation', result?: any) {
     return (error: any): Observable<any> => {
-      // TODO: send the error to remote logging infrastructure
-      console.error(error); // log to console instead
-
       // Let the app keep running by returning an empty result.
-      return of(result);
+      // return of(result);
+      return throwError(error);
     };
   }
 }

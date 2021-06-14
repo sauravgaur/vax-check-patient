@@ -25,6 +25,7 @@ export class VaccinatorComponent implements OnInit {
   @Input() mailformat: string;
   @Input() isControlHasError: (controlName: string, validationType: string) => boolean;
   @Output() orgNameChange = new EventEmitter<string>();
+  off = 'off';
   constructor(private constants: AppConstants, private wizardService: WizardService, private cd: ChangeDetectorRef) {
     this.manufacturerList = this.constants.MANUFACTURER;
   }

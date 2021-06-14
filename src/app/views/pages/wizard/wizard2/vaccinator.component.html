@@ -1,4 +1,4 @@
-<div [formGroup]="vaccinator">
+<div [formGroup]="vaccinator" autocomplete="off">
     <!--begin: Form Wizard Step 2-->
     <div class="pb-5" data-wizard-type="step-content">
         <h4 class="mb-10 font-weight-bold text-dark">Vaccination Details</h4>
@@ -25,7 +25,7 @@
                 <div class="p-field p-col-12 p-md-4">
                     <span class="p-float-label p-input-icon-right">
                         <i class="pi pi-home"></i>
-                        <input id="float-input" type="text" formControlName="orgAddress1" required pInputText
+                        <input autocomplete="off" id="float-input" type="text" formControlName="orgAddress1" required pInputText
                             class="p-inputtext-sm">
                         <label for="firstname6">Address street<span class="cls-requiered">*</span></label>
                     </span>
@@ -37,7 +37,7 @@
                 <div class="p-field p-col-12 p-md-4">
                     <span class="p-float-label p-input-icon-right">
                         <i class="pi pi-home"></i>
-                        <input id="float-input" type="text" formControlName="orgAddress2" pInputText
+                        <input autocomplete="off" id="float-input" type="text" formControlName="orgAddress2" pInputText
                             class="p-inputtext-sm">
                         <label for="lastname6">Address street 2</label>
                     </span>
@@ -45,7 +45,7 @@
                 <div class="p-field p-col-12 p-md-4">
                     <span class="p-float-label p-input-icon-right">
                         <i class="pi pi-home"></i>
-                        <input id="float-input" type="text" formControlName="orgCity" required pInputText
+                        <input autocomplete="off" id="float-input" type="text" formControlName="orgCity" required pInputText
                             class="p-inputtext-sm">
                         <label for="org_city">City<span class="cls-requiered">*</span></label>
                     </span>
@@ -58,7 +58,7 @@
                 <div class="p-field p-col-12 p-md-4">
                     <span class="p-float-label p-input-icon-right">
                         <i class="pi pi-map-marker"></i>
-                        <p-inputMask id="float-input" mask="99999" maxlength="10" minLength="5"
+                        <p-inputMask [autocomplete]="off" id="float-input" mask="99999" maxlength="10" minLength="5"
                             formControlName="orgZipcode" pattern slotChar='' class="p-inputtext-sm"></p-inputMask>
                         <label for="lastname6">Zip code</label>
                     </span>
@@ -87,7 +87,7 @@
                 <div class="p-field p-col-12 p-md-4">
                     <span class="p-float-label p-input-icon-right">
                         <i class="pi pi-mobile"></i>
-                        <p-inputMask id="float-input" mask="9999999999" minLength="10" maxLength="10"
+                        <p-inputMask autocomplete="off" id="float-input" mask="9999999999" minLength="10" maxLength="10"
                             formControlName="orgContactNumber" slotChar='' pattern class="p-inputtext-sm">
                         </p-inputMask>
                         <label for="user_contact">Contact Number</label>
@@ -106,7 +106,7 @@
                 <div class="p-field p-col-12 p-md-4">
                     <span class="p-float-label p-input-icon-right">
                         <i class="pi pi-envelope"></i>
-                        <input id="float-input" type="email" formControlName="orgEmail" [pattern]="mailformat"
+                        <input autocomplete="off" id="float-input" type="email" formControlName="orgEmail" [pattern]="mailformat"
                             pInputText class="p-inputtext-sm">
                         <label for="user_email">Email <span *ngIf="vaccinator.value.orgState === 'HI'"
                                 class="cls-requiered">*</span></label>

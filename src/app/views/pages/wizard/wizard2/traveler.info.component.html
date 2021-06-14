@@ -1,4 +1,4 @@
-<form [formGroup]="travelerInfo">
+<form [formGroup]="travelerInfo" autocomplete="off">
     <!--begin: Form Wizard Step 1-->
     <div class="pb-5" data-wizard-type="step-content" data-wizard-state="current">
         <h4 class="mb-10 font-weight-bold text-dark">Traveler Info</h4>
@@ -7,7 +7,7 @@
                 <div class="p-field p-col-12 p-md-4">
                     <span class="p-float-label p-input-icon-right">
                         <i class="pi pi-user"></i>
-                        <input id="first-name" type="text" pInputText formControlName="firstName"
+                        <input id="first-name" autocomplete="off" type="text" pInputText formControlName="firstName"
                         class="p-inputtext-sm" pattern="^[ A-Za-z-.,]*$"
                             oninput="validity.valid||(value=(this.value.substring(0, this.value.length - 1)))" required>
                         <label for="first-name">First name<span class="cls-requiered">*</span></label>
@@ -22,7 +22,7 @@
                 <div class="p-field p-col-12 p-md-4">
                     <span class="p-float-label p-input-icon-right">
                         <i class="pi pi-user"></i>
-                        <input id="float-input" type="text" pInputText formControlName="middleName"
+                        <input id="float-input" autocomplete="off" type="text" pInputText formControlName="middleName"
                         class="p-inputtext-sm" pattern="^[ A-Za-z-.,]*$"
                             oninput="validity.valid||(value=(this.value.substring(0, this.value.length - 1)))">
                         <label for="float-input">Middle name</label>
@@ -38,7 +38,7 @@
                 <div class="p-field p-col-12 p-md-4">
                     <span class="p-float-label p-input-icon-right">
                         <i class="pi pi-user"></i>
-                        <input id="float-input" type="text" pInputText formControlName="lastName"
+                        <input id="float-input" autocomplete="off" type="text" pInputText formControlName="lastName"
                         class="p-inputtext-sm" pattern="^[ A-Za-z-.,]*$"
                             oninput="validity.valid||(value=(this.value.substring(0, this.value.length - 1)))" required>
                         <label for="float-input">Last name<span class="cls-requiered">*</span></label>
@@ -80,7 +80,7 @@
                     <input id="user_email" type="email" formControlName="email" pInputText [pattern]="mailformat" required> -->
                     <span class="p-float-label p-input-icon-right">
                         <i class="pi pi-envelope"></i>
-                        <input id="float-input" type="email" formControlName="email" pInputText [pattern]="mailformat"
+                        <input id="float-input" autocomplete="off" type="email" formControlName="email" pInputText [pattern]="mailformat"
                         class="p-inputtext-sm" required>
                         <label for="float-input">Email<span class="cls-requiered">*</span></label>
                     </span>
@@ -94,7 +94,7 @@
                 <div class="p-field p-col-12 p-md-4" style="margin-top: 1rem;">
                     <span class="p-float-label p-input-icon-right">
                         <i [class]="travelerInfo.value.contactOption === 'NO' ? 'pi pi-phone' : 'pi pi-mobile'"></i>
-                        <p-inputMask class="p-inputtext-sm" id="float-input" mask="9999999999" minLength="10" maxLength="10" slotChar='_'
+                        <p-inputMask [autocomplete]="off" autocomplete="off" class="p-inputtext-sm" id="float-input" mask="9999999999" minLength="10" maxLength="10" slotChar='_'
                             formControlName="contactNumber" required pattern>
                         </p-inputMask>
                         <label for="float-input">Phone Number<span class="cls-requiered">*</span></label>
@@ -121,7 +121,7 @@
                 <div class="p-field p-col-12 p-md-4" style="margin-top: 1rem;">
                     <span class="p-float-label p-input-icon-right">
                         <i [class]="travelerInfo.value.contactOption === 'NO' ? 'pi pi-mobile' : 'pi pi-phone'"></i>
-                        <p-inputMask id="float-input" class="p-inputtext-sm" mask="9999999999" [autoClear]="false" minlength="10"
+                        <p-inputMask autocomplete="off" id="float-input" class="p-inputtext-sm" mask="9999999999" [autoClear]="false" minlength="10"
                             maxlength="10" slotChar='' formControlName="contactNumber2" pattern>
                         </p-inputMask>
                         <label for="float-input">{{phoneNumberLabel}}<span
@@ -149,7 +149,7 @@
                     <input id="firstname6" type="text" formControlName="address1" required pInputText> -->
                     <span class="p-float-label p-input-icon-right">
                         <i class="pi pi-home"></i>
-                        <input id="float-input" class="p-inputtext-sm" type="text" pInputText formControlName="address1" required>
+                        <input autocomplete="off" id="float-input" class="p-inputtext-sm" type="text" pInputText formControlName="address1" required>
                         <label for="float-input">Address street<span class="cls-requiered">*</span></label>
                     </span>
                     <mat-error *ngIf="hasError('address1', 'required')">
@@ -161,7 +161,7 @@
                     <input id="lastname6" type="text" formControlName="address2" pInputText> -->
                     <span class="p-float-label p-input-icon-right">
                         <i class="pi pi-home"></i>
-                        <input id="float-input" class="p-inputtext-sm" type="text" formControlName="address2" pInputText>
+                        <input autocomplete="off" id="float-input" class="p-inputtext-sm" type="text" formControlName="address2" pInputText>
                         <label for="float-input">Address street 2</label>
                     </span>
 
@@ -172,7 +172,7 @@
                         slotChar='' [autoClear]="false"></p-inputMask> -->
                     <span class="p-float-label p-input-icon-right">
                         <i class="pi pi-map-marker"></i>
-                        <p-inputMask id="float-input" class="p-inputtext-sm" mask="99999" maxlength="5" minLength="5" formControlName="zipcode"
+                        <p-inputMask autocomplete="off" id="float-input" class="p-inputtext-sm" mask="99999" maxlength="5" minLength="5" formControlName="zipcode"
                             required pattern slotChar='' [autoClear]="false"></p-inputMask>
                         <label for="float-input">Zip code<span class="cls-requiered">*</span></label>
                     </span>
@@ -188,7 +188,7 @@
                     <input id="user_city" type="text" formControlName="city" required pInputText> -->
                     <span class="p-float-label p-input-icon-right">
                         <i class="pi pi-home"></i>
-                        <input id="float-input" class="p-inputtext-sm" type="text" formControlName="city" required pInputText>
+                        <input autocomplete="off" id="float-input" class="p-inputtext-sm" type="text" formControlName="city" required pInputText>
                         <label for="float-input">City<span class="cls-requiered">*</span></label>
                     </span>
                     <mat-error *ngIf="hasError('city', 'required')">

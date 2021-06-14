@@ -579,7 +579,7 @@ export class Wizard2Component implements OnInit, AfterViewInit {
 
                 this.firstInputText = this.patientForm.get('firstName').value;
                 this.firstNameInputControl.setValue(this.firstInputText);
-                // this.patientForm.get('consent').setErrors(null);
+                this.patientForm.get('consent').setErrors(null);
                 this.patientForm.get('consent').setValidators(Validators.requiredTrue);
                 this.patientForm.get('consent').updateValueAndValidity();
                 this.patientForm.get('consent').markAsPristine();

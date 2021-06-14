@@ -1,240 +1,27 @@
-<!--begin::Signin-->
-<div class="p-d-flex p-jc-center p-md-12 p-lg-10">
-  <!--begin::Form-->
-
-  <!-- <div [formGroup]="corporateForm"> -->
-  <div class="box p-shadow-10 p-fluid p-formgrid login-form" style="border-radius: 20px; background: white">
-    <div class="p-grid" style="margin: 1rem 0 0 0;">
-      <div [hidden]="!message" class="p-field p-col-12 login-page alert alert-{{type}}" role="alert" #alertNotice
-      style="width: 97.5%;
-      margin-left: 1rem;">
-        <div class="alert-text" [innerHTML]="message"></div>
-      </div>
-      <form class="form" [formGroup]="corporateForm" autocomplete="off" novalidate="novalidate" id="kt_login_form">
-
-        <div class="p-grid">
-          <div class="p-field p-col-12 p-md-4">
-            <span class="p-float-label p-input-icon-right">
-              <i class="pi pi-user"></i>
-              <input id="first-name" type="text" pInputText formControlName="firstName" class="p-inputtext-sm"
-                pattern="^[ A-Za-z-.,]*$"
-                oninput="validity.valid||(value=(this.value.substring(0, this.value.length - 1)))" required>
-              <label for="first-name">First name<span class="cls-requiered">*</span></label>
-            </span>
-            <mat-error *ngIf="errorUtils.hasError(corporateForm, 'firstName', 'required')">
-              <strong>Required field</strong>
-            </mat-error>
-            <mat-error *ngIf="errorUtils.hasError(corporateForm, 'firstName', 'pattern')">
-              <strong>Field is not valid</strong>
-            </mat-error>
-          </div>
-          <div class="p-field p-col-12 p-md-4">
-            <span class="p-float-label p-input-icon-right">
-              <i class="pi pi-user"></i>
-              <input id="float-input" type="text" pInputText formControlName="middleName" class="p-inputtext-sm"
-                pattern="^[ A-Za-z-.,]*$"
-                oninput="validity.valid||(value=(this.value.substring(0, this.value.length - 1)))">
-              <label for="float-input">Middle name</label>
-            </span>
-            <mat-error *ngIf="errorUtils.hasError(corporateForm, 'middleName', 'pattern')">
-              <strong>Field is not valid</strong>
-            </mat-error>
-          </div>
-          <div class="p-field p-col-12 p-md-4">
-            <span class="p-float-label p-input-icon-right">
-              <i class="pi pi-user"></i>
-              <input id="float-input" type="text" pInputText formControlName="lastName" class="p-inputtext-sm"
-                pattern="^[ A-Za-z-.,]*$"
-                oninput="validity.valid||(value=(this.value.substring(0, this.value.length - 1)))" required>
-              <label for="float-input">Last name<span class="cls-requiered">*</span></label>
-            </span>
-            <mat-error *ngIf="errorUtils.hasError(corporateForm, 'lastName', 'required')">
-              <strong>Required field</strong>
-            </mat-error>
-            <mat-error *ngIf="errorUtils.hasError(corporateForm, 'lastName', 'pattern')">
-              <strong>Field is not valid</strong>
-            </mat-error>
-          </div>
-
-          <div class="p-field p-col-12 p-md-6">
-            <span class="p-float-label p-input-icon-right">
-              <p-calendar [showIcon]="true" inputId="icon" formControlName="dob" required class="p-inputtext-sm"
-                [monthNavigator]="true" [yearNavigator]="true" [yearRange]="dateProperties.yearRange"
-                [dateFormat]="dateProperties.dateFormat" [maxDate]="dateProperties.maxDate"> </p-calendar>
-              <label for="float-input">Date of birth<span class="cls-requiered">*</span></label>
-            </span>
-            <mat-error *ngIf="errorUtils.hasError(corporateForm, 'dob', 'required')">
-              <strong>Required field</strong>
-            </mat-error>
-          </div>
-          <div class="p-field p-col-12 p-md-6">
-            <span class="p-float-label p-input-icon-right">
-              <i class="pi pi-envelope"></i>
-              <input id="float-input" type="email" formControlName="email" pInputText [pattern]="mailFormat"
-                class="p-inputtext-sm" required>
-              <label for="float-input">Email<span class="cls-requiered">*</span></label>
-            </span>
-            <mat-error *ngIf="errorUtils.hasError(corporateForm, 'email', 'required')">
-              <strong>Required field</strong>
-            </mat-error>
-            <mat-error *ngIf="errorUtils.hasError(corporateForm, 'email', 'pattern')">
-              <strong>Field is not valid</strong>
-            </mat-error>
-          </div>
-          <div class="p-field p-col-12 p-md-6">
-            <span class="p-float-label p-input-icon-right">
-              <i class="pi pi-mobile"></i>
-              <p-inputMask class="p-inputtext-sm" id="float-input" mask="9999999999" minLength="10" maxLength="10"
-                slotChar='_' formControlName="contactNumber" required pattern>
-              </p-inputMask>
-              <label for="float-input">Phone Number<span class="cls-requiered">*</span></label>
-            </span>
-            <small id="field-help">{{tooltipJson?.contactNumber}}</small>
-            <mat-error *ngIf="errorUtils.hasError(corporateForm, 'contactNumber', 'required')">
-              <strong>Required field</strong>
-            </mat-error>
-            <mat-error *ngIf="errorUtils.hasError(corporateForm, 'contactNumber', 'minLength')">
-              <strong>Required field</strong>
-            </mat-error>
-            <mat-error *ngIf="errorUtils.hasError(corporateForm, 'contactNumber', 'maxLength')">
-              <strong>Required field</strong>
-            </mat-error>
-          </div>
-          <div class="p-field p-col-12 p-md-6">
-            <span class="p-float-label p-input-icon-right">
-              <i class="pi pi-user"></i>
-              <input id="corporate-id" type="password" pInputText formControlName="corporateId" class="p-inputtext-sm"
-                required>
-              <label for="corporate-id">Corporate Pass ID<span class="cls-requiered">*</span></label>
-            </span>
-            <mat-error *ngIf="errorUtils.hasError(corporateForm, 'corporateId', 'required')">
-              <strong>Required field</strong>
-            </mat-error>
-          </div>
-          <div class="p-field p-col-12 p-md-12" >
-            <button pButton pRipple type="submit" [disabled]="isSubmitted" (click)="onSubmit()"
-              [icon]="isSubmitted ? 'pi pi-spin pi-spinner' : ''" [label]="buttonLabel"
-              [ngClass]="{'p-button-success' : isSubmitted}"></button>
-          </div>
-        </div>
-      </form>
+<div class="d-flex flex-column-fluid flex-center mt-30 mt-lg-0">
+  <!--begin::Signin-->
+  <div class="login-form login-signin">
+    <div class="text-center mb-10 mb-lg-20">
+      <h3 class="font-size-h1">Sign In</h3>
+      <p class="text-muted font-weight-bold">
+        Enter your email address
+      </p>
     </div>
-  </div>
-  <!-- 
-      <div class="p-field p-col-12 p-md-4">
-          <span class="p-float-label p-input-icon-right">
-            <i class="pi pi-user"></i>
-            <input id="first-name" type="text" pInputText formControlName="firstName" class="p-inputtext-sm"
-              pattern="^[ A-Za-z-.,]*$"
-              oninput="validity.valid||(value=(this.value.substring(0, this.value.length - 1)))" required>
-            <label for="first-name">First name<span class="cls-requiered">*</span></label>
-          </span>
-          <mat-error *ngIf="errorUtils.hasError(corporateForm, 'firstName', 'required')">
-            <strong>Required field</strong>
-          </mat-error>
-          <mat-error *ngIf="errorUtils.hasError(corporateForm, 'firstName', 'pattern')">
-            <strong>Field is not valid</strong>
-          </mat-error>
-        </div>
-        <div class="p-field p-col-12 p-md-4">
-          <span class="p-float-label p-input-icon-right">
-            <i class="pi pi-user"></i>
-            <input id="float-input" type="text" pInputText formControlName="middleName" class="p-inputtext-sm"
-              pattern="^[ A-Za-z-.,]*$"
-              oninput="validity.valid||(value=(this.value.substring(0, this.value.length - 1)))">
-            <label for="float-input">Middle name</label>
-          </span>
-          <mat-error *ngIf="errorUtils.hasError(corporateForm, 'middleName', 'pattern')">
-            <strong>Field is not valid</strong>
-          </mat-error>
-        </div>
-        <div class="p-field p-col-12 p-md-4">
-          <span class="p-float-label p-input-icon-right">
-            <i class="pi pi-user"></i>
-            <input id="float-input" type="text" pInputText formControlName="lastName" class="p-inputtext-sm"
-              pattern="^[ A-Za-z-.,]*$"
-              oninput="validity.valid||(value=(this.value.substring(0, this.value.length - 1)))" required>
-            <label for="float-input">Last name<span class="cls-requiered">*</span></label>
-          </span>
-          <mat-error *ngIf="errorUtils.hasError(corporateForm, 'lastName', 'required')">
-            <strong>Required field</strong>
-          </mat-error>
-          <mat-error *ngIf="errorUtils.hasError(corporateForm, 'lastName', 'pattern')">
-            <strong>Field is not valid</strong>
-          </mat-error>
-        </div>
-        <div class="p-field p-col-12 p-md-6">
-          <span class="p-float-label p-input-icon-right">
-            <p-calendar [showIcon]="true" inputId="icon" formControlName="dob" required class="p-inputtext-sm"
-              [monthNavigator]="true" [yearNavigator]="true" [yearRange]="dateProperties.yearRange"
-              [dateFormat]="dateProperties.dateFormat" [maxDate]="dateProperties.maxDate"> </p-calendar>
-            <label for="float-input">Date of birth<span class="cls-requiered">*</span></label>
-          </span>
-          <mat-error *ngIf="errorUtils.hasError(corporateForm, 'dob', 'required')">
-            <strong>Required field</strong>
-          </mat-error>
-        </div>
-        <div class="p-field p-col-12 p-md-6">
-          <span class="p-float-label p-input-icon-right">
-            <i class="pi pi-envelope"></i>
-            <input id="float-input" type="email" formControlName="email" pInputText [pattern]="mailformat"
-              class="p-inputtext-sm" required>
-            <label for="float-input">Email<span class="cls-requiered">*</span></label>
-          </span>
-          <mat-error *ngIf="errorUtils.hasError(corporateForm, 'email', 'required')">
-            <strong>Required field</strong>
-          </mat-error>
-          <mat-error *ngIf="errorUtils.hasError(corporateForm, 'email', 'pattern')">
-            <strong>Field is not valid</strong>
-          </mat-error>
-        </div>
-        <div class="p-field p-col-12 p-md-6">
-          <span class="p-float-label p-input-icon-right">
-            <i class="pi pi-mobile"></i>
-            <p-inputMask class="p-inputtext-sm" id="float-input" mask="9999999999" minLength="10" maxLength="10"
-              slotChar='_' formControlName="contactNumber" required pattern>
-            </p-inputMask>
-            <label for="float-input">Phone Number<span class="cls-requiered">*</span></label>
-          </span>
-          <small id="field-help">{{tooltipJson?.contactNumber}}</small>
-          <mat-error *ngIf="errorUtils.hasError(corporateForm, 'contactNumber', 'required')">
-            <strong>Required field</strong>
-          </mat-error>
-          <mat-error *ngIf="errorUtils.hasError(corporateForm, 'contactNumber', 'minLength')">
-            <strong>Required field</strong>
-          </mat-error>
-          <mat-error *ngIf="errorUtils.hasError(corporateForm, 'contactNumber', 'maxLength')">
-            <strong>Required field</strong>
-          </mat-error>
-        </div>
-        <div class="p-field p-col-12 p-md-6">
-          <span class="p-float-label p-input-icon-right">
-            <i class="pi pi-user"></i>
-            <input id="corporate-id" type="password" pInputText formControlName="corporateId" class="p-inputtext-sm"
-              required>
-            <label for="corporate-id">Corporate Pass ID<span class="cls-requiered">*</span></label>
-          </span>
-          <mat-error *ngIf="errorUtils.hasError(corporateForm, 'corporateId', 'required')">
-            <strong>Required field</strong>
-          </mat-error>
-        </div>
-        <div class="p-field p-col-12">
-          <button pButton pRipple type="submit" [disabled]="isSubmitted" (click)="onSubmit()"
-            [icon]="isSubmitted ? 'pi pi-spin pi-spinner' : ''" [label]="buttonLabel"
-            [ngClass]="{'p-button-success' : isSubmitted}"></button>
-        </div>
-      
-      <form class="form" [formGroup]="loginForm" autocomplete="off" novalidate="novalidate" id="kt_login_form">
+
+    <kt-auth-notice></kt-auth-notice>
+
+    <!--begin::Form-->
+    <form class="form" [formGroup]="loginForm" autocomplete="off" novalidate="novalidate" id="kt_login_form">
       <div class="form-group">
         <mat-form-field>
           <mat-label>{{ "AUTH.INPUT.EMAIL" | translate }}</mat-label>
-          <input matInput type="email" placeholder="{{ 'AUTH.INPUT.EMAIL' | translate }}" formControlName="email"
-            autocomplete="off" />
+          <input matInput type="email" [attr.disabled]="otpSent" placeholder="{{ 'AUTH.INPUT.EMAIL' | translate }}"
+          [pattern]="mailformat" formControlName="email" autocomplete="off" />
           <mat-error *ngIf="isControlHasError('email', 'required')">
             <strong>{{ "AUTH.VALIDATION.REQUIRED_FIELD" | translate }}</strong>
           </mat-error>
-          <mat-error *ngIf="isControlHasError('email', 'email')">
-            <strong>{{ "AUTH.VALIDATION.INVALID_FIELD" | translate }}</strong>
+          <mat-error *ngIf="isControlHasError('email', 'pattern')">
+            <strong>Field is not valid</strong>
           </mat-error>
           <mat-error *ngIf="isControlHasError('email', 'minlength')">
             <strong>{{ "AUTH.VALIDATION.MIN_LENGTH_FIELD" | translate }} 3</strong>
@@ -244,10 +31,10 @@
           </mat-error>
         </mat-form-field>
       </div>
-      <div class="form-group">
+      <div class="form-group" *ngIf="otpSent">
         <mat-form-field>
-          <mat-label>{{ "AUTH.INPUT.PASSWORD" | translate }}</mat-label>
-          <input matInput type="password" placeholder="{{ 'AUTH.INPUT.PASSWORD' | translate }}"
+          <mat-label>OTP</mat-label>
+          <input matInput type="password" placeholder="OTP"
             formControlName="password" autocomplete="off" />
           <mat-error *ngIf="isControlHasError('password', 'required')">
             <strong>{{ "AUTH.VALIDATION.REQUIRED_FIELD" | translate }}</strong>
@@ -260,14 +47,27 @@
           </mat-error>
         </mat-form-field>
       </div>
-      <div class="form-group d-flex flex-wrap justify-content-between align-items-center">
-        <a href="javascript:;" routerLink="/auth/forgot-password" class="text-dark-50 text-hover-primary my-3 mr-2"
-          id="kt_login_forgot">{{ "AUTH.GENERAL.FORGOT_BUTTON" | translate }}</a>
-        <button id="kt_login_signin_submit" (click)="submit()" [ngClass]="{
+      <!--begin::Action-->
+      <div *ngIf="!otpSent" class="form-group d-flex flex-wrap justify-content-between align-items-center">
+        <button id="kt_login_signin_submit" (click)="sendOTP()" [ngClass]="{
             'spinner spinner-right spinner-md spinner-light': loading
-          }" class="btn btn-primary font-weight-bold px-9 py-4 my-3">{{ "AUTH.LOGIN.BUTTON" | translate }}</button>
+          }" [disabled]="loading" class="btn btn-primary font-weight-bold px-9 py-4 my-3">Email OTP</button>
       </div>
-    </form> -->
-  <!--end::Form-->
+      <div *ngIf="otpSent" class="form-group d-flex flex-wrap justify-content-between align-items-center">
+        <button id="kt_login_signin_submit" (click)="submit()" [disabled]="disableLogin" [ngClass]="{
+            'spinner spinner-right spinner-md spinner-light': loading1
+          }" class="btn btn-success font-weight-bold px-9 py-4 my-3">{{ "AUTH.LOGIN.BUTTON" |
+          translate }}</button>
+        <div>
+          <span style="color:gray" *ngIf="counter > 0">{{counter}} seconds&nbsp;&nbsp;</span><button
+            id="kt_login_signin_submit" [disabled]="counter > 0" (click)="resedOTP()" [ngClass]="{
+              'spinner spinner-right spinner-md spinner-light': loading
+            }" class="btn btn-primary font-weight-bold px-9 py-4 my-3">Re-Send OTP</button>
+        </div>
+      </div>
+      <!--end::Action-->
+    </form>
+    <!--end::Form-->
+  </div>
+  <!--end::Signin-->
 </div>
-<!--end::Signin-->

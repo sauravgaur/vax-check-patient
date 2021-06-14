@@ -20,6 +20,7 @@ export class TravelerInfoComponent implements OnInit {
   @Input() dateProperties: IDateProperties;
   @Input() tooltipJson: any;
   @Input() mailformat: string;
+  off = 'off';
   @Input() isControlHasError: (controlName: string, validationType: string) => boolean;
 
   constructor(private constants: AppConstants) {

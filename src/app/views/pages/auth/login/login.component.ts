@@ -1,9 +1,9 @@
 // Angular
 import { ChangeDetectorRef, Component, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 // RxJS
-import { Observable, Subject } from 'rxjs';
+import { Observable, Subject, Subscription, timer } from 'rxjs';
 import { finalize, takeUntil, tap } from 'rxjs/operators';
 // Translate
 import { TranslateService } from '@ngx-translate/core';
@@ -12,13 +12,9 @@ import { Store } from '@ngrx/store';
 import { AppState } from '../../../../core/reducers';
 // Auth
 import { AuthNoticeService, AuthService, Login } from '../../../../core/auth';
+import { IMedia, IProfile, ITravelerExists, IVaccinations, LOCAL_STORAGE_KEYS } from 'src/app/interface/record.interface';
 import { WizardService } from '../../wizard/wizard2/wizard.service';
-import Utils from '../../../../../app/utils';
-import { IDateProperties } from '../../../../interface/date.properties';
-import { IMedia, IProfile, ITravelerExists, IVaccinations, LOCAL_STORAGE_KEYS, IMediaArray, IMedieaIds } from '../../../../interface/record.interface';
-import { IPatientAddress } from '../../../../interface/record.interface';
-import { EmpData } from '../../../../../app/employee-data';
-import moment from 'moment';
+
 /**
  * ! Just example => Should be removed in development
  */
@@ -30,8 +26,8 @@ const DEMO_PARAMS = {
 @Component({
 	selector: 'kt-login',
 	templateUrl: './login.component.html',
-	encapsulation: ViewEncapsulation.None,
-	providers: [WizardService]
+	providers: [AuthService, WizardService],
+	encapsulation: ViewEncapsulation.None
 })
 export class LoginComponent implements OnInit, OnDestroy {
 	// Public params
@@ -39,30 +35,17 @@ export class LoginComponent implements OnInit, OnDestroy {
 	loading = false;
 	isLoggedIn$: Observable<boolean>;
 	errors: any = [];
-	message = '';
-	type = '';
+	countDown: Subscription;
 	private unsubscribe: Subject<any>;
 
 	private returnUrl: any;
-
-	corporateForm: FormGroup;
-	mailFormat = '^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$';
-	errorUtils = Utils;
-	isSubmitted = false;
-	buttonLabel = 'Login';
-	dateProperties: IDateProperties;
-	tooltipJson: any = {
-		contactNumber: 'Prefered mobile phone number',
-		resedenceItem: 'Are you a permanent Hawaii resident?',
-		orgName: `Who organized the vaccination?<br> Type at least 1 alphabet.`,
-		orgAddress1: 'Address of the Organization',
-		takeSnapShot: 'Take a picture of you vaccination card',
-		travelDateToHawaii: 'Trip date in Safe Travels'
-	};
-	empData: any;
-
+	public otpSent = false;
+	private resendOtp = false;
 	// Read more: => https://brianflove.com/2016/12/11/anguar-2-unsubscribe-observables/
-
+	public counter = 10;
+	loading1 = false;
+	disableLogin = false;
+	mailFormat = '^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$';
 	/**
 	 * Component constructor
 	 *
@@ -83,9 +66,7 @@ export class LoginComponent implements OnInit, OnDestroy {
 		private store: Store<AppState>,
 		private fb: FormBuilder,
 		private cdr: ChangeDetectorRef,
-		private route: ActivatedRoute,
-		private fb1: FormBuilder, private wizardService: WizardService,
-		private empConstants: EmpData
+		private route: ActivatedRoute, private wizardService: WizardService
 	) {
 		this.unsubscribe = new Subject();
 	}
@@ -99,39 +80,10 @@ export class LoginComponent implements OnInit, OnDestroy {
 	 */
 	ngOnInit(): void {
 		this.initLoginForm();
-		this.empData = this.empConstants.JSON_DATA;
-		this.dateProperties = {
-			dateFormat: 'mm-dd-yy',
-			maxDate: new Date(),
-			minDate: Utils.addDays(new Date(), 1),
-			yearRange: `1930:${new Date().getFullYear()}`
-		};
-
-		this.corporateForm = this.fb1.group({
-			firstName: new FormControl('', Validators.compose([Validators.required, Validators.pattern('^[ A-Za-z-.,]*$')])),
-			middleName: new FormControl('', Validators.pattern('^[ A-Za-z-.,]*$')),
-			lastName: new FormControl('', Validators.compose([Validators.required, Validators.pattern('^[ A-Za-z-.,]*$')])),
-			dob: new FormControl('', Validators.required),
-			email: new FormControl('', Validators.compose([Validators.required, Validators.pattern(this.mailFormat)])),
-			contactNumber: new FormControl('',
-				Validators.compose([Validators.required, Validators.minLength(10), Validators.maxLength(10)])),
-			corporateId: new FormControl('', Validators.required)
-		});
-
-		// this.corporateForm = this.fb1.group({
-		// 	firstName: new FormControl('ab', Validators.compose([Validators.required, Validators.pattern('^[ A-Za-z-.,]*$')])),
-		// 	middleName: new FormControl('ab', Validators.pattern('^[ A-Za-z-.,]*$')),
-		// 	lastName: new FormControl('ab', Validators.compose([Validators.required, Validators.pattern('^[ A-Za-z-.,]*$')])),
-		// 	dob: new FormControl(new Date('2021-04-01'), Validators.required),
-		// 	email: new FormControl('a@a.com', Validators.compose([Validators.required, Validators.pattern(this.mailFormat)])),
-		// 	contactNumber: new FormControl('1231231231',
-		// 		Validators.compose([Validators.required, Validators.minLength(10), Validators.maxLength(10)])),
-		// 	corporateId: new FormControl('7890', Validators.required)
-		// });
 
 		// redirect back to the returnUrl before login
 		this.route.queryParams.subscribe(params => {
-			this.returnUrl = params.returnUrl || '/traveler/registration';
+			this.returnUrl = params.returnUrl || '/';
 		});
 	}
 
@@ -143,6 +95,7 @@ export class LoginComponent implements OnInit, OnDestroy {
 		this.unsubscribe.next();
 		this.unsubscribe.complete();
 		this.loading = false;
+		this.countDown = null;
 	}
 
 	/**
@@ -151,34 +104,30 @@ export class LoginComponent implements OnInit, OnDestroy {
 	 */
 	initLoginForm() {
 		// demo message to show
-		if (!this.authNoticeService.onNoticeChanged$.getValue()) {
-			const initialNotice = `Use account
-			<strong>${DEMO_PARAMS.EMAIL}</strong> and password
-			<strong>${DEMO_PARAMS.PASSWORD}</strong> to continue.`;
-			// this.authNoticeService.setNotice(initialNotice, 'info');
-		}
+		// if (!this.authNoticeService.onNoticeChanged$.getValue()) {
+		// 	const initialNotice = `Use account
+		// 	<strong>${DEMO_PARAMS.EMAIL}</strong> and password
+		// 	<strong>${DEMO_PARAMS.PASSWORD}</strong> to continue.`;
+		// 	this.authNoticeService.setNotice(initialNotice, 'info');
+		// }
 
 		this.loginForm = this.fb.group({
-			email: [DEMO_PARAMS.EMAIL, Validators.compose([
+			email: ['', Validators.compose([
 				Validators.required,
-				Validators.email,
+				Validators.pattern(this.mailFormat),
 				Validators.minLength(3),
 				Validators.maxLength(320) // https://stackoverflow.com/questions/386294/what-is-the-maximum-length-of-a-valid-email-address
 			])
 			],
-			password: [DEMO_PARAMS.PASSWORD, Validators.compose([
-				Validators.required,
-				Validators.minLength(3),
-				Validators.maxLength(100)
-			])
-			]
+			password: [DEMO_PARAMS.PASSWORD]
 		});
 	}
 
 	/**
 	 * Form Submit
 	 */
-	submit() {
+	submit1() {
+		this.authNoticeService.setNotice(null);
 		const controls = this.loginForm.controls;
 		/** check form */
 		if (this.loginForm.invalid) {
@@ -188,7 +137,7 @@ export class LoginComponent implements OnInit, OnDestroy {
 			return;
 		}
 
-		this.loading = true;
+		this.loading1 = true;
 
 		const authData = {
 			email: controls.email.value,
@@ -207,124 +156,41 @@ export class LoginComponent implements OnInit, OnDestroy {
 				}),
 				takeUntil(this.unsubscribe),
 				finalize(() => {
-					this.loading = false;
+					this.loading1 = false;
 					this.cdr.markForCheck();
 				})
 			)
 			.subscribe();
 	}
 
-	async onSubmit() {
-		// this.authNoticeService.setNotice('');
-		this.message = '';
-		this.type = '';
-		if (this.corporateForm.valid) {
-			localStorage.removeItem(LOCAL_STORAGE_KEYS[LOCAL_STORAGE_KEYS.LOGIN_FORM_DATA]);
-			localStorage.removeItem(LOCAL_STORAGE_KEYS[LOCAL_STORAGE_KEYS.LOGIN_RESPONSE_DATA]);
-			this.isSubmitted = true;
-			this.buttonLabel = 'Logging In';
-			const formObj = {
-				firstName: this.corporateForm.get('firstName').value,
-				lastName: this.corporateForm.get('lastName').value,
-				middleName: this.corporateForm.get('middleName').value,
-				dateOfBirth: Utils.formatToUSStandared(this.corporateForm.get('dob').value),
-				contactNumber: this.corporateForm.get('contactNumber').value,
-				email: this.corporateForm.get('email').value,
-				org_id: this.corporateForm.get('corporateId').value
-			};
-			localStorage.setItem(LOCAL_STORAGE_KEYS[LOCAL_STORAGE_KEYS.LOGIN_FORM_DATA], JSON.stringify(this.corporateForm.value));
-			// console.log('Utils.formatToUSStandared(x.dateOfBirth):', formObj.dateOfBirth);
-			// const findEmp = this.empData.find((x: any) => formObj.firstName == x.firstName && formObj.lastName == x.lastName
-			// 	&& formObj.dateOfBirth == Utils.formatToUSStandared(x.dateOfBirth)
-			// 	&& formObj.contactNumber == x.contactNumber
-			// 	&& formObj.email == x.email);
-			// if (findEmp) {
-			// 	const address: IPatientAddress = {
-			// 		street_address: findEmp.address1,
-			// 		street_address2: findEmp.address2,
-			// 		state: findEmp.state,
-			// 		zip_code: findEmp.zipcode,
-			// 		city: findEmp.city
-			// 	};
-
-			// 	const profiles: IProfile = {
-			// 		name: {
-			// 			first_name: findEmp.firstName,
-			// 			middle_name: findEmp.middleName ? findEmp.middleName : this.corporateForm.get('middleName').value,
-			// 			last_name: findEmp.lastName
-			// 		},
-			// 		sex: findEmp.gender,
-			// 		email_address: findEmp.email,
-			// 		date_of_birth: moment(findEmp.dateOfBirth, 'MM-DD-YYYY').format('YYYY-MM-DD'),
-			// 		access_code: this.corporateForm.get('corporateId').value,
-			// 		address, mobile_number: findEmp.contactNumber,
-			// 		mobile_number2: findEmp.contactNumber2,
-			// 		org_id: this.corporateForm.get('corporateId').value
-			// 	};
-			// 	localStorage.setItem(LOCAL_STORAGE_KEYS[LOCAL_STORAGE_KEYS.LOGIN_RESPONSE_DATA], JSON.stringify({ profiles }));
-			// 	setTimeout(() => {
-			// 		this.router.navigateByUrl('/corporate/profile');
-			// 	}, 1000);
-			// } else {
-			// 	setTimeout(() => {
-			// 		this.message = 'Employee not found !';
-			// 		this.type = 'danger';
-			// 		this.isSubmitted = false;
-			// 		this.buttonLabel = 'Log In';
-			// 		this.cdr.markForCheck();
-			// 	}, 1000);
-			// }
-
-
-			this.wizardService.isExists(formObj).subscribe((res: ITravelerExists) => {
-				// res.profiles_skyflow_id = 'f4a90203-c091-11eb-afac-6e8fbbfa3e7b';
-				if (res.profiles_skyflow_id) {
-					const travelerExists: ITravelerExists = res;
-					this.wizardService.patientById(res.profiles_skyflow_id).subscribe((resp: any) => {
-						if (resp.records.length > 0) {
-							const profiles: IProfile = resp.records[0].profiles;
-							// profiles.skyflow_id = res.profiles_skyflow_id;
-							const vaccinations: IVaccinations = resp.records[0].vaccinations;
-							const media: IMedia = resp.records[0].media;
-							// vaccinations.skyflow_id = res.vaccination_skyflow_id;
-							// const mediaIds: IMedieaIds[] = res.media_ids;
-							// console.log('profile:', profiles);
-							// console.log('vaccinations: ', vaccinations);
-							localStorage.setItem(LOCAL_STORAGE_KEYS[LOCAL_STORAGE_KEYS.LOGIN_RESPONSE_DATA],
-								JSON.stringify({ profiles, vaccinations, media, travelerExists }));
-							this.router.navigateByUrl('/corporate/profile');
-						} else {
-							this.message = 'Employee exists, but details not found !';
-							this.type = 'danger';
-							this.isSubmitted = false;
-							this.buttonLabel = 'Log In';
-							this.cdr.markForCheck();
-						}
-					},
-						error => {
-							this.message = 'Something went wrong, please try again.';
-							this.type = 'danger';
-							this.isSubmitted = false;
-							this.buttonLabel = 'Log In';
-							this.cdr.markForCheck();
-						});
-				} else {
-					// this.authNoticeService.setNotice(this.translate.instant('AUTH.VALIDATION.EMPLOYEE_NOT_FOUND'), 'danger');
-					this.message = 'Employee not found !';
-					this.type = 'danger';
-					this.isSubmitted = false;
-					this.buttonLabel = 'Log In';
-					this.cdr.markForCheck();
-				}
-			},
-				error => {
-					this.message = 'Something went wrong, please try again.';
-					this.type = 'danger';
-					this.isSubmitted = false;
-					this.buttonLabel = 'Log In';
-					this.cdr.markForCheck();
-				});
+	submit() {
+		this.authNoticeService.setNotice(null);
+		const controls = this.loginForm.controls;
+		/** check form */
+		if (this.loginForm.invalid) {
+			Object.keys(controls).forEach(controlName =>
+				controls[controlName].markAsTouched()
+			);
+			return;
 		}
+		this.loading1 = true;
+		this.auth.verifyOTP(this.loginForm.controls.password.value).subscribe((resp: any) => {
+			if (resp.records.length > 0) {
+				const profiles: IProfile = resp.records[0].profiles;
+				const vaccinations: IVaccinations = resp.records[0].vaccinations;
+				const media: IMedia = resp.records[0].media;
+				localStorage.setItem(LOCAL_STORAGE_KEYS[LOCAL_STORAGE_KEYS.LOGIN_RESPONSE_DATA],
+					JSON.stringify({ profiles, vaccinations, media }));
+				this.router.navigateByUrl('/corporate/profile');
+			} else {
+				this.authNoticeService.setNotice('Employee exists, but details not found !', 'danger');
+				this.cdr.markForCheck();
+			}
+		},
+			error => {
+				this.authNoticeService.setNotice('Something went wrong, please try again.', 'danger');
+				this.cdr.markForCheck();
+			});
 	}
 
 	/**
@@ -341,5 +207,118 @@ export class LoginComponent implements OnInit, OnDestroy {
 
 		const result = control.hasError(validationType) && (control.dirty || control.touched);
 		return result;
+	}
+
+	sendOTP() {
+		this.authNoticeService.setNotice(null);
+		if (this.loginForm.valid) {
+			this.loading = true;
+			this.auth.sendOTP({ email_address: this.loginForm.controls.email.value, org_id: '7890' }).subscribe((data: any) => {
+				this.otpSent = true;
+				this.disableLogin = false;
+				this.startCounter();
+				this.authNoticeService.setNotice(this.translate.instant('AUTH.VALIDATION.OTP_SENT'), 'info');
+				this.updateValidation();
+				this.loading = false;
+				this.cdr.markForCheck();
+			}, error => {
+				if (error.error && error.error.msg) {
+					this.authNoticeService.setNotice(error.error.msg, 'danger');
+				} else {
+					this.authNoticeService.setNotice(this.translate.instant('AUTH.VALIDATION.TRY_AGAIN'), 'danger');
+				}
+				this.loading = false;
+				this.cdr.markForCheck();
+			})
+			// if (this.loginForm.controls.email.value === 'admin@demo.com') {
+			// 	this.otpSent = true;
+			// 	this.disableLogin = false;
+			// 	this.startCounter();
+			// 	this.authNoticeService.setNotice(this.translate.instant('AUTH.VALIDATION.OTP_SENT'), 'info');
+			// 	this.updateValidation();
+			// 	this.loading = false;
+			// 	this.cdr.markForCheck();
+			// } else {
+			// 	this.authNoticeService.setNotice(this.translate.instant('AUTH.VALIDATION.EMAIL_NOT_FOUND'), 'danger');
+			// 	this.loading = false;
+			// 	this.cdr.markForCheck();
+			// }
+		}
+	}
+
+	resedOTP() {
+		this.authNoticeService.setNotice(null);
+		if (this.loginForm.valid) {
+			this.disableLogin = true;
+			this.resendOtp = false;
+			this.loading = true;
+			this.cdr.markForCheck();
+			// this.updateValidation();
+			this.auth.sendOTP({ email_address: this.loginForm.controls.email.value, org_id: '7890' }).subscribe((data: any) => {
+				this.resendOtp = true;
+				this.authNoticeService.setNotice(this.translate.instant('AUTH.VALIDATION.OTP_SENT'), 'info');
+				// this.updateValidation();
+				this.loading = false;
+				this.disableLogin = false;
+				this.startCounter();
+				this.cdr.markForCheck();
+			}, error => {
+				if (error.error && error.error.msg) {
+					this.authNoticeService.setNotice(error.error.msg, 'danger');
+				} else {
+					this.authNoticeService.setNotice(this.translate.instant('AUTH.VALIDATION.TRY_AGAIN'), 'danger');
+				}
+				this.startCounter();
+
+			});
+		} else {
+			this.loading = false;
+			this.cdr.markForCheck();
+		}
+	}
+
+	resedOTP1() {
+		this.disableLogin = true;
+		this.resendOtp = false;
+		this.loading = true;
+		this.cdr.markForCheck();
+		// this.updateValidation();
+		setTimeout(() => {
+			this.resendOtp = true;
+			this.authNoticeService.setNotice(this.translate.instant('AUTH.VALIDATION.OTP_SENT'), 'info');
+			// this.updateValidation();
+			this.loading = false;
+			this.disableLogin = false;
+			this.cdr.markForCheck();
+		}, 2000);
+		this.startCounter();
+	}
+
+	startCounter() {
+		this.counter = 10;
+		this.countDown = timer(0, 1000).subscribe(() => {
+			if (this.counter === 0) {
+				this.countDown.unsubscribe();
+			} else {
+				--this.counter;
+				this.cdr.markForCheck();
+			}
+		});
+	}
+	updateValidation() {
+		if (this.otpSent) {
+			this.loginForm.controls.password.setValue(null);
+			this.loginForm.controls.password.markAsPristine();
+			this.loginForm.controls.password.setValidators(Validators.compose([
+				Validators.required,
+				Validators.minLength(3),
+				Validators.maxLength(100)
+			]));
+		} else {
+			this.loginForm.get('password').clearValidators();
+			this.loginForm.get('password').setValidators(null);
+			this.loginForm.get('password').setErrors(null);
+		}
+		this.loginForm.controls.password.updateValueAndValidity();
 	}
 }
