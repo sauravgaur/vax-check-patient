@@ -16,7 +16,7 @@
         <mat-form-field>
           <mat-label>{{ "AUTH.INPUT.EMAIL" | translate }}</mat-label>
           <input matInput type="email" [attr.disabled]="otpSent" placeholder="{{ 'AUTH.INPUT.EMAIL' | translate }}"
-          [pattern]="mailformat" formControlName="email" autocomplete="off" />
+          [pattern]="mailFormat" formControlName="email" autocomplete="off" />
           <mat-error *ngIf="isControlHasError('email', 'required')">
             <strong>{{ "AUTH.VALIDATION.REQUIRED_FIELD" | translate }}</strong>
           </mat-error>
