@@ -42,7 +42,7 @@ export class LoginComponent implements OnInit, OnDestroy {
 	public otpSent = false;
 	private resendOtp = false;
 	// Read more: => https://brianflove.com/2016/12/11/anguar-2-unsubscribe-observables/
-	public counter = 10;
+	public counter = 30;
 	loading1 = false;
 	disableLogin = false;
 	mailFormat = '^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$';
@@ -295,7 +295,7 @@ export class LoginComponent implements OnInit, OnDestroy {
 	}
 
 	startCounter() {
-		this.counter = 10;
+		this.counter = 30;
 		this.countDown = timer(0, 1000).subscribe(() => {
 			if (this.counter === 0) {
 				this.countDown.unsubscribe();
