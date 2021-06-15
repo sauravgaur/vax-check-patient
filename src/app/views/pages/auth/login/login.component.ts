@@ -80,7 +80,7 @@ export class LoginComponent implements OnInit, OnDestroy {
 	 */
 	ngOnInit(): void {
 		this.initLoginForm();
-
+		localStorage.removeItem(LOCAL_STORAGE_KEYS[LOCAL_STORAGE_KEYS.LOGIN_RESPONSE_DATA]);
 		// redirect back to the returnUrl before login
 		this.route.queryParams.subscribe(params => {
 			this.returnUrl = params.returnUrl || '/';
@@ -174,23 +174,53 @@ export class LoginComponent implements OnInit, OnDestroy {
 			return;
 		}
 		this.loading1 = true;
-		this.auth.verifyOTP(this.loginForm.controls.password.value).subscribe((resp: any) => {
-			if (resp.records.length > 0) {
-				const profiles: IProfile = resp.records[0].profiles;
-				const vaccinations: IVaccinations = resp.records[0].vaccinations;
-				const media: IMedia = resp.records[0].media;
-				localStorage.setItem(LOCAL_STORAGE_KEYS[LOCAL_STORAGE_KEYS.LOGIN_RESPONSE_DATA],
-					JSON.stringify({ profiles, vaccinations, media }));
-				this.router.navigateByUrl('/corporate/profile');
+		this.disableLogin = true;
+		this.auth.verifyOTP(this.loginForm.controls.password.value).subscribe((res: any) => {
+			if (res.profiles_skyflow_id) {
+				const travelerExists: ITravelerExists = res;
+				this.wizardService.patientById(res.profiles_skyflow_id).subscribe((resp: any) => {
+					if (resp.records.length > 0) {
+						const profiles: IProfile = resp.records[0].profiles;
+						const vaccinations: IVaccinations = resp.records[0].vaccinations;
+						const media: IMedia = resp.records[0].media;
+						localStorage.setItem(LOCAL_STORAGE_KEYS[LOCAL_STORAGE_KEYS.LOGIN_RESPONSE_DATA],
+							JSON.stringify({ profiles, vaccinations, media, travelerExists }));
+						this.loading1 = false;
+						this.disableLogin = false;
+						this.router.navigateByUrl('/corporate/profile');
+					} else {
+						this.authNoticeService.setNotice('Employee exists, but details not found !', 'danger');
+						this.loading1 = false;
+						this.disableLogin = false;
+						this.cdr.markForCheck();
+					}
+				},
+					error => {
+						this.authNoticeService.setNotice('Something went wrong, please try again.', 'danger');
+						this.loading1 = false;
+						this.disableLogin = false;
+						this.cdr.markForCheck();
+					});
 			} else {
-				this.authNoticeService.setNotice('Employee exists, but details not found !', 'danger');
+				// this.authNoticeService.setNotice(this.translate.instant('AUTH.VALIDATION.EMPLOYEE_NOT_FOUND'), 'danger');
+				this.authNoticeService.setNotice('User not found !', 'danger');
+				this.loading1 = false;
+				this.disableLogin = false;
 				this.cdr.markForCheck();
 			}
 		},
 			error => {
-				this.authNoticeService.setNotice('Something went wrong, please try again.', 'danger');
+				if (error.error && error.error.msg) {
+					this.authNoticeService.setNotice(error.error.msg, 'danger');
+				} else {
+					this.authNoticeService.setNotice(this.translate.instant('AUTH.VALIDATION.TRY_AGAIN'), 'danger');
+				}
+				this.loading1 = false;
+				this.disableLogin = false;
 				this.cdr.markForCheck();
 			});
+
+
 	}
 
 	/**
@@ -247,34 +277,31 @@ export class LoginComponent implements OnInit, OnDestroy {
 	}
 
 	resedOTP() {
+		this.loginForm.controls.password.setValue(null);
+		this.loginForm.controls.password.markAsPristine();
 		this.authNoticeService.setNotice(null);
-		if (this.loginForm.valid) {
-			this.disableLogin = true;
-			this.resendOtp = false;
-			this.loading = true;
-			this.cdr.markForCheck();
+		this.disableLogin = true;
+		this.resendOtp = false;
+		this.loading = true;
+		this.cdr.markForCheck();
+		// this.updateValidation();
+		this.auth.sendOTP({ email_address: this.loginForm.controls.email.value, org_id: '7890' }).subscribe((data: any) => {
+			this.resendOtp = true;
+			this.authNoticeService.setNotice(this.translate.instant('AUTH.VALIDATION.OTP_SENT'), 'info');
 			// this.updateValidation();
-			this.auth.sendOTP({ email_address: this.loginForm.controls.email.value, org_id: '7890' }).subscribe((data: any) => {
-				this.resendOtp = true;
-				this.authNoticeService.setNotice(this.translate.instant('AUTH.VALIDATION.OTP_SENT'), 'info');
-				// this.updateValidation();
-				this.loading = false;
-				this.disableLogin = false;
-				this.startCounter();
-				this.cdr.markForCheck();
-			}, error => {
-				if (error.error && error.error.msg) {
-					this.authNoticeService.setNotice(error.error.msg, 'danger');
-				} else {
-					this.authNoticeService.setNotice(this.translate.instant('AUTH.VALIDATION.TRY_AGAIN'), 'danger');
-				}
-				this.startCounter();
-
-			});
-		} else {
 			this.loading = false;
+			this.disableLogin = false;
+			this.startCounter();
 			this.cdr.markForCheck();
-		}
+		}, error => {
+			if (error.error && error.error.msg) {
+				this.authNoticeService.setNotice(error.error.msg, 'danger');
+			} else {
+				this.authNoticeService.setNotice(this.translate.instant('AUTH.VALIDATION.TRY_AGAIN'), 'danger');
+			}
+			this.startCounter();
+
+		});
 	}
 
 	resedOTP1() {

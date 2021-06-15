@@ -87,7 +87,7 @@ export class TravelerInfoComponent implements OnInit {
   listenToIsContactNumberChange(selectedValue) {
     if (selectedValue === 'YES') {
       this.phoneNumberLabel = 'Secondary Phone Number';
-      this.travelerInfo.get('contactNumber2').setValue('');
+      // this.travelerInfo.get('contactNumber2').setValue('');
       this.travelerInfo.get('contactNumber2').clearValidators();
       this.travelerInfo.get('contactNumber2').setErrors(null);
       this.travelerInfo.get('contactNumber2')
