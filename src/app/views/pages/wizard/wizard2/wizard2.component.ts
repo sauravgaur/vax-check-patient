@@ -806,9 +806,9 @@ export class Wizard2Component implements OnInit, AfterViewInit {
                 supplementPath = await this.wizardService
                     .uploadFile(this.supportingDocFile, this.constants.API_URI.SUPPLIMENT_DOC_UPLOAD, 'supplementDoc').toPromise();
             }
-            // console.log('srcpath', srcPath);
-            // console.log('webPath:', webcamPath);
-            // console.log('supplementPath', supplementPath);
+            console.log('srcpath', srcPath);
+            console.log('webPath:', webcamPath);
+            console.log('supplementPath', supplementPath);
             // return false;
             const media: IMedia[] = [];
             const existingVaxCard = this.loginResponse.media.find((x: any) => x.document_type === 'VAX_CARD');
@@ -945,7 +945,7 @@ export class Wizard2Component implements OnInit, AfterViewInit {
             };
             localStorage.setItem('travelerData', JSON.stringify(this.patientForm.value));
             localStorage.removeItem(LOCAL_STORAGE_KEYS[LOCAL_STORAGE_KEYS.LOGIN_RESPONSE_DATA]);
-
+            console.log('postObject:', postObject);
             this.wizardService.registerTraveller(postObject).subscribe((data: any) => {
                 // console.log('result after save:', data);
                 this.skyflowId = 'test';

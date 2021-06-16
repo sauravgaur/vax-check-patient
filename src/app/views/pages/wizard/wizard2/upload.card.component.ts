@@ -56,12 +56,18 @@ export class UploadCardComponent implements OnInit, AfterViewInit {
   public triggerSnapshot(): void {
     this.trigger.next();
     this.showWebcam = false;
+    // this.selectedFiles = [];
+    // this.imageSrc = '';
+    // this.updateImageSrc.emit('');
   }
   public get triggerObservable(): Observable<void> {
     return this.trigger.asObservable();
   }
   public async handleImage(webcamImage: WebcamImage): Promise<void> {
     // console.log('received webcam image', webcamImage);
+    // this.selectedFiles = [];
+    // this.imageSrc = '';
+    // this.updateImageSrc.emit('');
     this.webcamImage = webcamImage;
     await fetch(this.webcamImage.imageAsDataUrl)
       .then(response => response.blob())
@@ -74,9 +80,10 @@ export class UploadCardComponent implements OnInit, AfterViewInit {
   onFileSelect(file) {
     if (!file) {
       this.selectedFiles = [];
-      document.getElementById('img_preview')['src'] = '';
+      // document.getElementById('img_preview')['src'] = '';
       return;
     }
+    this.webcamImage = null;
     // console.log('onFileSelect: ', file);
     this.updateImageSrc.emit(file);
     // return;
@@ -89,7 +96,7 @@ export class UploadCardComponent implements OnInit, AfterViewInit {
       this.cd.markForCheck();
       // console.log('imageSrc-->', this.imageSrc);
       // tslint:disable-next-line: no-string-literal
-      document.getElementById('img_preview')['src'] = reader.result;
+      // document.getElementById('img_preview')['src'] = reader.result;
     };
     reader.readAsDataURL(file);
     // this.selectedFiles.source = window.URL.createObjectURL(event.target.files[0]);

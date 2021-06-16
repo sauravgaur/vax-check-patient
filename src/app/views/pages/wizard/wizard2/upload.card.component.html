@@ -222,7 +222,8 @@ medica sobre las vacunas que ha recibido.
                         </div>
                         <div class="snapshot" style="display: block;width: 100%;"
                             *ngIf="webcamImage">
-                            <h2>Nice one!</h2>
+                            <h4 style="color: #2196f3;
+                            font-weight: bold;">Nice one!</h4>
                             <!-- <button mat-stroked-button
                                 >Upload</button> -->
                             <img style="display: block;width: 120px"
@@ -235,17 +236,14 @@ medica sobre las vacunas que ha recibido.
                         <!-- <input type="file" name="file" id="file" multiple class="inputfile"
                             (change)="onFileSelect($event)" />
                         <label for="file">Choose files from here</label> -->
-                        <kt-file-upload (fileSelection)="onFileSelect($event)" [onlyImage]="true"></kt-file-upload>
-                        <div style="width: 100%;
+                        <kt-file-upload (fileSelection)="onFileSelect($event)" [onlyImage]="false"></kt-file-upload>
+                        <!-- <div style="width: 100%;
                         text-align: left;
                         padding: 0 13px;
                         margin-top: 10px;
                         color: blue;">
-                            <!-- <img [src]="imageSrc"> -->
                             <img id="img_preview" height="120px" width="120px">
-                            <!-- <button mat-stroked-button
-                                >Upload</button> -->
-                        </div>
+                        </div> -->
 
                     </div>
                 </mat-tab>

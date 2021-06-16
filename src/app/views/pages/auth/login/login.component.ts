@@ -95,6 +95,7 @@ export class LoginComponent implements OnInit, OnDestroy {
 		this.unsubscribe.next();
 		this.unsubscribe.complete();
 		this.loading = false;
+		this.countDown.unsubscribe();
 		this.countDown = null;
 	}
 
