@@ -8,8 +8,12 @@
                     <!-- *ngIf="vaccinator.value.resedenceItem && vaccinator.value.resedenceItem==='YES'" -->
                     <span class="p-float-label p-input-icon-right">
                         <i class="pi pi-users"></i>
-                        <p-autoComplete id="float-input" formControlName="orgName" [suggestions]="filteredOrgs"
+                        <!-- <p-autoComplete id="float-input" formControlName="orgName" [suggestions]="filteredOrgs"
                             (completeMethod)="filterOrg($event)" (onBlur)="onOrgNameBlur($event)" [forceSelection]="isAutocomplete" field="name" [minLength]="1"
+                            class="p-inputtext-sm" [autoHighlight]="true">
+                        </p-autoComplete> -->
+                        <p-autoComplete id="float-input" formControlName="orgName" [suggestions]="filteredOrgs"
+                            (completeMethod)="filterOrg($event)" (onBlur)="onOrgNameBlur($event)" [forceSelection]="false" field="name" [minLength]="1"
                             class="p-inputtext-sm" [autoHighlight]="true">
                         </p-autoComplete>
                         <label for="org_name">Organization Name<span class="cls-requiered">*</span></label>
