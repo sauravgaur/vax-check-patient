@@ -80,7 +80,7 @@ td {
 }
 
 :host ::ng-deep .p-fieldset-legend-text {
-  line-height: 0.5 !important;
+  // line-height: 0.5 !important;
 }
 
 :host ::ng-deep legend {
@@ -120,7 +120,11 @@ td {
     // .p-fluid .p-calendar .p-inputtext {
     //   padding-left: 3rem;
     // }
-
+    .lot-number{
+      font-size: 11px;;
+      color: #635858;
+    }
+    
     .cls-requiered {
       color: red;
       margin-left: 5px;

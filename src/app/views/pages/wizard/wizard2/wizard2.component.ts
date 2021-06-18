@@ -209,7 +209,9 @@ export class Wizard2Component implements OnInit, AfterViewInit {
             orgDose2: new FormControl(),
             travelDateToHawaii: new FormControl(''),
             consent: new FormControl(),
-            apptEmailConf: new FormControl('')
+            apptEmailConf: new FormControl(''),
+            lotNumber1: new FormControl(''),
+            lotNumber2: new FormControl(''),
         });
 
         // this.stateItem = this.constants.STATES;
@@ -439,6 +441,14 @@ export class Wizard2Component implements OnInit, AfterViewInit {
                 this.patientForm.get('consent').setValidators(null);
                 this.patientForm.get('consent').setErrors(null);
 
+                this.patientForm.get('lotNumber1').clearValidators();
+                this.patientForm.get('lotNumber1').setValidators(null);
+                this.patientForm.get('lotNumber1').setErrors(null);
+
+                this.patientForm.get('lotNumber2').clearValidators();
+                this.patientForm.get('lotNumber2').setValidators(null);
+                this.patientForm.get('lotNumber2').setErrors(null);
+
                 if (this.patientForm.valid) {
                     if (!this.isCorporalteUser) {
                         // console.log('in check curretn step: 1');
@@ -564,9 +574,17 @@ export class Wizard2Component implements OnInit, AfterViewInit {
                 this.patientForm.get('orgDose1').updateValueAndValidity();
                 this.patientForm.get('orgDose1').markAsPristine();
 
+                this.patientForm.get('lotNumber1').setValidators(Validators.required);
+                this.patientForm.get('lotNumber1').updateValueAndValidity();
+                this.patientForm.get('lotNumber1').markAsPristine();
+
                 this.patientForm.get('orgDose2').setValidators((this.patientForm.get('orgManufacturer').value && this.patientForm.get('orgManufacturer').value !== 'Johnson \& Johnson') ? Validators.required : null);
                 this.patientForm.get('orgDose2').updateValueAndValidity();
                 this.patientForm.get('orgDose2').markAsPristine();
+
+                this.patientForm.get('lotNumber2').setValidators((this.patientForm.get('orgManufacturer').value && this.patientForm.get('orgManufacturer').value !== 'Johnson \& Johnson') ? Validators.required : null);
+                this.patientForm.get('lotNumber2').updateValueAndValidity();
+                this.patientForm.get('lotNumber2').markAsPristine();
 
                 this.patientForm.get('orgEmail').setValidators(Validators.compose([Validators.pattern(this.mailFormat), Validators.email]));
                 this.patientForm.get('orgEmail').updateValueAndValidity();
@@ -683,9 +701,17 @@ export class Wizard2Component implements OnInit, AfterViewInit {
             this.patientForm.controls.orgDose2.setErrors(null);
             this.patientForm.controls.orgDose2.setValidators(null);
             this.patientForm.controls.orgDose2.updateValueAndValidity();
+
+            this.patientForm.controls.lotNumber2.setValue(null);
+            this.patientForm.controls.lotNumber2.setErrors(null);
+            this.patientForm.controls.lotNumber2.setValidators(null);
+            this.patientForm.controls.lotNumber2.updateValueAndValidity();
         } else {
             this.patientForm.get('orgDose2').setValidators(Validators.required);
             this.patientForm.get('orgDose2').updateValueAndValidity();
+
+            this.patientForm.get('lotNumber2').setValidators(Validators.required);
+            this.patientForm.get('lotNumber2').updateValueAndValidity();
         }
     }
 
@@ -911,7 +937,8 @@ export class Wizard2Component implements OnInit, AfterViewInit {
             const vaccineDose1: IVaccineDosing = {
                 date: Utils.formatToUSStandared(formData.orgDose1),
                 site_name: this.firstClinicName,
-                site_address: providerAddress
+                site_address: providerAddress,
+                lot_number: formData.lotNumber1
             };
 
             let vaccineDose2: IVaccineDosing;
@@ -919,7 +946,8 @@ export class Wizard2Component implements OnInit, AfterViewInit {
                 vaccineDose2 = {
                     date: Utils.formatToUSStandared(formData.orgDose2),
                     site_name: this.secondClinicName,
-                    site_address: providerAddress
+                    site_address: providerAddress,
+                    lot_number: formData.lotNumber2
                 };
             } else {
                 vaccineDose2 = {

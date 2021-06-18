@@ -1,7 +1,7 @@
 <div [formGroup]="vaccinator" autocomplete="off">
     <!--begin: Form Wizard Step 2-->
     <div class="pb-5" data-wizard-type="step-content">
-        <h4 class="mb-10 font-weight-bold text-dark">Vaccination Details</h4>
+        <h4 class="mb-5 font-weight-bold text-dark">Vaccination Details</h4>
         <p-fieldset legend="Vaccinator">
             <div class="p-fluid p-formgrid p-grid">
                 <div class="p-field p-col-12 p-md-4">
@@ -158,6 +158,18 @@
                         <strong>Required field</strong>
                     </mat-error>
                 </div>
+                <div class="p-field p-col-12 p-md-4">
+                    <span class="p-float-label p-input-icon-right">
+                        <input autocomplete="off" id="float-input" type="text" maxlength="16" formControlName="lotNumber1" required pInputText
+                            class="p-inputtext-sm" pKeyFilter="alphanum">
+                        <label for="lotnumber1">Lot number {{(vaccinator.value.orgManufacturer &&
+                            vaccinator.value.orgManufacturer != 'Johnson \& Johnson') ? '1' :
+                            ''}}<span class="cls-requiered">*</span></label>
+                    </span>
+                    <mat-error *ngIf="stepTwo && hasError('lotNumber1', 'required')">
+                        <strong>Required field</strong>
+                    </mat-error>
+                </div>
                 <div class="p-field p-col-12 p-md-4"
                     *ngIf="(vaccinator.value.orgManufacturer && vaccinator.value.orgManufacturer != 'Johnson \& Johnson')">
                     <span class="p-float-label p-input-icon-right">
@@ -176,6 +188,17 @@
                     <mat-error *ngIf="vaccinator.value.orgDose2 && isMinimumGap('orgDose2','orgDose1')">
                         <strong>The interval between Dose 1 and Dose 2 should be minimum of
                             {{gapDays}} days</strong>
+                    </mat-error>
+                </div>
+                <div class="p-field p-col-12 p-md-4"
+                *ngIf="(vaccinator.value.orgManufacturer && vaccinator.value.orgManufacturer != 'Johnson \& Johnson')">
+                    <span class="p-float-label p-input-icon-right">
+                        <input autocomplete="off" id="float-input" type="text" pKeyFilter="alphanum" formControlName="lotNumber2" required pInputText
+                            class="p-inputtext-sm" maxlength="16">
+                        <label for="lotnumber1">Lot number 2<span class="cls-requiered">*</span></label>
+                    </span>
+                    <mat-error *ngIf="stepTwo && hasError('lotNumber2', 'required')">
+                        <strong>Required field</strong>
                     </mat-error>
                 </div>
             </div>

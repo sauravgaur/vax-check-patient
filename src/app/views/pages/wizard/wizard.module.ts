@@ -43,6 +43,8 @@ import { VaccinatorComponent } from './wizard2/vaccinator.component';
 import { UploadCardComponent } from './wizard2/upload.card.component';
 import { CustomFileUploadModule } from '../file-upload/file-upload.module';
 import {EditorModule} from 'primeng/editor';
+import {KeyFilterModule} from 'primeng/keyfilter';
+
 @NgModule({
 	declarations: [
 		WizardComponent,
@@ -99,7 +101,8 @@ import {EditorModule} from 'primeng/editor';
 		MessagesModule,
 		MessageModule,
 		CustomFileUploadModule,
-		EditorModule
+		EditorModule,
+		KeyFilterModule
 		// NgxStripeModule.forChild('pk_test_aeUUjYYcx4XNfKVW60pmHTtI')
 	],
 })

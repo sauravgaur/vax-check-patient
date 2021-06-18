@@ -1,7 +1,7 @@
 <div [formGroup]="uploadCardForm">
     <!--begin: Form Wizard Step 3-->
     <div class="pb-5" data-wizard-type="step-content">
-        <h4 class="mb-10 font-weight-bold text-dark">Upload Vax-Card</h4>
+        <h4 class="mb-5 font-weight-bold text-dark">Upload Vax-Card</h4>
         <div>
             <p-card
                 [style]="{'width': '55rem', 'background': 'rgb(243 246 249)', 'margin-top': '2rem'}"
@@ -127,9 +127,10 @@ medica sobre las vacunas que ha recibido.
                         <th style="width: auto;">Healthcare Professional or Clinic Site</th>
                     </tr>
                     <tr>
-                        <td style="background: lightgray;">1st Dose Covid-19</td>
+                        <td>1st Dose Covid-19</td>
                         <td>
-                            {{ imageToTextResponse?.firstDose }}
+                            <div>{{ imageToTextResponse?.firstDose }}</div>
+                            <div class="lot-number">{{uploadCardForm.value.lotNumber1}}</div>
                         </td>
                         <td>{{ imageToTextResponse?.firstDoseDate ?
                             (imageToTextResponse.firstDoseDate | date:'MMM dd, yyyy') : '' }}
@@ -160,9 +161,10 @@ medica sobre las vacunas que ha recibido.
                     </tr>
                     <tr
                         *ngIf="imageToTextResponse && imageToTextResponse.secondDose!=='Johnson & Johnson'">
-                        <td style="background: lightgray;">2nd Dose Covid-19</td>
+                        <td>2nd Dose Covid-19</td>
                         <td>
-                            {{ imageToTextResponse?.secondDose }}
+                            <div>{{ imageToTextResponse?.secondDose }}</div>
+                            <div class="lot-number">{{uploadCardForm.value.lotNumber2}}</div>
                         </td>
                         <td>
                             {{ imageToTextResponse?.secondDoseDate ?
