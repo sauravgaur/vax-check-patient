@@ -46,8 +46,8 @@ export class WizardService {
     return this.http.post<any>(environment.api_url + this.constants.API_URI.HUMAN_API.CREATE_TOKEN, {});
   }
 
-  public getOrgByState(stateId): Observable<ITravelerExists> {
-    return this.http.get<any>(environment.api_url + this.constants.API_URI.ORG_BY_STATE + '/' + stateId);
+  public getOrgByState(stateId): Observable<any> {
+    return this.http.post<any>(environment.api_url + this.constants.API_URI.ORG_BY_STATE + '/' + stateId, { responseType: 'text' });
   }
 
   // public uploadSupplementDoc(file): Observable<any> {
