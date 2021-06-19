@@ -171,13 +171,18 @@ export interface IMATADATARECORDS {
 }
 
 export interface IProvider {
-    provider_org_name?: string;
+    provider_org_name?: IOrgName;
     provider_name?: string;
     provider_type?: string;
     provider_npi?: string;
     provider_email?: string;
     provider_mobile_number?: string;
     provider_address?: IAddress2;
+}
+
+export interface IOrgName {
+    name: string;
+    type?: string;
 }
 
 export interface IMedia {

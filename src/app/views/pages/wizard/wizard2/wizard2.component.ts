@@ -975,7 +975,7 @@ export class Wizard2Component implements OnInit, AfterViewInit {
             };
 
             const provider: IProvider = {
-                provider_org_name: formData.orgName.name,
+                provider_org_name: formData.orgName,
                 provider_email: formData.orgEmail,
                 provider_address: providerAddress,
                 provider_mobile_number: formData.orgContactNumber
