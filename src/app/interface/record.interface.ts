@@ -176,6 +176,7 @@ export interface IProvider {
     provider_type?: string;
     provider_npi?: string;
     provider_email?: string;
+    provider_mobile_number?: string;
     provider_address?: IAddress2;
 }
 

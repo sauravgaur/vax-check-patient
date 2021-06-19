@@ -40,7 +40,7 @@ export class Wizard2Component implements OnInit, AfterViewInit {
 
     stripeTest: FormGroup;
     @ViewChild('wizard', { static: true }) el: ElementRef;
-
+    @ViewChild('imgRenderer') imgRenderer: ElementRef;
     supportingDocFile = null;
     isHawaiiState = false;
     showWebcam = false;
@@ -242,9 +242,49 @@ export class Wizard2Component implements OnInit, AfterViewInit {
         this.patientForm.controls.contactNumber.setValue(profiles.mobile_number);
         this.patientForm.controls.contactNumber2.setValue(profiles.mobile_number2);
         this.patientForm.controls.gender.setValue(profiles.sex);
-        // this.patientForm.controls.gender.setValue(profiles.sex);
 
+        this.patientForm.controls.travelDateToHawaii.setValue(profiles.travel_date ? moment(profiles.travel_date, 'YYYY-MM-DD').format('MM-DD-YYYY') : null);
+        this.patientForm.controls.islandItem.setValue(profiles.traveler_type);
+        this.patientForm.controls.resedenceItem.setValue(profiles.residency_state);
+
+        if (data.travelerExists.vaccination_skyflow_id) {
+            this.fillVaccinationDetails(data.vaccinations);
+        }
         this.patientForm.updateValueAndValidity();
+    }
+
+    fillVaccinationDetails(dt) {
+        const data: IVaccinations = dt;
+        this.patientForm.controls.orgName.setValue(data.provider?.provider_org_name);
+        this.patientForm.controls.orgAddress1.setValue(data.provider?.provider_address.street_address);
+        this.patientForm.controls.orgAddress2.setValue(data.provider?.provider_address.street_address2);
+        this.patientForm.controls.orgCity.setValue(data.provider?.provider_address.city);
+        this.patientForm.controls.orgState.setValue(data.provider?.provider_address.state);
+        this.patientForm.controls.orgZipcode.setValue(data.provider?.provider_address.zip_code);
+        this.patientForm.controls.orgEmail.setValue(data.provider?.provider_email);
+        this.patientForm.controls.orgContactNumber.setValue(data.provider?.provider_mobile_number);
+        this.patientForm.controls.orgAddress1.setValue(data.provider?.provider_address.street_address);
+
+        // vaccine info
+        this.patientForm.controls.orgManufacturer.setValue(data.vaccine_manufacturer_name);
+        this.patientForm.controls.orgDose1.setValue(data.vaccine_dose_1.date ? moment(data.vaccine_dose_1.date, 'YYYY-MM-DD').format('MM-DD-YYYY') : null);
+        this.patientForm.controls.lotNumber1.setValue(data.vaccine_dose_1.lot_number);
+        this.patientForm.controls.orgDose2.setValue(data.vaccine_dose_2.date ? moment(data.vaccine_dose_2.date, 'YYYY-MM-DD').format('MM-DD-YYYY') : null);
+        this.patientForm.controls.lotNumber2.setValue(data.vaccine_dose_2.lot_number);
+
+        this.patientForm.controls.apptEmailConf.setValue(data.appointment_email_confirmation);
+    }
+
+    showImageOnTab3(media: IMedia[]) {
+        console.log('fill tab 3:', media);
+        setTimeout(() => {
+
+            const evidenceUrl = this.wizardService.findFilePath(media, 'VAX_CARD');
+            console.log('evidenceURL:', evidenceUrl);
+            if (evidenceUrl) {
+                this.imgRenderer.nativeElement.src = evidenceUrl;
+            }
+        }, 1000);
     }
 
     updateFirstName(firstName: string) {
@@ -592,6 +632,10 @@ export class Wizard2Component implements OnInit, AfterViewInit {
                 this.cd.markForCheck();
             }
             else if (wizardObj.currentStep === 3) {
+                // if (!this.webcamImage && !this.imageSrc) {
+                //     this.showImageOnTab3(this.loginResponse.media);
+
+                // }
                 this.lastInputText = this.patientForm.get('lastName').value;
                 this.lastNameInputControl.setValue(this.lastInputText);
 
@@ -918,7 +962,9 @@ export class Wizard2Component implements OnInit, AfterViewInit {
                 sex: formData.gender,
                 mobile_number: formData.contactOption === 'YES' ? formData.contactNumber : formData.contactOption2,
                 mobile_number2: formData.contactOption === 'NO' ? formData.contactNumber2 : formData.contactNumber,
-                travel_date: formData.travelDateToHawaii ? Utils.formatToUSStandared(formData.travelDateToHawaii) : null
+                travel_date: formData.travelDateToHawaii ? Utils.formatToUSStandared(formData.travelDateToHawaii) : null,
+                traveler_type: formData.islandItem ? formData.islandItem : null,
+                residency_state: formData.resedenceItem ? formData.resedenceItem : null,
             };
             const providerAddress: IAddress2 = {
                 street_address: formData.orgAddress1,
@@ -931,7 +977,8 @@ export class Wizard2Component implements OnInit, AfterViewInit {
             const provider: IProvider = {
                 provider_org_name: formData.orgName.name,
                 provider_email: formData.orgEmail,
-                provider_address: providerAddress
+                provider_address: providerAddress,
+                provider_mobile_number: formData.orgContactNumber
             };
 
             const vaccineDose1: IVaccineDosing = {
@@ -986,7 +1033,7 @@ export class Wizard2Component implements OnInit, AfterViewInit {
             },
                 error => {
                     // console.log('Error while processing data:', postObject);
-                    this.router.navigate(['/success']);
+                    // this.router.navigate(['/success']);
                 }
             );
         }
