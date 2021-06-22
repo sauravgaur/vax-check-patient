@@ -255,15 +255,20 @@ export class Wizard2Component implements OnInit, AfterViewInit {
 
     fillVaccinationDetails(dt) {
         const data: IVaccinations = dt;
-        this.patientForm.controls.orgName.setValue(data.provider?.provider_org_name);
-        this.patientForm.controls.orgAddress1.setValue(data.provider?.provider_address.street_address);
-        this.patientForm.controls.orgAddress2.setValue(data.provider?.provider_address.street_address2);
-        this.patientForm.controls.orgCity.setValue(data.provider?.provider_address.city);
-        this.patientForm.controls.orgState.setValue(data.provider?.provider_address.state);
-        this.patientForm.controls.orgZipcode.setValue(data.provider?.provider_address.zip_code);
-        this.patientForm.controls.orgEmail.setValue(data.provider?.provider_email);
-        this.patientForm.controls.orgContactNumber.setValue(data.provider?.provider_mobile_number);
-        this.patientForm.controls.orgAddress1.setValue(data.provider?.provider_address.street_address);
+        let orgDetail: IVaccineDosing;
+        if (data.vaccine_dose_2) {
+            orgDetail = data.vaccine_dose_2;
+        } else {
+            orgDetail = data.vaccine_dose_1;
+        }
+        this.patientForm.controls.orgName.setValue(orgDetail?.site_name);
+        this.patientForm.controls.orgAddress1.setValue(orgDetail?.site_address.street_address);
+        this.patientForm.controls.orgAddress2.setValue(orgDetail?.site_address.street_address2);
+        this.patientForm.controls.orgCity.setValue(orgDetail?.site_address.city);
+        this.patientForm.controls.orgState.setValue(orgDetail?.site_address.state);
+        this.patientForm.controls.orgZipcode.setValue(orgDetail?.site_address.zip_code);
+        this.patientForm.controls.orgEmail.setValue(orgDetail.email_address);
+        this.patientForm.controls.orgContactNumber.setValue(orgDetail.mobile_number);
 
         // vaccine info
         this.patientForm.controls.orgManufacturer.setValue(data.vaccine_manufacturer_name);
@@ -974,27 +979,31 @@ export class Wizard2Component implements OnInit, AfterViewInit {
                 city: formData.orgCity,
             };
 
-            const provider: IProvider = {
-                provider_org_name: formData.orgName,
-                provider_email: formData.orgEmail,
-                provider_address: providerAddress,
-                provider_mobile_number: formData.orgContactNumber
-            };
+            // const provider: IProvider = {
+            //     provider_org_name: formData.orgName.name,
+            //     provider_email: formData.orgEmail,
+            //     provider_address: providerAddress,
+            //     provider_phone: formData.orgContactNumber
+            // };
 
             const vaccineDose1: IVaccineDosing = {
                 date: Utils.formatToUSStandared(formData.orgDose1),
-                site_name: this.firstClinicName,
+                site_name: formData.orgName,
                 site_address: providerAddress,
-                lot_number: formData.lotNumber1
+                lot_number: formData.lotNumber1,
+                email_address: formData.orgEmail,
+                mobile_number: formData.orgContactNumber
             };
 
             let vaccineDose2: IVaccineDosing;
             if (formData.orgDose2) {
                 vaccineDose2 = {
                     date: Utils.formatToUSStandared(formData.orgDose2),
-                    site_name: this.secondClinicName,
+                    site_name: formData.orgName,
                     site_address: providerAddress,
-                    lot_number: formData.lotNumber2
+                    lot_number: formData.lotNumber2,
+                    email_address: formData.orgEmail,
+                    mobile_number: formData.orgContactNumber
                 };
             } else {
                 vaccineDose2 = {
@@ -1010,7 +1019,7 @@ export class Wizard2Component implements OnInit, AfterViewInit {
                 expiration_date: Utils.formatToUSStandared(moment(this.expirationDate).toDate()),
                 vaccine_manufacturer_name: formData.orgManufacturer,
                 appointment_email_confirmation: formData.apptEmailConf,
-                provider,
+                // provider,
                 vaccine_dose_1: vaccineDose1,
                 vaccine_dose_2: vaccineDose2,
             };

@@ -54,8 +54,15 @@ export interface IProfile {
 export interface IVaccineDosing {
     date?: string;
     lot_number?: string;
-    site_name?: string;
+    site_name?: IOrgName;
     site_address?: IAddress2;
+    email_address?: string;
+    mobile_number?: string;
+}
+
+export interface IOrgName {
+    name: string;
+    type?: string;
 }
 
 export interface IDiagnosticReports {
@@ -176,13 +183,8 @@ export interface IProvider {
     provider_type?: string;
     provider_npi?: string;
     provider_email?: string;
-    provider_mobile_number?: string;
+    provider_phone?: string;
     provider_address?: IAddress2;
-}
-
-export interface IOrgName {
-    name: string;
-    type?: string;
 }
 
 export interface IMedia {

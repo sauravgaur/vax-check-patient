@@ -135,8 +135,8 @@ medica sobre las vacunas que ha recibido.
                         <td>{{ imageToTextResponse?.firstDoseDate ?
                             (imageToTextResponse.firstDoseDate | date:'MMM dd, yyyy') : '' }}
                         </td>
-                        <td>
-                            <editable data-testid="sample-input-click" class="editable"
+                        <td>{{uploadCardForm?.value?.orgName?.name}}
+                            <!-- <editable data-testid="sample-input-click" class="editable"
                                 (save)="updateSingleField('firstClinicName', 'firstClinicNameInputControl')"
                                 (cancel)="cancelSingleField('firstClinicName', 'firstClinicNameInputControl')">
                                 <ng-template viewMode>
@@ -154,7 +154,7 @@ medica sobre las vacunas que ha recibido.
                                             [formControl]="firstClinicNameInputControl" />
                                     </div>
                                 </ng-template>
-                            </editable>
+                            </editable> -->
                             <span *ngIf="firstClinicName?.length === 0"
                                 style="color: red; font-weight: bold;">Required field</span>
                         </td>
@@ -171,8 +171,8 @@ medica sobre las vacunas que ha recibido.
                             (imageToTextResponse?.secondDoseDate | date:'MMM dd, yyyy') :
                             imageToTextResponse?.secondDoseDate }}
                         </td>
-                        <td>
-                            <editable *ngIf="uploadCardForm?.value?.orgDose2"
+                        <td>{{uploadCardForm?.value?.orgName?.name}}
+                            <!-- <editable *ngIf="uploadCardForm?.value?.orgDose2"
                                 data-testid="sample-input-click" class="editable"
                                 (save)="updateSingleField('secondClinicName', 'secondClinicNameInputControl')"
                                 (cancel)="cancelSingleField('secondClinicName', 'secondClinicNameInputControl')">
@@ -191,7 +191,7 @@ medica sobre las vacunas que ha recibido.
                                             [formControl]="secondClinicNameInputControl" />
                                     </div>
                                 </ng-template>
-                            </editable>
+                            </editable> -->
                             <span *ngIf="secondClinicName?.length === 0"
                                 style="color: red; font-weight: bold;">Required field</span>
                         </td>
