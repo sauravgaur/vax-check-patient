@@ -261,11 +261,12 @@ export class Wizard2Component implements OnInit, AfterViewInit {
         } else {
             orgDetail = data.vaccine_dose_1;
         }
+        orgDetail.site_name.type = orgDetail.site_name.type.toUpperCase();
         this.patientForm.controls.orgName.setValue(orgDetail?.site_name);
         this.patientForm.controls.orgAddress1.setValue(orgDetail?.site_address.street_address);
         this.patientForm.controls.orgAddress2.setValue(orgDetail?.site_address.street_address2);
         this.patientForm.controls.orgCity.setValue(orgDetail?.site_address.city);
-        this.patientForm.controls.orgState.setValue(orgDetail?.site_address.state);
+        this.patientForm.controls.orgState.setValue(orgDetail?.site_address.state.toUpperCase());
         this.patientForm.controls.orgZipcode.setValue(orgDetail?.site_address.zip_code);
         this.patientForm.controls.orgEmail.setValue(orgDetail.email_address);
         this.patientForm.controls.orgContactNumber.setValue(orgDetail.mobile_number);

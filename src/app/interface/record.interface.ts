@@ -54,7 +54,7 @@ export interface IProfile {
 export interface IVaccineDosing {
     date?: string;
     lot_number?: string;
-    site_name?: IOrgName;
+    site_name?: {name?: string, type?: string};
     site_address?: IAddress2;
     email_address?: string;
     mobile_number?: string;

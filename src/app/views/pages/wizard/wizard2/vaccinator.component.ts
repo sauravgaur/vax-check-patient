@@ -56,7 +56,7 @@ export class VaccinatorComponent implements OnInit {
   async listenToStateChange(selectedValue: string) {
     if (selectedValue) {
       // console.log('state value change inside subscribe', this.vaccinator.get('state').value);
-      this.vaccinator.controls.orgName.setValue(null);
+      // this.vaccinator.controls.orgName.setValue(this.vaccinator.controls.orgName.value);
       const orgList: any = await this.wizardService.getOrgByState(selectedValue).toPromise();
       this.isAutocomplete = orgList.data.length > 0 ? true : false;
       this.orgs = orgList.data.length > 0 ? orgList.data.sort((a, b) => (a.name > b.name) ? 1 : -1) : '';
