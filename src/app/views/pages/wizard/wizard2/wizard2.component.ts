@@ -263,6 +263,12 @@ export class Wizard2Component implements OnInit, AfterViewInit {
         }
         orgDetail.site_name.type = orgDetail.site_name.type.toUpperCase();
         this.patientForm.controls.orgName.setValue(orgDetail?.site_name);
+        this.submitButton = { id: 1, value: 'Submit' };
+        if (orgDetail?.site_name?.type?.toUpperCase() === 'EXTERNAL') {
+            this.submitButton = { id: 1, value: 'Submit' };
+        } else if (orgDetail?.site_name?.type?.toUpperCase() === 'HAPI') {
+            this.submitButton = { id: 2, value: 'Start Verification' };
+        }
         this.patientForm.controls.orgAddress1.setValue(orgDetail?.site_address.street_address);
         this.patientForm.controls.orgAddress2.setValue(orgDetail?.site_address.street_address2);
         this.patientForm.controls.orgCity.setValue(orgDetail?.site_address.city);
