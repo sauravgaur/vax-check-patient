@@ -287,17 +287,17 @@ export class Wizard2Component implements OnInit, AfterViewInit {
         this.patientForm.controls.apptEmailConf.setValue(data.appointment_email_confirmation);
     }
 
-    showImageOnTab3(media: IMedia[]) {
-        console.log('fill tab 3:', media);
-        setTimeout(() => {
+    // showImageOnTab3(media: IMedia[]) {
+    //     console.log('fill tab 3:', media);
+    //     setTimeout(() => {
 
-            const evidenceUrl = this.wizardService.findFilePath(media, 'VAX_CARD');
-            console.log('evidenceURL:', evidenceUrl);
-            if (evidenceUrl) {
-                this.imgRenderer.nativeElement.src = evidenceUrl;
-            }
-        }, 1000);
-    }
+    //         const evidenceUrl = this.wizardService.findFilePath(media, 'VAX_CARD');
+    //         console.log('evidenceURL:', evidenceUrl);
+    //         if (evidenceUrl) {
+    //             this.imgRenderer.nativeElement.src = evidenceUrl;
+    //         }
+    //     }, 1000);
+    // }
 
     updateFirstName(firstName: string) {
         // console.log('in first name update', firstName);
