@@ -256,7 +256,7 @@ export class Wizard2Component implements OnInit, AfterViewInit {
     fillVaccinationDetails(dt) {
         const data: IVaccinations = dt;
         let orgDetail: IVaccineDosing;
-        if (data.vaccine_dose_2) {
+        if (data.vaccine_dose_2?.site_name) {
             orgDetail = data.vaccine_dose_2;
         } else {
             orgDetail = data.vaccine_dose_1;
