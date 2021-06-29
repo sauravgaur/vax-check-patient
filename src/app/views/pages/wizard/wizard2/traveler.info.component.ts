@@ -3,7 +3,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { SelectItem } from 'primeng/api';
 import { AppConstants } from '../../../../app.constants';
 import { IDateProperties } from '../../../../interface/date.properties';
-
+import { TitleCasePipe } from '@angular/common';
 @Component({
   selector: 'kt-traveler-info',
   templateUrl: './traveler.info.component.html',
@@ -23,7 +23,7 @@ export class TravelerInfoComponent implements OnInit {
   off = 'off';
   @Input() isControlHasError: (controlName: string, validationType: string) => boolean;
 
-  constructor(private constants: AppConstants) {
+  constructor(private constants: AppConstants, private titlecasePipe: TitleCasePipe) {
   }
   hasError(controlName: string, validationType: string) {
     return this.isControlHasError(controlName, validationType);
@@ -49,6 +49,15 @@ export class TravelerInfoComponent implements OnInit {
       this.listenToIsContactNumberChange(selectedValue);
     });
 
+    this.travelerInfo.get('firstName').valueChanges.subscribe(selectedValue => {
+      this.travelerInfo.get('firstName').setValue(this.titlecasePipe.transform(selectedValue));
+      this.travelerInfo.get('lastName').updateValueAndValidity({emitEvent: false});
+    });
+
+    this.travelerInfo.get('lastName').valueChanges.subscribe(selectedValue => {
+      this.travelerInfo.get('lastName').setValue(this.titlecasePipe.transform(selectedValue));
+      this.travelerInfo.get('lastName').updateValueAndValidity({emitEvent: false});
+    });
   }
 
   listenToStateChange(selectedValue) {

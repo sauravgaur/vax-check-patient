@@ -42,16 +42,19 @@ import { TravelerInfoComponent } from './wizard2/traveler.info.component';
 import { VaccinatorComponent } from './wizard2/vaccinator.component';
 import { UploadCardComponent } from './wizard2/upload.card.component';
 import { CustomFileUploadModule } from '../file-upload/file-upload.module';
-import {EditorModule} from 'primeng/editor';
-import {KeyFilterModule} from 'primeng/keyfilter';
-
+import { EditorModule } from 'primeng/editor';
+import { KeyFilterModule } from 'primeng/keyfilter';
+import { CustomFileUpload1Module } from '../file-upload copy/file-upload1.module';
+import { SafePipe } from '../../../core/_base/layout';
+import { TitleCasePipe } from '@angular/common';
 @NgModule({
 	declarations: [
 		WizardComponent,
 		Wizard2Component,
 		TravelerInfoComponent,
 		VaccinatorComponent,
-		UploadCardComponent
+		UploadCardComponent,
+		// SafePipe
 	],
 	imports: [
 		CommonModule,
@@ -101,10 +104,12 @@ import {KeyFilterModule} from 'primeng/keyfilter';
 		MessagesModule,
 		MessageModule,
 		CustomFileUploadModule,
+		CustomFileUpload1Module,
 		EditorModule,
 		KeyFilterModule
 		// NgxStripeModule.forChild('pk_test_aeUUjYYcx4XNfKVW60pmHTtI')
 	],
+	providers: [TitleCasePipe]
 })
 export class WizardModule {
 }

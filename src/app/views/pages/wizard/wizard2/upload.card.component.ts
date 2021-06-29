@@ -6,7 +6,9 @@ import { AppConstants } from '../../../../app.constants';
 import { IDateProperties } from '../../../../interface/date.properties';
 import { WebcamImage } from 'ngx-webcam';
 import { Observable, Subject } from 'rxjs';
-
+import { DomSanitizer } from '@angular/platform-browser';
+declare var require: any;
+const FileSaver = require('file-saver');
 @Component({
   selector: 'kt-upload-card',
   templateUrl: './upload.card.component.html',
@@ -29,6 +31,10 @@ export class UploadCardComponent implements OnInit, AfterViewInit {
   @Input() firstClinicNameInputControl: FormControl;
   @Input() secondClinicNameInputControl: FormControl;
 
+  // @Input() public webcamImgPath: string;
+  @Input() public srcDocPath: string;
+  @Input() public supplementDocPath: string;
+
   @Input() uploadCardForm: FormGroup;
   @Input() tooltipJson: any;
   @Input() showWebcam: boolean;
@@ -42,8 +48,10 @@ export class UploadCardComponent implements OnInit, AfterViewInit {
   @Output() secondEditedClinic = new EventEmitter<string>();
   @Output() updateImageSrc = new EventEmitter<string | ArrayBuffer>();
   @Output() updateWebImage = new EventEmitter<File>();
+  displayResponsive = false;
+  previewUrl: any;
 
-  constructor(private cd: ChangeDetectorRef) {
+  constructor(private cd: ChangeDetectorRef, private sanitizer: DomSanitizer) {
   }
   hasError(controlName: string, validationType: string) {
     return this.isControlHasError(controlName, validationType);
@@ -129,5 +137,14 @@ export class UploadCardComponent implements OnInit, AfterViewInit {
       return;
     }
     this.showWebcam = !this.showWebcam;
+  }
+
+  openPreview(url) {
+    this.previewUrl = this.sanitizer.bypassSecurityTrustResourceUrl(url);
+    this.displayResponsive = true;
+  }
+
+  downloadFile(fileUrl: string, fileName: string ) {
+    FileSaver.saveAs(fileUrl, fileName);
   }
 }

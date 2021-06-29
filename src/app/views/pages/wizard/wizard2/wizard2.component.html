@@ -149,6 +149,8 @@
 								[firstNameInputControl]="firstNameInputControl"
 								[firstClinicNameInputControl]="firstClinicNameInputControl"
 								[secondClinicNameInputControl]="secondClinicNameInputControl"
+								[srcDocPath]="srcURL"
+								[supplementDocPath]="supplimentURL"
 								[imageToTextResponse]="imageToTextResponse" [isControlHasError]=isControlHasError
 								[showWebcam]="showWebcam" [tab3Pressed]="tab3Pressed"
 								(firstEditedText)="updateFirstName($event)" (lastEditedText)="updateLastName($event)"
@@ -161,30 +163,13 @@
 							<div class="pb-5" data-wizard-type="step-content">
 								<p-fieldset legend="Upload Supplemental Documents">
 									Additional supporting vaccination documents can be uploaded here
-									<kt-file-upload (fileSelection)="onFileSelect($event)"></kt-file-upload>
-									<!-- <div class="p-d-flex p-ai-start" style="margin-top: 1rem;">
-										<div class="p-mr-2"> -->
-									<!-- <input id="singleFile" type="file" style="display: none;" multiple="multiple" [fileUploadInputFor]="fileUploadQueue" /> -->
-									<!-- <div [fileUploadInputFor]="fileUploadQueue" class="upload-drop-zone">
-												<i class="pi pi-upload" style="font-size: 2rem"></i><br>
-												Drag files to upload
-											</div>
-											<input style="margin-top: 1rem;" type="file" id="file"
-												class="inputfile" [fileUploadInputFor]="fileUploadQueue" />
-											<label for="file" style="margin-top: 1rem;">Select files to upload</label> -->
-									<!-- <input style="margin-top: 1rem;" id="singleFile" type="file" multiple="multiple" [fileUploadInputFor]="fileUploadQueue" /> -->
-									<!-- <label for="file">choose a file</label> -->
-									<!-- </div>
-										<div style="width: 500px;" class="uploadedFiles">
-											<mat-file-upload-queue #fileUploadQueue [fileAlias]="'file'"
-												[httpUrl]="'http://localhost:8080/jax-rs-jersey-application-sample'"
-												>
-												<mat-file-upload [file]="file" [id]="i"
-													*ngFor="let file of fileUploadQueue.files; let i = index">
-												</mat-file-upload>
-											</mat-file-upload-queue>
-										</div>
-									</div> -->
+									<kt-file-upload1 (fileSelection)="onFileSelect($event)"></kt-file-upload1>
+									<div class="snapshot" *ngIf="supplimentURL">
+										<span><img *ngIf="['jpg', 'jpeg', 'png'].includes(supplimentURL.split('.').pop())" style="width: 10rem; cursor: pointer;" [src]="supplimentURL" (click)="displayIFrame = true" />
+											</span>
+										<span><i class="pi pi-file-pdf" *ngIf="!['jpg', 'jpeg', 'png'].includes(supplimentURL.split('.').pop())" style="font-size: 4rem;color: red; cursor: pointer;" (click)="displayIFrame = true"></i></span>
+										<span style="margin-left: 1rem;"><button *ngIf="supplimentURL" pButton pRipple type="button" icon="pi pi-download" (click)="downloadFile(supplimentURL, 'suppliment_doc')" class="p-button-rounded p-button-outlined"></button></span>
+									</div>
 								</p-fieldset>
 								<p-fieldset legend="Vaccination Summary">
 									<div class="card">
@@ -193,7 +178,7 @@
 												<label for="firstname4" class="p-col-12 p-mb-2 p-md-2 p-mb-md-0"
 													style="color: gray;">Vaccine Site:</label>
 												<div class="p-col-12 p-md-10">
-													<b>{{firstClinicName}}</b>
+													<b>{{patientForm.value.orgName?.name}}</b>
 												</div>
 											</div>
 											<div class="p-field p-grid">
@@ -284,3 +269,7 @@
 		</p-confirmDialog>
 	</kt-portlet-body>
 </kt-portlet>
+<p-dialog header="File Preview" [(visible)]="displayIFrame" [breakpoints]="{'960px': '75vw'}" [modal]="true" [baseZIndex]="10000" 
+    [draggable]="false" [resizable]="false">
+    <iframe [src]="supplimentURL | safe: 'resourceUrl'" allowfullscreen frameborder="0" width="800" height="400"></iframe>
+</p-dialog>

@@ -9,7 +9,7 @@ import { environment } from '../../../../../environments/environment';
 import { map } from 'rxjs/operators';
 // Models
 import { AppConstants } from '../../../../app.constants';
-import { ITravelerExists } from '../../../../interface/record.interface';
+import { IMedia, ITravelerExists } from '../../../../interface/record.interface';
 // Real REST API
 @Injectable()
 export class WizardService {
@@ -50,6 +50,15 @@ export class WizardService {
     return this.http.post<any>(environment.api_url + this.constants.API_URI.ORG_BY_STATE + '/' + stateId, { responseType: 'text' });
   }
 
+  public findFilePath(medias: IMedia[], documentType: string): string {
+    if (medias) {
+      const vaxCard = medias.find(item => item.document_type === documentType);
+      if (vaxCard) {
+        return (environment.api_url + '/' + vaxCard.file_path).replace('\\\\', '/').replace('/api/', '/');
+      }
+    }
+    return null;
+  }
   // public uploadSupplementDoc(file): Observable<any> {
   //   const formData = new FormData();
   //   formData.append('supplementDoc', file);

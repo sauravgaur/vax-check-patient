@@ -54,7 +54,7 @@ medica sobre las vacunas que ha recibido.
                                 (save)="updateSingleField('lastInputText', 'lastNameInputControl')"
                                 (cancel)="cancelSingleField('lastInputText', 'lastNameInputControl')">
                                 <ng-template viewMode>
-                                    {{ lastInputText }} <i
+                                    {{ lastInputText | titlecase }} <i
                                         class="kt-nav__link-icon flaticon2-pen text-primary"
                                         style="float: right;"></i>
                                 </ng-template>
@@ -82,7 +82,7 @@ medica sobre las vacunas que ha recibido.
                                 (save)="updateSingleField('firstInputText', 'firstNameInputControl')"
                                 (cancel)="cancelSingleField('firstInputText', 'firstNameInputControl')">
                                 <ng-template viewMode>
-                                    {{ firstInputText }} <i
+                                    {{ firstInputText | titlecase }} <i
                                         class="kt-nav__link-icon flaticon2-pen text-primary"
                                         style="float: right;"></i>
                                 </ng-template>
@@ -222,15 +222,15 @@ medica sobre las vacunas que ha recibido.
                                 [hideDelayTouchscreen]="3000" [hide-delay]="3000"
                                 [animation-duration]="500"></i>
                         </div>
-                        <div class="snapshot" style="display: block;width: 100%;"
+                        <!-- <div class="snapshot" style="display: block;width: 100%;"
                             *ngIf="webcamImage">
                             <h4 style="color: #2196f3;
-                            font-weight: bold;">Nice one!</h4>
+                            font-weight: bold;">Nice one!</h4> -->
                             <!-- <button mat-stroked-button
                                 >Upload</button> -->
-                            <img style="display: block;width: 120px"
+                            <!-- <img style="display: block;width: 120px"
                                 [src]="webcamImage.imageAsDataUrl" />
-                        </div>
+                        </div> -->
                     </div>
                 </mat-tab>
                 <mat-tab label="Upload File">
@@ -238,7 +238,7 @@ medica sobre las vacunas que ha recibido.
                         <!-- <input type="file" name="file" id="file" multiple class="inputfile"
                             (change)="onFileSelect($event)" />
                         <label for="file">Choose files from here</label> -->
-                        <kt-file-upload (fileSelection)="onFileSelect($event)" [onlyImage]="false"></kt-file-upload>
+                        <kt-file-upload1 (fileSelection)="onFileSelect($event)" [onlyImage]="true"></kt-file-upload1>
                         <!-- <div style="width: 100%;
                         text-align: left;
                         padding: 0 13px;
@@ -250,7 +250,13 @@ medica sobre las vacunas que ha recibido.
                     </div>
                 </mat-tab>
             </mat-tab-group>
-            <div *ngIf="!webcamImage && !imageSrc && tab3Pressed"
+            <div class="snapshot" *ngIf="srcDocPath">
+                <span><img *ngIf="['jpg', 'jpeg', 'png'].includes(srcDocPath.split('.').pop())" style="width: 10rem; cursor: pointer;" [src]="srcDocPath" (click)="displayResponsive = true" />
+                    </span>
+                <span><i class="pi pi-file-pdf" *ngIf="!['jpg', 'jpeg', 'png'].includes(srcDocPath.split('.').pop())" style="font-size: 4rem;color: red; cursor: pointer;" (click)="displayResponsive = true"></i></span>
+                <span style="margin-left: 1rem;"><button *ngIf="srcDocPath" pButton pRipple type="button" icon="pi pi-download" (click)="downloadFile(srcDocPath, 'vax_card')" class="p-button-rounded p-button-outlined"></button></span>
+            </div>
+            <div *ngIf="!srcDocPath && tab3Pressed"
                 style="color: red; font-weight: bold;">Please provide vaccination proof.</div>
             <p-fieldset legend="Consent" [toggleable]="true">
                 <mat-checkbox required class="example-margin" formControlName="consent">I hereby consent to the release of my COVID vaccination information to VAXCheck, a service of FirstVitals Health and Wellness Inc., a professional healthcare provider for verification purposes.<br>
@@ -269,3 +275,7 @@ medica sobre las vacunas que ha recibido.
         </div>
     </div>
 </div>
+<p-dialog header="File Preview" [(visible)]="displayResponsive" [breakpoints]="{'960px': '75vw'}" [modal]="true" [baseZIndex]="10000" 
+    [draggable]="false" [resizable]="false">
+    <iframe [src]="srcDocPath | safe: 'resourceUrl'" allowfullscreen frameborder="0" width="800" height="400"></iframe>
+</p-dialog>

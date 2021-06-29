@@ -1,0 +1,42 @@
+.file-drop-zone {
+    margin: 0 auto;
+    border: 1px dashed rgb(204, 204, 204)
+}
+.file-drop-zone-inner {
+    padding: 1.5rem !important;
+    text-align: center;
+}
+.file-drop-zone button {
+    display: block;
+    margin: 0 auto;
+    margin-top: 1rem !important;
+}
+.nv-file-over {
+    border: 1px dashed #2b5fee;
+}
+
+.cls-title {
+    font-size: 18px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    color: #6a6c6e;
+    margin-bottom:10px;
+    margin-top: 5px;
+}
+
+.cls-file-name {
+    /* display: block; */
+    background: lightblue;
+    display: inline-block;
+    border-radius: 15px;
+    padding: 1rem;
+    margin-top: 1rem;
+}
+
+.cls-file-error {
+    color: red;
+}
+
+.cls-evidence-preview {
+    cursor: pointer;
+}

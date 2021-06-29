@@ -3,11 +3,11 @@ import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { FileItem, FileLikeObject, FileUploader } from 'ng2-file-upload';
 
 @Component({
-  selector: 'kt-file-upload',
-  templateUrl: './file-upload.component.html',
-  styleUrls: ['./file-upload.component.css']
+  selector: 'kt-file-upload1',
+  templateUrl: './file-upload1.component.html',
+  styleUrls: ['./file-upload1.component.css']
 })
-export class FileUploadComponent implements OnInit {
+export class FileUpload1Component implements OnInit {
 
   @Input() onlyImage = false;
   @Output() fileSelection = new EventEmitter<File>();

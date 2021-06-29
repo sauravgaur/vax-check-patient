@@ -23,12 +23,13 @@ import { AppConstants } from '../../../../app.constants';
 import { IDateProperties } from '../../../../interface/date.properties';
 import { IImageToText } from '../../../../interface/image.text';
 import {
-    IProfile, IPatientAddress, IVaccinations, ITravelerExists,
-    IAddress2, IProvider, IMediaArray, IVaccineDosing, IMedia, LOCAL_STORAGE_KEYS
+    IProfile, IVaccinations, ITravelerExists,
+    IAddress2, IVaccineDosing, IMedia, LOCAL_STORAGE_KEYS
 } from '../../../../interface/record.interface';
 import { WizardService } from './wizard.service';
 import Utils from '../../../../utils';
-const BASE_URL = 'http://localhost:3100/api';
+declare var require: any;
+const FileSaver = require('file-saver');
 
 @Component({
     selector: 'kt-wizard2',
@@ -103,6 +104,13 @@ export class Wizard2Component implements OnInit, AfterViewInit {
     forceSelection = false;
     isLoadingNext = false;
     loginResponse: { profiles: IProfile, vaccinations: IVaccinations, media: IMedia[], travelerExists: ITravelerExists };
+    media: IMedia[] = [];
+    supplementPath: string;
+    srcPath: string;
+    webcamPath: string;
+    supplimentURL: string;
+    srcURL: string;
+    displayIFrame = false;
     constructor(
         private cd: ChangeDetectorRef,
         private http: HttpClient,
@@ -250,7 +258,19 @@ export class Wizard2Component implements OnInit, AfterViewInit {
         if (data.travelerExists.vaccination_skyflow_id) {
             this.fillVaccinationDetails(data.vaccinations);
         }
+
+        if (data.media.length > 0) {
+            this.setMediaURL(data.media);
+        }
         this.patientForm.updateValueAndValidity();
+    }
+
+    setMediaURL(media) {
+        this.supplimentURL = this.wizardService.findFilePath(media, 'SUPPLEMENT_DOC');
+        this.srcURL = this.wizardService.findFilePath(media, 'VAX_CARD');
+
+        this.setToMediaArray('SUPPLEMENT_DOC', this.srcURL);
+        this.setToMediaArray('VAX_CARD', this.srcURL);
     }
 
     fillVaccinationDetails(dt) {
@@ -258,31 +278,33 @@ export class Wizard2Component implements OnInit, AfterViewInit {
         let orgDetail: IVaccineDosing;
         if (data.vaccine_dose_2?.site_name) {
             orgDetail = data.vaccine_dose_2;
-        } else {
+        } else if (data.vaccine_dose_1?.site_name) {
             orgDetail = data.vaccine_dose_1;
         }
-        orgDetail.site_name.type = orgDetail.site_name.type.toUpperCase();
-        this.patientForm.controls.orgName.setValue(orgDetail?.site_name);
-        this.submitButton = { id: 1, value: 'Submit' };
-        if (orgDetail?.site_name?.type?.toUpperCase() === 'EXTERNAL') {
+        if (orgDetail) {
+            orgDetail.site_name.type = orgDetail.site_name.type.toUpperCase();
+            this.patientForm.controls.orgName.setValue(orgDetail?.site_name);
             this.submitButton = { id: 1, value: 'Submit' };
-        } else if (orgDetail?.site_name?.type?.toUpperCase() === 'HAPI') {
-            this.submitButton = { id: 2, value: 'Start Verification' };
-        }
-        this.patientForm.controls.orgAddress1.setValue(orgDetail?.site_address.street_address);
-        this.patientForm.controls.orgAddress2.setValue(orgDetail?.site_address.street_address2);
-        this.patientForm.controls.orgCity.setValue(orgDetail?.site_address.city);
-        this.patientForm.controls.orgState.setValue(orgDetail?.site_address.state.toUpperCase());
-        this.patientForm.controls.orgZipcode.setValue(orgDetail?.site_address.zip_code);
-        this.patientForm.controls.orgEmail.setValue(orgDetail.email_address);
-        this.patientForm.controls.orgContactNumber.setValue(orgDetail.mobile_number);
+            if (orgDetail?.site_name?.type?.toUpperCase() === 'EXTERNAL') {
+                this.submitButton = { id: 1, value: 'Submit' };
+            } else if (orgDetail?.site_name?.type?.toUpperCase() === 'HAPI') {
+                this.submitButton = { id: 2, value: 'Start Verification' };
+            }
+            this.patientForm.controls.orgAddress1.setValue(orgDetail?.site_address.street_address);
+            this.patientForm.controls.orgAddress2.setValue(orgDetail?.site_address.street_address2);
+            this.patientForm.controls.orgCity.setValue(orgDetail?.site_address.city);
+            this.patientForm.controls.orgState.setValue(orgDetail?.site_address.state.toUpperCase());
+            this.patientForm.controls.orgZipcode.setValue(orgDetail?.site_address.zip_code);
+            this.patientForm.controls.orgEmail.setValue(orgDetail.email_address);
+            this.patientForm.controls.orgContactNumber.setValue(orgDetail.mobile_number);
 
-        // vaccine info
-        this.patientForm.controls.orgManufacturer.setValue(data.vaccine_manufacturer_name);
-        this.patientForm.controls.orgDose1.setValue(data.vaccine_dose_1.date ? moment(data.vaccine_dose_1.date, 'YYYY-MM-DD').format('MM-DD-YYYY') : null);
-        this.patientForm.controls.lotNumber1.setValue(data.vaccine_dose_1.lot_number);
-        this.patientForm.controls.orgDose2.setValue(data.vaccine_dose_2.date ? moment(data.vaccine_dose_2.date, 'YYYY-MM-DD').format('MM-DD-YYYY') : null);
-        this.patientForm.controls.lotNumber2.setValue(data.vaccine_dose_2.lot_number);
+            // vaccine info
+            this.patientForm.controls.orgManufacturer.setValue(data.vaccine_manufacturer_name);
+            this.patientForm.controls.orgDose1.setValue(data.vaccine_dose_1.date ? moment(data.vaccine_dose_1.date, 'YYYY-MM-DD').format('MM-DD-YYYY') : null);
+            this.patientForm.controls.lotNumber1.setValue(data.vaccine_dose_1.lot_number);
+            this.patientForm.controls.orgDose2.setValue(data.vaccine_dose_2.date ? moment(data.vaccine_dose_2.date, 'YYYY-MM-DD').format('MM-DD-YYYY') : null);
+            this.patientForm.controls.lotNumber2.setValue(data.vaccine_dose_2.lot_number);
+        }
 
         this.patientForm.controls.apptEmailConf.setValue(data.appointment_email_confirmation);
     }
@@ -554,7 +576,8 @@ export class Wizard2Component implements OnInit, AfterViewInit {
                 this.tab3Pressed = true;
                 if (!this.firstInputText || !this.lastInputText || !this.firstClinicName || !this.patientForm.valid
                     || (this.patientForm.get('orgDose2').value && !this.secondClinicName)
-                    || ((!this.webcamImage && !this.imageSrc))) {
+                    || (!this.srcURL)) {
+                    // || ((!this.webcamImage && !this.imageSrc))) {
                     this.cd.markForCheck();
                     this.isLoadingNext = false;
                     return;
@@ -867,89 +890,9 @@ export class Wizard2Component implements OnInit, AfterViewInit {
         this.submitted = true;
         // console.log('webcamImage:', this.webcamImage, 'imgsrc', this.imageSrc);
         // console.log('this.supportingDocFile:', this.supportingDocFile);
-        let webcamPath;
-        let srcPath;
-        let supplementPath;
         if (this.patientForm.valid) {
             this.isLoading = true;
             this.submitButton.value = 'Processing';
-            if (this.imageSrc) {
-                // console.log('inside imgsrc found');
-                srcPath = await this.wizardService
-                    .uploadFile(this.imageSrc, this.constants.API_URI.SNAPSHOT_UPLOAD, 'snapshot').toPromise();
-            }
-            if (this.webcamImage) {
-                // console.log('inside webcam foudn');
-                webcamPath = await this.wizardService
-                    .uploadFile(this.webcamImage, this.constants.API_URI.SNAPSHOT_UPLOAD, 'snapshot').toPromise();
-            }
-            if (this.supportingDocFile) {
-                // console.log('inside supplient found');
-                supplementPath = await this.wizardService
-                    .uploadFile(this.supportingDocFile, this.constants.API_URI.SUPPLIMENT_DOC_UPLOAD, 'supplementDoc').toPromise();
-            }
-            console.log('srcpath', srcPath);
-            console.log('webPath:', webcamPath);
-            console.log('supplementPath', supplementPath);
-            // return false;
-            const media: IMedia[] = [];
-            const existingVaxCard = this.loginResponse.media.find((x: any) => x.document_type === 'VAX_CARD');
-            if (webcamPath) {
-                let vaxSkyflowId = null;
-                if (this.loginResponse.media && this.loginResponse.media.length > 0) {
-                    if (existingVaxCard) {
-                        vaxSkyflowId = existingVaxCard.skyflow_id;
-                    }
-                }
-                media.push({
-                    document_type: 'VAX_CARD',
-                    file_path: webcamPath,
-                    skyflow_id: vaxSkyflowId
-                });
-            } else if (srcPath) {
-                let vaxSkyflowId = null;
-                if (this.loginResponse.media && this.loginResponse.media.length > 0) {
-                    if (existingVaxCard) {
-                        vaxSkyflowId = existingVaxCard.skyflow_id;
-                    }
-                }
-                media.push({
-                    document_type: 'VAX_CARD',
-                    file_path: srcPath,
-                    skyflow_id: vaxSkyflowId
-                });
-            } else {
-                if (existingVaxCard) {
-                    media.push({
-                        document_type: 'VAX_CARD',
-                        file_path: null,
-                        skyflow_id: existingVaxCard.skyflow_id
-                    });
-                }
-            }
-
-            const existingSuppliment = this.loginResponse.media.find((x: any) => x.document_type === 'SUPPLEMENT_DOC');
-            if (supplementPath) {
-                let supplementSkyflowId = null;
-                if (this.loginResponse.media && this.loginResponse.media.length > 0) {
-                    if (existingSuppliment) {
-                        supplementSkyflowId = existingSuppliment.skyflow_id;
-                    }
-                }
-                media.push({
-                    document_type: 'SUPPLEMENT_DOC',
-                    file_path: supplementPath,
-                    skyflow_id: supplementSkyflowId
-                });
-            } else {
-                if (existingSuppliment) {
-                    media.push({
-                        document_type: 'SUPPLEMENT_DOC',
-                        file_path: null,
-                        skyflow_id: existingSuppliment.skyflow_id
-                    });
-                }
-            }
 
             const profiles: IProfile = {
                 skyflow_id: this.loginResponse.travelerExists.profiles_skyflow_id,
@@ -1032,11 +975,12 @@ export class Wizard2Component implements OnInit, AfterViewInit {
             };
 
             const postObject = {
-                profiles, vaccination, media
+                profiles, vaccination, media: this.media
             };
             localStorage.setItem('travelerData', JSON.stringify(this.patientForm.value));
             localStorage.removeItem(LOCAL_STORAGE_KEYS[LOCAL_STORAGE_KEYS.LOGIN_RESPONSE_DATA]);
             console.log('postObject:', postObject);
+            // return false;
             this.wizardService.registerTraveller(postObject).subscribe((data: any) => {
                 // console.log('result after save:', data);
                 this.skyflowId = 'test';
@@ -1055,21 +999,126 @@ export class Wizard2Component implements OnInit, AfterViewInit {
         }
     }
 
-    onFileSelect(file) {
-        // console.log('onFileSelect: ', file);
+    async onFileSelect(file) {
         this.supportingDocFile = file;
+
+        if (this.supportingDocFile) {
+            this.supplementPath = await this.wizardService
+                .uploadFile(this.supportingDocFile, this.constants.API_URI.SUPPLIMENT_DOC_UPLOAD, 'supplementDoc').toPromise();
+        }
+        // const existingSuppliment = this.loginResponse.media.find((x: any) => x.document_type === 'SUPPLEMENT_DOC');
+        // if (this.supplementPath) {
+        //     let supplementSkyflowId = null;
+        //     if (this.loginResponse?.media && this.loginResponse?.media?.length > 0) {
+        //         if (existingSuppliment) {
+        //             supplementSkyflowId = existingSuppliment.skyflow_id;
+        //         }
+        //     }
+        //     this.media.push({
+        //         document_type: 'SUPPLEMENT_DOC',
+        //         file_path: this.supplementPath,
+        //         skyflow_id: supplementSkyflowId
+        //     });
+        // } else {
+        //     if (existingSuppliment) {
+        //         this.media.push({
+        //             document_type: 'SUPPLEMENT_DOC',
+        //             file_path: null,
+        //             skyflow_id: existingSuppliment.skyflow_id
+        //         });
+        //     }
+        // }
+        this.setToMediaArray('SUPPLEMENT_DOC', this.supplementPath);
+        console.log('in suppliment upload:', this.media);
+        this.supplimentURL = this.wizardService.findFilePath(this.media, 'SUPPLEMENT_DOC');
+        this.cd.markForCheck();
     }
 
-    updateImageSrc(data) {
+    async updateImageSrc(data) {
         // console.log('in update image src:', data);
         this.webcamImage = '';
         this.imageSrc = data;
+        this.srcURL = null;
+        if (this.imageSrc) {
+            // console.log('inside imgsrc found');
+            this.srcPath = await this.wizardService
+                .uploadFile(this.imageSrc, this.constants.API_URI.SNAPSHOT_UPLOAD, 'snapshot').toPromise();
+        }
+
+        // const existingVaxCard = this.loginResponse.media.find((x: any) => x.document_type === 'VAX_CARD');
+        // if (this.srcPath) {
+        //     this.media.splice(this.media.findIndex(x => x.document_type === 'VAX_CARD'));
+        //     let vaxSkyflowId = null;
+        //     if (this.loginResponse?.media && this.loginResponse?.media?.length > 0) {
+        //         if (existingVaxCard) {
+        //             vaxSkyflowId = existingVaxCard.skyflow_id;
+        //         }
+        //     }
+        //     this.media.push({
+        //         document_type: 'VAX_CARD',
+        //         file_path: this.srcPath,
+        //         skyflow_id: vaxSkyflowId
+        //     });
+        // } else {
+        //     if (existingVaxCard) {
+        //         this.media.push({
+        //             document_type: 'VAX_CARD',
+        //             file_path: null,
+        //             skyflow_id: existingVaxCard.skyflow_id
+        //         });
+        //     }
+        // }
+        this.setToMediaArray('VAX_CARD', this.srcPath);
+        console.log('in file upload:', this.media);
+        this.srcURL = this.wizardService.findFilePath(this.media, 'VAX_CARD');
+        this.cd.markForCheck();
     }
 
-    updateWebcamImage(data) {
+    async updateWebcamImage(data) {
         // console.log('in update web cam image', data);
         this.imageSrc = '';
         this.webcamImage = data;
+        this.srcURL = null;
+
+        if (this.webcamImage) {
+            // console.log('inside webcam foudn');
+            this.webcamPath = await this.wizardService
+                .uploadFile(this.webcamImage, this.constants.API_URI.SNAPSHOT_UPLOAD, 'snapshot').toPromise();
+        }
+
+        this.setToMediaArray('VAX_CARD', this.webcamPath);
+        console.log('in webimage:', this.media);
+        this.srcURL = this.wizardService.findFilePath(this.media, 'VAX_CARD');
+        this.cd.markForCheck();
+    }
+
+    setToMediaArray(type, path) {
+        const existingVaxCard = this.loginResponse.media.find((x: any) => x.document_type === type);
+        if (path) {
+            const isExists = this.media.findIndex(x => x.document_type === type);
+            if (isExists > -1) {
+                this.media.splice(isExists);
+            }
+            let vaxSkyflowId = null;
+            if (this.loginResponse?.media && this.loginResponse?.media?.length > 0) {
+                if (existingVaxCard) {
+                    vaxSkyflowId = existingVaxCard.skyflow_id;
+                }
+            }
+            this.media.push({
+                document_type: type,
+                file_path: path.substring(path.indexOf('uploads')),
+                skyflow_id: vaxSkyflowId
+            });
+        } else {
+            if (existingVaxCard) {
+                this.media.push({
+                    document_type: type,
+                    file_path: null,
+                    skyflow_id: existingVaxCard.skyflow_id
+                });
+            }
+        }
     }
     dataURLtoFile(dataurl, filename) {
 
@@ -1082,6 +1131,10 @@ export class Wizard2Component implements OnInit, AfterViewInit {
             u8arr[n] = bstr.charCodeAt(n);
         }
         return new File([u8arr], filename, { type: mime });
+    }
+
+    downloadFile(fileUrl: string, fileName: string) {
+        FileSaver.saveAs(fileUrl, fileName);
     }
     // uploadSnapshot(isFromFile = true) {
     //     const formData = new FormData();
