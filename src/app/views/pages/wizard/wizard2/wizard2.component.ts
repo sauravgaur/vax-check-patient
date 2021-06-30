@@ -271,7 +271,7 @@ export class Wizard2Component implements OnInit, AfterViewInit {
         this.supplimentURL = this.wizardService.findFilePath(media, 'SUPPLEMENT_DOC');
         this.srcURL = this.wizardService.findFilePath(media, 'VAX_CARD');
 
-        this.setToMediaArray('SUPPLEMENT_DOC', this.srcURL);
+        this.setToMediaArray('SUPPLEMENT_DOC', this.supplimentURL);
         this.setToMediaArray('VAX_CARD', this.srcURL);
     }
 
@@ -979,10 +979,10 @@ export class Wizard2Component implements OnInit, AfterViewInit {
             const postObject = {
                 profiles, vaccination, media: this.media
             };
-            localStorage.setItem('travelerData', JSON.stringify(this.patientForm.value));
-            localStorage.removeItem(LOCAL_STORAGE_KEYS[LOCAL_STORAGE_KEYS.LOGIN_RESPONSE_DATA]);
             console.log('postObject:', postObject);
             // return false;
+            localStorage.setItem('travelerData', JSON.stringify(this.patientForm.value));
+            localStorage.removeItem(LOCAL_STORAGE_KEYS[LOCAL_STORAGE_KEYS.LOGIN_RESPONSE_DATA]);
             this.wizardService.registerTraveller(postObject).subscribe((data: any) => {
                 // console.log('result after save:', data);
                 this.skyflowId = 'test';
@@ -1008,28 +1008,6 @@ export class Wizard2Component implements OnInit, AfterViewInit {
             this.supplementPath = await this.wizardService
                 .uploadFile(this.supportingDocFile, this.constants.API_URI.SUPPLIMENT_DOC_UPLOAD, 'supplementDoc').toPromise();
         }
-        // const existingSuppliment = this.loginResponse.media.find((x: any) => x.document_type === 'SUPPLEMENT_DOC');
-        // if (this.supplementPath) {
-        //     let supplementSkyflowId = null;
-        //     if (this.loginResponse?.media && this.loginResponse?.media?.length > 0) {
-        //         if (existingSuppliment) {
-        //             supplementSkyflowId = existingSuppliment.skyflow_id;
-        //         }
-        //     }
-        //     this.media.push({
-        //         document_type: 'SUPPLEMENT_DOC',
-        //         file_path: this.supplementPath,
-        //         skyflow_id: supplementSkyflowId
-        //     });
-        // } else {
-        //     if (existingSuppliment) {
-        //         this.media.push({
-        //             document_type: 'SUPPLEMENT_DOC',
-        //             file_path: null,
-        //             skyflow_id: existingSuppliment.skyflow_id
-        //         });
-        //     }
-        // }
         this.setToMediaArray('SUPPLEMENT_DOC', this.supplementPath);
         console.log('in suppliment upload:', this.media);
         this.supplimentURL = this.wizardService.findFilePath(this.media, 'SUPPLEMENT_DOC');
@@ -1046,30 +1024,6 @@ export class Wizard2Component implements OnInit, AfterViewInit {
             this.srcPath = await this.wizardService
                 .uploadFile(this.imageSrc, this.constants.API_URI.SNAPSHOT_UPLOAD, 'snapshot').toPromise();
         }
-
-        // const existingVaxCard = this.loginResponse.media.find((x: any) => x.document_type === 'VAX_CARD');
-        // if (this.srcPath) {
-        //     this.media.splice(this.media.findIndex(x => x.document_type === 'VAX_CARD'));
-        //     let vaxSkyflowId = null;
-        //     if (this.loginResponse?.media && this.loginResponse?.media?.length > 0) {
-        //         if (existingVaxCard) {
-        //             vaxSkyflowId = existingVaxCard.skyflow_id;
-        //         }
-        //     }
-        //     this.media.push({
-        //         document_type: 'VAX_CARD',
-        //         file_path: this.srcPath,
-        //         skyflow_id: vaxSkyflowId
-        //     });
-        // } else {
-        //     if (existingVaxCard) {
-        //         this.media.push({
-        //             document_type: 'VAX_CARD',
-        //             file_path: null,
-        //             skyflow_id: existingVaxCard.skyflow_id
-        //         });
-        //     }
-        // }
         this.setToMediaArray('VAX_CARD', this.srcPath);
         console.log('in file upload:', this.media);
         this.srcURL = this.wizardService.findFilePath(this.media, 'VAX_CARD');
@@ -1099,7 +1053,7 @@ export class Wizard2Component implements OnInit, AfterViewInit {
         if (path) {
             const isExists = this.media.findIndex(x => x.document_type === type);
             if (isExists > -1) {
-                this.media.splice(isExists);
+                this.media.splice(isExists, 1);
             }
             let vaxSkyflowId = null;
             if (this.loginResponse?.media && this.loginResponse?.media?.length > 0) {
