@@ -63,7 +63,10 @@
                                         [attr.data-hapi-token]="token" [disabled]="isLoading"><i
                                             [class]="isLoading ? 'pi pi-spin pi-spinner' : 'pi pi-check'"></i>&nbsp;
                                         <!-- [class]="{'pi pi-spin pi-spinner': isLoading, 'pi pi-check': !isLoading}" -->
-                                    </button>
+                                    </button> &nbsp; &nbsp;
+                                    <button pButton pRipple label="Skip" style="text-align: center;"
+                                class="p-button-outlined p-button-help p-button-raised p-button-rounded"
+                                [routerLink]="'/corporate'"></button>
                                     <!-- <button *ngIf="buttonHumanFlg" pButton pRipple label="Connect your Health Data"
                                         style="text-align: center;"
                                         class="p-button-outlined p-button-success p-button-raised p-button-rounded"
@@ -73,7 +76,7 @@
                                     </button> -->
                                 </div>
                             </div>
-                            <button pButton pRipple label="OK" style="text-align: center;"
+                            <button *ngIf="!buttonHumanFlg" pButton pRipple label="OK" style="text-align: center;"
                                 class="p-button-outlined p-button-success p-button-raised p-button-rounded"
                                 [routerLink]="'/corporate'"></button>
                         </h5>
