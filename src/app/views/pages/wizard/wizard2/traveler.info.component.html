@@ -8,7 +8,7 @@
                     <span class="p-float-label p-input-icon-right">
                         <i class="pi pi-user"></i>
                         <input id="first-name" autocomplete="off" type="text" pInputText formControlName="firstName"
-                        class="p-inputtext-sm" pattern="^[ A-Za-z-.,]*$"
+                        class="p-inputtext-sm" pattern="^[ A-Za-z-.,]*$" (onblur)="setFirstNameTitleCase()"
                             oninput="validity.valid||(value=(this.value.substring(0, this.value.length - 1)))" required>
                         <label for="first-name">First name<span class="cls-requiered">*</span></label>
                     </span>
@@ -39,7 +39,7 @@
                     <span class="p-float-label p-input-icon-right">
                         <i class="pi pi-user"></i>
                         <input id="float-input" autocomplete="off" type="text" pInputText formControlName="lastName"
-                        class="p-inputtext-sm" pattern="^[ A-Za-z-.,]*$"
+                        class="p-inputtext-sm" pattern="^[ A-Za-z-.,]*$" (onblur)="setLastNameTitleCase()"
                             oninput="validity.valid||(value=(this.value.substring(0, this.value.length - 1)))" required>
                         <label for="float-input">Last name<span class="cls-requiered">*</span></label>
                     </span>

@@ -49,15 +49,25 @@ export class TravelerInfoComponent implements OnInit {
       this.listenToIsContactNumberChange(selectedValue);
     });
 
-    this.travelerInfo.get('firstName').valueChanges.subscribe(selectedValue => {
-      this.travelerInfo.get('firstName').setValue(this.titlecasePipe.transform(selectedValue));
-      this.travelerInfo.get('lastName').updateValueAndValidity({emitEvent: false});
-    });
+    // this.travelerInfo.get('firstName').valueChanges.subscribe(selectedValue => {
+    //   this.travelerInfo.get('firstName').setValue(this.titlecasePipe.transform(selectedValue));
+    //   this.travelerInfo.get('firstName').updateValueAndValidity({emitEvent: false});
+    // });
 
-    this.travelerInfo.get('lastName').valueChanges.subscribe(selectedValue => {
-      this.travelerInfo.get('lastName').setValue(this.titlecasePipe.transform(selectedValue));
-      this.travelerInfo.get('lastName').updateValueAndValidity({emitEvent: false});
-    });
+    // this.travelerInfo.get('lastName').valueChanges.subscribe(selectedValue => {
+    //   this.travelerInfo.get('lastName').setValue(this.titlecasePipe.transform(selectedValue));
+    //   this.travelerInfo.get('lastName').updateValueAndValidity({emitEvent: false});
+    // });
+  }
+
+  setFirstNameTitleCase(){
+    this.travelerInfo.get('firstName').setValue(this.titlecasePipe.transform(this.travelerInfo.get('firstName').value));
+    this.travelerInfo.get('lastName').updateValueAndValidity();
+  }
+
+  setLastNameTitleCase() {
+    this.travelerInfo.get('lastName').setValue(this.titlecasePipe.transform(this.travelerInfo.get('firstName').value));
+    this.travelerInfo.get('lastName').updateValueAndValidity();
   }
 
   listenToStateChange(selectedValue) {

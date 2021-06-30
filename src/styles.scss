@@ -142,3 +142,50 @@ body .ui-datepicker table {
     padding: 1.5rem !important;
   }
 }
+
+a.link-icon:before,
+a.link-icon.link-file[type]:before {
+  cursor: pointer;
+  content: "\f016"; /* generic file icon */
+  display: inline-block;
+  font: normal normal normal 14px/1 FontAwesome;
+  font-size: inherit;
+  text-rendering: auto;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  transform: translate(0, 0);
+  width: 20px;
+  font-size: 40px;
+  text-align: right;
+  margin-right: 10px;
+}
+a[type$=".txt"].link-icon:before,
+a.link-icon.link-text[hretypef]:before {
+  content: "\f0f6"; /*Text*/
+  color: black;
+  cursor: -webkit-zoom-in !important;
+}
+a[type$=".pdf"].link-icon:before,
+a.link-icon.link-pdf[type]:before {
+  content: "\f1c1"; /*PDF*/
+  color: red;
+  cursor: -webkit-zoom-in !important;
+}
+a[type$=".doc"].link-icon:before,
+a[type$=".docx"].link-icon:before,
+a.link-icon.link-word[type]:before {
+  content: "\f1c2"; /*Word*/
+  color: blue;
+}
+a[type$=".xls"].link-icon:before,
+a[type$=".xlsx"].link-icon:before,
+a.link-icon.link-excel[type]:before {
+  content: "\f1c3"; /*Excel*/
+  color: green;
+}
+a[type$=".ppt"].link-icon:before,
+a[type$=".pptx"].link-icon:before,
+a.link-icon.link-powerpoint[type]:before {
+  content: "\f1c4"; /*Powerpoint*/
+  color: orangered;
+}

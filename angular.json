@@ -37,7 +37,8 @@
               "node_modules/primeflex/primeflex.css",
               "node_modules/shepherd.js/dist/css/shepherd.css",
               "node_modules/quill/dist/quill.core.css",
-              "node_modules/quill/dist/quill.snow.css"
+              "node_modules/quill/dist/quill.snow.css",
+              "node_modules/font-awesome/css/font-awesome.min.css"
             ],
             "scripts": [
               "node_modules/popper.js/dist/umd/popper.js",

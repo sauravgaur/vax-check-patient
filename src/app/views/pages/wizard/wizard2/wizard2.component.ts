@@ -28,6 +28,7 @@ import {
 } from '../../../../interface/record.interface';
 import { WizardService } from './wizard.service';
 import Utils from '../../../../utils';
+import { TitleCasePipe } from '@angular/common';
 declare var require: any;
 const FileSaver = require('file-saver');
 
@@ -123,6 +124,7 @@ export class Wizard2Component implements OnInit, AfterViewInit {
         private router: Router,
         private constants: AppConstants,
         private wizardService: WizardService,
+        private titlecasePipe: TitleCasePipe
     ) {
         this.dateProperties = {
             dateFormat: 'mm-dd-yy',
@@ -235,9 +237,9 @@ export class Wizard2Component implements OnInit, AfterViewInit {
         console.log('data in prefilled form', data);
         const profiles: IProfile = data.profiles;
         this.isCorporalteUser = true;
-        this.patientForm.controls.firstName.setValue(profiles.name.first_name);
+        this.patientForm.controls.firstName.setValue(this.titlecasePipe.transform(profiles.name.first_name));
         this.patientForm.controls.middleName.setValue(profiles.name.middle_name);
-        this.patientForm.controls.lastName.setValue(profiles.name.last_name);
+        this.patientForm.controls.lastName.setValue(this.titlecasePipe.transform(profiles.name.last_name));
         this.patientForm.controls.dob.setValue(moment(profiles.date_of_birth, 'YYYY-MM-DD').format('MM-DD-YYYY'));
         this.patientForm.controls.address1.setValue(profiles.address.street_address);
         this.patientForm.controls.address2.setValue(profiles.address?.street_address2);
@@ -445,9 +447,9 @@ export class Wizard2Component implements OnInit, AfterViewInit {
             // Go back to the previouse step
             if (this.changeStep === 2) {
                 this.patientForm.get('firstName').setValue(this.firstInputText ?
-                    this.firstInputText : this.patientForm.get('firstName').value);
+                    this.titlecasePipe.transform(this.firstInputText) : this.patientForm.get('firstName').value);
                 this.patientForm.get('lastName').setValue(this.lastInputText ?
-                    this.lastInputText : this.patientForm.get('lastName').value);
+                    this.titlecasePipe.transform(this.lastInputText) : this.patientForm.get('lastName').value);
             }
             // wizard.goPrev();
         });
@@ -524,43 +526,43 @@ export class Wizard2Component implements OnInit, AfterViewInit {
                 this.patientForm.get('lotNumber2').setErrors(null);
 
                 if (this.patientForm.valid) {
-                    if (!this.isCorporalteUser) {
-                        // console.log('in check curretn step: 1');
-                        this.wizardService.isExists({
-                            firstName: this.patientForm.get('firstName').value,
-                            lastName: this.patientForm.get('lastName').value,
-                            middleName: this.patientForm.get('middleName').value,
-                            dateOfBirth: Utils.formatToUSStandared(this.patientForm.get('dob').value),
+                    // if (!this.isCorporalteUser) {
+                    //     // console.log('in check curretn step: 1');
+                    //     this.wizardService.isExists({
+                    //         firstName: this.patientForm.get('firstName').value,
+                    //         lastName: this.patientForm.get('lastName').value,
+                    //         middleName: this.patientForm.get('middleName').value,
+                    //         dateOfBirth: Utils.formatToUSStandared(this.patientForm.get('dob').value),
 
-                        }).subscribe((resp: ITravelerExists) => {
-                            // console.log('in subscribe: resp : ', resp);
-                            if (resp.isTravelerExists) {
-                                if (resp.isPaymentDone) {
-                                    alert('Traveler is already registered. Payment has been done successfully for this traveler!');
-                                } else {
-                                    try {
-                                        this.skyflowId = resp.profiles_skyflow_id;
-                                        this.checkout();
-                                    } catch (error) {
-                                        this.isLoadingNext = true;
-                                        // console.log('in check out error');
-                                        alert('Something went wrong, please try again.');
-                                    }
-                                }
-                            } else {
-                                this.isLoadingNext = false;
-                                wizard.goNext();
-                            }
-                            this.cd.markForCheck();
-                        }, error => {
-                            this.isLoadingNext = false;
-                            wizard.goNext();
+                    //     }).subscribe((resp: ITravelerExists) => {
+                    //         // console.log('in subscribe: resp : ', resp);
+                    //         if (resp.isTravelerExists) {
+                    //             if (resp.isPaymentDone) {
+                    //                 alert('Traveler is already registered. Payment has been done successfully for this traveler!');
+                    //             } else {
+                    //                 try {
+                    //                     this.skyflowId = resp.profiles_skyflow_id;
+                    //                     this.checkout();
+                    //                 } catch (error) {
+                    //                     this.isLoadingNext = true;
+                    //                     // console.log('in check out error');
+                    //                     alert('Something went wrong, please try again.');
+                    //                 }
+                    //             }
+                    //         } else {
+                    //             this.isLoadingNext = false;
+                    //             wizard.goNext();
+                    //         }
+                    //         this.cd.markForCheck();
+                    //     }, error => {
+                    //         this.isLoadingNext = false;
+                    //         wizard.goNext();
 
-                        });
-                    } else {
-                        this.isLoadingNext = false;
-                        wizard.goNext();
-                    }
+                    //     });
+                    // } else {
+                    this.isLoadingNext = false;
+                    wizard.goNext();
+                    // }
                 } else {
                     this.isLoadingNext = false;
                     // wizard.goNext();
@@ -746,9 +748,9 @@ export class Wizard2Component implements OnInit, AfterViewInit {
             else if (wizardObj.currentStep === 4) {
                 this.showWebcam = false;
                 this.patientForm.get('firstName').setValue(this.firstInputText ?
-                    this.firstInputText : this.patientForm.get('firstName').value);
+                    this.titlecasePipe.transform(this.firstInputText) : this.patientForm.get('firstName').value);
                 this.patientForm.get('lastName').setValue(this.lastInputText ?
-                    this.lastInputText : this.patientForm.get('lastName').value);
+                    this.titlecasePipe.transform(this.lastInputText) : this.patientForm.get('lastName').value);
             }
             // console.log('after check step done');
             this.cd.markForCheck();

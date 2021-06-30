@@ -148,12 +148,11 @@
 								[lastNameInputControl]="lastNameInputControl"
 								[firstNameInputControl]="firstNameInputControl"
 								[firstClinicNameInputControl]="firstClinicNameInputControl"
-								[secondClinicNameInputControl]="secondClinicNameInputControl"
-								[srcDocPath]="srcURL"
-								[supplementDocPath]="supplimentURL"
-								[imageToTextResponse]="imageToTextResponse" [isControlHasError]=isControlHasError
-								[showWebcam]="showWebcam" [tab3Pressed]="tab3Pressed"
-								(firstEditedText)="updateFirstName($event)" (lastEditedText)="updateLastName($event)"
+								[secondClinicNameInputControl]="secondClinicNameInputControl" [srcDocPath]="srcURL"
+								[supplementDocPath]="supplimentURL" [imageToTextResponse]="imageToTextResponse"
+								[isControlHasError]=isControlHasError [showWebcam]="showWebcam"
+								[tab3Pressed]="tab3Pressed" (firstEditedText)="updateFirstName($event)"
+								(lastEditedText)="updateLastName($event)"
 								(firstEditedClinic)="updateFirstClinic($event)"
 								(secondEditedClinic)="updateSecondClinic($event)"
 								(updateImageSrc)="updateImageSrc($event)" (updateWebImage)="updateWebcamImage($event)">
@@ -163,12 +162,35 @@
 							<div class="pb-5" data-wizard-type="step-content">
 								<p-fieldset legend="Upload Supplemental Documents">
 									Additional supporting vaccination documents can be uploaded here
-									<kt-file-upload1 (fileSelection)="onFileSelect($event)"></kt-file-upload1>
+									<kt-file-upload (fileSelection)="onFileSelect($event)"></kt-file-upload>
 									<div class="snapshot" *ngIf="supplimentURL">
-										<span><img *ngIf="['jpg', 'jpeg', 'png'].includes(supplimentURL.split('.').pop())" style="width: 10rem; cursor: pointer;" [src]="supplimentURL" (click)="displayIFrame = true" />
-											</span>
-										<span><i class="pi pi-file-pdf" *ngIf="!['jpg', 'jpeg', 'png'].includes(supplimentURL.split('.').pop())" style="font-size: 4rem;color: red; cursor: pointer;" (click)="displayIFrame = true"></i></span>
-										<span style="margin-left: 1rem;"><button *ngIf="supplimentURL" pButton pRipple type="button" icon="pi pi-download" (click)="downloadFile(supplimentURL, 'suppliment_doc')" class="p-button-rounded p-button-outlined"></button></span>
+										<span *ngIf="['jpg', 'jpeg', 'png', 'pdf', 'txt'].includes(supplimentURL.split('.').pop())">
+											<a [type]="supplimentURL" [ngClass]="{'link-icon': false }" *ngIf="['jpg', 'jpeg', 'png'].includes(supplimentURL.split('.').pop())" (click)="displayIFrame = true" style="cursor: pointer;">
+												<img [src]="supplimentURL" style="width: 10rem;">
+											</a>
+
+											<a [type]="supplimentURL" [ngClass]="{'link-icon': true }" *ngIf="['pdf', 'txt'].includes(supplimentURL.split('.').pop())" (click)="displayIFrame = true" style="cursor: pointer;"></a>
+										</span>
+										<span *ngIf="!['jpg', 'jpeg', 'png', 'pdf', 'txt'].includes(supplimentURL.split('.').pop())">
+											<a [type]="supplimentURL" [ngClass]="{'link-icon': true }"></a>
+										</span>
+
+										<!-- <span><img
+												*ngIf="['jpg', 'jpeg', 'png'].includes(supplimentURL.split('.').pop())"
+												style="width: 10rem; cursor: pointer;" [src]="supplimentURL"
+												(click)="displayIFrame = true" />
+										</span>
+										<span><img *ngIf="['pdf', 'txt'].includes(supplimentURL.split('.').pop())"
+												style="width: 10rem; color:red; cursor: pointer;" [src]="supplimentURL"
+												(click)="displayIFrame = true" />
+										</span>
+										<span><i class="pi pi-file" [ngClass]="{'link-icon': isClassVisible(file.mimeType) }" 
+												*ngIf="!['jpg', 'jpeg', 'png', 'pdf', 'txt'].includes(supplimentURL.split('.').pop())"
+												style="font-size: 4rem;"></i></span> -->
+										<span style="margin-left: 1rem;"><button *ngIf="supplimentURL" pButton pRipple
+												type="button" icon="pi pi-download"
+												(click)="downloadFile(supplimentURL, 'suppliment_doc')"
+												class="p-button-rounded p-button-outlined"></button></span>
 									</div>
 								</p-fieldset>
 								<p-fieldset legend="Vaccination Summary">
@@ -269,7 +291,8 @@
 		</p-confirmDialog>
 	</kt-portlet-body>
 </kt-portlet>
-<p-dialog header="File Preview" [(visible)]="displayIFrame" [breakpoints]="{'960px': '75vw'}" [modal]="true" [baseZIndex]="10000" 
-    [draggable]="false" [resizable]="false">
-    <iframe [src]="supplimentURL | safe: 'resourceUrl'" allowfullscreen frameborder="0" width="800" height="400"></iframe>
+<p-dialog header="File Preview" [(visible)]="displayIFrame" [breakpoints]="{'960px': '75vw'}" [modal]="true"
+	[baseZIndex]="10000" [draggable]="false" [resizable]="false">
+	<iframe [src]="supplimentURL | safe: 'resourceUrl'" allowfullscreen frameborder="0" width="800"
+		height="400"></iframe>
 </p-dialog>
