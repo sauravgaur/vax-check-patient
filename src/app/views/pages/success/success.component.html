@@ -64,7 +64,7 @@
                                             [class]="isLoading ? 'pi pi-spin pi-spinner' : 'pi pi-check'"></i>&nbsp;
                                         <!-- [class]="{'pi pi-spin pi-spinner': isLoading, 'pi pi-check': !isLoading}" -->
                                     </button> &nbsp; &nbsp;
-                                    <button pButton pRipple label="Skip" style="text-align: center;"
+                                    <button pButton pRipple *ngIf="buttonHumanFlg"  label="Skip" style="text-align: center;"
                                 class="p-button-outlined p-button-help p-button-raised p-button-rounded"
                                 [routerLink]="'/corporate'"></button>
                                     <!-- <button *ngIf="buttonHumanFlg" pButton pRipple label="Connect your Health Data"
