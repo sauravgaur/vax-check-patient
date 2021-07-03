@@ -250,7 +250,14 @@ medica sobre las vacunas que ha recibido.
                     </div>
                 </mat-tab>
             </mat-tab-group>
+            <div style="width: 100%;" *ngIf="showFileUploadProgress">
+                <p-progressBar mode="indeterminate" [style]="{'height': '6px'}"></p-progressBar>
+            </div>
             <div class="snapshot" *ngIf="srcDocPath">
+                <span *ngIf="fileName" style="background: lightskyblue;
+                border-radius: 15px;
+                padding: 1rem;
+                vertical-align: top;">{{fileName}}</span>
                 <span><img *ngIf="['jpg', 'jpeg', 'png'].includes(srcDocPath.split('.').pop())" style="width: 10rem; cursor: pointer;" [src]="srcDocPath" (click)="displayResponsive = true" />
                     </span>
                 <span><i class="pi pi-file-pdf" *ngIf="!['jpg', 'jpeg', 'png'].includes(srcDocPath.split('.').pop())" style="font-size: 4rem;color: red; cursor: pointer;" (click)="displayResponsive = true"></i></span>

@@ -71,6 +71,7 @@ import typescript from 'highlight.js/lib/languages/typescript';
 import { EditableModule } from '@ngneat/edit-in-place';
 import { NgxStripeModule } from 'ngx-stripe';
 import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
+import { NotifyService } from './common/notify.service';
 
 // tslint:disable-next-line:class-name
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
@@ -173,7 +174,8 @@ export function getHighlightLanguages() {
     HttpUtilsService,
     TypesUtilsService,
     LayoutUtilsService,
-    ShepherdService
+    ShepherdService,
+    NotifyService
   ],
   bootstrap: [AppComponent]
 })

@@ -7,6 +7,7 @@ import { IDateProperties } from '../../../../interface/date.properties';
 import { WebcamImage } from 'ngx-webcam';
 import { Observable, Subject } from 'rxjs';
 import { DomSanitizer } from '@angular/platform-browser';
+import { NotifyService } from '../../../../common/notify.service';
 declare var require: any;
 const FileSaver = require('file-saver');
 @Component({
@@ -50,8 +51,14 @@ export class UploadCardComponent implements OnInit, AfterViewInit {
   @Output() updateWebImage = new EventEmitter<File>();
   displayResponsive = false;
   previewUrl: any;
-
-  constructor(private cd: ChangeDetectorRef, private sanitizer: DomSanitizer) {
+  showFileUploadProgress = false;
+  fileName: any;
+  constructor(private cd: ChangeDetectorRef, private sanitizer: DomSanitizer, private notifyService: NotifyService) {
+    this.notifyService.showLoader$.subscribe(
+      flag => {
+        console.log('in side subscriber:', flag);
+        this.showFileUploadProgress = flag;
+      });
   }
   hasError(controlName: string, validationType: string) {
     return this.isControlHasError(controlName, validationType);
@@ -91,6 +98,7 @@ export class UploadCardComponent implements OnInit, AfterViewInit {
       // document.getElementById('img_preview')['src'] = '';
       return;
     }
+    this.fileName = file.name;
     this.webcamImage = null;
     // console.log('onFileSelect: ', file);
     this.updateImageSrc.emit(file);
@@ -144,7 +152,7 @@ export class UploadCardComponent implements OnInit, AfterViewInit {
     this.displayResponsive = true;
   }
 
-  downloadFile(fileUrl: string, fileName: string ) {
+  downloadFile(fileUrl: string, fileName: string) {
     FileSaver.saveAs(fileUrl, fileName);
   }
 }

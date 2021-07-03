@@ -29,6 +29,7 @@ import {
 import { WizardService } from './wizard.service';
 import Utils from '../../../../utils';
 import { TitleCasePipe } from '@angular/common';
+import { NotifyService } from '../../../../common/notify.service';
 declare var require: any;
 const FileSaver = require('file-saver');
 
@@ -112,6 +113,7 @@ export class Wizard2Component implements OnInit, AfterViewInit {
     supplimentURL: string;
     srcURL: string;
     displayIFrame = false;
+    showFileUploadProgress: boolean;
     constructor(
         private cd: ChangeDetectorRef,
         private http: HttpClient,
@@ -124,7 +126,8 @@ export class Wizard2Component implements OnInit, AfterViewInit {
         private router: Router,
         private constants: AppConstants,
         private wizardService: WizardService,
-        private titlecasePipe: TitleCasePipe
+        private titlecasePipe: TitleCasePipe,
+        private notifyService: NotifyService,
     ) {
         this.dateProperties = {
             dateFormat: 'mm-dd-yy',
@@ -132,6 +135,11 @@ export class Wizard2Component implements OnInit, AfterViewInit {
             minDate: Utils.addDays(new Date(), 1),
             yearRange: `1930:${new Date().getFullYear()}`
         };
+        this.notifyService.showLoader$.subscribe(
+            (flag: boolean) => {
+              console.log('in side subscriber:', flag);
+              this.showFileUploadProgress = flag;
+            });
     }
 
     // public capture() {
@@ -1012,6 +1020,7 @@ export class Wizard2Component implements OnInit, AfterViewInit {
         console.log('in suppliment upload:', this.media);
         this.supplimentURL = this.wizardService.findFilePath(this.media, 'SUPPLEMENT_DOC');
         this.cd.markForCheck();
+        this.notifyService.setShowLoader(false);
     }
 
     async updateImageSrc(data) {
@@ -1028,6 +1037,7 @@ export class Wizard2Component implements OnInit, AfterViewInit {
         console.log('in file upload:', this.media);
         this.srcURL = this.wizardService.findFilePath(this.media, 'VAX_CARD');
         this.cd.markForCheck();
+        this.notifyService.setShowLoader(false);
     }
 
     async updateWebcamImage(data) {
@@ -1046,6 +1056,7 @@ export class Wizard2Component implements OnInit, AfterViewInit {
         console.log('in webimage:', this.media);
         this.srcURL = this.wizardService.findFilePath(this.media, 'VAX_CARD');
         this.cd.markForCheck();
+        this.notifyService.setShowLoader(false);
     }
 
     setToMediaArray(type, path) {

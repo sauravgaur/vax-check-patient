@@ -163,7 +163,14 @@
 								<p-fieldset legend="Upload Supplemental Documents">
 									Additional supporting vaccination documents can be uploaded here
 									<kt-file-upload (fileSelection)="onFileSelect($event)"></kt-file-upload>
+									<div style="width: 100%;" *ngIf="showFileUploadProgress">
+										<p-progressBar mode="indeterminate" [style]="{'height': '6px'}"></p-progressBar>
+									</div>
 									<div class="snapshot" *ngIf="supplimentURL">
+										<span *ngIf="supportingDocFile?.name" style="background: lightskyblue;
+										border-radius: 15px;
+										padding: 1rem; margin-right: 1rem;
+										vertical-align: top;">{{supportingDocFile?.name}}</span>
 										<span *ngIf="['jpg', 'jpeg', 'png', 'pdf', 'txt'].includes(supplimentURL.split('.').pop())">
 											<a [type]="supplimentURL" [ngClass]="{'link-icon': false }" *ngIf="['jpg', 'jpeg', 'png'].includes(supplimentURL.split('.').pop())" (click)="displayIFrame = true" style="cursor: pointer;">
 												<img [src]="supplimentURL" style="width: 10rem;">

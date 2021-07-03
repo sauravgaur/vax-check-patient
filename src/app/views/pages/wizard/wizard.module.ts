@@ -47,6 +47,7 @@ import { KeyFilterModule } from 'primeng/keyfilter';
 import { CustomFileUpload1Module } from '../file-upload copy/file-upload1.module';
 import { SafePipe } from '../../../core/_base/layout';
 import { TitleCasePipe } from '@angular/common';
+import {ProgressBarModule} from 'primeng/progressbar';
 @NgModule({
 	declarations: [
 		WizardComponent,
@@ -106,7 +107,8 @@ import { TitleCasePipe } from '@angular/common';
 		CustomFileUploadModule,
 		CustomFileUpload1Module,
 		EditorModule,
-		KeyFilterModule
+		KeyFilterModule,
+		ProgressBarModule
 		// NgxStripeModule.forChild('pk_test_aeUUjYYcx4XNfKVW60pmHTtI')
 	],
 	providers: [TitleCasePipe]

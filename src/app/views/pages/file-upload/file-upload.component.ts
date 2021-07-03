@@ -1,6 +1,7 @@
 import { Component, EventEmitter, HostListener, Input, OnInit, Output } from '@angular/core';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { FileItem, FileLikeObject, FileUploader } from 'ng2-file-upload';
+import { NotifyService } from '../../../common/notify.service';
 
 @Component({
   selector: 'kt-file-upload',
@@ -23,7 +24,7 @@ export class FileUploadComponent implements OnInit {
   selectedFile: File = null;
 
   constructor(
-    private sanitizer: DomSanitizer,
+    private sanitizer: DomSanitizer, private notifyService: NotifyService
   ) {
     this.imageUrls = [];
     this.lastObjectUrl = '';
@@ -58,21 +59,25 @@ export class FileUploadComponent implements OnInit {
   }
 
   onWhenAddingFileFailed = (item: FileLikeObject, filter) => {
+    this.notifyService.setShowLoader(true);
     this.selectedFile = null;
     this.fileErrorMessage = '';
     this.selectedFileName = item.name;
     switch (filter.name) {
       case 'fileType':
         this.fileErrorMessage = 'Please upload files in: (png, jpg, jpeg, pdf) format';
+        this.notifyService.setShowLoader(false);
         break;
       case 'fileSize':
         this.fileErrorMessage = 'Please Upload a file up to 10 MB';
+        this.notifyService.setShowLoader(false);
         break;
     }
     this.onUploadImage(this.selectedFile);
   }
 
   onAfterAddingFile = (fileItem: FileItem) => {
+    this.notifyService.setShowLoader(true);
     this.fileErrorMessage = '';
     this.selectedFileName = '';
     if (fileItem) {
