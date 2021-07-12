@@ -730,13 +730,13 @@ export class Wizard2Component implements OnInit, AfterViewInit {
                 let expirationAddDays = 0;
                 if (this.patientForm.get('orgManufacturer').value === 'Johnson \& Johnson') {
                     effectiveAddDays = 15;
-                    expirationAddDays = 85;
+                    expirationAddDays = 145;
                 } else if (this.patientForm.get('orgManufacturer').value !== 'Johnson \& Johnson') {
                     effectiveAddDays = 15;
-                    expirationAddDays = 85;
+                    expirationAddDays = 145;
                 } else {
                     effectiveAddDays = 15;
-                    expirationAddDays = 85;
+                    expirationAddDays = 145;
                 }
                 // console.log('10 days', moment(doseDate, 'YYYY-MM-DD').add(10, 'days'))
                 // console.log('10 weeks', moment(doseDate, 'YYYY-MM-DD').add(10, 'weeks'))
