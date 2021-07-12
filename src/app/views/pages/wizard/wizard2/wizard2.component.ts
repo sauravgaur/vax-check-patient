@@ -724,7 +724,7 @@ export class Wizard2Component implements OnInit, AfterViewInit {
                 this.secondClinicNameInputControl.setValue(this.secondClinicName);
 
                 this.doseReceived = this.patientForm.get('orgDose2').value ? 2 : 1;
-                this.seriesComplete = (this.patientForm.get('orgManufacturer').value !== 'Johnson \& Johnson' || this.doseReceived === 2) ? 'YES' : 'NO';
+                this.seriesComplete = (this.patientForm.get('orgManufacturer').value === 'Johnson \& Johnson' || this.doseReceived === 2) ? 'YES' : 'NO';
                 const doseDate = this.patientForm.get('orgDose2').value ? this.patientForm.get('orgDose2').value : this.patientForm.get('orgDose1').value;
                 let effectiveAddDays = 0;
                 let expirationAddDays = 0;
