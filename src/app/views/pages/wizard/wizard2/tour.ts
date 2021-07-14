@@ -38,9 +38,9 @@ export const builtInButtons = {
       ],
       classes: 'custom-class-name-1 custom-class-name-2',
       id: 'intro',
-      title: 'Welcome to traveler information form.',
+      title: 'Welcome to demographic info form.',
       text: `
-            In this section, traveler has to fill their personal details like name, address and contact details.
+      In this section, the user will be asked to fill personal details like name, address and contact details.
           `
     },
     {
@@ -56,7 +56,7 @@ export const builtInButtons = {
       classes: 'custom-class-name-1 custom-class-name-2',
       id: 'installation',
       title: 'Organization Information',
-      text: 'In this section, traveler has to fill the details of the organization from where vaccination has been conducted.'
+      text: 'In this section, the user will be asked to fill the details of the organization from where vaccination has been conducted.'
     },
     {
       attachTo: {
@@ -70,6 +70,6 @@ export const builtInButtons = {
       classes: 'custom-class-name-1 custom-class-name-2',
       id: 'usage',
       title: 'Upload Vaccination card',
-      text: 'In this section, traveler can either take a snapshot of the vaccination card or upload a document from the device.'
+      text: 'In this section, user can either take a snapshot of the vaccination card or upload a document from the device.'
     }
   ];
