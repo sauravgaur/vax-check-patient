@@ -45,7 +45,7 @@ export class LoginComponent implements OnInit, OnDestroy {
 	public counter = 30;
 	loading1 = false;
 	disableLogin = false;
-	mailFormat = '^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$';
+	mailFormat = '^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}$';
 	/**
 	 * Component constructor
 	 *
@@ -85,6 +85,10 @@ export class LoginComponent implements OnInit, OnDestroy {
 		this.route.queryParams.subscribe(params => {
 			this.returnUrl = params.returnUrl || '/';
 		});
+	}
+
+	changeCase() {
+		this.loginForm.controls.email.setValue(this.loginForm.controls.email.value.toLowerCase());
 	}
 
 	/**
@@ -242,6 +246,7 @@ export class LoginComponent implements OnInit, OnDestroy {
 
 	sendOTP() {
 		this.authNoticeService.setNotice(null);
+		// this.loginForm.controls.email.setValue(this.loginForm.controls.email.value.toLowerCase());
 		if (this.loginForm.valid) {
 			this.loading = true;
 			this.auth.sendOTP({ email_address: this.loginForm.controls.email.value, org_id: '7890' }).subscribe((data: any) => {
