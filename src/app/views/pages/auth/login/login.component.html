@@ -52,7 +52,13 @@
         <button id="kt_login_signin_submit" (click)="sendOTP()" [ngClass]="{
             'spinner spinner-right spinner-md spinner-light': loading
           }" [disabled]="loading" class="btn btn-primary font-weight-bold px-9 py-4 my-3">Email OTP</button>
-      </div>
+          <p style="width: 100%;
+          line-height: 30px;
+          height: 30px;
+          vertical-align: middle;">
+            *One Time Password (OTP)
+          </p>
+        </div>
       <div *ngIf="otpSent" class="form-group d-flex flex-wrap justify-content-between align-items-center">
         <button id="kt_login_signin_submit" (click)="submit()" [disabled]="disableLogin" [ngClass]="{
             'spinner spinner-right spinner-md spinner-light': loading1
